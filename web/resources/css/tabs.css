@@ -84,20 +84,9 @@ h1 {
     border-bottom: 1px solid white;
     background-color: white;
 }
-/* Left Navigation */
-#sub-nav-content {
-    display: table;
-    margin: 0.5em;
-    border: 1px solid black;
-    height: 550px;
-}    
+/* Left Navigation */  
 .sub-nav {
     background-color: #f0f0f0;
-}
-#sub-content {
-    display: table-cell;
-    width: 90%;
-    vertical-align: top;     
 }
 #left-nav ul {
     list-style-type: none;
