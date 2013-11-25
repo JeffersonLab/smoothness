@@ -5,30 +5,30 @@ package org.jlab.webapp.presentation.util;
  * @author ryans
  */
 public class Paginator {
-    private int offset;
-    private int maxPerPage;
-    private int totalRecords;
+    private long offset;
+    private long maxPerPage;
+    private long totalRecords;
     
-    public Paginator(int totalRecords, int offset, int maxPerPage) {
+    public Paginator(long totalRecords, long offset, long maxPerPage) {
         this.totalRecords = totalRecords;
         this.offset = offset;
         this.maxPerPage = maxPerPage;
     }
     
-    public int getTotalRecords() {
+    public long getTotalRecords() {
         return totalRecords;
     }
     
-    public int getOffset() {
+    public long getOffset() {
         return offset;
     }
     
-    public int getMaxPerPage() {
+    public long getMaxPerPage() {
         return maxPerPage;
     }
     
-    public int getStartNumber() {
-        int startNumber = offset + 1;
+    public long getStartNumber() {
+        long startNumber = offset + 1;
         
         if(startNumber > totalRecords) {
             startNumber = totalRecords;
@@ -37,8 +37,8 @@ public class Paginator {
         return startNumber;
     }
     
-    public int getEndNumber() {
-        int endNumber = offset + maxPerPage;
+    public long getEndNumber() {
+        long endNumber = offset + maxPerPage;
         
         if(endNumber > totalRecords) {
             endNumber = totalRecords;
@@ -67,8 +67,8 @@ public class Paginator {
         return next;
     }
     
-    public int getPreviousOffset() {
-        int previousOffset = offset - maxPerPage;
+    public long getPreviousOffset() {
+        long previousOffset = offset - maxPerPage;
         
         if(previousOffset < 0) {
             previousOffset = 0;
@@ -77,8 +77,8 @@ public class Paginator {
         return previousOffset;
     }
     
-    public int getNextOffset() {        
-        int nextOffset = offset + maxPerPage;
+    public long getNextOffset() {        
+        long nextOffset = offset + maxPerPage;
         
         if(nextOffset > (totalRecords - 1)) {
             nextOffset = totalRecords - 1;
