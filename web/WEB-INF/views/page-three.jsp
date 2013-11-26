@@ -56,6 +56,13 @@
                 max-width: 200px;
                 text-align: center;
             }
+            .left-nested-table tbody tr:nth-child(2n),
+            .right-nested-table tbody tr:nth-child(2n) {
+                background-color: #E8E8E8;
+            }
+            thead th {
+                background-color: lightgray;
+            }
         </style>
     </jsp:attribute>
     <jsp:attribute name="scripts"> 
@@ -70,10 +77,12 @@
                     <tr>
                         <td class="wrap-cell left-wrap-cell">
                             <table class="left-nested-table">
-                                <tbody>
+                                <thead>
                                     <tr class="left-header">
                                         <th>Username</th>
-                                    </tr>
+                                    </tr>    
+                                </thead>
+                                <tbody>
                                     <tr>
                                         <th>jsmith</th>
                                     </tr>
