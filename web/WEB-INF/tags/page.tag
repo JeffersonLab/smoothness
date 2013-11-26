@@ -52,7 +52,10 @@
                         </li>
                         <li${'/page-three' eq currentPath ? ' class="current"' : ''}>
                             <a href="${pageContext.request.contextPath}/page-three">Page Three</a>
-                        </li>                        
+                        </li>           
+                        <li${'/page-four' eq currentPath ? ' class="current"' : ''}>
+                            <a href="${pageContext.request.contextPath}/page-four">Page Four</a>
+                        </li>                                   
                         <li${fn:startsWith(currentPath, '/reports') ? ' class="current"' : ''}>
                             <a href="${pageContext.request.contextPath}/reports/report-one">Reports</a>
                         </li>                    
