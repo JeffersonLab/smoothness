@@ -28,6 +28,7 @@
                             </div>
                             <div class="li-value">
                                 <input id="lastname" name="lastname" value="${fn:escapeXml(param.lastname)}"/>
+                                (use % as wildcard)
                             </div>
                         </li>                        
                     </ul>
