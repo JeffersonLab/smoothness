@@ -35,13 +35,13 @@
                     <input type="submit" value="Apply"/>
                 </fieldset>
             </form>         
-            <div class="message-box">Showing Staff <fmt:formatNumber value="${paginator.startNumber}"/> - <fmt:formatNumber value="${paginator.endNumber}"/> of <fmt:formatNumber value="${paginator.totalRecords}"/></div>
+            <div class="message-box"><c:out value="${selectionMessage}"/></div>
             <table class="record-table">
                 <thead>
                     <tr>
                         <th>Lastname</th>
                         <th>Firstname</th>
-                        <th>username</th>
+                        <th>Username</th>
                     </tr>
                 </thead>
                 <tbody>

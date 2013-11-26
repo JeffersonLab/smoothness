@@ -1,6 +1,7 @@
 package org.jlab.webapp.presentation.controller;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jlab.webapp.business.session.StaffFacade;
 import org.jlab.webapp.persistence.entity.Staff;
+import org.jlab.webapp.presentation.util.FilterSelectionMessage;
 import org.jlab.webapp.presentation.util.Paginator;
 import org.jlab.webapp.presentation.util.ParamConverter;
 
@@ -43,12 +45,31 @@ public class PageTwo extends HttpServlet {
 
         List<Staff> staffList = staffFacade.filterList(lastname, offset, max);
         long totalRecords = staffFacade.countList(lastname, offset, max);
-        
-        Paginator paginator = new Paginator(totalRecords, offset, max);        
-        
+
+        Paginator paginator = new Paginator(totalRecords, offset, max);
+
+        DecimalFormat formatter = new DecimalFormat("###,###");
+
+        String selectionMessage;
+
+        if (paginator.getTotalRecords() == 0) {
+            selectionMessage = "Found 0 Staff";
+        } else {
+            selectionMessage = "Showing Staff " + formatter.format(paginator.getStartNumber())
+                    + " - " + formatter.format(paginator.getEndNumber())
+                    + " of " + formatter.format(paginator.getTotalRecords());
+        }
+
+        String filters = FilterSelectionMessage.getMessage(lastname);
+
+        if (filters.length() > 0) {
+            selectionMessage = selectionMessage + " with " + filters;
+        }
+
+        request.setAttribute("selectionMessage", selectionMessage);
         request.setAttribute("staffList", staffList);
         request.setAttribute("paginator", paginator);
-        
+
         request.getRequestDispatcher("/WEB-INF/views/page-two.jsp").forward(request, response);
     }
 }
