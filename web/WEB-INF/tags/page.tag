@@ -50,6 +50,9 @@
                         <li${'/page-two' eq currentPath ? ' class="current"' : ''}>
                             <a href="${pageContext.request.contextPath}/page-two">Page Two</a>
                         </li>
+                        <li${'/page-three' eq currentPath ? ' class="current"' : ''}>
+                            <a href="${pageContext.request.contextPath}/page-three">Page Three</a>
+                        </li>                        
                         <li${fn:startsWith(currentPath, '/reports') ? ' class="current"' : ''}>
                             <a href="${pageContext.request.contextPath}/reports/report-one">Reports</a>
                         </li>                    
