@@ -54,6 +54,7 @@
                 width: 200px;
                 min-width: 200px;
                 max-width: 200px;
+                text-align: center;
             }
         </style>
     </jsp:attribute>
@@ -74,16 +75,16 @@
                                         <th>Username</th>
                                     </tr>
                                     <tr>
-                                        <th>Smith, White, Thompson, Jenkins</th>
+                                        <th>jsmith</th>
                                     </tr>
                                     <tr>
-                                        <th>Brown</th>
+                                        <th>kbrown</th>
                                     </tr>
                                     <tr>
-                                        <th>Johnson</th>
+                                        <th>pjohnson</th>
                                     </tr>
                                     <tr>
-                                        <th>Carter</th>
+                                        <th>mcarter</th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -107,7 +108,23 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Apple, Orange, Banana, Pear, Grape, Peach</td>
+                                                <td></td>
+                                                <td>✔</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>✔</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>✔</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -115,28 +132,12 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td>B</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>C</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>D</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>✔</td>
                                             </tr>
                                         </tbody>
                                     </table>
