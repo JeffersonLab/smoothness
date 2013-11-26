@@ -4,5 +4,8 @@
     <jta-data-source>jdbc/hco</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+        <property name="hibernate.generate_statistics" value="true"/>
+    </properties>
   </persistence-unit>
 </persistence>

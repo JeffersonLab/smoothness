@@ -168,3 +168,23 @@ a:hover {
     margin: 0 auto;
     background: url("../img/indicator16x16.gif") 0 0;
 }
+/* Tables */
+table.record-table,
+.record-table td,
+.record-table th {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+.record-table td,
+.record-table th {
+    padding: 0.5em;
+}
+table.record-table {
+    margin: 1em 0;
+}
+.record-table th {
+    background-color: lightgray;
+}
+.record-table tr:nth-child(even) {
+    background-color: #E8E8E8;
+}
