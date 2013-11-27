@@ -17,13 +17,14 @@
             .right-wrap-cell {
                 width: 599px;
             }
-            table {
+            table.horizontal-scroll-table,
+            .horizontal-scroll-table table {
                 table-layout: fixed;
                 border-collapse: collapse;
                 border: 1px solid black;
             }
-            th,
-            td {
+            .horizontal-scroll-table th,
+            .horizontal-scroll-table td {
                 font-size: 16px;
                 border: 1px solid black;
                 height: 24px;
@@ -60,7 +61,7 @@
             .right-nested-table tbody tr:nth-child(2n) {
                 background-color: #E8E8E8;
             }
-            thead th {
+            .horizontal-scroll-table thead th {
                 background-color: lightgray;
             }
         </style>
@@ -72,7 +73,7 @@
     <jsp:body>
         <section class="scrollable-section">
             <h2><c:out value="${title}"/></h2>
-            <table class="wrap-table">
+            <table class="horizontal-scroll-table">
                 <tbody>
                     <tr>
                         <td class="wrap-cell left-wrap-cell">
