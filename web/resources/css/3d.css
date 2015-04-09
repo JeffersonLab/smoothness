@@ -300,6 +300,14 @@ a:hover {
     z-index: 0;
 } 
 /*Breadcrumb*/
+.breadbox {
+    background-color: #f0f0f0;
+    padding: 16px;
+    border-bottom: 1px solid black;
+}
+.breadbox .breadcrumb {
+     margin: 0;
+}
 .breadcrumb {
     font-size: 0;
     letter-spacing: 0;
