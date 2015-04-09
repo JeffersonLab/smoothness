@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>        
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>My Application - Primary Page</title>
+        <link rel="shortcut icon" href="favicon.ico"/>        
+        <link rel="stylesheet" type="text/css" href="//cdn.acc.jlab.org/jquery-ui/1.10.3/theme/smoothness/jquery-ui.min.css"/>        
+        <link rel="stylesheet" type="text/css" href="../resources/css/3d.css"/>        
+    </head>
+    <body>
+        <div id="page">
+            <header>
+                <h1><span id="page-header-logo"></span> <span id="page-header-text">My Application</span></h1>
+                <div id="auth">
+                    <a href="#">Login</a>
+                </div>
+                <nav id="primary-nav">
+                    <ul>
+                        <li class="current-primary"><a href="primary.html">Primary Page</a></li>
+                        <li><a href="secondary.html">Secondary Page</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <div id="content">
+                <div id="content-liner">
+                    <section>
+                        <div id="filter-flyout-widget" class="filter-flyout-ribbon">
+                            <div id="filter-flyout-button">
+                                <a id="filter-flyout-link" href="#">Choose...</a>
+                            </div>
+                            <div id="filter-flyout-handle">
+                                <div id="filter-flyout-panel" style="display: none;">
+                                    <button id="filter-flyout-close-button" title="Close">X</button>
+                                    <div id="filter-flyout-title">Choose Parameters</div>
+                                    <form id="filter-form" method="get" action="primary.html">
+                                        <div id="filter-form-panel">
+                                            <fieldset>
+                                                <legend>Filter</legend>
+                                                <ul class="key-value-list">
+                                                    <li>
+                                                        <div class="li-key"><span class="key-label">Key 1</span></div>
+                                                        <div class="li-value">Value 1</div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="li-key"><span class="key-label">Key 2</span></div>
+                                                        <div class="li-value">Value 2</div>
+                                                    </li>
+                                                </ul>
+                                            </fieldset>	
+                                        </div>
+                                        <input id="filter-form-submit-button" type="submit" value="Apply"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 id="page-header-title">Primary Page</h2>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="//cdn.acc.jlab.org/jquery/1.10.2.min.js"></script>
+        <script type="text/javascript" src="../resources/js/3d.js"></script>
+    </body>
+</html>
