@@ -428,3 +428,17 @@ a:hover {
 .button-panel button {
     margin: 0 0 0 8px;
 }
+/* Messages and Indicators */
+.message-box {
+    margin: 1em 0; /*Collapsing margins may be in effect*/
+}
+.error-message {
+    color: red;
+}
+.button-indicator {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+    background: url("../img/indicator16x16.gif") 0 0;
+}
