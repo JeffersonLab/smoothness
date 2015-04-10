@@ -19,7 +19,7 @@
                     <div id="filter-flyout-panel" style="display: none;">
                         <button id="filter-flyout-close-button" title="Close">X</button>
                         <div id="filter-flyout-title">Choose Parameters</div>
-                        <form id="filter-form" method="get" action="primary.html">
+                        <form id="filter-form" method="get" action="page-one">
                             <div id="filter-form-panel">
                                 <fieldset>
                                     <legend>Filter</legend>
