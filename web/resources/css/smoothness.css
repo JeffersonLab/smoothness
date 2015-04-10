@@ -224,6 +224,20 @@ a:hover {
     margin: 0;
     vertical-align: bottom;
 }
+.scrollable-filter-form {
+    border: 3px double #979797;
+    box-shadow: 2px 2px 4px #979797 inset;
+    height: 425px;
+    margin-top: 1em;
+    overflow-y: scroll;
+    padding: 1em;
+}
+#filter-form .scrollable-filter-form > fieldset:first-child {
+    margin-top: 0;
+}
+.scrollable-filter-form > fieldset:last-child {
+    margin-bottom: 16px;
+}
 .filter-flyout-ribbon + #page-header-title {
     position: relative;
     left: -18px;

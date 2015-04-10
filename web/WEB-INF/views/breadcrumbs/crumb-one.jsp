@@ -21,18 +21,68 @@
                         <span class="default-reset-panel">(<a href="#">Reset</a>)</span>
                         <div id="filter-flyout-title">Choose Parameters (<span class="required-field"><span></span> required</span>)</div>
                         <form id="filter-form" method="get" action="crumb-one">
-                            <div id="filter-form-panel">
+                            <div id="filter-form-panel" class="scrollable-filter-form">
                                 <fieldset>
-                                    <legend>Filter</legend>
+                                    <legend>Filter Set 1</legend>
                                     <ul class="key-value-list">
                                         <li class="required-field">
                                             <div class="li-key"><span class="key-label">Key 1</span></div>
-                                            <div class="li-value">Value 1</div>
+                                            <div class="li-value"><input type="text" name="key1"/></div>
                                         </li>
                                         <li>
                                             <div class="li-key"><span class="key-label">Key 2</span></div>
-                                            <div class="li-value">Value 2</div>
+                                            <div class="li-value"><input type="text" name="key2"/></div>
                                         </li>
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 3</span></div>
+                                            <div class="li-value"><input type="text" name="key3"/></div>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                                <fieldset>         
+                                    <legend>Filter Set 2</legend>
+                                    <ul class="key-value-list">
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 4</span></div>
+                                            <div class="li-value"><input type="text" name="key4"/></div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 5</span></div>
+                                            <div class="li-value"><input type="text" name="key5"/></div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 6</span></div>
+                                            <div class="li-value"><input type="text" name="key6"/></div>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                                <fieldset>         
+                                    <legend>Filter Set 3</legend>
+                                    <ul class="key-value-list">
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 7</span></div>
+                                            <div class="li-value"><input type="text" name="key7"/></div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 8</span></div>
+                                            <div class="li-value"><input type="text" name="key8"/></div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 9</span></div>
+                                            <div class="li-value"><input type="text" name="key9"/></div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 10</span></div>
+                                            <div class="li-value"><input type="text" name="key10"/></div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 11</span></div>
+                                            <div class="li-value"><input type="text" name="key11"/></div>
+                                        </li>
+                                        <li>
+                                            <div class="li-key"><span class="key-label">Key 12</span></div>
+                                            <div class="li-value"><input type="text" name="key12"/></div>
+                                        </li>                                        
                                     </ul>
                                 </fieldset>	
                             </div>
