@@ -18,6 +18,7 @@
                 <div id="filter-flyout-handle">
                     <div id="filter-flyout-panel" style="display: none;">
                         <button id="filter-flyout-close-button" title="Close">X</button>
+                        <span class="default-reset-panel">(<a href="#">Reset</a>)</span>
                         <div id="filter-flyout-title">Choose Parameters (<span class="required-field"><span></span> required</span>)</div>
                         <form id="filter-form" method="get" action="crumb-one">
                             <div id="filter-form-panel">

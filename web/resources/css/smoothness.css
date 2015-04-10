@@ -215,6 +215,10 @@ a:hover {
 #filter-flyout-title {
     font-weight: bold;
 }
+.default-reset-panel {
+    float: right;
+    margin-right: 16px;
+}
 #page-header-title {
     display: inline-block;
     margin: 0;
