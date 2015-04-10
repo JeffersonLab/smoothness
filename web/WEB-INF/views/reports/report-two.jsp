@@ -12,7 +12,7 @@
     </jsp:attribute>        
     <jsp:body>
         <section>
-            <h2><c:out value="${title}"/></h2>
+            <h2 id="page-header-title"><c:out value="${title}"/></h2>
         </section>
     </jsp:body>         
 </t:report-page>

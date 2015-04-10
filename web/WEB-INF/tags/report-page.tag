@@ -14,7 +14,7 @@
         <div id="two-columns">
             <div id="left-column">
                 <section>
-                    <h2>Reports</h2>
+                    <h2 id="left-column-header">Reports</h2>
                     <nav id="secondary-nav">
                         <ul>
                             <li${'/reports/report-one' eq currentPath ? ' class="current-secondary"' : ''}><a href="${pageContext.request.contextPath}/reports/report-one">Report One</a></li>
