@@ -378,3 +378,53 @@ a:hover {
     width: 0;
     z-index: 1;
 }
+/*Dialogs*/
+.dialog {
+    display: none;
+}
+.ui-widget {
+    font-size: 16px;
+}
+.ui-button {
+    font-size: 14px;
+}
+.ui-dialog-title, .ui-dialog .ui-dialog-titlebar-close {
+    font-size: 17px;
+}
+.ui-dialog .ui-dialog-content {
+    padding: 16px;
+    margin: 8px;
+    border: 1px outset black;
+}
+.ui-dialog.ui-widget {
+    border-radius: 8px;
+    box-shadow: 8px 8px 8px #979797;
+    border: 1px solid black;
+    padding: 0;
+}
+.ui-dialog .ui-dialog-titlebar {
+    border-radius: 0.5em 0.5em 0 0;
+    border-bottom: 1px solid black;
+}
+.dialog .dialog-content {
+    display: table;
+}
+.ui-dialog .ui-widget-content a {
+    color: blue;
+}
+.ui-dialog .ui-widget-content a:hover {
+    color: red;
+}
+.button-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 24px;
+    text-align: right;
+    padding: 16px;
+}
+.button-panel button {
+    margin: 0 0 0 8px;
+}

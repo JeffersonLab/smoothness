@@ -21,6 +21,7 @@
         </div>            
         <section>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <p><a href="crumb-two" class="dialog-ready" data-dialog-title="Hello World">Check this out</a></p>
         </section>
     </jsp:body>         
 </t:page>

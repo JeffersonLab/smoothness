@@ -53,24 +53,26 @@
                 <a href="crumb-three">Even More Ahead!</a>
             </p>              
             <div class="message-box"><c:out value="${selectionMessage}"/></div>
-            <table class="data-table stripped-table">
-                <thead>
-                    <tr>
-                        <th>Lastname</th>
-                        <th>Firstname</th>
-                        <th>Username</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${staffList}" var="staff">
+            <div class="dialog-content">
+                <table class="data-table stripped-table">
+                    <thead>
                         <tr>
-                            <td><c:out value="${staff.lastname}"/></td>
-                            <td><c:out value="${staff.firstname}"/></td>
-                            <td><c:out value="${staff.username}"/></td>
+                            <th>Lastname</th>
+                            <th>Firstname</th>
+                            <th>Username</th>
                         </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${staffList}" var="staff">
+                            <tr>
+                                <td><c:out value="${staff.lastname}"/></td>
+                                <td><c:out value="${staff.firstname}"/></td>
+                                <td><c:out value="${staff.username}"/></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
             <button id="previous-button" type="button" data-offset="${paginator.previousOffset}" value="Previous"${paginator.previous ? '' : ' disabled="disabled"'}>Previous</button>                        
             <button id="next-button" type="button" data-offset="${paginator.nextOffset}" value="Next"${paginator.next ? '' : ' disabled="disabled"'}>Next</button>                              
         </section>
