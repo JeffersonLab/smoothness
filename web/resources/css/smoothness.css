@@ -80,6 +80,7 @@ h1 {
 }
 #right-column {
     display: table-cell;
+    vertical-align: top;
 }
 #secondary-nav ul {
     list-style-type: none;
