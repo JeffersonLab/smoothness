@@ -41,7 +41,7 @@ public class CrumbTwo extends HttpServlet {
         String lastname = request.getParameter("lastname");
 
         int offset = ParamConverter.convertNonNegativeInt(request, "offset", 0);
-        int max = 10;
+        int max = ParamConverter.convertNonNegativeInt(request, "max", 10);
 
         List<Staff> staffList = staffFacade.filterList(lastname, offset, max);
         long totalRecords = staffFacade.countList(lastname, offset, max);
