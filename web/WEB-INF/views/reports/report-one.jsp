@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </div>                                
-                    <h2 id="page-header-title">Secondary Page 1</h2>
+                    <h2 id="page-header-title"><c:out value="${title}"/></h2>
                     <table class="data-table stripped-table constrained-table compact-table">
                         <thead>
                             <tr>
