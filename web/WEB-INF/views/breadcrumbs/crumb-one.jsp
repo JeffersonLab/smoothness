@@ -18,13 +18,13 @@
                 <div id="filter-flyout-handle">
                     <div id="filter-flyout-panel" style="display: none;">
                         <button id="filter-flyout-close-button" title="Close">X</button>
-                        <div id="filter-flyout-title">Choose Parameters</div>
+                        <div id="filter-flyout-title">Choose Parameters (<span class="required-field"><span></span> required</span>)</div>
                         <form id="filter-form" method="get" action="crumb-one">
                             <div id="filter-form-panel">
                                 <fieldset>
                                     <legend>Filter</legend>
                                     <ul class="key-value-list">
-                                        <li>
+                                        <li class="required-field">
                                             <div class="li-key"><span class="key-label">Key 1</span></div>
                                             <div class="li-value">Value 1</div>
                                         </li>
