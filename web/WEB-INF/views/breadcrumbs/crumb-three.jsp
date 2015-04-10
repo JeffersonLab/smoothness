@@ -3,7 +3,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
-<c:set var="title" value="Page Three"/>
+<c:set var="title" value="Crumb Three"/>
 <t:page title="${title}">  
     <jsp:attribute name="stylesheets">
         <style type="text/css">
@@ -71,7 +71,14 @@
         </script>
     </jsp:attribute>        
     <jsp:body>
-        <section class="scrollable-section">
+        <div class="breadbox">
+            <ul class="breadcrumb">
+                <li><a href="crumb-one">Crumb One</a></li>
+                <li><a href="crumb-two">Crumb Two</a></li>
+                <li>Crumb Three</li>
+            </ul>
+        </div>            
+        <section>
             <h2><c:out value="${title}"/></h2>
             <table class="horizontal-scroll-table">
                 <tbody>

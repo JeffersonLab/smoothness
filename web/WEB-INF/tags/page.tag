@@ -1,4 +1,4 @@
-<%@tag description="The Site Page Template Tag" pageEncoding="UTF-8"%>
+<%@tag description="The Site Page Template" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="title"%>
@@ -13,13 +13,13 @@
         <title><c:out value="${initParam.appShortName}"/> - ${title}</title>
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/img/favicon.ico"/>        
         <link rel="stylesheet" type="text/css" href="//cdn.acc.jlab.org/jquery-ui/1.10.3/theme/smoothness/jquery-ui.min.css"/>        
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/tabs.css"/>        
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/smoothness.css"/>        
         <jsp:invoke fragment="stylesheets"/>
     </head>
     <body>
         <div id="page">
             <header>
-                <h1><span id="logo"></span> <c:out value="${initParam.appName}"/></h1>
+                <h1><span id="page-header-logo"></span> <span id="page-header-text"><c:out value="${initParam.appName}"/></span></h1>
                 <div id="auth">
                     <c:choose>
                         <c:when test="${fn:startsWith(currentPath, '/login')}">
@@ -42,42 +42,37 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-                <nav id="top-nav">
+                <nav id="primary-nav">
                     <ul>
-                        <li${'/page-one' eq currentPath ? ' class="current"' : ''}>
+                        <li${'/page-one' eq currentPath ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/page-one">Page One</a>
-                        </li>
-                        <li${'/page-two' eq currentPath ? ' class="current"' : ''}>
-                            <a href="${pageContext.request.contextPath}/page-two">Page Two</a>
-                        </li>
-                        <li${'/page-three' eq currentPath ? ' class="current"' : ''}>
-                            <a href="${pageContext.request.contextPath}/page-three">Page Three</a>
-                        </li>           
-                        <li${'/page-four' eq currentPath ? ' class="current"' : ''}>
-                            <a href="${pageContext.request.contextPath}/page-four">Page Four</a>
-                        </li>                                   
-                        <li${fn:startsWith(currentPath, '/reports') ? ' class="current"' : ''}>
+                        </li>   
+                        <li${fn:startsWith(currentPath, '/breadcrumbs') ? ' class="current-primary"' : ''}>
+                            <a href="${pageContext.request.contextPath}/breadcrumbs/crumb-one">Breadcrumbs</a>
+                        </li>                        
+                        <li${fn:startsWith(currentPath, '/reports') ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/reports/report-one">Reports</a>
                         </li>                    
                         <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
-                            <li${fn:startsWith(currentPath, '/setup') ? ' class="current"' : ''}>
+                            <li${fn:startsWith(currentPath, '/setup') ? ' class="current-primary"' : ''}>
                                 <a href="${pageContext.request.contextPath}/setup/setup-one">Setup</a>
                             </li>            
                         </c:if>
-                        <li${'/help' eq currentPath ? ' class="current"' : ''}>
+                        <li${'/help' eq currentPath ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/help">Help</a>
                         </li>
                     </ul>
                 </nav>                
             </header>
-            <div id="content">            
-                <jsp:doBody/>
+            <div id="content">     
+                <div id="content-liner">
+                    <jsp:doBody/>
+                </div>
             </div>
-            <footer></footer>
         </div>
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery/1.10.2.min.js"></script>
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-ui/1.10.3/jquery-ui.min.js"></script>            
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/tabs.js"></script> 
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script> 
         <script type="text/javascript">
             jlab.contextPath = '${pageContext.request.contextPath}';
         </script>

@@ -19,8 +19,8 @@ import org.jlab.webapp.presentation.util.ParamConverter;
  *
  * @author ryans
  */
-@WebServlet(name = "PageTwo", urlPatterns = {"/page-two"})
-public class PageTwo extends HttpServlet {
+@WebServlet(name = "CrumbTwo", urlPatterns = {"/breadcrumbs/crumb-two"})
+public class CrumbTwo extends HttpServlet {
 
     @EJB
     StaffFacade staffFacade;
@@ -70,6 +70,6 @@ public class PageTwo extends HttpServlet {
         request.setAttribute("staffList", staffList);
         request.setAttribute("paginator", paginator);
 
-        request.getRequestDispatcher("/WEB-INF/views/page-two.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/breadcrumbs/crumb-two.jsp").forward(request, response);
     }
 }

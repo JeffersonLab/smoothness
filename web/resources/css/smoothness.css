@@ -42,6 +42,10 @@ h1 {
 #auth {
     float: right;
 }
+#username-container,
+#logout-form {
+    display: inline-block;
+}
 /*Nav*/
 #primary-nav ul {
     padding: 0 4px;

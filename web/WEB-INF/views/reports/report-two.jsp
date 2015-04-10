@@ -11,7 +11,7 @@
     <jsp:attribute name="scripts">
     </jsp:attribute>        
     <jsp:body>
-        <section class="scrollable-section">
+        <section>
             <h2><c:out value="${title}"/></h2>
         </section>
     </jsp:body>         

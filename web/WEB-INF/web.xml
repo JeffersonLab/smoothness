@@ -88,7 +88,7 @@
     </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>jlabRealm</realm-name>
+        <realm-name>aceRealm</realm-name>
         <form-login-config>
             <form-login-page>/login</form-login-page>
             <form-error-page>/login</form-error-page>
