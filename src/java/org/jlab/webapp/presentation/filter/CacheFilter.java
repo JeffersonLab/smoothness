@@ -60,6 +60,8 @@ public class CacheFilter implements Filter {
             
             if (type != null && Arrays.binarySearch(CACHEABLE_CONTENT_TYPES, type) > -1) {
                 super.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_MILLIS);
+                super.setHeader("Cache-Control", null); // Remove header automatically added by SSL/TLS container module
+                super.setHeader("Pragma", null); // Remove header automatically added by SSL/TLS container module                 
             } else {
                 super.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"); // HTTP 1.1
                 super.setHeader("Pragma", "no-cache"); // HTTP 1.0
