@@ -62,6 +62,12 @@ jlab.closePageDialogs = function() {
 jlab.integerWithCommas = function(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+// Format a number by padding with zeros
+jlab.pad = function(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+};
 // Reports/Export functions
 jlab.getPrintUrl = function() {
     var uri = URI();
