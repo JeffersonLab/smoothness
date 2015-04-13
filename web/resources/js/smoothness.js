@@ -62,6 +62,27 @@ jlab.closePageDialogs = function() {
 jlab.integerWithCommas = function(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+// Reports/Export functions
+jlab.getPrintUrl = function() {
+    var uri = URI();
+    uri.removeSearch("print");
+    uri.addSearch("print", "Y");
+    return uri.toString();
+};
+jlab.getFullscreenUrl = function() {    
+    var uri = URI();
+    uri.removeSearch("print");  
+    uri.removeSearch("fullscreen");
+    uri.addSearch("print", "Y");
+    uri.addSearch("fullscreen", "Y");
+    return uri.toString();
+};
+jlab.getExitFullscreenUrl = function() {    
+    var uri = URI();
+    uri.removeSearch("print");
+    uri.removeSearch("fullscreen");
+    return uri.toString();    
+};
 /**
  * Common Event Handlers
  */
@@ -101,4 +122,49 @@ $(document).on("change", ".change-submit", function() {
 $(document).on("click", "#next-button, #previous-button", function() {
     $("#offset-input").val($(this).attr("data-offset"));
     $("#filter-form").submit();
+});
+// Report FullScreen/Export events
+$(document).on("mouseover", "#export-menu li", function() {
+    $(this).addClass("ui-state-focus");
+});
+$(document).on("mouseleave", "#export-menu li", function() {
+    $(this).removeClass("ui-state-focus");
+});
+$(document).on("click", "#fullscreen-button", function() {
+    window.location = jlab.getFullscreenUrl();
+});
+$(document).on("click", "#exit-fullscreen-button", function() {
+    window.location = jlab.getExitFullscreenUrl();
+});
+$(document).on("click", "#print-menu-item", function() {
+    window.location = jlab.getPrintUrl();
+});
+$(document).on("click", "#image-menu-item", function() {
+    var printUrl = jlab.getPrintUrl();
+    window.location = '/html-to-image/convert?filename=chart.png&width=1024&url=' + encodeURIComponent(printUrl);
+});
+$(document).on("click", "#excel-menu-item", function() {
+    $("#excel").click();
+});
+$(document).on("click", "#shiftlog-menu-item", function() {
+    $("#shiftlog").click();
+});
+/**
+ * DOM Ready actions 
+ */
+$(function() {
+    // Create report buttons
+    $("#fullscreen-button, #exit-fullscreen-button").button().show();
+    $("#export-menu-button").button({
+        icons: {
+            secondary: "ui-icon-triangle-1-s"}
+    }).click(function() {
+        var menu = $("#export-menu").slideDown();
+
+        $(document).one("click", function() {
+            menu.hide();
+        });
+        return false;
+    }).show();
+    $("#export-menu").menu().hide();
 });

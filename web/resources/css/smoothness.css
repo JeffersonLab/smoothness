@@ -456,3 +456,62 @@ a:hover {
     margin: 0 auto;
     background: url("../img/indicator16x16.gif") 0 0;
 }
+/*Reports*/
+#fullscreen-button,
+#exit-fullscreen-button,
+#export-menu-button {
+    display: none;
+}
+#report-page-actions {
+    float: right;
+}
+#export-widget {
+    display: inline-block;
+}
+#export-menu {
+    border-radius: initial;
+    display: none;
+    padding: 0;
+    position: absolute;
+    width: 100px;
+}
+#export-menu li {
+    border: 1px solid white;
+    padding: 1px 2px;
+}
+#exit-fullscreen-panel {
+    display: none;
+}
+.fullscreen #exit-fullscreen-panel {
+    display: block;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+.print header,
+.print #left-column,
+.print #filter-flyout-widget,
+.print #report-page-actions {
+    display: none;
+}
+.print #page {
+    /*margin: 0;*/
+    padding: 0;
+    /*max-width: none;*/
+    min-width: 0;
+}
+.print #content {
+    border: none;
+    min-height: 0;
+    border-radius: initial;
+    box-shadow: none;
+}
+.print #content-liner {
+    border: none;
+    margin: 0;
+}
+.print #page-header-title,
+.print #message-box {
+    display: block;
+    text-align: center;
+}

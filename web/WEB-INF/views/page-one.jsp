@@ -56,6 +56,7 @@
             <ul>
                 <li>jQuery UI - dialogs, date picker, etc. This template is designed to match the jQuery UI theme of the same name (Smoothness)</li>
                 <li>jQuery - needed for jQuery UI and is generally used for DOM navigation and AJAX</li>
+                <li>URI - a JavaScript library for manipulating URIs.</li>
                 <li>flot - jQuery based graphing library</li>
                 <li>select2 - fancy selection widget mainly needed to improve multiple selection</li>
                 <li>jWeb - home-grown library of server-side Java classes for speeding web application development</li>

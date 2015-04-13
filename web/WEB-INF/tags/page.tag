@@ -16,7 +16,7 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/smoothness.css"/>        
         <jsp:invoke fragment="stylesheets"/>
     </head>
-    <body>
+    <body class="${param.print eq 'Y' ? 'print ' : ''} ${param.fullscreen eq 'Y' ? 'fullscreen' : ''}">
         <div id="page">
             <header>
                 <h1><span id="page-header-logo"></span> <span id="page-header-text"><c:out value="${initParam.appName}"/></span></h1>
@@ -71,7 +71,8 @@
             </div>
         </div>
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery/1.10.2.min.js"></script>
-        <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-ui/1.10.3/jquery-ui.min.js"></script>            
+        <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-ui/1.10.3/jquery-ui.min.js"></script>  
+        <script type="text/javascript" src="//cdn.acc.jlab.org/uri/uri-1.14.1.min.js"></script>        
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script> 
         <script type="text/javascript">
             jlab.contextPath = '${pageContext.request.contextPath}';
