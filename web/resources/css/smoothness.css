@@ -169,8 +169,7 @@ a:hover {
     table-layout: fixed;
     width: 100%;
 }
-.constrained-table td,
-.constrained-table th {
+.constrained-table td {
     word-wrap: break-word;
 }
 .compact-table {
