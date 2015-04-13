@@ -16,7 +16,7 @@
                     <a id="filter-flyout-link" href="#">Choose...</a>
                 </div>
                 <div id="filter-flyout-handle">
-                    <div id="filter-flyout-panel" style="display: none;">
+                    <div id="filter-flyout-panel">
                         <button id="filter-flyout-close-button" title="Close">X</button>
                         <div id="filter-flyout-title">Choose Parameters</div>
                         <form id="filter-form" method="get" action="page-one">
