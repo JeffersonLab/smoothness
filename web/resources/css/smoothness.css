@@ -134,7 +134,7 @@ a:hover {
     vertical-align: top;
     white-space: nowrap;
 }
-.required-field > :first-child:before {
+.required-field:before {
     color: red;
     content: "*";
 }

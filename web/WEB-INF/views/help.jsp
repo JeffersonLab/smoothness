@@ -35,15 +35,16 @@
             <c:choose>
                 <c:when test="${pageContext.request.userPrincipal ne null}">
                     <h3>Feedback Form</h3>
+                    <div style="font-weight: bold; margin-bottom: 4px;">(<span class="required-field"></span> required)</div>
                     <fieldset id="feedback-fieldset">
                         <form method="post" action="ajax/feedback">
                             <ul class="key-value-list">
-                                <li class="required-field">
-                                    <div class="li-key"><label for="subject">Subject</label></div>
+                                <li>
+                                    <div class="li-key"><label class="required-field" for="subject">Subject</label></div>
                                     <div class="li-value"><input type="text" id="subject" name="subject"/></div>
                                 </li>
-                                <li class="required-field">
-                                    <div class="li-key"><label for="body">Message</label></div>
+                                <li>
+                                    <div class="li-key"><label class="required-field" for="body">Message</label></div>
                                     <div class="li-value"><textarea id="body" name="body"></textarea></div>
                                 </li>                                       
                             </ul>
