@@ -446,6 +446,7 @@ a:hover {
 .message-box {
     font-weight: bold;
     margin: 1em 0; /*Collapsing margins may be in effect*/
+    min-height: 1em;
 }
 .error-message {
     color: red;
@@ -583,8 +584,7 @@ a:hover {
     border: none;
     margin: 0;
 }
-.print #page-header-title,
-.print #message-box {
+.print #page-header-title{
     display: block;
     text-align: center;
 }
@@ -596,6 +596,7 @@ a:hover {
 .print .message-box {
     margin-top: 8px;
     text-align: center;
+    min-height: inherit;    
 }
 body.print {
     background-color: lightgray;
