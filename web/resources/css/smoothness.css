@@ -608,6 +608,7 @@ body.print {
     background-color: white;
     border: 1px solid gray;
     padding: 16px;
+    background: linear-gradient(#fff, #eee);
 }
 /*Full Screen Reports*/
 .fullscreen #exit-fullscreen-panel {
