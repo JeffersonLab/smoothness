@@ -9,7 +9,7 @@ body {
     margin: 0 auto;
     padding: 32px;
     max-width: 1200px;
-    min-width: 960px 
+    min-width: 1024px; 
 }
 #content {
     border: 1px solid black;

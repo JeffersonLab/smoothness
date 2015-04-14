@@ -41,8 +41,12 @@
                 </div>
             </div>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h3>Overview</h3>
+            <p>This template is named &quot;Smoothness&quot;, and is designed to pair with the jQuery UI theme of the same name.</p>
+            <h3>Audience</h3>
+            <p>This template is optimized for Jefferson Lab desktop Intranet computers which have a screen size of 1280x1024 or greater.   Many of the applications that use this template have large tables and graphs.</p>
             <h3>Navigation</h3>
-            <p>The &quot;Smoothness&quot; template supports the following navigation styles:</p>
+            <p>This template supports the following navigation styles:</p>
             <ul>
                 <li>Top-Level Tab Navigation - global always visible</li>
                 <li>Second-Level Tab Navigation - local to a top level tab</li>
@@ -54,12 +58,11 @@
             <p>Templates are provided for a help/about page, a login page, and a report page as those are used in nearly every web application.  Styles for tables and lists are also provided.</p>
             <h3>Related Software</h3>
             <ul>
-                <li>jQuery UI - dialogs, date picker, etc. This template is designed to match the jQuery UI theme of the same name (Smoothness)</li>
+                <li>jQuery UI - dialogs, date picker, etc.</li>
                 <li>jQuery - needed for jQuery UI and is generally used for DOM navigation and AJAX</li>
                 <li>URI - a JavaScript library for manipulating URIs.</li>
                 <li>flot - jQuery based graphing library</li>
                 <li>select2 - fancy selection widget mainly needed to improve multiple selection</li>
-                <li>jWeb - home-grown library of server-side Java classes for speeding web application development</li>
             </ul>
         </section>
     </jsp:body>         
