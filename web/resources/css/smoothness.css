@@ -552,6 +552,16 @@ a:hover {
 .chart-legend tbody td {
     text-align: right;
 }
+.chart-footnote {
+    margin-top: 16px;
+    margin-left: 1em;
+    font-size: 10px;
+}
+.chart-footnote ul {
+    list-style-type: square;
+    margin: 0;
+    padding: 0 0 0 1.5em;
+}
 /*Print Reports*/
 .print header,
 .print #left-column,
@@ -629,4 +639,7 @@ body.fullscreen #chart-placeholder {
 .fullscreen,
 .fullscreen .axisLabel {
     font-size: 20px;
+}
+.fullscreen .chart-footnote {
+    font-size: 12px;
 }
