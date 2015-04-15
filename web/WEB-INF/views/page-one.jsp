@@ -11,35 +11,26 @@
     </jsp:attribute>        
     <jsp:body>
         <section>
-            <div id="filter-flyout-widget" class="filter-flyout-ribbon">
-                <div id="filter-flyout-button">
-                    <a id="filter-flyout-link" href="#">Choose...</a>
-                </div>
-                <div id="filter-flyout-handle">
-                    <div id="filter-flyout-panel">
-                        <button id="filter-flyout-close-button" title="Close">X</button>
-                        <div id="filter-flyout-title">Choose Parameters</div>
-                        <form id="filter-form" method="get" action="page-one">
-                            <div id="filter-form-panel">
-                                <fieldset>
-                                    <legend>Filter</legend>
-                                    <ul class="key-value-list">
-                                        <li>
-                                            <div class="li-key"><span class="key-label">Key 1</span></div>
-                                            <div class="li-value">Value 1</div>
-                                        </li>
-                                        <li>
-                                            <div class="li-key"><span class="key-label">Key 2</span></div>
-                                            <div class="li-value">Value 2</div>
-                                        </li>
-                                    </ul>
-                                </fieldset>	
-                            </div>
-                            <input id="filter-form-submit-button" type="submit" value="Apply"/>
-                        </form>
+            <t:filter-flyout-widget ribbon="true">
+                <form id="filter-form" method="get" action="page-one">
+                    <div id="filter-form-panel">
+                        <fieldset>
+                            <legend>Filter</legend>
+                            <ul class="key-value-list">
+                                <li>
+                                    <div class="li-key"><span class="key-label">Key 1</span></div>
+                                    <div class="li-value">Value 1</div>
+                                </li>
+                                <li>
+                                    <div class="li-key"><span class="key-label">Key 2</span></div>
+                                    <div class="li-value">Value 2</div>
+                                </li>
+                            </ul>
+                        </fieldset>	
                     </div>
-                </div>
-            </div>
+                    <input id="filter-form-submit-button" type="submit" value="Apply"/>
+                </form>
+            </t:filter-flyout-widget>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <h3>Overview</h3>
             <p>This template is named &quot;Smoothness&quot;, and is designed to pair with the jQuery UI theme of the same name.</p>

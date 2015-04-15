@@ -17,37 +17,28 @@
             </ul>
         </div>
         <section>
-            <div id="filter-flyout-widget" class="filter-flyout-ribbon">
-                <div id="filter-flyout-button">
-                    <a id="filter-flyout-link" href="#">Choose...</a>
-                </div>
-                <div id="filter-flyout-handle">
-                    <div id="filter-flyout-panel">
-                        <button id="filter-flyout-close-button" title="Close">X</button>
-                        <div id="filter-flyout-title">Choose Parameters</div>
-                        <form id="filter-form" method="get" action="crumb-two">
-                            <div id="filter-form-panel">
-                                <fieldset>
-                                    <legend>Filter</legend>
-                                    <ul class="key-value-list">                       
-                                        <li>
-                                            <div class="li-key">
-                                                <label for="lastname">Lastname</label>
-                                            </div>
-                                            <div class="li-value">
-                                                <input id="lastname" name="lastname" value="${fn:escapeXml(param.lastname)}"/>
-                                                (use % as wildcard)
-                                            </div>
-                                        </li>                        
-                                    </ul>
-                                </fieldset>
-                            </div>
-                            <input type="hidden" id="offset-input" name="offset" value="0"/>                                
-                            <input id="filter-form-submit-button" type="submit" value="Apply"/>
-                        </form>
+            <t:filter-flyout-widget ribbon="true">
+                <form id="filter-form" method="get" action="crumb-two">
+                    <div id="filter-form-panel">
+                        <fieldset>
+                            <legend>Filter</legend>
+                            <ul class="key-value-list">                       
+                                <li>
+                                    <div class="li-key">
+                                        <label for="lastname">Lastname</label>
+                                    </div>
+                                    <div class="li-value">
+                                        <input id="lastname" name="lastname" value="${fn:escapeXml(param.lastname)}"/>
+                                        (use % as wildcard)
+                                    </div>
+                                </li>                        
+                            </ul>
+                        </fieldset>
                     </div>
-                </div>
-            </div>                        
+                    <input type="hidden" id="offset-input" name="offset" value="0"/>                                
+                    <input id="filter-form-submit-button" type="submit" value="Apply"/>
+                </form>
+            </t:filter-flyout-widget>                       
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <p>
                 <a href="crumb-three">Even More Ahead!</a>
