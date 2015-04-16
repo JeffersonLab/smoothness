@@ -29,6 +29,13 @@ if (!String.prototype.decodeXml) {
  */
 var jlab = jlab || {};
 /**
+ * Configuration
+ */
+jlab.editableRowTable = jlab.editableRowTable || {};
+jlab.editableRowTable.entity = jlab.editableRowTable.entity || 'Row';
+jlab.editableRowTable.width = jlab.editableRowTable.width || 800;
+jlab.editableRowTable.height = jlab.editableRowTable.height || 600;
+/**
  * Common Namespaced Functions
  */
 //Function to ensure a AJAX request is only issued serially
@@ -75,19 +82,19 @@ jlab.getPrintUrl = function() {
     uri.addSearch("print", "Y");
     return uri.toString();
 };
-jlab.getFullscreenUrl = function() {    
+jlab.getFullscreenUrl = function() {
     var uri = URI();
-    uri.removeSearch("print");  
+    uri.removeSearch("print");
     uri.removeSearch("fullscreen");
     uri.addSearch("print", "Y");
     uri.addSearch("fullscreen", "Y");
     return uri.toString();
 };
-jlab.getExitFullscreenUrl = function() {    
+jlab.getExitFullscreenUrl = function() {
     var uri = URI();
     uri.removeSearch("print");
     uri.removeSearch("fullscreen");
-    return uri.toString();    
+    return uri.toString();
 };
 /**
  * Common Event Handlers
@@ -155,6 +162,37 @@ $(document).on("click", "#excel-menu-item", function() {
 $(document).on("click", "#shiftlog-menu-item", function() {
     $("#shiftlog").click();
 });
+// Editable Row Table
+$(document).on("click", function(event) {
+    if (!$(event.target).closest('.editable-row-table tbody').length && !$(event.target).closest('#editable-row-table-control-panel').length && !$(event.target).closest('.ui-dialog').length && !$(event.target).closest('.ui-widget-overlay').length) {
+        $(".editable-row-table .selected-row").removeClass("selected-row");
+        $("#open-add-row-dialog-button").removeAttr("disabled");
+        $("#open-edit-row-dialog-button").attr("disabled", "disabled");
+        $("#remove-row-button").attr("disabled", "disabled");
+    }
+});
+$(document).on("click", ".editable-row-table tbody tr", function() {
+    $(".editable-row-table .selected-row").removeClass("selected-row");
+    $(this).addClass("selected-row");
+    $("#open-add-row-dialog-button").attr("disabled", "disabled");
+    $("#open-edit-row-dialog-button").removeAttr("disabled");
+    $("#remove-row-button").removeAttr("disabled");
+});
+$(document).on("click", "#open-add-row-dialog-button", function() {
+    $("#table-row-dialog").dialog("option", "title", "Add " + jlab.editableRowTable.entity).dialog("open");
+});
+$(document).on("click", "#open-edit-row-dialog-button", function() {
+    $("#table-row-dialog").dialog("option", "title", "Edit " + jlab.editableRowTable.entity).dialog("open");
+});
+$(document).on("click", "#table-row-save-button", function() {
+    var eventType = 'table-row-edit';
+    if ($("#table-row-dialog").dialog("option", "title").startsWith("Add")) {
+        eventType = 'table-row-add';
+    }
+    $.event.trigger({
+        type: eventType
+    });
+});
 /**
  * DOM Ready actions 
  */
@@ -173,4 +211,14 @@ $(function() {
         return false;
     }).show();
     $("#export-menu").menu().hide();
+    
+    // Editable Row Table Dialog
+    $("#table-row-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: jlab.editableRowTable.width,
+        minWidth: jlab.editableRowTable.width,
+        height: jlab.editableRowTable.height,
+        minHeight: jlab.editableRowTable.height
+    });
 });

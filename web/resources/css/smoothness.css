@@ -458,6 +458,16 @@ a:hover {
     margin: 0 auto;
     background: url("../img/indicator16x16.gif") 0 0;
 }
+/*Editable Row Table*/
+.editable-row-table tbody tr:hover {
+    background-color: lightskyblue;
+    cursor: pointer;
+}
+.editable-row-table tr.selected-row {
+    outline: 2px dotted blue;
+    background-color:blue;
+    color: white;
+}
 /*Report Menus*/
 #fullscreen-button,
 #exit-fullscreen-button,
