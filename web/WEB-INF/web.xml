@@ -7,31 +7,31 @@
     <context-param>
         <param-name>appShortName</param-name>
         <param-value>MWA</param-value>
-    </context-param>        
+    </context-param>
     <context-param>
         <param-name>resourceVersionNumber</param-name>
         <param-value>1</param-value>
     </context-param>
     <context-param>
         <param-name>releaseNumber</param-name>
-        <param-value>0.1</param-value>
+        <param-value>1.0</param-value>
     </context-param>
     <context-param>
         <param-name>releaseDate</param-name>
-        <param-value>yyyy-mm-dd</param-value>
+        <param-value>17 Apr 2015</param-value>
     </context-param>
     <context-param>
         <param-name>contentContact</param-name>
-        <param-value></param-value>
-    </context-param>     
+        <param-value/>
+    </context-param>
     <context-param>
         <param-name>technicalContact</param-name>
         <param-value>Ryan Slominski (ryans)</param-value>
-    </context-param>    
+    </context-param>
     <context-param>
         <param-name>documentationUrl</param-name>
         <param-value>https://devweb.acc.jlab.org/twiki/bin/view/SWDocs</param-value>
-    </context-param>    
+    </context-param>
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
         <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
