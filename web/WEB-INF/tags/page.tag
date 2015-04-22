@@ -44,8 +44,8 @@
                 </div>
                 <nav id="primary-nav">
                     <ul>
-                        <li${'/page-one' eq currentPath ? ' class="current-primary"' : ''}>
-                            <a href="${pageContext.request.contextPath}/page-one">Page One</a>
+                        <li${'/overview' eq currentPath ? ' class="current-primary"' : ''}>
+                            <a href="${pageContext.request.contextPath}/overview">Overview</a>
                         </li>   
                         <li${fn:startsWith(currentPath, '/breadcrumbs') ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/breadcrumbs/crumb-one">Breadcrumbs</a>

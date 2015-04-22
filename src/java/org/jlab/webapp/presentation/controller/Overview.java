@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ryans
  */
-@WebServlet(name = "PageOne", urlPatterns = {"/page-one"})
-public class PageOne extends HttpServlet {
+@WebServlet(name = "Overview", urlPatterns = {"/overview"})
+public class Overview extends HttpServlet {
 
     /**
      * Handles the HTTP
@@ -26,6 +26,6 @@ public class PageOne extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/page-one.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/overview.jsp").forward(request, response);
     }
 }

@@ -7,6 +7,16 @@
 <c:set var="title" value="Report One"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
+        <style type="text/css">
+            .print .optional-report-wrap {
+                background: linear-gradient(#fff, #eee) repeat scroll 0 0 rgba(0, 0, 0, 0);
+                border: 1px solid gray;
+                padding: 16px;
+            }
+            .data-table {
+                background-color: white;
+            }
+        </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
     </jsp:attribute>        
@@ -43,36 +53,46 @@
                 </form>
             </t:filter-flyout-widget>                              
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
-            <table class="data-table stripped-table constrained-table compact-table">
-                <thead>
-                    <tr>
-                        <th>Column 1</th>
-                        <th>Column 2</th>
-                        <th>Column 3</th>
-                        <th>Column 4</th>
-                        <th>Column 5</th>
-                        <th>Column 6</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>This cell has way too much text in it to demonstrate overflow, wrapping, and word breaks: abcdefghijklmnopqrstuvwxyz_abcdefghijklmnopqrstuvwxyz</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="optional-report-wrap">
+                <table class="data-table stripped-table constrained-table compact-table">
+                    <thead>
+                        <tr>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                            <th>Column 3</th>
+                            <th>Column 4</th>
+                            <th>Column 5</th>
+                            <th>Column 6</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hello</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>This cell has way too much text in it to demonstrate overflow, wrapping, and word breaks: abcdefghijklmnopqrstuvwxyz_abcdefghijklmnopqrstuvwxyz</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Hi</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
         <div id="exit-fullscreen-panel">
             <button id="exit-fullscreen-button">Exit Full Screen</button>
