@@ -653,19 +653,13 @@ body.print {
 .print #chart-placeholder .flot-text {
     font-size: 18px !important;
 }
-.print #optional-chart-wrap {
-    background-color: white;
+.print .chart-wrap-backdrop {
     border: 1px solid gray;
     padding: 16px;
     background: linear-gradient(#fff, #eee);
 }
 .print .chart-legend {
-    margin-top: 0.7em;
-}
-.print .chart-wrap-backdrop {
-    background: linear-gradient(#fff, #eee) repeat scroll 0 0 rgba(0, 0, 0, 0);
-    border: 1px solid gray;
-    padding: 16px;
+    margin-top: 11px;
 }
 /*Full Screen Reports*/
 .fullscreen #exit-fullscreen-panel {
