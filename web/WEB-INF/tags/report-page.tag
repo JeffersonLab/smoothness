@@ -19,6 +19,7 @@
                         <ul>
                             <li${'/reports/report-one' eq currentPath ? ' class="current-secondary"' : ''}><a href="${pageContext.request.contextPath}/reports/report-one">Report One</a></li>
                             <li${'/reports/report-two' eq currentPath ? ' class="current-secondary"' : ''}><a href="${pageContext.request.contextPath}/reports/report-two">Report Two</a></li>
+                            <li${'/reports/report-three' eq currentPath ? ' class="current-secondary"' : ''}><a href="${pageContext.request.contextPath}/reports/report-three">Report Three</a></li>                      
                         </ul>
                     </nav>
                 </section>

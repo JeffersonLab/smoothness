@@ -4,7 +4,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="webapp" uri="http://jlab.org/webapp/functions"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
-<c:set var="title" value="Report Two"/>
+<c:set var="title" value="Report Three"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
         <style type="text/css">
@@ -12,6 +12,9 @@
                 background: linear-gradient(#fff, #eee) repeat scroll 0 0 rgba(0, 0, 0, 0);
                 border: 1px solid gray;
                 padding: 16px;
+            }
+            .print .chart-legend {
+                margin-top: 0.7em;
             }
             .has-x-axis-label {
                 margin-bottom: 2em;
@@ -61,29 +64,32 @@
 
             jlab.doChart = function() {
 
+                var colors = [];
+
+                $(".chart-legend tbody tr").each(function() {
+                    colors.push($(".color-box", this).css("background-color"));
+                });
+
                 /*Wrap classes must be added before chart is generated*/
                 $("#chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
 
                 var placeholder = $("#chart-placeholder"),
                         datasource = [
-                            {label: 'Series 1', color: 'blue', data: [[0, 1], [1, 2], [2, 4], [3, 8], [4, 16]]},
-                            {label: 'Series 2', color: 'red', data: [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]]}
+                            {label: 'Series 1', color: colors[0], data: [[0, 1]]},
+                            {label: 'Series 2', color: colors[1], data: [[1, 2]]},
+                            {label: 'Series 3', color: colors[2], data: [[2, 3]]},
+                            {label: 'Series 4', color: colors[3], data: [[3, 4]]}
                         ],
                         options = {
                             series: {
-                                points: {
-                                    show: true
-                                },
-                                lines: {
-                                    show: true
+                                bars: {
+                                    show: true,
+                                    align: 'center'
                                 }
 
                             },
                             xaxis: {
-                                min: 0,
-                                max: 4,
-                                tickDecimals: 0,
-                                ticks: 5
+                                ticks: [[0, 'Series 1'], [1, 'Series 2'], [2, 'Series 3'], [3, 'Series 4']]
                             },
                             yaxis: {
                                 min: 0,
@@ -95,7 +101,7 @@
                                 backgroundColor: {colors: ["#fff", "#eee"]}
                             },
                             legend: {
-                                backgroundOpacity: 0
+                                show: false
                             }
                         };
 
@@ -127,6 +133,35 @@
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
             <t:chart-widget>
+                <table class="chart-legend">
+                    <tbody>
+                        <c:forEach items="${legendDataList}" var="data">
+                            <tr>
+                                <th>
+                        <div class="color-box" style="background-color: ${data.color};"></div>
+                        </th>
+                        <td class="legend-label"><c:out value="${data.name}"/></td>
+                        <td>
+                            <fmt:formatNumber value="${data.count}"/>
+                        </td>
+                        <td>
+                            (<fmt:formatNumber pattern="##0.0" value="${totalCount eq 0 ? 0 : (data.count / totalCount * 100)}"/>%)
+                        </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>                
+                <div class="chart-footnote">
+                    <c:if test="${!empty footnoteList}">
+                        <ul>
+                            <c:forEach items="${footnoteList}" var="note">
+                                <li>
+                                    <c:out value="${note}"/>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                </div>               
             </t:chart-widget>
         </section>
         <div id="exit-fullscreen-panel">
