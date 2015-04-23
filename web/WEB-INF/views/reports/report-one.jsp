@@ -53,6 +53,7 @@
                 </form>
             </t:filter-flyout-widget>                              
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <div class="message-box"></div>
             <div class="optional-report-wrap">
                 <table class="data-table stripped-table constrained-table compact-table">
                     <thead>
