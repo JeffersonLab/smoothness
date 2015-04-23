@@ -7,6 +7,11 @@
 <c:set var="title" value="Report Three"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
+        <style type="text/css">
+            .chart-legend {
+                margin-top: 11px;
+            }
+        </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-plugins/flot/0.8.3/jquery.flot.min.js"></script>

@@ -658,9 +658,6 @@ body.print {
     padding: 16px;
     background: linear-gradient(#fff, #eee);
 }
-.print .chart-legend {
-    margin-top: 11px;
-}
 /*Full Screen Reports*/
 .fullscreen #exit-fullscreen-panel {
     display: block;
