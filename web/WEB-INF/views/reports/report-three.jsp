@@ -84,7 +84,8 @@
                             series: {
                                 bars: {
                                     show: true,
-                                    align: 'center'
+                                    align: 'center',
+                                    barWidth: 0.95
                                 }
 
                             },
