@@ -133,7 +133,7 @@
                 </div>
             </div>            
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
-            <div class="message-box"></div>
+            <div class="message-box">June - July, 2015</div>
             <t:chart-widget>
                 <table class="chart-legend">
                     <tbody>

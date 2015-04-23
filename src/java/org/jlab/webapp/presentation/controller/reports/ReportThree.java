@@ -61,9 +61,15 @@ public class ReportThree extends HttpServlet {
 
         int totalCount = 10;
 
+        List<String> footnoteList = new ArrayList<>();
+        
+        footnoteList.add("Excludes holidays");
+        footnoteList.add("Includes first, second, third, and fourth series types");
+        
         request.setAttribute("legendDataList", legendDataList);
         request.setAttribute("totalCount", totalCount);
-
+        request.setAttribute("footnoteList", footnoteList);
+        
         request.getRequestDispatcher("/WEB-INF/views/reports/report-three.jsp").forward(request,
                 response);
     }
