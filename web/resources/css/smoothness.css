@@ -145,6 +145,9 @@ a:hover {
     font-weight: bold;
 }
 /*Data Tables*/
+.data-table {
+    background-color: white;
+}
 .data-table,
 .data-table td,
 .data-table th {
@@ -429,7 +432,7 @@ a:hover {
 .ui-dialog .ui-widget-content a:hover {
     color: red;
 }
-.button-panel {
+.dialog-button-panel {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -439,7 +442,7 @@ a:hover {
     text-align: right;
     padding: 16px;
 }
-.button-panel button {
+.dialog-button-panel button {
     margin: 0 0 0 8px;
 }
 /* Messages and Indicators */
@@ -547,8 +550,33 @@ a:hover {
 .chart-panel {
     width: 100%;
 }
-.axisLabel {
+.has-x-axis-label {
+    margin-bottom: 2em;
+}
+.has-y-axis-label {
+    margin-left: 2em;
+}
+.axis-label {
+    font-size: 16px;
     font-weight: bold;
+    position: absolute;
+    text-align: center;    
+}
+.x-axis-label {
+    bottom: -2em;
+    left: 50%;
+    width: 400px;
+    margin-left: -200px;
+}
+.y-axis-label {
+    left: -2em;
+    top: 50%;
+    transform: rotate(-90deg);
+    transform-origin: 0 0;
+    -webkit-transform: rotate(-90deg);
+    -webkit-transform-origin: 0 0;
+    -ms-transform: rotate(-90deg);
+    -ms-transform-origin: 0 0; 
 }
 .color-box {
     height: 16px;
@@ -631,6 +659,14 @@ body.print {
     padding: 16px;
     background: linear-gradient(#fff, #eee);
 }
+.print .chart-legend {
+    margin-top: 0.7em;
+}
+.print .chart-wrap-backdrop {
+    background: linear-gradient(#fff, #eee) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid gray;
+    padding: 16px;
+}
 /*Full Screen Reports*/
 .fullscreen #exit-fullscreen-panel {
     display: block;
@@ -648,7 +684,7 @@ body.fullscreen #chart-placeholder {
     max-height: 700px;
 }
 .fullscreen,
-.fullscreen .axisLabel {
+.fullscreen .axis-label {
     font-size: 20px;
 }
 .fullscreen .chart-footnote {

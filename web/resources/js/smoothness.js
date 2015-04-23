@@ -96,6 +96,18 @@ jlab.getExitFullscreenUrl = function() {
     uri.removeSearch("fullscreen");
     return uri.toString();
 };
+/*Chart Axis Labels*/
+jlab.addYAxisLabel = function(label) {
+    var yaxisLabel = $("<div class='axis-label y-axis-label'></div>")
+            .text(label)
+            .appendTo($("#chart-placeholder"));
+    yaxisLabel.css("margin-top", yaxisLabel.width() / 2);
+};
+jlab.addXAxisLabel = function(label) {
+    $("<div class='axis-label x-axis-label'></div>")
+            .text(label)
+            .appendTo($("#chart-placeholder"));
+};
 /**
  * Common Event Handlers
  */
@@ -211,7 +223,7 @@ $(function() {
         return false;
     }).show();
     $("#export-menu").menu().hide();
-    
+
     // Editable Row Table Dialog
     $("#table-row-dialog").dialog({
         autoOpen: false,

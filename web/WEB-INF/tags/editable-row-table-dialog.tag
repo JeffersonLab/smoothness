@@ -5,7 +5,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
 <div id="table-row-dialog" class="dialog" title="Edit Row">
     <jsp:doBody/>
-    <div class="button-panel">
+    <div class="dialog-button-panel">
         <button type="button" id="table-row-save-button" class="dialog-submit-button">Save</button>
         <button type="button" class="dialog-close-button">Cancel</button>
     </div>

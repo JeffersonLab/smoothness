@@ -7,16 +7,6 @@
 <c:set var="title" value="Report One"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
-        <style type="text/css">
-            .print .optional-report-wrap {
-                background: linear-gradient(#fff, #eee) repeat scroll 0 0 rgba(0, 0, 0, 0);
-                border: 1px solid gray;
-                padding: 16px;
-            }
-            .data-table {
-                background-color: white;
-            }
-        </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
     </jsp:attribute>        
@@ -54,7 +44,7 @@
             </t:filter-flyout-widget>                              
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
-            <div class="optional-report-wrap">
+            <div id="chart-wrap" class="chart-wrap-backdrop">
                 <table class="data-table stripped-table constrained-table compact-table">
                     <thead>
                         <tr>

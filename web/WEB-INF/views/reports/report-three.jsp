@@ -7,61 +7,12 @@
 <c:set var="title" value="Report Three"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
-        <style type="text/css">
-            .print .optional-report-wrap {
-                background: linear-gradient(#fff, #eee) repeat scroll 0 0 rgba(0, 0, 0, 0);
-                border: 1px solid gray;
-                padding: 16px;
-            }
-            .print .chart-legend {
-                margin-top: 0.7em;
-            }
-            .has-x-axis-label {
-                margin-bottom: 2em;
-            }
-            .has-y-axis-label {
-                margin-left: 2em;
-            }
-            .axisLabel {
-                font-size: 16px;
-                position: absolute;
-                text-align: center;    
-            }
-            .xaxisLabel {
-                bottom: -2em;
-                left: 50%;
-                width: 400px;
-                margin-left: -200px;
-            }
-            .yaxisLabel {
-                left: -2em;
-                top: 50%;
-                transform: rotate(-90deg);
-                transform-origin: 0 0;
-                -webkit-transform: rotate(-90deg);
-                -webkit-transform-origin: 0 0;
-                -ms-transform: rotate(-90deg);
-                -ms-transform-origin: 0 0; 
-            }
-        </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-plugins/flot/0.8.3/jquery.flot.min.js"></script>
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-plugins/flot/0.8.3/jquery.flot.resize.min.js"></script>        
         <script type="text/javascript">
             var jlab = jlab || {};
-
-            jlab.addYAxisLabel = function(label) {
-                var yaxisLabel = $("<div class='axisLabel yaxisLabel'></div>")
-                        .text(label)
-                        .appendTo($("#chart-placeholder"));
-                yaxisLabel.css("margin-top", yaxisLabel.width() / 2);
-            };
-            jlab.addXAxisLabel = function(label) {
-                $("<div class='axisLabel xaxisLabel'></div>")
-                        .text(label)
-                        .appendTo($("#chart-placeholder"));
-            };
 
             jlab.doChart = function() {
 
