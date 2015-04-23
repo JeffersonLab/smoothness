@@ -60,6 +60,10 @@
             };
 
             jlab.doChart = function() {
+                
+                /*Wrap classes must be added before chart is generated*/
+                $("#chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
+        
                 var placeholder = $("#chart-placeholder"),
                         datasource = [
                             {label: 'Series 1', color: 'blue', data: [[0, 1], [1, 2], [2, 4], [3, 8], [4, 16]]},
@@ -88,10 +92,15 @@
                             },
                             grid: {
                                 backgroundColor: {colors: ["#fff", "#eee"]}
+                            },
+                            legend: {
+                                backgroundOpacity: 0
                             }
                         };
 
                 $.plot(placeholder, datasource, options);
+                
+                /*These must be added after chart is generated*/
                 jlab.addXAxisLabel('X Axis Label');
                 jlab.addYAxisLabel('Y Axis Label');
             };
