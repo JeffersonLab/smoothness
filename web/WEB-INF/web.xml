@@ -14,11 +14,11 @@
     </context-param>
     <context-param>
         <param-name>releaseNumber</param-name>
-        <param-value>1.0</param-value>
+        <param-value>1.2</param-value>
     </context-param>
     <context-param>
         <param-name>releaseDate</param-name>
-        <param-value>17 Apr 2015</param-value>
+        <param-value>24 June 2015</param-value>
     </context-param>
     <context-param>
         <param-name>contentContact</param-name>

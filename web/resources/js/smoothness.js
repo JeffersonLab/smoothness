@@ -234,3 +234,63 @@ $(function() {
         minHeight: jlab.editableRowTable.height
     });
 });
+/*Autologin*/
+jlab.tryAutoLogin = function() {
+
+    var success = false;
+
+    var request = jQuery.ajax({
+        url: "/spnego/ace-auth",
+        type: "GET",
+        dataType: "json"
+    });
+
+    request.done(function(json) {
+        if (json.username !== null && json.username !== '' && json.username !== 'null') {
+            success = true;
+            window.location.reload();
+        }
+    });
+
+    request.error(function(xhr, textStatus) {
+        window.console && console.log('Unable to auto-login: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+    });
+
+    request.always(function() {
+        if (!success) {
+            jlab.tryAutoLoginCue();
+        }
+    });
+};
+jlab.tryAutoLoginCue = function() {
+
+    var success = false;
+
+    var request = jQuery.ajax({
+        url: "/spnego/cue-auth",
+        type: "GET",
+        dataType: "json"
+    });
+
+    request.done(function(json) {
+        if (json.username !== null && json.username !== '' && json.username !== 'null') {
+            success = true;
+            window.location.reload();
+        }
+    });
+
+    request.error(function(xhr, textStatus) {
+        window.console && console.log('Unable to auto-login: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+    });
+
+    request.always(function() {
+        if (!success) {
+            document.getElementById("login-link").click();
+        }
+    });
+};
+$(document).on("click", "#auto-login", function() {
+    jlab.tryAutoLogin();
+
+    return false;
+});
