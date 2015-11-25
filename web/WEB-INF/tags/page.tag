@@ -17,6 +17,9 @@
         <jsp:invoke fragment="stylesheets"/>
     </head>
     <body class="${param.print eq 'Y' ? 'print ' : ''} ${param.fullscreen eq 'Y' ? 'fullscreen' : ''}">
+        <c:if test="${initParam.notification ne null}">
+            <div id="notification-bar"><c:out value="${initParam.notification}"/></div>
+        </c:if>        
         <div id="page">
             <header>
                 <h1><span id="page-header-logo"></span> <span id="page-header-text"><c:out value="${initParam.appName}"/></span></h1>

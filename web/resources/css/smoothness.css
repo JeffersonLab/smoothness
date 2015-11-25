@@ -461,6 +461,16 @@ a:hover {
     margin: 0 auto;
     background: url("../img/indicator16x16.gif") 0 0;
 }
+#notification-bar {
+    position: fixed;
+    background-color: orange;
+    color: white;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    box-shadow: 0 8px 8px #979797;
+    z-index: 1000;    
+}
 /*Editable Row Table*/
 .editable-row-table tbody tr:hover {
     background-color: lightskyblue;
@@ -633,8 +643,7 @@ a:hover {
 }
 .print .message-box {
     margin-top: 8px;
-    text-align: center;
-    min-height: inherit;    
+    text-align: center;  
 }
 body.print {
     background-color: lightgray;
@@ -664,6 +673,7 @@ body.print {
     position: fixed;
     right: 0;
     top: 0;
+    z-index: 1001;
 }
 .fullscreen .chart-legend,
 .fullscreen .legend-panel {
