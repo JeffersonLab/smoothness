@@ -665,6 +665,7 @@ body.print {
 .print .chart-wrap-backdrop {
     border: 1px solid gray;
     padding: 16px;
+    background-color: white;    
     background: linear-gradient(#fff, #eee);
 }
 /*Full Screen Reports*/
