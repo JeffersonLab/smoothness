@@ -44,6 +44,48 @@ public class ConfigurationParameterInit implements ServletContextListener {
             logger.log(Level.FINEST, "Setting notification: {0}", notification);
         }
 
+        if (context.getInitParameter("PROXY_SERVER_NAME") == null) {
+            // Let's see if the parameter exists as an environment variable
+            String proxyServer = System.getenv("PROXY_SERVER_NAME");
+
+            // If null or empty set to sensible (production) default
+            if (proxyServer == null || proxyServer.trim().isEmpty()) {
+                proxyServer = "accweb.acc.jlab.org";
+            }
+
+            context.setInitParameter("PROXY_SERVER_NAME", proxyServer);
+            logger.log(Level.FINEST, "Setting PROXY_SERVER: {0}", proxyServer);
+        }          
+        
+        if (context.getInitParameter("LOGBOOK_SERVER_NAME") == null) {
+            // Let's see if the parameter exists as an environment variable
+            String logbookServer = System.getenv("LOGBOOK_SERVER_NAME");
+
+            // If null or empty set to sensible (production) default
+            if (logbookServer == null || logbookServer.trim().isEmpty()) {
+                logbookServer = "logbooks.jlab.org";
+            }
+
+            context.setInitParameter("LOGBOOK_SERVER_NAME", logbookServer);
+            logger.log(Level.FINEST, "Setting LOGBOOK_SERVER_NAME: {0}", logbookServer);
+        }        
+        
+        /**
+         * CDN PROTOCOL + SERVER NAME + CONTEXT PATH
+         */
+        /*if (context.getInitParameter("CDN_SERVER_CONTEXT_PATH") == null) {
+            // Let's see if the parameter exists as an environment variable
+            String cdnServer = System.getenv("CDN_SERVER_CONTEXT_PATH");
+
+            // If null or empty set to sensible (production) default
+            if (cdnServer == null || cdnServer.trim().isEmpty()) {
+                cdnServer = "//cdn.acc.jlab.org";
+            }
+
+            context.setInitParameter("CDN_SERVER_CONTEXT_PATH", cdnServer);
+            logger.log(Level.FINEST, "Setting CDN_SERVER_CONTEXT_PATH: {0}", cdnServer);
+        }  */      
+        
         /*
          // Deployed environment (prod|test|local)
          if (context.getInitParameter("GLASSFISH_ENV") == null) {
