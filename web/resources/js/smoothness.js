@@ -35,6 +35,13 @@ jlab.editableRowTable = jlab.editableRowTable || {};
 jlab.editableRowTable.entity = jlab.editableRowTable.entity || 'Row';
 jlab.editableRowTable.width = jlab.editableRowTable.width || 800;
 jlab.editableRowTable.height = jlab.editableRowTable.height || 600;
+
+jlab.pageDialog = jlab.pageDialog || {};
+jlab.pageDialog.width = jlab.pageDialog.width || 840;
+jlab.pageDialog.height = jlab.pageDialog.height || 590;
+jlab.pageDialog.minWidth = jlab.pageDialog.minWidth || 0;
+jlab.pageDialog.minHeight = jlab.pageDialog.minHeight || 0;
+jlab.pageDialog.resizable = jlab.pageDialog.resizable || true;
 /**
  * Common Namespaced Functions
  */
@@ -55,8 +62,11 @@ jlab.openPageInDialog = function (href, title) {
             .dialog({
                 autoOpen: true,
                 title: title,
-                width: 840,
-                height: 590,
+                width: jlab.pageDialog.width,
+                height: jlab.pageDialog.height,
+                minWidth: jlab.pageDialog.minWidth,
+                minHeight: jlab.pageDialog.minHeight,
+                resizable: jlab.pageDialog.resizable,
                 close: function () {
                     $(this).dialog('destroy').remove();
                 }

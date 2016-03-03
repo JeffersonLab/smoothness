@@ -9,6 +9,11 @@
     </jsp:attribute>
     <jsp:attribute name="scripts"> 
         <script type="text/javascript">
+            jlab.pageDialog.width = 800;
+            jlab.pageDialog.height = 600;
+            /*jlab.pageDialog.minWidth = 800;
+            jlab.pageDialog.minHeight = 600;*/
+            jlab.pageDialog.resizable = false;
         </script>
     </jsp:attribute>        
     <jsp:body>
