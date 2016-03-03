@@ -10,15 +10,15 @@
     </context-param>
     <context-param>
         <param-name>resourceVersionNumber</param-name>
-        <param-value>3</param-value>
+        <param-value>5</param-value>
     </context-param>
     <context-param>
         <param-name>releaseNumber</param-name>
-        <param-value>1.4</param-value>
+        <param-value>1.5</param-value>
     </context-param>
     <context-param>
         <param-name>releaseDate</param-name>
-        <param-value>13 Jan 2016</param-value>
+        <param-value>03 Mar 2016</param-value>
     </context-param>
     <context-param>
         <param-name>contentContact</param-name>
