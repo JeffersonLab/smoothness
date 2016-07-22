@@ -49,7 +49,10 @@
                     <ul>
                         <li${'/overview' eq currentPath ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/overview">Overview</a>
-                        </li>   
+                        </li>  
+                        <li${fn:startsWith(currentPath, '/features') ? ' class="current-primary"' : ''}>
+                            <a href="${pageContext.request.contextPath}/features/multiselect-datatable">Features</a>
+                        </li>                        
                         <li${fn:startsWith(currentPath, '/breadcrumbs') ? ' class="current-primary"' : ''}>
                             <a href="${pageContext.request.contextPath}/breadcrumbs/crumb-one">Breadcrumbs</a>
                         </li>                        

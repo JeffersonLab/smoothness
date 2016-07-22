@@ -11,10 +11,10 @@
         <button type="button" id="open-add-row-dialog-button">Add</button>        
     </c:if>
     <c:if test="${not excludeEdit}">
-        <button type="button" id="open-edit-row-dialog-button" disabled="disabled">Edit Selected</button>
+        <button type="button" id="open-edit-row-dialog-button" disabled="disabled">Edit</button>
     </c:if>
     <c:if test="${not excludeDelete}">
-        <button type="button" id="remove-row-button" disabled="disabled">Remove Selected</button>
+        <button type="button" id="remove-row-button" disabled="disabled">Remove</button>
     </c:if>
     <jsp:doBody/>
 </div>                   

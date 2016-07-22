@@ -29,13 +29,21 @@ if (!String.prototype.decodeXml) {
  */
 var jlab = jlab || {};
 /**
- * Configuration
+ * Editable Row Table Configuration
  */
 jlab.editableRowTable = jlab.editableRowTable || {};
 jlab.editableRowTable.entity = jlab.editableRowTable.entity || 'Row';
 jlab.editableRowTable.width = jlab.editableRowTable.width || 800;
 jlab.editableRowTable.height = jlab.editableRowTable.height || 600;
 
+/**
+ * Private row selection state
+ */
+jlab.editableRowTable.lastSelectedRow = null; /*Initially no rows are selected*/
+
+/**
+ * Page Dialog Configuration
+ */
 jlab.pageDialog = jlab.pageDialog || {};
 jlab.pageDialog.width = jlab.pageDialog.width || 840;
 jlab.pageDialog.height = jlab.pageDialog.height || 590;
@@ -190,20 +198,13 @@ $(document).on("click", "#shiftlog-menu-item", function () {
     $("#shiftlog").click();
 });
 // Editable Row Table
-$(document).on("click", function (event) {
-    if (!$(event.target).closest('.editable-row-table tbody').length && !$(event.target).closest('#editable-row-table-control-panel').length && !$(event.target).closest('.ui-dialog').length && !$(event.target).closest('.ui-widget-overlay').length) {
-        $(".editable-row-table .selected-row").removeClass("selected-row");
-        $("#open-add-row-dialog-button").removeAttr("disabled");
-        $("#open-edit-row-dialog-button").attr("disabled", "disabled");
-        $("#remove-row-button").attr("disabled", "disabled");
-    }
-});
-$(document).on("click", ".editable-row-table tbody tr", function () {
+$(document).on("click", ".uniselect-table tbody tr", function () {
     $(".editable-row-table .selected-row").removeClass("selected-row");
     $(this).addClass("selected-row");
-    $("#open-add-row-dialog-button").attr("disabled", "disabled");
-    $("#open-edit-row-dialog-button").removeAttr("disabled");
-    $("#remove-row-button").removeAttr("disabled");
+    $("#open-add-row-dialog-button").prop("disabled", true);
+    $("#open-edit-row-dialog-button").prop("disabled", false);
+    $("#remove-row-button").prop("disabled", false);
+    $("#unselect-all-button").prop("disabled", false);
 });
 $(document).on("click", "#open-add-row-dialog-button", function () {
     $("#table-row-dialog").dialog("option", "title", "Add " + jlab.editableRowTable.entity).dialog("open");
@@ -220,6 +221,69 @@ $(document).on("click", "#table-row-save-button", function () {
         type: eventType
     });
 });
+/**
+ * 
+ * Multiselect table
+ */
+$(document).on("click", ".multiselect-table tbody tr", function (e) {
+    if (e.ctrlKey) {
+        $(this).toggleClass("selected-row");
+    } else if (e.shiftKey) {
+        /*console.log('shift held');*/
+        if (jlab.editableRowTable.lastSelectedRow === null) { // Regular click if no previous click
+            /*console.log('no last selected');*/
+            $(this).addClass("selected-row").siblings().removeClass("selected-row");
+        } else { // Select a range
+            var first = jlab.editableRowTable.lastSelectedRow,
+                    second = $(this).index(),
+                    start = Math.min(first, second),
+                    end = Math.max(first, second);
+
+            /*console.log('start: ' + start);
+             console.log('end: ' + end);*/
+
+            $(".multiselect-table tbody tr").slice(start, end + 1).addClass("selected-row");
+        }
+    } else {
+        $(this).addClass("selected-row").siblings().removeClass("selected-row");
+    }
+
+    if ($(this).hasClass("selected-row")) {
+        jlab.editableRowTable.lastSelectedRow = $(this).index();
+    } else {
+        jlab.editableRowTable.lastSelectedRow = null; /*If we are unselecting then reset shift select*/
+    }
+
+    var numSelected = jlab.editableRowTable.updateSelectionCount();
+
+    if (numSelected > 0) {
+        $("#open-add-row-dialog-button").prop("disabled", true);
+        $("#open-edit-row-dialog-button").prop("disabled", false);
+        $("#remove-row-button").prop("disabled", false);
+        $("#unselect-all-button").prop("disabled", false);
+    } else {
+        $("#open-add-row-dialog-button").prop("disabled", false);
+        $("#open-edit-row-dialog-button").prop("disabled", true);
+        $("#remove-row-button").prop("disabled", true);
+        $("#unselect-all-button").prop("disabled", true);
+    }
+});
+$(document).on("click", "#unselect-all-button", function () {
+    jlab.editableRowTable.lastSelectedRow = null; /*If we are unselecting then reset shift select*/
+
+    $(".editable-row-table tbody tr").removeClass("selected-row");
+    $("#open-add-row-dialog-button").prop("disabled", false);
+    $("#open-edit-row-dialog-button").prop("disabled", true);
+    $("#remove-row-button").prop("disabled", true);
+    $("#unselect-all-button").prop("disabled", true);
+
+    jlab.editableRowTable.updateSelectionCount();
+});
+jlab.editableRowTable.updateSelectionCount = function () {
+    var numSelected = $(".multiselect-table").find(".selected-row").length;
+    $("#selected-count").text(numSelected);
+    return numSelected;
+};
 /**
  * DOM Ready actions 
  */
