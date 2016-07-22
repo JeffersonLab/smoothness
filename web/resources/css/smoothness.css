@@ -487,6 +487,13 @@ a:hover {
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+.selected-row a {
+    color: white;
+    text-decoration: underline;
+}
+.selected-row a:hover {
+    color: red;
+}
 /*Report Menus*/
 #fullscreen-button,
 #exit-fullscreen-button,
@@ -621,7 +628,8 @@ a:hover {
 .print header,
 .print #left-column,
 .print #filter-flyout-widget,
-.print #report-page-actions {
+.print #report-page-actions,
+.print #editable-row-table-control-panel {
     display: none;
 }
 .print #page {

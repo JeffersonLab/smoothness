@@ -58,6 +58,7 @@
                                 <th>MPAA Rating</th>
                                 <th>Duration (Minutes)</th>
                                 <th>Release Date</th>
+                                <th>Link</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,6 +69,7 @@
                                     <td><c:out value="${movie.mpaaRating}"/></td>
                                     <td><c:out value="${movie.durationMinutes}"/></td>
                                     <td><c:out value="${movie.releaseDate}"/></td>
+                                    <td><a href="#">Click</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
