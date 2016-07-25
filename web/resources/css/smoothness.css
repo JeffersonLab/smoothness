@@ -450,6 +450,19 @@ a:hover {
     color: red;
     font-weight: bold;
 }
+.rows-differ-message {
+    font-weight: bold;
+    color: red;
+}
+#selected-row-list {
+    border: 1px solid gray;
+    height: 10em;
+    list-style-type: none;
+    margin: 0;
+    min-width: 12em;
+    overflow: auto;
+    padding: 0.1em;
+}
 .dialog-button-panel button {
     vertical-align: top;
 }

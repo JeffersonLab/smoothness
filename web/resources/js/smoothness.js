@@ -299,6 +299,8 @@ $(document).on("click", ".uniselect-table tbody tr", function () {
     $("#unselect-all-button").prop("disabled", false);
 });
 $(document).on("click", "#open-add-row-dialog-button", function () {
+    $("#row-form")[0].reset();    
+    
     $("#table-row-dialog").dialog("option", "title", "Add " + jlab.editableRowTable.entity).dialog("open");
 });
 $(document).on("click", "#open-edit-row-dialog-button", function () {

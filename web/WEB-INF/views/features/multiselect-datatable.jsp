@@ -23,12 +23,75 @@
                 return true;
             };
 
-            $(document).on("click", "#open-add-row-dialog-button", function () {
-                $("#row-title").val('');
-                $("#row-description").val('');
-                $("#row-rating").val('');
-                $("#row-duration").val('');
-                $("#row-release").val('');
+            $(document).on("click", ".multiselect-table tbody tr", function () {
+                $("#open-edit-rating-dialog-button").prop("disabled", false);
+            });
+
+            $(document).on("click", "#unselect-all-button", function () {
+                $("#open-edit-rating-dialog-button").prop("disabled", true);
+            });
+
+            $(document).on("click", "#open-edit-rating-dialog-button", function () {
+                var idArray = new Array(),
+                        titleArray = new Array(),
+                        descriptionArray = new Array(),
+                        ratingArray = new Array(),
+                        durationArray = new Array(),
+                        releaseArray = new Array();
+
+                if ($(".multiselect-table .selected-row").length < 1) {
+                    window.console && console.log('No rows selected');
+                    return;
+                }
+
+                $(".multiselect-table .selected-row").each(function () {
+                    var id = $(this).attr("data-id"),
+                            title = $(this).find("td:nth-child(1)").text(),
+                            description = $(this).find("td:nth-child(2)").text(),
+                            rating = $(this).find("td:nth-child(3)").text(),
+                            duration = $(this).find("td:nth-child(4)").text(),
+                            release = $(this).find("td:nth-child(5)").text();
+
+                    idArray.push(id);
+                    titleArray.push(title);
+                    descriptionArray.push(description);
+                    ratingArray.push(rating);
+                    durationArray.push(duration);
+                    releaseArray.push(release);
+                });
+
+                var $selectedList = $("#selected-row-list");
+
+                $selectedList.attr("data-id-json", JSON.stringify(idArray));
+
+                $selectedList.empty();
+
+                for (var i = 0; i < titleArray.length; i++) {
+                    $selectedList.append('<li>' + titleArray[i] + '</li>');
+                }
+
+                var count = $("#selected-count").text() * 1;
+                var rowStr = (count === 1) ? ' Movie' : ' Movies';
+                $("#dialog-selected-count").text(count + rowStr);
+
+                $("#edit-rating").val(ratingArray[0]);
+
+                var rowsDiffer = false;
+
+                for (var i = 1; i < ratingArray.length; i++) {
+                    if (ratingArray[0] !== ratingArray[i]) {
+                        rowsDiffer = true;
+                        break;
+                    }
+                }
+
+                if (rowsDiffer) {
+                    $(".rows-differ-message").show();
+                } else {
+                    $(".rows-differ-message").hide();
+                }
+
+                $("#rating-dialog").dialog("open");
             });
 
             $(document).on("click", "#table-row-save-button", function () {
@@ -46,6 +109,15 @@
                 $dialog = $("#table-row-dialog");
 
                 jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+            });
+            
+            $(function() {
+                $("#rating-dialog").dialog({
+                    autoOpen: false,
+                    width: 500,
+                    height: 500,
+                    resizable: false
+                });
             });
         </script>
     </jsp:attribute>        
@@ -84,7 +156,8 @@
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
             <c:if test="${fn:length(movieList) > 0}">
-                <t:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${false}">                   
+                <t:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${true}">
+                    <button type="button" id="open-edit-rating-dialog-button" disabled="disabled">Edit Rating</button>
                     <button type="button" id="unselect-all-button" disabled="disabled">Unselect All</button>
                     <span>(<span id="selected-count">0</span> Selected)</span>
                 </t:editable-row-table-controls>
@@ -162,7 +235,35 @@
                     </li>                    
                 </ul>  
             </form>
-        </t:editable-row-table-dialog>            
+        </t:editable-row-table-dialog>
+        <div class="dialog" id="rating-dialog" title="Edit Rating">
+            <form>
+                <ul class="key-value-list">
+                    <li>
+                        <div class="li-key">
+                            <label for="selected-row-list">Movie</label>
+                        </div>
+                        <div class="li-value">
+                            <ul id="selected-row-list"></ul>
+                            <span id="dialog-selected-count"></span>
+                        </div>
+                    </li>                       
+                    <li>
+                        <div class="li-key">
+                            <label for="edit-rating">MPAA Rating</label>
+                        </div>
+                        <div class="li-value">
+                            <input type="text" maxlength="5" id="edit-rating"/>
+                        </div>
+                    </li>                    
+                </ul>
+                <div class="rows-differ-message">WARNING: One or more selected movies have an existing rating that differs from the above</div>
+            </form>
+            <div class="dialog-button-panel">
+                <button type="button" id="rating-save-button" class="dialog-submit-button">Save</button>
+                <button type="button" class="dialog-close-button">Cancel</button>
+            </div>
+        </div>            
         <div id="exit-fullscreen-panel">
             <button id="exit-fullscreen-button">Exit Full Screen</button>
         </div>
