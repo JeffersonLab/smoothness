@@ -218,7 +218,7 @@ a:hover {
 #filter-flyout-title {
     font-weight: bold;
 }
-.default-reset-panel {
+.reset-clear-panel {
     float: right;
     margin-right: 16px;
 }
@@ -432,6 +432,27 @@ a:hover {
 .ui-dialog .ui-widget-content a:hover {
     color: red;
 }
+.ui-autocomplete {
+    min-width: 200px;
+}
+.plus-more {
+    font-style: italic;
+    white-space: nowrap;
+    padding: 5px;
+}
+.warning-banner {
+    background-color: yellow;
+    padding: 0.5em;
+    border-radius: 8px;
+    margin-bottom: 1em;
+}
+.warning-banner-heading {
+    color: red;
+    font-weight: bold;
+}
+.dialog-button-panel button {
+    vertical-align: top;
+}
 .dialog-button-panel {
     position: absolute;
     bottom: 0;
@@ -460,6 +481,9 @@ a:hover {
     height: 16px;
     margin: 0 auto;
     background: url("../img/indicator16x16.gif") 0 0;
+}
+.data-table .button-indicator {
+    display: inline-block;
 }
 #notification-bar {
     position: fixed;

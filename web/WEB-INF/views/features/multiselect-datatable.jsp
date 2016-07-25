@@ -7,8 +7,47 @@
 <c:set var="title" value="Multiselect Datatable"/>
 <t:features-page title="${title}">  
     <jsp:attribute name="stylesheets">
+        <style type="text/css">
+            td:nth-child(4) {
+                text-align: right;
+            }
+        </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
+        <script type="text/javascript">
+            jlab.editableRowTable.entity = 'Movie';
+            jlab.editableRowTable.dialog.width = 500;
+            jlab.editableRowTable.dialog.height = 400;
+
+            jlab.validateTableRowForm = function () {
+                return true;
+            };
+
+            $(document).on("click", "#open-add-row-dialog-button", function () {
+                $("#row-title").val('');
+                $("#row-description").val('');
+                $("#row-rating").val('');
+                $("#row-duration").val('');
+                $("#row-release").val('');
+            });
+
+            $(document).on("click", "#table-row-save-button", function () {
+                if (!jlab.validateTableRowForm()) {
+                    return;
+                }
+
+                var title = $("#row-title").val(),
+                        description = $("#row-description").val(),
+                        rating = $("#row-rating").val(),
+                        duration = $("#row-duration").val(),
+                        release = $("#row-release").val(),
+                        url = jlab.contextPath + "/actions/add-component",
+                        data = {title: title, description: description, rating: rating, duration: duration, release: release},
+                $dialog = $("#table-row-dialog");
+
+                jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+            });
+        </script>
     </jsp:attribute>        
     <jsp:body>
         <section>

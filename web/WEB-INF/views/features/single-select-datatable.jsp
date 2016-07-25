@@ -7,8 +7,18 @@
 <c:set var="title" value="Single Select Datatable"/>
 <t:features-page title="${title}">  
     <jsp:attribute name="stylesheets">
+        <style type="text/css">
+            td:nth-child(4) {
+                text-align: right;
+            }
+        </style>        
     </jsp:attribute>
     <jsp:attribute name="scripts">
+        <script type="text/javascript">
+            jlab.editableRowTable.entity = 'Movie';
+            jlab.editableRowTable.dialog.width = 500;
+            jlab.editableRowTable.dialog.height = 400;
+        </script>
     </jsp:attribute>        
     <jsp:body>
         <section>

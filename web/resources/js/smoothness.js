@@ -32,9 +32,13 @@ var jlab = jlab || {};
  * Editable Row Table Configuration
  */
 jlab.editableRowTable = jlab.editableRowTable || {};
+jlab.editableRowTable.dialog = jlab.editableRowTable.dialog || {};
 jlab.editableRowTable.entity = jlab.editableRowTable.entity || 'Row';
-jlab.editableRowTable.width = jlab.editableRowTable.width || 800;
-jlab.editableRowTable.height = jlab.editableRowTable.height || 600;
+jlab.editableRowTable.dialog.width = jlab.editableRowTable.dialog.width || 800;
+jlab.editableRowTable.dialog.height = jlab.editableRowTable.dialog.height || 600;
+jlab.editableRowTable.dialog.minWidth = jlab.editableRowTable.dialog.minWidth || 0;
+jlab.editableRowTable.dialog.minHeight = jlab.editableRowTable.dialog.minHeight || 0;
+jlab.editableRowTable.dialog.resizable = jlab.editableRowTable.dialog.resizable || false;
 
 /**
  * Private row selection state
@@ -62,6 +66,94 @@ jlab.requestStart = function () {
 };
 jlab.requestEnd = function () {
     jlab.ajaxInProgress = false;
+};
+jlab.doAjaxJsonGetRequest = function(url, data) {
+
+    var promise = jQuery.ajax({
+        url: url,
+        type: "GET",
+        data: data,
+        dataType: "json"
+    });
+
+    promise.error(function(xhr, textStatus) {
+        var json;
+
+        try {
+            json = $.parseJSON(xhr.responseText);
+        } catch(err) {
+            window.console && console.log('Response is not JSON: ' + xhr.responseText);
+            json = {};
+        }
+
+        var message = json.error || 'Server did not handle request';
+        alert('Unable to perform request: ' + message);
+    });
+
+    return promise;
+};
+jlab.doAjaxJsonPostRequest = function(url, data, $dialog, reload) {
+
+    if (jlab.isRequest()) {
+        window.console && console.log("Ajax already in progress");
+        return;
+    }
+
+    jlab.requestStart();
+
+    var $submitButton = $dialog.find(".dialog-submit-button"),
+        $cancelButton = $dialog.find(".dialog-close-button"),
+        $titleBarButton = $dialog.find(".ui-dialog-titlebar button");
+
+    $submitButton
+            .height($submitButton.height())
+            .width($submitButton.width())
+            .empty().append('<div class="button-indicator"></div>');
+    $cancelButton.prop("disabled", true);
+    $titleBarButton.prop("disabled", true);
+
+    var promise = jQuery.ajax({
+        url: url,
+        type: "POST",
+        data: data,
+        dataType: "json"
+    });
+
+    promise.done(function(){
+        if(reload) {
+            window.location.reload(true);
+        } else {
+            $submitButton.empty().text("Save");
+            $cancelButton.prop("disabled", false);
+            $titleBarButton.prop("disabled", false);
+
+            $dialog.dialog("close");
+        }
+    });
+    
+    promise.error(function(xhr, textStatus) {
+        var json;
+
+        try {
+            json = $.parseJSON(xhr.responseText);
+        } catch(err) {
+            window.console && console.log('Response is not JSON: ' + xhr.responseText);
+            json = {};
+        }
+
+        var message = json.error || 'Server did not handle request';
+        alert('Unable to perform request: ' + message);
+        
+        $submitButton.empty().text("Save");
+        $cancelButton.prop("disabled", false);
+        $titleBarButton.prop("disabled", false);        
+    });
+
+    promise.always(function() {
+        jlab.requestEnd();
+    });
+
+    return promise;
 };
 //Display a piece of another page in a dialog
 jlab.openPageInDialog = function (href, title) {
@@ -307,10 +399,11 @@ $(function () {
     $("#table-row-dialog").dialog({
         autoOpen: false,
         modal: true,
-        width: jlab.editableRowTable.width,
-        minWidth: jlab.editableRowTable.width,
-        height: jlab.editableRowTable.height,
-        minHeight: jlab.editableRowTable.height
+        width: jlab.editableRowTable.dialog.width,
+        minWidth: jlab.editableRowTable.dialog.minWidth,
+        height: jlab.editableRowTable.dialog.height,
+        minHeight: jlab.editableRowTable.dialog.minHeight,
+        resizable: jlab.editableRowTable.dialog.resizable
     });
 });
 /*Autologin*/
