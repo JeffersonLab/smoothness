@@ -67,7 +67,7 @@ jlab.requestStart = function () {
 jlab.requestEnd = function () {
     jlab.ajaxInProgress = false;
 };
-jlab.doAjaxJsonGetRequest = function(url, data) {
+jlab.doAjaxJsonGetRequest = function (url, data) {
 
     var promise = jQuery.ajax({
         url: url,
@@ -76,12 +76,12 @@ jlab.doAjaxJsonGetRequest = function(url, data) {
         dataType: "json"
     });
 
-    promise.error(function(xhr, textStatus) {
+    promise.error(function (xhr, textStatus) {
         var json;
 
         try {
             json = $.parseJSON(xhr.responseText);
-        } catch(err) {
+        } catch (err) {
             window.console && console.log('Response is not JSON: ' + xhr.responseText);
             json = {};
         }
@@ -92,7 +92,7 @@ jlab.doAjaxJsonGetRequest = function(url, data) {
 
     return promise;
 };
-jlab.doAjaxJsonPostRequest = function(url, data, $dialog, reload) {
+jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
 
     if (jlab.isRequest()) {
         window.console && console.log("Ajax already in progress");
@@ -101,9 +101,13 @@ jlab.doAjaxJsonPostRequest = function(url, data, $dialog, reload) {
 
     jlab.requestStart();
 
+    if ($dialog === null) {
+        $dialog = $();
+    }
+
     var $submitButton = $dialog.find(".dialog-submit-button"),
-        $cancelButton = $dialog.find(".dialog-close-button"),
-        $titleBarButton = $dialog.find(".ui-dialog-titlebar button");
+            $cancelButton = $dialog.find(".dialog-close-button"),
+            $titleBarButton = $dialog.find(".ui-dialog-titlebar button");
 
     $submitButton
             .height($submitButton.height())
@@ -119,8 +123,8 @@ jlab.doAjaxJsonPostRequest = function(url, data, $dialog, reload) {
         dataType: "json"
     });
 
-    promise.done(function(){
-        if(reload) {
+    promise.done(function () {
+        if (reload) {
             window.location.reload(true);
         } else {
             $submitButton.empty().text("Save");
@@ -130,26 +134,39 @@ jlab.doAjaxJsonPostRequest = function(url, data, $dialog, reload) {
             $dialog.dialog("close");
         }
     });
-    
-    promise.error(function(xhr, textStatus) {
-        var json;
+
+    promise.error(function (xhr, textStatus) {
+        var json, html;
 
         try {
             json = $.parseJSON(xhr.responseText);
-        } catch(err) {
+        } catch (err) {
             window.console && console.log('Response is not JSON: ' + xhr.responseText);
             json = {};
+
+            try {
+                html = $.parseHTML(xhr.responseText);
+
+                /*Let's see if we just got back Java Servlet Login Page*/
+                var $requesterInput = $(html).find("input[name=requester]");
+
+                if ($requesterInput.length > 0 && $requesterInput.val() === 'login') {
+                    json.error = 'Your session has expired: You can try to re-login from a separate tab and then return here to resubmit';
+                }
+            } catch (err2) {
+                window.console && console.log('Response is not HTML either: ' + err2);
+            }
         }
 
         var message = json.error || 'Server did not handle request';
         alert('Unable to perform request: ' + message);
-        
+
         $submitButton.empty().text("Save");
         $cancelButton.prop("disabled", false);
-        $titleBarButton.prop("disabled", false);        
+        $titleBarButton.prop("disabled", false);
     });
 
-    promise.always(function() {
+    promise.always(function () {
         jlab.requestEnd();
     });
 
@@ -293,14 +310,12 @@ $(document).on("click", "#shiftlog-menu-item", function () {
 $(document).on("click", ".uniselect-table tbody tr", function () {
     $(".editable-row-table .selected-row").removeClass("selected-row");
     $(this).addClass("selected-row");
-    $("#open-add-row-dialog-button").prop("disabled", true);
-    $("#open-edit-row-dialog-button").prop("disabled", false);
-    $("#remove-row-button").prop("disabled", false);
-    $("#unselect-all-button").prop("disabled", false);
+    $(".no-selection-row-action").prop("disabled", true);
+    $(".selected-row-action").prop("disabled", false);
 });
 $(document).on("click", "#open-add-row-dialog-button", function () {
-    $("#row-form")[0].reset();    
-    
+    $("#row-form")[0].reset();
+
     $("#table-row-dialog").dialog("option", "title", "Add " + jlab.editableRowTable.entity).dialog("open");
 });
 $(document).on("click", "#open-edit-row-dialog-button", function () {
@@ -351,25 +366,19 @@ $(document).on("click", ".multiselect-table tbody tr", function (e) {
     var numSelected = jlab.editableRowTable.updateSelectionCount();
 
     if (numSelected > 0) {
-        $("#open-add-row-dialog-button").prop("disabled", true);
-        $("#open-edit-row-dialog-button").prop("disabled", false);
-        $("#remove-row-button").prop("disabled", false);
-        $("#unselect-all-button").prop("disabled", false);
+        $(".no-selection-row-action").prop("disabled", true);
+        $(".selected-row-action").prop("disabled", false);
     } else {
-        $("#open-add-row-dialog-button").prop("disabled", false);
-        $("#open-edit-row-dialog-button").prop("disabled", true);
-        $("#remove-row-button").prop("disabled", true);
-        $("#unselect-all-button").prop("disabled", true);
+        $(".no-selection-row-action").prop("disabled", false);
+        $(".selected-row-action").prop("disabled", true);
     }
 });
 $(document).on("click", "#unselect-all-button", function () {
     jlab.editableRowTable.lastSelectedRow = null; /*If we are unselecting then reset shift select*/
 
     $(".editable-row-table tbody tr").removeClass("selected-row");
-    $("#open-add-row-dialog-button").prop("disabled", false);
-    $("#open-edit-row-dialog-button").prop("disabled", true);
-    $("#remove-row-button").prop("disabled", true);
-    $("#unselect-all-button").prop("disabled", true);
+    $(".no-selection-row-action").prop("disabled", false);
+    $(".selected-row-action").prop("disabled", true);
 
     jlab.editableRowTable.updateSelectionCount();
 });
@@ -378,6 +387,9 @@ jlab.editableRowTable.updateSelectionCount = function () {
     $("#selected-count").text(numSelected);
     return numSelected;
 };
+$(document).on("click", ".expand-icon", function () {
+    $(this).closest("table").toggleClass("expanded-table");
+});
 /**
  * DOM Ready actions 
  */

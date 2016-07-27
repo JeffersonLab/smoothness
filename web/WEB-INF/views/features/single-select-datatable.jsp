@@ -55,9 +55,7 @@
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
             <c:if test="${fn:length(movieList) > 0}">
-                <t:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${false}">
-                    <button type="button" id="unselect-all-button" disabled="disabled">Unselect</button>
-                </t:editable-row-table-controls>
+                <t:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${false}"/>
                 <div id="chart-wrap" class="chart-wrap-backdrop">
                     <table class="data-table stripped-table uniselect-table editable-row-table">
                         <thead>

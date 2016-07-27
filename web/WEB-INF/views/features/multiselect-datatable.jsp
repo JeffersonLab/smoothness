@@ -23,14 +23,6 @@
                 return true;
             };
 
-            $(document).on("click", ".multiselect-table tbody tr", function () {
-                $("#open-edit-rating-dialog-button").prop("disabled", false);
-            });
-
-            $(document).on("click", "#unselect-all-button", function () {
-                $("#open-edit-rating-dialog-button").prop("disabled", true);
-            });
-
             $(document).on("click", "#open-edit-rating-dialog-button", function () {
                 var idArray = new Array(),
                         titleArray = new Array(),
@@ -156,10 +148,8 @@
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
             <c:if test="${fn:length(movieList) > 0}">
-                <t:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${true}">
-                    <button type="button" id="open-edit-rating-dialog-button" disabled="disabled">Edit Rating</button>
-                    <button type="button" id="unselect-all-button" disabled="disabled">Unselect All</button>
-                    <span>(<span id="selected-count">0</span> Selected)</span>
+                <t:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${true}" multiselect="${true}">
+                    <button type="button" id="open-edit-rating-dialog-button" class="selected-row-action" disabled="disabled">Edit Rating</button>
                 </t:editable-row-table-controls>
                 <div id="chart-wrap" class="chart-wrap-backdrop">
                     <table class="data-table stripped-table multiselect-table editable-row-table">
