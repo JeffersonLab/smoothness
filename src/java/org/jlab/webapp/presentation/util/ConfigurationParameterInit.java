@@ -40,7 +40,9 @@ public class ConfigurationParameterInit implements ServletContextListener {
                 notification = null;
             }
 
-            context.setInitParameter("notification", notification);
+            if (notification != null) {
+                context.setInitParameter("notification", notification);
+            }
             logger.log(Level.FINEST, "Setting notification: {0}", notification);
         }
 
