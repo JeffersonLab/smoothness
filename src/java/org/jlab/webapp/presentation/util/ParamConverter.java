@@ -2,7 +2,11 @@ package org.jlab.webapp.presentation.util;
 
 import java.math.BigInteger;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
@@ -72,28 +76,32 @@ public final class ParamConverter {
     }
 
     public static Date convertISO8601Date(HttpServletRequest request, String name) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");        
 
         Date value = null;
 
         String valueStr = request.getParameter(name);
 
         if (valueStr != null && !valueStr.isEmpty()) {
-            value = format.parse(valueStr);
+            final LocalDate ld = formatter.parse(valueStr, LocalDate::from);
+            final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
+            value = Date.from(zdt.toInstant());
         }
 
         return value;
     }
 
     public static Date convertISO8601DateTime(HttpServletRequest request, String name) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); 
 
         Date value = null;
 
         String valueStr = request.getParameter(name);
 
         if (valueStr != null && !valueStr.isEmpty()) {
-            value = format.parse(valueStr);
+            final LocalDateTime ldt = formatter.parse(valueStr, LocalDateTime::from);
+            final ZonedDateTime zdt = ldt.atZone(ZoneId.of("America/New_York"));
+            value = Date.from(zdt.toInstant());
         }
 
         return value;
