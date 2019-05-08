@@ -25,12 +25,9 @@
                 <h1><span id="page-header-logo"></span> <span id="page-header-text"><c:out value="${initParam.appName}"/></span></h1>
                 <div id="auth">
                     <c:choose>
-                        <c:when test="${fn:startsWith(currentPath, '/login')}">
-                            <%-- Don't show login/logout when on login page itself! --%>
-                        </c:when>
                         <c:when test="${pageContext.request.userPrincipal ne null}">
                             <div id="username-container">
-                                <c:out value="${pageContext.request.userPrincipal}"/>
+                                <c:out value="${pageContext.request.userPrincipal.name.split(':')[2]}"/>
                             </div>
                             <form id="logout-form" action="${pageContext.request.contextPath}/logout" method="post">
                                 <button type="submit" value="Logout">Logout</button>
@@ -38,10 +35,15 @@
                             </form>
                         </c:when>
                         <c:otherwise>
-                            <c:url value="/login" var="loginUrl">
-                                <c:param name="returnUrl" value="${domainRelativeReturnUrl}"/>
+                            <c:set var="absHostUrl" value="${'https://'.concat(pageContext.request.getServerName())}"/>
+                            <c:url value="/sso" var="loginUrl">
+                                <c:param name="returnUrl" value="${absHostUrl.concat(domainRelativeReturnUrl)}"/>
                             </c:url>
-                            <a id="login-link" href="${loginUrl}">Login</a> (<a id="auto-login" href="#">Auto</a>)
+                            <c:url value="/sso" var="suUrl">
+                                <c:param name="kc_idp_hint" value="ace-su-keycloak-oidc"/>
+                                <c:param name="returnUrl" value="${absHostUrl.concat(domainRelativeReturnUrl)}"/>
+                            </c:url>
+                            <a id="login-link" href="${loginUrl}">Login</a> (<a id="su-link" href="${suUrl}" href="#">SU</a>)
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -79,9 +81,23 @@
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery/1.10.2.min.js"></script>
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-ui/1.10.3/jquery-ui.min.js"></script>  
         <script type="text/javascript" src="//cdn.acc.jlab.org/uri/uri-1.14.1.min.js"></script>        
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script> 
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
         <script type="text/javascript">
             jlab.contextPath = '${pageContext.request.contextPath}';
+            jlab.logbookHost = '${env["LOGBOOK_HOSTNAME"]}';
+            jlab.keycloakHostname = '${env["KEYCLOAK_HOSTNAME"]}';
+            jlab.clientId = '${env["KEYCLOAK_CLIENT_ID_SMOOTHNESS_TEMPLATE"]}';
+            <c:url var="url" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/auth">
+            <c:param name="client_id" value="account"/>
+            <c:param name="kc_idp_hint" value="cue-keycloak-oidc"/>
+            <c:param name="response_type" value="code"/>
+            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
+            </c:url>
+            jlab.loginUrl = '${url}';
+            <c:url var="url" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/logout">
+            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
+            </c:url>
+            jlab.logoutUrl = '${url}';
         </script>
         <jsp:invoke fragment="scripts"/>        
     </body>

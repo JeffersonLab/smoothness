@@ -53,7 +53,7 @@
                     </fieldset>
                 </c:when>
                 <c:otherwise>
-                    <c:url var="feedbackUrl" value="/login">
+                    <c:url var="feedbackUrl" value="/sso">
                         <c:param name="returnUrl" value="${pageContext.request.contextPath}/help"/>
                     </c:url>
                     <h3><a href="${feedbackUrl}">Feedback Form</a></h3>
