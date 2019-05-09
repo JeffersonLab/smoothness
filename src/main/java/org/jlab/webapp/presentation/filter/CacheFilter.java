@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletResponseWrapper;
 @WebFilter(filterName = "CacheFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class CacheFilter implements Filter {
 
-    public static final long EXPIRE_MILLIS = 2419200000L; // Four weeks
+    private static final long EXPIRE_MILLIS = 2419200000L; // Four weeks
     
-    public static final String[] CACHEABLE_CONTENT_TYPES = new String[] {
+    private static final String[] CACHEABLE_CONTENT_TYPES = new String[] {
         "text/css", "text/javascript", "image/png", "image/jpeg", "image/jpg",
         "image/gif", "image/icon", "image/x-icon", "image/vnd.microsoft.icon"
     };
@@ -50,7 +50,7 @@ public class CacheFilter implements Filter {
 
     class CacheControlResponse extends HttpServletResponseWrapper {
 
-        public CacheControlResponse(HttpServletResponse response) {
+        CacheControlResponse(HttpServletResponse response) {
             super(response);
         }
 
