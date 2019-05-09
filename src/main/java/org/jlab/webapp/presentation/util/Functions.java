@@ -33,7 +33,7 @@ public final class Functions {
         } else if (value) {
             return "Yes"; // true; Y; '✔' 
         } else {
-            return "No"; // false; N; ' '
+            return "No"; // false; N; 'X'
         }
     }
 

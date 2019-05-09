@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="webapp" uri="http://jlab.org/webapp/functions"%>
+<%@taglib prefix="smoothness" uri="http://jlab.org/smoothness/functions"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
 <c:set var="title" value="Multiselect Datatable"/>
 <t:features-page title="${title}">  
