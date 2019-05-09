@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
  * @author ryans
  */
 @Entity
-@Table(name = "MOVIE", catalog = "", schema = "SUPPORT")
+@Table(name = "MOVIE", schema = "SUPPORT")
 public class Movie implements Serializable {
 
     private static final long serialVersionUID = 1L;
