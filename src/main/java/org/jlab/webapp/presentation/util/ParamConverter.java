@@ -58,7 +58,7 @@ public final class ParamConverter {
 
     public static boolean convertYNBoolean(HttpServletRequest request, String name, boolean defaultValue) {
         String valueStr = request.getParameter(name);
-        Boolean value = null;
+        boolean value;
 
         if (valueStr != null && !valueStr.isEmpty()) {
             if ("N".equals(valueStr)) {
@@ -142,7 +142,7 @@ public final class ParamConverter {
 
     public static int convertNonNegativeInt(HttpServletRequest request, String name, int defaultValue) {
         String valueStr = request.getParameter(name);
-        int value = 0;
+        int value;
 
         if (valueStr == null || valueStr.isEmpty()) {
             value = defaultValue;
