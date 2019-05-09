@@ -54,17 +54,17 @@ public class StaffFacade extends AbstractFacade<Staff> {
         Root<Staff> root = cq.from(Staff.class);
         cq.select(root);
         
-        List<Predicate> filters = new ArrayList<Predicate>();
+        List<Predicate> filters = new ArrayList<>();
 
         if (lastname != null && !lastname.isEmpty()) {
-            filters.add(cb.like(cb.lower(root.<String>get("lastname")), lastname.toLowerCase()));
+            filters.add(cb.like(cb.lower(root.get("lastname")), lastname.toLowerCase()));
         }
 
         if (!filters.isEmpty()) {
             cq.where(cb.and(filters.toArray(new Predicate[]{})));
         }
         
-        List<Order> orders = new ArrayList<Order>();
+        List<Order> orders = new ArrayList<>();
         Path p0 = root.get("lastname");
         Order o0 = cb.asc(p0);
         orders.add(o0);
@@ -77,10 +77,10 @@ public class StaffFacade extends AbstractFacade<Staff> {
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<Staff> root = cq.from(Staff.class);
 
-        List<Predicate> filters = new ArrayList<Predicate>();
+        List<Predicate> filters = new ArrayList<>();
 
         if (lastname != null && !lastname.isEmpty()) {
-            filters.add(cb.like(cb.lower(root.<String>get("lastname")), lastname.toLowerCase()));
+            filters.add(cb.like(cb.lower(root.get("lastname")), lastname.toLowerCase()));
         }        
         
         if (!filters.isEmpty()) {
