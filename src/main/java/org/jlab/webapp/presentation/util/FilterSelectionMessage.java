@@ -15,7 +15,7 @@ public final class FilterSelectionMessage {
 
     public static String getMessage(String lastname) {
 
-        List<String> filters = new ArrayList<String>();
+        List<String> filters = new ArrayList<>();
 
         if (lastname != null && !lastname.isEmpty()) {
             filters.add("Lastname \"" + lastname + "\"");
@@ -24,12 +24,12 @@ public final class FilterSelectionMessage {
         String message = "";
 
         if (!filters.isEmpty()) {
-            for (String filter : filters) {
-                message += " " + filter + " and";
-            }
+            message = filters.get(0);
 
-            // Remove trailing " and"
-            message = message.substring(0, message.length() - 4);
+            for (int i = 1; i < filters.size(); i++) {
+                String filter = filters.get(i);
+                message += " and " + filter;
+            }
         }
 
         return message;
