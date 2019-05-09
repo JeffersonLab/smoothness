@@ -41,7 +41,7 @@ jlab.feedback.sendEmail = function() {
     request.always(function() {
         jlab.requestEnd();
     });
-}
+};
 
 $(document).on("click", "#send-feedback-button", function() {
     jlab.feedback.sendEmail();
