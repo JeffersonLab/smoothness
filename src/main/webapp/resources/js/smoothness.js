@@ -421,62 +421,31 @@ $(function () {
     });
 });
 /*Autologin*/
-jlab.tryAutoLogin = function () {
-
-    var success = false;
-
-    var request = jQuery.ajax({
-        url: "/spnego/ace-auth",
-        type: "GET",
-        dataType: "json"
-    });
-
-    request.done(function (json) {
-        if (json.username !== null && json.username !== '' && json.username !== 'null') {
-            success = true;
-            window.location.reload();
-        }
-    });
-
-    request.error(function (xhr, textStatus) {
-        window.console && console.log('Unable to auto-login: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
-    });
-
-    request.always(function () {
-        if (!success) {
-            jlab.tryAutoLoginCue();
-        }
-    });
+jlab.su = function(url) {
+    var i = document.createElement('iframe');
+    i.style.display = 'none';
+    i.onload = function() { i.parentNode.removeChild(i); window.location.href = url; };
+    i.src = jlab.logoutUrl;
+    document.body.appendChild(i);
 };
-jlab.tryAutoLoginCue = function () {
-
-    var success = false;
-
-    var request = jQuery.ajax({
-        url: "/spnego/cue-auth",
-        type: "GET",
-        dataType: "json"
-    });
-
-    request.done(function (json) {
-        if (json.username !== null && json.username !== '' && json.username !== 'null') {
-            success = true;
-            window.location.reload();
-        }
-    });
-
-    request.error(function (xhr, textStatus) {
-        window.console && console.log('Unable to auto-login: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
-    });
-
-    request.always(function () {
-        if (!success) {
-            document.getElementById("login-link").click();
-        }
-    });
+jlab.login = function(url) {
+    var i = document.createElement('iframe');
+    i.style.display = 'none';
+    i.onload = function() { i.parentNode.removeChild(i); window.location.href = url; };
+    i.src = jlab.loginUrl;
+    document.body.appendChild(i);
 };
-$(document).on("click", "#auto-login", function () {
-    jlab.tryAutoLogin();
+$(document).on("click", "#login-link", function () {
+    var url = $(this).attr("href");
+
+    jlab.login(url);
+
+    return false;
+});
+$(document).on("click", "#su-link", function() {
+    var url = $(this).attr("href");
+
+    jlab.su(url);
 
     return false;
 });
