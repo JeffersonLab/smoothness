@@ -18,7 +18,7 @@ import javax.persistence.criteria.Root;
  *
  * @author ryans
  */
-public abstract class AbstractFacade<T> {
+abstract class AbstractFacade<T> {
     @Resource
     private SessionContext context;
     
@@ -57,7 +57,7 @@ public abstract class AbstractFacade<T> {
         CriteriaQuery<T> cq = cb.createQuery(entityClass);
         Root<T> root = cq.from(entityClass);
         cq.select(root);
-        List<Order> orders = new ArrayList<Order>();
+        List<Order> orders = new ArrayList<>();
         for (OrderDirective ob : directives) {
             Order o;
 
