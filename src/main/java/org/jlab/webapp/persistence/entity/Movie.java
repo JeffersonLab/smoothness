@@ -113,11 +113,8 @@ public class Movie implements Serializable {
             return false;
         }
         Movie other = (Movie) object;
-        if ((this.movieId == null && other.movieId != null) ||
-                (this.movieId != null && !this.movieId.equals(other.movieId))) {
-            return false;
-        }
-        return true;
+        return (this.movieId != null || other.movieId == null) &&
+                (this.movieId == null || this.movieId.equals(other.movieId));
     }
 
     @Override
