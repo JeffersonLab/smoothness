@@ -1,4 +1,4 @@
-package org.jlab.webapp.presentation.filter;
+package org.jlab.weblib.presentation.filter;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -20,11 +20,12 @@ import javax.servlet.http.HttpServletResponseWrapper;
 @WebFilter(filterName = "CacheFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class CacheFilter implements Filter {
 
-    private static final long EXPIRE_MILLIS = 2419200000L; // Four weeks
+    private static final long EXPIRE_MILLIS = 31536000000L; // 365 days is max expires per spec
     
     private static final String[] CACHEABLE_CONTENT_TYPES = new String[] {
-        "text/css", "text/javascript", "image/png", "image/jpeg", "image/jpg",
-        "image/gif", "image/icon", "image/x-icon", "image/vnd.microsoft.icon"
+            "text/css", "text/javascript", "image/png",
+            "image/jpeg", "image/jpg", "image/gif", "image/icon", "image/x-icon",
+            "image/vnd.microsoft.icon", "image/svg+xml"
     };
 
     static {

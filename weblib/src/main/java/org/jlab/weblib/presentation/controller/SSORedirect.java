@@ -1,4 +1,4 @@
-package org.jlab.webapp.presentation.controller;
+package org.jlab.weblib.presentation.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

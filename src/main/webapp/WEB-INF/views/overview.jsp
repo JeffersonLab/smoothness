@@ -46,7 +46,9 @@
             <p>Any page can optionally prompt users for parameters via a parameter widget.</p>
             <h3>Common Pages and Styles</h3>
             <p>Modules are provided for a help/about page, a login page, and a report page as those are used in nearly every web application.  Modules for tables and lists are also provided.</p>
-            <h3>Related Software</h3>
+            <h3>How to Use</h3>
+            <p>Create a new Java web project, and use the template CSS, JS, and Jar file.  The Jar file contains JSP Tag files (templating), as well as Filters and Servlets. You can copy default error and help JSPs from the template project as well.  It is also reasonable to follow the project file layout.  A CDN has been setup to allow easily using minified JS, CSS, and other web dependencies here:  <a href="https://cdn.acc.jlab.org">https://cdn.acc.jlab.org</a></p>
+            <h3>Dependences</h3>
             <ul>
                 <li>jQuery UI - dialogs, date picker, etc.</li>
                 <li>jQuery - needed for jQuery UI and is generally used for DOM navigation and AJAX</li>
