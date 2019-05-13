@@ -53,6 +53,7 @@
                 <li>URI - a JavaScript library for manipulating URIs.</li>
                 <li>flot - jQuery based graphing library</li>
                 <li>select2 - fancy selection widget mainly needed to improve multiple selection</li>
+                <li>Puppet Show - HTML to PDF / Image converter</li>
             </ul>
         </section>
     </jsp:body>         

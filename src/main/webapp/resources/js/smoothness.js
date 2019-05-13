@@ -298,7 +298,7 @@ $(document).on("click", "#print-menu-item", function () {
 });
 $(document).on("click", "#image-menu-item", function () {
     var printUrl = jlab.getPrintUrl();
-    window.location = '/html-to-image/convert?filename=chart.png&width=1024&url=' + encodeURIComponent(printUrl);
+    window.location = '/puppet-show/screenshot?filename=chart.png&viewportWidth=1024&viewportHeight=768&fullPage=true&omitBackground=false&ignoreHTTPSErrors=true&url=' + encodeURIComponent(printUrl);
 });
 $(document).on("click", "#excel-menu-item", function () {
     $("#excel").click();
