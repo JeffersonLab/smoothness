@@ -20,4 +20,8 @@
         <name>editable-row-table-dialog</name>
         <path>/META-INF/tags/editable-row-table-dialog.tag</path>
     </tag-file>
+    <tag-file>
+        <name>primary-page</name>
+        <path>/META-INF/tags/primary-page.tag</path>
+    </tag-file>
 </taglib>

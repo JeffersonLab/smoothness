@@ -2,7 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="s" uri="org.jlab/smoothness"%>
 <c:set var="title" value="Overview"/>
 <t:page title="${title}">  
     <jsp:attribute name="stylesheets">
@@ -11,7 +12,7 @@
     </jsp:attribute>        
     <jsp:body>
         <section>
-            <t:filter-flyout-widget ribbon="true">
+            <s:filter-flyout-widget ribbon="true">
                 <form id="filter-form" method="get" action="page-one">
                     <div id="filter-form-panel">
                         <fieldset>
@@ -30,7 +31,7 @@
                     </div>
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
-            </t:filter-flyout-widget>
+            </s:filter-flyout-widget>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <p>This web application template is named &quot;Smoothness&quot;, and is designed to pair with the jQuery UI theme of the same name.</p>
             <h3>Intended Use</h3>
