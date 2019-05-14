@@ -1,8 +1,5 @@
 <%@tag description="Filter Flyout Widget" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
 <%@attribute name="excludeAdd" required="false" type="java.lang.Boolean"%>
 <%@attribute name="excludeEdit" required="false" type="java.lang.Boolean"%>
 <%@attribute name="excludeDelete" required="false" type="java.lang.Boolean"%>

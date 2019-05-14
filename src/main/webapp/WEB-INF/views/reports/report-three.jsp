@@ -3,7 +3,8 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="smoothness" uri="http://jlab.org/smoothness/functions"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="s" uri="org.jlab/smoothness"%>
 <c:set var="title" value="Report Three"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
@@ -90,7 +91,7 @@
             </div>            
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box">June - July, 2015</div>
-            <t:chart-widget>
+            <s:chart-widget>
                 <table class="chart-legend">
                     <tbody>
                         <c:forEach items="${legendDataList}" var="data">
@@ -120,7 +121,7 @@
                         </ul>
                     </c:if>
                 </div>               
-            </t:chart-widget>
+            </s:chart-widget>
         </section>
         <div id="exit-fullscreen-panel">
             <button id="exit-fullscreen-button">Exit Full Screen</button>
