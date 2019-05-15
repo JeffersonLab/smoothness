@@ -1,4 +1,4 @@
-<%@tag description="Filter Flyout Widget" pageEncoding="UTF-8"%>
+<%@tag description="Filter Flyout Widget" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <div id="table-row-dialog" class="dialog" title="Edit Row">
     <jsp:doBody/>
     <div class="dialog-button-panel">

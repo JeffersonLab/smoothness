@@ -1,8 +1,8 @@
-<%@tag description="The Report Page Template" pageEncoding="UTF-8" %>
+<%@tag description="The Report Page Template" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
-<%@attribute name="title" %>
-<%@attribute name="stylesheets" fragment="true" %>
-<%@attribute name="scripts" fragment="true" %>
+<%@attribute name="title"%>
+<%@attribute name="stylesheets" fragment="true"%>
+<%@attribute name="scripts" fragment="true"%>
 <s:secondary-page title="${title}" category="Reports" keycloakClientIdKey="${initParam.keycloakClientIdKey}">
     <jsp:attribute name="stylesheets">
         <jsp:invoke fragment="stylesheets"/>

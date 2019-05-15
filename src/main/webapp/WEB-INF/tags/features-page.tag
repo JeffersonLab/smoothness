@@ -1,9 +1,9 @@
-<%@tag description="The Feature Page Template" pageEncoding="UTF-8" %>
-<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness" %>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@attribute name="title" %>
-<%@attribute name="stylesheets" fragment="true" %>
-<%@attribute name="scripts" fragment="true" %>
+<%@tag description="The Feature Page Template" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@attribute name="title"%>
+<%@attribute name="stylesheets" fragment="true"%>
+<%@attribute name="scripts" fragment="true"%>
 <s:secondary-page title="${title}" category="Features" keycloakClientIdKey="${initParam.keycloakClientIdKey}">
     <jsp:attribute name="stylesheets">       
         <jsp:invoke fragment="stylesheets"/>

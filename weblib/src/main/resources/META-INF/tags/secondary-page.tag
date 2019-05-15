@@ -1,6 +1,6 @@
-<%@tag description="Secondary Page Template" pageEncoding="UTF-8"%>
+<%@tag description="Secondary Page Template" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@attribute name="title"%>
 <%@attribute name="category"%>
 <%@attribute name="keycloakClientIdKey"%>

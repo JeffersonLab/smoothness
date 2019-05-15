@@ -1,4 +1,4 @@
-<%@tag description="The Primary Page Template" pageEncoding="UTF-8"%>
+<%@tag description="The Primary Page Template" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="title"%>
@@ -63,22 +63,22 @@
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-ui/1.10.3/jquery-ui.min.js"></script>  
         <script type="text/javascript" src="//cdn.acc.jlab.org/uri/uri-1.14.1.min.js"></script>        
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
+        <c:url var="loginUrl" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/auth">
+            <c:param name="client_id" value="account"/>
+            <c:param name="kc_idp_hint" value="cue-keycloak-oidc"/>
+            <c:param name="response_type" value="code"/>
+            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
+        </c:url>
+        <c:url var="logoutUrl" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/logout">
+            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
+        </c:url>
         <script type="text/javascript">
             jlab.contextPath = '${pageContext.request.contextPath}';
             jlab.logbookHost = '${env["LOGBOOK_HOSTNAME"]}';
             jlab.keycloakHostname = '${env["KEYCLOAK_HOSTNAME"]}';
             jlab.clientId = '${env[keycloakClientIdKey]}';
-            <c:url var="url" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/auth">
-            <c:param name="client_id" value="account"/>
-            <c:param name="kc_idp_hint" value="cue-keycloak-oidc"/>
-            <c:param name="response_type" value="code"/>
-            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
-            </c:url>
-            jlab.loginUrl = '${url}';
-            <c:url var="url" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/logout">
-            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
-            </c:url>
-            jlab.logoutUrl = '${url}';
+            jlab.loginUrl = '${loginUrl}';
+            jlab.logoutUrl = '${logoutUrl}';
         </script>
         <jsp:invoke fragment="scripts"/>        
     </body>

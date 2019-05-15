@@ -1,4 +1,4 @@
-<%@tag description="Chart Widget" pageEncoding="UTF-8"%>
+<%@tag description="Chart Widget" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <div class="chart-legend-panel">
     <div class="chart-panel">
         <div id="chart-wrap">
