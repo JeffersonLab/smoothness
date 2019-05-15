@@ -1,4 +1,4 @@
-package org.jlab.demo.presentation.util;
+package org.jlab.smoothness.presentation.util;
 
 import java.math.BigInteger;
 import java.text.ParseException;

@@ -24,4 +24,9 @@
         <name>tabbed-page</name>
         <path>/META-INF/tags/tabbed-page.tag</path>
     </tag-file>
+    <function>
+        <name>inArray</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>boolean inArray(java.lang.String[], java.lang.String)</function-signature>
+    </function>
 </taglib>
