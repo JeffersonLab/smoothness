@@ -2,17 +2,19 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="title"%>
+<%@attribute name="category"%>
 <%@attribute name="keycloakClientIdKey"%>
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
-<%@attribute name="navigation" fragment="true"%>
+<%@attribute name="primaryNavigation" fragment="true"%>
+<%@attribute name="secondaryNavigation" fragment="true"%>
 <c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
 <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
 <!DOCTYPE html>
 <html>
     <head>        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><c:out value="${initParam.appShortName}"/> - ${title}</title>
+        <title><c:out value="${initParam.appShortName}"/> - ${empty category ? '' : category.concat(' - ')}${title}</title>
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/img/favicon.ico"/>        
         <link rel="stylesheet" type="text/css" href="//cdn.acc.jlab.org/jquery-ui/1.10.3/theme/smoothness/jquery-ui.min.css"/>        
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/smoothness.css"/>        
@@ -50,12 +52,32 @@
                     </c:choose>
                 </div>
                 <nav id="primary-nav">
-                    <jsp:invoke fragment="navigation"/>
+                    <jsp:invoke fragment="primaryNavigation"/>
                 </nav>                
             </header>
             <div id="content">     
                 <div id="content-liner">
-                    <jsp:doBody/>
+                    <jsp:invoke fragment="secondaryNavigation" var="secondaryNavText"/>
+                    <c:choose>
+                        <c:when test="${empty fn:trim(secondaryNavText)}">
+                            <jsp:doBody/>
+                        </c:when>
+                        <c:otherwise>
+                            <div id="two-columns">
+                                <div id="left-column">
+                                    <section>
+                                        <h2 id="left-column-header"><c:out value="${category}"/></h2>
+                                        <nav id="secondary-nav">
+                                            ${secondaryNavText}
+                                        </nav>
+                                    </section>
+                                </div>
+                                <div id="right-column">
+                                    <jsp:doBody/>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>

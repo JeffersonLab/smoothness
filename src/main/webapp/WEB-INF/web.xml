@@ -32,10 +32,6 @@
         <param-name>documentationUrl</param-name>
         <param-value>https://devweb.acc.jlab.org/twiki/bin/view/SWDocs</param-value>
     </context-param>
-    <context-param>
-        <param-name>keycloakClientIdKey</param-name>
-        <param-value>KEYCLOAK_CLIENT_ID_SMOOTHNESS_TEMPLATE</param-value>
-    </context-param>
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
         <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
