@@ -23,14 +23,14 @@
                 <a href="${pageContext.request.contextPath}/features/multiselect-datatable">Features</a>
             </li>
             <li${fn:startsWith(currentPath, '/breadcrumbs') ? ' class="current-primary"' : ''}>
-                <a href="${pageContext.request.contextPath}/breadcrumbs/crumb-one">Breadcrumbs</a>
+                <a href="${pageContext.request.contextPath}/breadcrumbs/crumb-one">Breadcrumb (demo)</a>
             </li>
             <li${fn:startsWith(currentPath, '/reports') ? ' class="current-primary"' : ''}>
-                <a href="${pageContext.request.contextPath}/reports/report-one">Reports</a>
+                <a href="${pageContext.request.contextPath}/reports/report-one">Reports (demo)</a>
             </li>
             <c:if test="${pageContext.request.isUserInRole('oability')}">
                 <li${fn:startsWith(currentPath, '/setup') ? ' class="current-primary"' : ''}>
-                    <a href="${pageContext.request.contextPath}/setup/setup-one">Setup</a>
+                    <a href="${pageContext.request.contextPath}/setup/setup-one">Setup (demo)</a>
                 </li>
             </c:if>
             <li${'/help' eq currentPath ? ' class="current-primary"' : ''}>

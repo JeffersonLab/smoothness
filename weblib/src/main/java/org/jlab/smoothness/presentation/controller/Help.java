@@ -1,4 +1,4 @@
-package org.jlab.demo.presentation.controller;
+package org.jlab.smoothness.presentation.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

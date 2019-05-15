@@ -2,7 +2,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <c:set var="title" value="Overview"/>
 <t:page title="${title}">  
@@ -12,26 +11,6 @@
     </jsp:attribute>        
     <jsp:body>
         <section>
-            <s:filter-flyout-widget ribbon="true">
-                <form id="filter-form" method="get" action="page-one">
-                    <div id="filter-form-panel">
-                        <fieldset>
-                            <legend>Filter</legend>
-                            <ul class="key-value-list">
-                                <li>
-                                    <div class="li-key"><span class="key-label">Key 1</span></div>
-                                    <div class="li-value">Value 1</div>
-                                </li>
-                                <li>
-                                    <div class="li-key"><span class="key-label">Key 2</span></div>
-                                    <div class="li-value">Value 2</div>
-                                </li>
-                            </ul>
-                        </fieldset>	
-                    </div>
-                    <input id="filter-form-submit-button" type="submit" value="Apply"/>
-                </form>
-            </s:filter-flyout-widget>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <p>This web application template is named &quot;Smoothness&quot;, and is designed to pair with the jQuery UI theme of the same name.</p>
             <h3>Intended Use</h3>

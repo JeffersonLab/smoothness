@@ -1,4 +1,4 @@
-package org.jlab.demo.presentation.controller;
+package org.jlab.smoothness.presentation.controller;
 
 import java.io.IOException;
 import javax.ejb.EJBAccessException;
@@ -31,14 +31,15 @@ public class Error extends HttpServlet {
         String requestUri = (String) request.getAttribute("javax.servlet.error.request_uri");
 
         String message = "An unknown error has occurred.";
-        
-        if(throwable != null) { 
+
+        if(404 == statusCode) {
+            message = "404: Page not found";
+        } else if(throwable != null) {
             System.err.println("Throwable Class: " + throwable.getClass());
             
             if(throwable instanceof EJBAccessException) {
                 message = "You are not authorized to perform the requested action.";
-            }
-            else {
+            } else {
                 message = throwable.getMessage();
             }
         }
