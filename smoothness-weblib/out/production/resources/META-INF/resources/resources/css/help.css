@@ -1,0 +1,13 @@
+#subject {
+    width: 375px;
+}
+#body {
+    width: 375px;
+    height: 200px;
+}
+#send-feedback-button {
+    float: right;
+}
+#feedback-fieldset {
+    width: 500px;
+}

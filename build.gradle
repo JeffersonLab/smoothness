@@ -5,7 +5,7 @@ repositories {
     jcenter()
 }
 dependencies {
-    compile  project(':weblib')
+    compile  project(':smoothness-weblib')
     providedCompile 'javax:javaee-api:7.0',
         'javax.servlet:jstl:1.2',
         'org.tuckey:urlrewritefilter:4.0.4',
