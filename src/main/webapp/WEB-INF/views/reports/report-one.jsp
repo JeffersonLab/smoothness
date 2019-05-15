@@ -3,7 +3,8 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="smoothness" uri="http://jlab.org/smoothness/functions"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
+<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <c:set var="title" value="Report One"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
@@ -22,7 +23,7 @@
                     </ul>
                 </div>
             </div>
-            <t:filter-flyout-widget>
+            <s:filter-flyout-widget>
                 <form id="filter-form" method="get" action="report-one">
                     <div id="filter-form-panel">
                         <fieldset>
@@ -41,7 +42,7 @@
                     </div>
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
-            </t:filter-flyout-widget>                              
+            </s:filter-flyout-widget>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
             <div id="chart-wrap" class="chart-wrap-backdrop">

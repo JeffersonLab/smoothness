@@ -3,7 +3,7 @@
     <display-name>Smoothness Tag Library</display-name>
     <tlib-version>1.0</tlib-version>
     <short-name>smoothness</short-name>
-    <uri>org.jlab/smoothness</uri>
+    <uri>http://jlab.org/jsp/smoothness</uri>
     <tag-file>
         <name>chart-widget</name>
         <path>/META-INF/tags/chart-widget.tag</path>
@@ -23,5 +23,9 @@
     <tag-file>
         <name>primary-page</name>
         <path>/META-INF/tags/primary-page.tag</path>
+    </tag-file>
+    <tag-file>
+        <name>secondary-page</name>
+        <path>/META-INF/tags/secondary-page.tag</path>
     </tag-file>
 </taglib>

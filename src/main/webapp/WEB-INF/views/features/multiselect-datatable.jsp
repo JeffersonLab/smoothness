@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="smoothness" uri="http://jlab.org/smoothness/functions"%>
+<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
 <c:set var="title" value="Multiselect Datatable"/>
 <t:features-page title="${title}">  
@@ -125,7 +125,7 @@
                     </ul>
                 </div>
             </div>
-            <t:filter-flyout-widget>
+            <s:filter-flyout-widget>
                 <form id="filter-form" method="get" action="multiselect-datatable">
                     <div id="filter-form-panel">
                         <fieldset>
@@ -144,13 +144,13 @@
                     </div>
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
-            </t:filter-flyout-widget>                              
+            </s:filter-flyout-widget>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
             <c:if test="${fn:length(movieList) > 0}">
-                <t:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${true}" multiselect="${true}">
+                <s:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${true}" multiselect="${true}">
                     <button type="button" id="open-edit-rating-dialog-button" class="selected-row-action" disabled="disabled">Edit Rating</button>
-                </t:editable-row-table-controls>
+                </s:editable-row-table-controls>
                 <div id="chart-wrap" class="chart-wrap-backdrop">
                     <table class="data-table stripped-table multiselect-table editable-row-table">
                         <thead>
@@ -180,7 +180,7 @@
                 </div>
             </c:if>
         </section>
-        <t:editable-row-table-dialog>
+        <s:editable-row-table-dialog>
             <form id="row-form">
                 <ul class="key-value-list">
                     <li>
@@ -225,7 +225,7 @@
                     </li>                    
                 </ul>  
             </form>
-        </t:editable-row-table-dialog>
+        </s:editable-row-table-dialog>
         <div class="dialog" id="rating-dialog" title="Edit Rating">
             <form>
                 <ul class="key-value-list">

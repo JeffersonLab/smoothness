@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
 <c:set var="title" value="Crumb Two"/>
 <t:page title="${title}">  
@@ -17,7 +18,7 @@
             </ul>
         </div>
         <section>
-            <t:filter-flyout-widget ribbon="true">
+            <s:filter-flyout-widget ribbon="true">
                 <form id="filter-form" method="get" action="crumb-two">
                     <div id="filter-form-panel">
                         <fieldset>
@@ -38,7 +39,7 @@
                     <input type="hidden" id="offset-input" name="offset" value="0"/>                                
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
-            </t:filter-flyout-widget>                       
+            </s:filter-flyout-widget>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <p>
                 <a href="crumb-three">Even More Ahead!</a>
