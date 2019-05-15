@@ -6,17 +6,17 @@
   <uri>http://jlab.org/smoothness/functions</uri>
   <function>
     <name>formatStaff</name>
-    <function-class>org.jlab.webapp.presentation.util.Functions</function-class>
-    <function-signature>java.lang.String formatStaff(org.jlab.webapp.persistence.entity.Staff)</function-signature>
+    <function-class>org.jlab.demo.presentation.util.Functions</function-class>
+    <function-signature>java.lang.String formatStaff(org.jlab.demo.persistence.entity.Staff)</function-signature>
   </function>
   <function>
     <name>formatBoolean</name>
-    <function-class>org.jlab.webapp.presentation.util.Functions</function-class>
+    <function-class>org.jlab.demo.presentation.util.Functions</function-class>
     <function-signature>java.lang.String formatBoolean(java.lang.Boolean)</function-signature>
   </function>
   <function>
     <name>inArray</name>
-    <function-class>org.jlab.webapp.presentation.util.Functions</function-class>
+    <function-class>org.jlab.demo.presentation.util.Functions</function-class>
     <function-signature>boolean inArray(java.lang.String[], java.lang.String)</function-signature>
   </function>
 </taglib>
