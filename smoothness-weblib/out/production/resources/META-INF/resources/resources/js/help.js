@@ -13,7 +13,7 @@ jlab.feedback.sendEmail = function() {
             body = $("#body").val();
 
     var request = jQuery.ajax({
-        url: jlab.contextPath + "/ajax/feedback",
+        url: jlab.contextPath + "/feedback",
         type: "POST",
         data: {
             subject: subject,

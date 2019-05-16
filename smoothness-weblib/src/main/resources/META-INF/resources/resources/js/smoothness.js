@@ -29,6 +29,11 @@ if (!String.prototype.decodeXml) {
  */
 var jlab = jlab || {};
 /**
+ * Date constants
+ */
+jlab.triCharMonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/**
  * Editable Row Table Configuration
  */
 jlab.editableRowTable = jlab.editableRowTable || {};
