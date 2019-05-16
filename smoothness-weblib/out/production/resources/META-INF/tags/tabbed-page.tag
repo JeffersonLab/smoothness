@@ -4,7 +4,7 @@
 <%@attribute name="title"%>
 <%@attribute name="category"%>
 <%@attribute name="keycloakClientIdKey"%>
-<%@attribute name="resourceLocation"%>
+<%@attribute name="resourceLocation" description="How to load CSS/JS/IMG files. (Optional) Choose one of CDN or NONE, defaults to LOCAL" %>
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
 <%@attribute name="primaryNavigation" fragment="true"%>
@@ -22,12 +22,12 @@
             <c:when test="${'NONE' eq resourceLocation}">
             </c:when>
             <c:when test="${'CDN' eq resourceLocation}">
-                <link rel="stylesheet" type="text/css" href="${cdnContextPath}/jlab-theme/smoothness/${smoothnessLibver}/css/smoothness.min.css"/>
                 <link rel="stylesheet" type="text/css" href="${cdnContextPath}/jquery-ui/1.10.3/theme/smoothness/jquery-ui.min.css"/>
+                <link rel="stylesheet" type="text/css" href="${cdnContextPath}/jlab-theme/smoothness/${smoothnessLibver}/css/smoothness.min.css"/>
             </c:when>
             <c:otherwise><!-- LOCAL -->
-                <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/smoothness.css"/>
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/jquery-ui-1.10.3/jquery-ui.min.css"/>
+                <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/smoothness.css"/>
             </c:otherwise>
         </c:choose>
         <jsp:invoke fragment="stylesheets"/>
@@ -41,6 +41,9 @@
                 <h1><span id="page-header-logo"></span> <span id="page-header-text"><c:out value="${initParam.appName}"/></span></h1>
                 <div id="auth">
                     <c:choose>
+                        <c:when test="${publicProxy}">
+
+                        </c:when>
                         <c:when test="${pageContext.request.userPrincipal ne null}">
                             <div id="username-container">
                                 <c:out value="${pageContext.request.userPrincipal.name.split(':')[2]}"/>
@@ -104,7 +107,7 @@
             </c:when>
             <c:otherwise><!-- LOCAL -->
                 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
-                <script type="text/javascript" src="${cdnContextPath}/jquery-ui/1.10.3/jquery-ui.min.js"></script>
+                <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui-1.10.3/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/uri-1.14.1.min.js"></script>
                 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
             </c:otherwise>

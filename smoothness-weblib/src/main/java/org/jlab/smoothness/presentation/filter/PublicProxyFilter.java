@@ -32,7 +32,7 @@ public class PublicProxyFilter implements Filter {
             publicProxy = true; // You don't have a choice if proxy server sets this
         }
 
-        request.setAttribute("public-proxy", publicProxy);
+        request.setAttribute("publicProxy", publicProxy);
 
         if (publicProxy) {
             request.setAttribute("cdnContextPath", "");
