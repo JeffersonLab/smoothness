@@ -1,3 +1,5 @@
 /.gradle
 /build
 /.idea
+/smoothness-weblib/build
+/smoothness-weblib/out

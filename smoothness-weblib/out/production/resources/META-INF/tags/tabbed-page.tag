@@ -4,12 +4,14 @@
 <%@attribute name="title"%>
 <%@attribute name="category"%>
 <%@attribute name="keycloakClientIdKey"%>
+<%@attribute name="disableSmoothnessCdn" type="java.lang.Boolean"%>
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
 <%@attribute name="primaryNavigation" fragment="true"%>
 <%@attribute name="secondaryNavigation" fragment="true"%>
 <c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
 <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
+<c:set var="smoothnessLibver" value="1.6"/>
 <!DOCTYPE html>
 <html>
     <head>        
@@ -17,7 +19,9 @@
         <title><c:out value="${initParam.appShortName}"/> - ${empty category ? '' : category.concat(' - ')}${title}</title>
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/img/favicon.ico"/>        
         <link rel="stylesheet" type="text/css" href="//cdn.acc.jlab.org/jquery-ui/1.10.3/theme/smoothness/jquery-ui.min.css"/>        
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/smoothness.css"/>        
+        <c:if test="${not disableSmoothnessCdn}">
+            <link rel="stylesheet" type="text/css" href="//${env['CDN_HOSTNAME']}/jlab-theme/smoothness/${smoothnessLibver}/css/smoothness.min.css"/>
+        </c:if>
         <jsp:invoke fragment="stylesheets"/>
     </head>
     <body class="${param.print eq 'Y' ? 'print ' : ''} ${param.fullscreen eq 'Y' ? 'fullscreen' : ''}">
@@ -83,8 +87,10 @@
         </div>
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery/1.10.2.min.js"></script>
         <script type="text/javascript" src="//cdn.acc.jlab.org/jquery-ui/1.10.3/jquery-ui.min.js"></script>  
-        <script type="text/javascript" src="//cdn.acc.jlab.org/uri/uri-1.14.1.min.js"></script>        
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
+        <script type="text/javascript" src="//cdn.acc.jlab.org/uri/uri-1.14.1.min.js"></script>
+        <c:if test="${not disableSmoothnessCdn}">
+                <script type="text/javascript" src="//${env['CDN_HOSTNAME']}/jlab-theme/smoothness/${smoothnessLibver}/js/smoothness.min.js"></script>
+        </c:if>
         <c:url var="loginUrl" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/auth">
             <c:param name="client_id" value="account"/>
             <c:param name="kc_idp_hint" value="cue-keycloak-oidc"/>
@@ -95,6 +101,7 @@
             <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
         </c:url>
         <script type="text/javascript">
+            var jlab = jlab || {};
             jlab.contextPath = '${pageContext.request.contextPath}';
             jlab.logbookHost = '${env["LOGBOOK_HOSTNAME"]}';
             jlab.keycloakHostname = '${env["KEYCLOAK_HOSTNAME"]}';

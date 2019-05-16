@@ -7,11 +7,13 @@
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
 <%@attribute name="secondaryNavigation" fragment="true"%>
-<s:tabbed-page title="${title}" category="${category}" keycloakClientIdKey="KEYCLOAK_CLIENT_ID_SMOOTHNESS_TEMPLATE">
+<s:tabbed-page title="${title}" category="${category}" keycloakClientIdKey="KEYCLOAK_CLIENT_ID_SMOOTHNESS_TEMPLATE" disableSmoothnessCdn="false">
     <jsp:attribute name="stylesheets">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/smoothness.css"/>
         <jsp:invoke fragment="stylesheets"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
         <jsp:invoke fragment="scripts"/>
     </jsp:attribute>
     <jsp:attribute name="primaryNavigation">

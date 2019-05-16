@@ -20,6 +20,21 @@ public final class ParamConverter {
         // No one can instantiate due to private visibility
     }
 
+    public static Character convertCharacter(HttpServletRequest request, String name) {
+        String valueStr = request.getParameter(name);
+        Character value = null;
+
+        if(valueStr != null && !valueStr.isEmpty()) {
+            if(valueStr.length() > 1) {
+                throw new IllegalArgumentException("String contains more than one Character");
+            } else {
+                value = valueStr.charAt(0);
+            }
+        }
+
+        return value;
+    }
+
     public static Integer convertPercent(HttpServletRequest request, String name) {
         String valueStr = request.getParameter(name);
         Integer value = null;

@@ -30,7 +30,7 @@ h1 {
     text-shadow: 3px 3px 3px #979797;
 }
 #page-header-logo {
-    background: url("../img/logo32x32.png") 0 0;
+    background: url("../../../../../../../../src/main/webapp/resources/img/logo32x32.png") 0 0;
     display: inline-block;
     height: 32px;
     width: 32px;
