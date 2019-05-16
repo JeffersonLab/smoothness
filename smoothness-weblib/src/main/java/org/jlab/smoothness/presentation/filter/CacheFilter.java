@@ -23,7 +23,7 @@ public class CacheFilter implements Filter {
     private static final long EXPIRE_MILLIS = 31536000000L; // 365 days is max expires per spec
     
     private static final String[] CACHEABLE_CONTENT_TYPES = new String[] {
-            "text/css", "text/javascript", "image/png",
+            "text/css", "text/javascript", "application/javascript", "image/png",
             "image/jpeg", "image/jpg", "image/gif", "image/icon", "image/x-icon",
             "image/vnd.microsoft.icon", "image/svg+xml"
     };
