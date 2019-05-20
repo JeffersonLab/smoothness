@@ -2,6 +2,7 @@ package org.jlab.smoothness.presentation.util;
 
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -231,6 +232,20 @@ public final class ParamConverter {
 
         if (value < 0) {
             throw new IllegalArgumentException(name + " must not be negative");
+        }
+
+        return value;
+    }
+
+    public static Date convertGlobalDateTime(HttpServletRequest request, String name) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
+
+        Date value = null;
+
+        String valueStr = request.getParameter(name);
+
+        if (valueStr != null && !valueStr.isEmpty()) {
+            value = format.parse(valueStr);
         }
 
         return value;
