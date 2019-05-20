@@ -35,6 +35,28 @@ public final class ParamConverter {
         return value;
     }
 
+    public static Float convertFloat(HttpServletRequest request, String name) {
+        String valueStr = request.getParameter(name);
+        Float value = null;
+
+        if (valueStr != null && !valueStr.isEmpty()) {
+            value = Float.valueOf(valueStr);
+        }
+
+        return value;
+    }
+
+    public static Integer convertInteger(HttpServletRequest request, String name) {
+        String valueStr = request.getParameter(name);
+        Integer value = null;
+
+        if (valueStr != null && !valueStr.isEmpty()) {
+            value = Integer.valueOf(valueStr);
+        }
+
+        return value;
+    }
+
     public static Integer convertPercent(HttpServletRequest request, String name) {
         String valueStr = request.getParameter(name);
         Integer value = null;
@@ -132,6 +154,48 @@ public final class ParamConverter {
         }
 
         return value;
+    }
+
+    public static Long[] convertLongArray(HttpServletRequest request, String name) {
+        String[] valueStrArray = request.getParameterValues(name);
+        Long[] valueArray = null;
+
+        if (valueStrArray != null && valueStrArray.length > 0) {
+            valueArray = new Long[valueStrArray.length];
+
+            for (int i = 0; i < valueStrArray.length; i++) {
+                Long value = null;
+
+                if (valueStrArray[i] != null && !valueStrArray[i].isEmpty()) {
+                    value = Long.valueOf(valueStrArray[i]);
+                }
+
+                valueArray[i] = value;
+            }
+        }
+
+        return valueArray;
+    }
+
+    public static Float[] convertFloatArray(HttpServletRequest request, String name) {
+        String[] valueStrArray = request.getParameterValues(name);
+        Float[] valueArray = null;
+
+        if (valueStrArray != null && valueStrArray.length > 0) {
+            valueArray = new Float[valueStrArray.length];
+
+            for (int i = 0; i < valueStrArray.length; i++) {
+                Float value = null;
+
+                if (valueStrArray[i] != null && !valueStrArray[i].isEmpty()) {
+                    value = Float.valueOf(valueStrArray[i]);
+                }
+
+                valueArray[i] = value;
+            }
+        }
+
+        return valueArray;
     }
 
     public static BigInteger[] convertBigIntegerArray(HttpServletRequest request, String name) {

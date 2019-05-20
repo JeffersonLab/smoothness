@@ -21,7 +21,7 @@ plugins {
 }
 
 group 'org.jlab'
-version '2.2.0'
+version '2.6.0'
 
 sourceCompatibility = 1.8
 

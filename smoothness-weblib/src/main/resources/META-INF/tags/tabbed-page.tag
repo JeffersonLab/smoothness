@@ -9,6 +9,7 @@
 <%@attribute name="scripts" fragment="true"%>
 <%@attribute name="primaryNavigation" fragment="true"%>
 <%@attribute name="secondaryNavigation" fragment="true"%>
+<%@attribute name="userExtra" fragment="true" description="Extra info about authenticated user. (Optional)" %>
 <c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
 <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
 <c:set var="smoothnessLibver" value="2.0.0"/>
@@ -45,6 +46,9 @@
 
                         </c:when>
                         <c:when test="${pageContext.request.userPrincipal ne null}">
+                            <div id="user-extra">
+                                <jsp:invoke fragment="userExtra"/>
+                            </div>
                             <div id="username-container">
                                 <c:out value="${pageContext.request.userPrincipal.name.split(':')[2]}"/>
                             </div>

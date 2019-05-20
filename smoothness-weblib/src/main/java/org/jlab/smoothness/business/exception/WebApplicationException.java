@@ -1,0 +1,20 @@
+package org.jlab.smoothness.business.exception;
+
+import javax.ejb.ApplicationException;
+
+/**
+ * A WebApplicationException is designed as a generic Exception, and it is an EJB @ApplicationException so
+ * that it is not wrapped when thrown from an EJB.  This class is abstract as you must throw one of it's subclasses.
+ *
+ * @author ryans
+ */
+@ApplicationException(inherited = true, rollback = true)
+public abstract class WebApplicationException extends Exception {
+    public WebApplicationException(String msg) {
+        super(msg);
+    }
+    
+    public WebApplicationException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
+}

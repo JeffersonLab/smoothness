@@ -1,11 +1,15 @@
 package org.jlab.smoothness.presentation.filter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author ryans
  */
 public class AuditContext {
 
+    private Map<String, Object> extra = new HashMap<>();
     private String username;
     private String ip;
 
@@ -19,6 +23,14 @@ public class AuditContext {
 
     public String getUsername() {
         return username;
+    }
+
+    public Object getExtra(String key) {
+        return extra.get(key);
+    }
+
+    public Object putExtra(String key, Object value) {
+        return extra.put(key, value);
     }
 
     protected void setUsername(String username) {
