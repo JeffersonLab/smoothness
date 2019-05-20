@@ -39,6 +39,7 @@ h1 {
 #auth {
     float: right;
 }
+#user-extra,
 #username-container,
 #logout-form {
     display: inline-block;

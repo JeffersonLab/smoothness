@@ -10,11 +10,11 @@ public final class Functions {
         // cannot instantiate publicly
     }
 
-    public static boolean inArray(String[] haystack, String needle) {
+    public static boolean inArray(Object[] haystack, Object needle) {
         boolean inArray = false;
 
         if (needle != null && haystack != null) {
-            for (String s : haystack) {
+            for (Object s : haystack) {
                 if (needle.equals(s)) {
                     inArray = true;
                     break;
