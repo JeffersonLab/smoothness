@@ -2,6 +2,7 @@ package org.jlab.smoothness.business.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -167,6 +168,33 @@ public final class IOUtil {
         return list.toArray((E[]) Array.newInstance(c, list.size()));
     }
 
+    /**
+     * Copies all of the bytes from the InputStream into the OutputStream using
+     * a buffer of 4096 bytes.
+     *
+     * @param in The InputStream
+     * @param out The OutputStream
+     * @return The number of bytes copied
+     * @throws IOException If unable to copy
+     */
+    public static long copy(InputStream in, OutputStream out)
+            throws IOException {
+        byte[] buffer = new byte[4096];
+        long count = 0;
+        int n = 0;
+
+        while (-1 != (n = in.read(buffer))) {
+            out.write(buffer, 0, n);
+            count += n;
+        }
+
+        return count;
+    }
+
+    /**
+     * Closes one or more AutoCloseable without generating any checked Exceptions.
+     * If an Exception does occur while closing it is logged as a WARNING.
+     */
     public static void close(AutoCloseable... resources) {
         if (resources != null) {
             for (AutoCloseable resource : resources) {
