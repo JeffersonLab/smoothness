@@ -10,6 +10,6 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/help.js"></script>
     </jsp:attribute>
     <jsp:body>
-        <%@include file="/WEB-INF/fragments/help-body.jspf"%>
+        <s:help-panel></s:help-panel>
     </jsp:body>
 </s:tabbed-page>

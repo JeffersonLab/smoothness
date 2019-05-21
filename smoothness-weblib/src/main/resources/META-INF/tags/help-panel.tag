@@ -1,4 +1,7 @@
+<%@tag description="Help Panel Widget" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@attribute name="title"%>
 <section>
     <h2><c:out value="${title}"/></h2>
     <h3>About <c:out value="${initParam.appName}"/></h3>
@@ -20,7 +23,11 @@
             <div class="li-value"><c:out value="${initParam.technicalContact}"/></div>
         </li>
     </ul>
-    <h3><a href="${initParam.documentationUrl}">Documentation</a></h3>
+    <jsp:doBody var="bodyText"/>
+    <c:if test="${not empty fn:trim(bodyText)}">
+        <h3>Documentation</h3>
+        ${bodyText}
+    </c:if>
     <c:choose>
         <c:when test="${pageContext.request.userPrincipal ne null}">
             <h3>Feedback Form</h3>

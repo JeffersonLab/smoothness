@@ -21,6 +21,10 @@
         <path>/META-INF/tags/editable-row-table-dialog.tag</path>
     </tag-file>
     <tag-file>
+        <name>help-panel</name>
+        <path>/META-INF/tags/help-panel.tag</path>
+    </tag-file>
+    <tag-file>
         <name>tabbed-page</name>
         <path>/META-INF/tags/tabbed-page.tag</path>
     </tag-file>

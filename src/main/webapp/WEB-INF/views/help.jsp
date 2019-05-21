@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%> 
 <c:set var="title" value="Help"/>
 <t:page title="${title}">
@@ -10,6 +11,11 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/help.js"></script>              
     </jsp:attribute>            
     <jsp:body>
-        <%@include file="/WEB-INF/fragments/help-body.jspf"%>
+        <s:help-panel title="${title}">
+            <ul>
+                <li><a href="https://google.com">Document 1</a></li>
+                <li><a href="https://jlab.org">Document 2</a></li>
+            </ul>
+        </s:help-panel>
     </jsp:body>         
 </t:page>

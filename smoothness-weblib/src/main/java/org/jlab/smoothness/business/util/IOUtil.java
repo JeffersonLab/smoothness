@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -207,5 +208,31 @@ public final class IOUtil {
                 }
             }
         }
+    }
+
+    public static String toNullOrCsv(BigInteger[] array) {
+        String csv = null;
+
+        array = IOUtil.removeNullValues(array, BigInteger.class);
+
+        if (array != null && array.length > 0) {
+            csv = array[0].toString();
+
+            for (int i = 1; i < array.length; i++) {
+                csv = csv + "," + array[i];
+            }
+        }
+
+        return csv;
+    }
+
+    public static String toNullOrCsvForStoredProcedure(BigInteger[] array) {
+        String value = toNullOrCsv(array);
+        if (value == null) {
+            value = "NULL";
+        } else {
+            value = "'" + value + "'";
+        }
+        return value;
     }
 }
