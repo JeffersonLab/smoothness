@@ -10,6 +10,8 @@
 <%@attribute name="primaryNavigation" fragment="true"%>
 <%@attribute name="secondaryNavigation" fragment="true"%>
 <%@attribute name="userExtra" fragment="true" description="Extra info about authenticated user. (Optional)" %>
+<%@attribute name="headerExtra" fragment="true" description="Extra section on header. (Optional)" %>
+<%@attribute name="footnote" fragment="true" description="Footnote. (Optional)" %>
 <c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
 <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
 <c:set var="smoothnessLibver" value="2.8.0"/>
@@ -70,6 +72,9 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
+                <div id="s-header-extra">
+                    <jsp:invoke fragment="headerExtra"/>
+                </div>
                 <nav id="primary-nav">
                     <jsp:invoke fragment="primaryNavigation"/>
                 </nav>                
@@ -98,6 +103,9 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
+            </div>
+            <div id="s-footnote">
+                <jsp:invoke fragment="footnote"/>
             </div>
         </div>
         <c:choose>
