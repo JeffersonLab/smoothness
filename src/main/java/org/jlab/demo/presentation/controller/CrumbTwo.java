@@ -14,6 +14,7 @@ import org.jlab.demo.persistence.entity.Staff;
 import org.jlab.demo.presentation.util.FilterSelectionMessage;
 import org.jlab.smoothness.presentation.util.Paginator;
 import org.jlab.smoothness.presentation.util.ParamConverter;
+import org.jlab.smoothness.presentation.util.ParamUtil;
 
 /**
  *
@@ -40,8 +41,8 @@ public class CrumbTwo extends HttpServlet {
 
         String lastname = request.getParameter("lastname");
 
-        int offset = ParamConverter.convertNonNegativeInt(request, "offset", 0);
-        int max = ParamConverter.convertNonNegativeInt(request, "max", 10);
+        int offset = ParamUtil.convertAndValidateNonNegativeInt(request, "offset", 0);
+        int max = ParamUtil.convertAndValidateNonNegativeInt(request, "max", 10);
 
         List<Staff> staffList = staffFacade.filterList(lastname, offset, max);
         long totalRecords = staffFacade.countList(lastname, offset, max);

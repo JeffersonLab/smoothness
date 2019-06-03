@@ -12,6 +12,9 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * Utility methods for converting parameters.  Built-in unchecked exceptions such as NumberFormatException and
+ * IllegalArgumentException are thrown if conversion fails.  In some cases the built-in checked ParseException is
+ * thrown, as declared.
  *
  * @author ryans
  */
@@ -58,25 +61,6 @@ public final class ParamConverter {
         return value;
     }
 
-    public static Integer convertPercent(HttpServletRequest request, String name) {
-        String valueStr = request.getParameter(name);
-        Integer value = null;
-
-        if (valueStr != null && !valueStr.isEmpty()) {
-            value = Integer.parseInt(valueStr);
-
-            if (value < 0) {
-                throw new IllegalArgumentException(name + " must not be negative");
-            }
-
-            if (value > 100) {
-                throw new IllegalArgumentException(name + " must not be more than 100");
-            }
-        }
-
-        return value;
-    }
-
     public static Boolean convertYNBoolean(HttpServletRequest request, String name) {
         String valueStr = request.getParameter(name);
         Boolean value = null;
@@ -89,25 +73,6 @@ public final class ParamConverter {
             } else {
                 throw new IllegalArgumentException("Value must be one of 'Y' or 'N'");
             }
-        }
-
-        return value;
-    }
-
-    public static boolean convertYNBoolean(HttpServletRequest request, String name, boolean defaultValue) {
-        String valueStr = request.getParameter(name);
-        boolean value;
-
-        if (valueStr != null && !valueStr.isEmpty()) {
-            if ("N".equals(valueStr)) {
-                value = false;
-            } else if ("Y".equals(valueStr)) {
-                value = true;
-            } else {
-                throw new IllegalArgumentException("Value must be one of 'Y' or 'N'");
-            }
-        } else {
-            value = defaultValue;
         }
 
         return value;
@@ -155,6 +120,30 @@ public final class ParamConverter {
         }
 
         return value;
+    }
+
+    public static Short[] convertShortArray(HttpServletRequest request, String name,
+                                            Short defaultValue) {
+        String[] valueStrArray = request.getParameterValues(name);
+        Short[] valueArray = null;
+
+        if (valueStrArray != null && valueStrArray.length > 0) {
+            valueArray = new Short[valueStrArray.length];
+
+            for (int i = 0; i < valueStrArray.length; i++) {
+                Short value;
+
+                if (valueStrArray[i] != null && !valueStrArray[i].isEmpty()) {
+                    value = Short.valueOf(valueStrArray[i]);
+                } else {
+                    value = defaultValue;
+                }
+
+                valueArray[i] = value;
+            }
+        }
+
+        return valueArray;
     }
 
     public static Long[] convertLongArray(HttpServletRequest request, String name) {
@@ -218,23 +207,6 @@ public final class ParamConverter {
         }
 
         return valueArray;
-    }
-
-    public static int convertNonNegativeInt(HttpServletRequest request, String name, int defaultValue) {
-        String valueStr = request.getParameter(name);
-        int value;
-
-        if (valueStr == null || valueStr.isEmpty()) {
-            value = defaultValue;
-        } else {
-            value = Integer.parseInt(valueStr);
-        }
-
-        if (value < 0) {
-            throw new IllegalArgumentException(name + " must not be negative");
-        }
-
-        return value;
     }
 
     public static Date convertGlobalDateTime(HttpServletRequest request, String name) throws ParseException {
