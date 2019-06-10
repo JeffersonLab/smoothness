@@ -14,11 +14,7 @@
         </style>        
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript">
-            jlab.editableRowTable.entity = 'Movie';
-            jlab.editableRowTable.dialog.width = 500;
-            jlab.editableRowTable.dialog.height = 400;
-        </script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/movie-table.js"></script>
     </jsp:attribute>        
     <jsp:body>
         <section>
@@ -69,7 +65,7 @@
                         </thead>
                         <tbody>
                             <c:forEach items="${movieList}" var="movie">
-                                <tr>
+                                <tr data-id="${movie.movieId}">
                                     <td><c:out value="${movie.title}"/></td>
                                     <td><c:out value="${movie.description}"/></td>
                                     <td><c:out value="${movie.mpaaRating}"/></td>
@@ -82,52 +78,7 @@
                 </div>
             </c:if>            
         </section>
-        <s:editable-row-table-dialog>
-            <form id="row-form">
-                <ul class="key-value-list">
-                    <li>
-                        <div class="li-key">
-                            <label for="row-title">Title</label>
-                        </div>
-                        <div class="li-value">
-                            <input type="text" maxlength="128" required="required" id="row-title"/>
-                        </div>
-                    </li>                       
-                    <li>
-                        <div class="li-key">
-                            <label for="row-description">Description</label>
-                        </div>
-                        <div class="li-value">
-                            <input type="text" maxlength="512" required="required" id="row-description"/>
-                        </div>
-                    </li> 
-                    <li>
-                        <div class="li-key">
-                            <label for="row-rating">MPAA Rating</label>
-                        </div>
-                        <div class="li-value">
-                            <input type="text" maxlength="5" id="row-rating"/>
-                        </div>
-                    </li> 
-                    <li>
-                        <div class="li-key">
-                            <label for="row-duration">Duration (Minutes)</label>
-                        </div>
-                        <div class="li-value">
-                            <input type="number" min="0" id="row-duration"/>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="li-key">
-                            <label for="row-release">Release Date</label>
-                        </div>
-                        <div class="li-value">
-                            <input type="text" id="row-release"/>
-                        </div>
-                    </li>                    
-                </ul>  
-            </form>
-        </s:editable-row-table-dialog>
+        <%@ include file="/WEB-INF/fragments/editable-movie-dialog.jspf"%>
         <div id="exit-fullscreen-panel">
             <button id="exit-fullscreen-button">Exit Full Screen</button>
         </div>

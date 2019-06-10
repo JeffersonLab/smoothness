@@ -1,6 +1,8 @@
 package org.jlab.demo.business.session;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -11,7 +13,11 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.xml.registry.infomodel.User;
+
 import org.jlab.demo.persistence.entity.Movie;
+import org.jlab.smoothness.business.exception.UserFriendlyException;
+import org.jlab.smoothness.presentation.util.ParamValidator;
 
 /**
  *
@@ -55,4 +61,31 @@ public class MovieFacade extends AbstractFacade<Movie> {
         return getEntityManager().createQuery(cq).setFirstResult(offset).setMaxResults(max).getResultList();
     }
 
+    public void addMovie(String title, String description, String rating, Integer duration, Date release) throws UserFriendlyException {
+        Movie movie = new Movie();
+
+        if(title == null || title.isEmpty()) {
+            throw new UserFriendlyException("title must not be empty");
+        }
+
+        movie.setTitle(title);
+        movie.setDescription(description);
+        movie.setMpaaRating(rating);
+        movie.setDurationMinutes(duration);
+        movie.setReleaseDate(release);
+
+        em.persist(movie);
+    }
+
+    public void removeMovie(BigInteger[] idArray) throws UserFriendlyException {
+        if(idArray == null || idArray.length == 0) {
+            throw new UserFriendlyException("Please select at least one movie to remove");
+        }
+
+        for(BigInteger id: idArray) {
+            Movie movie = find(id);
+
+            em.remove(movie);
+        }
+    }
 }

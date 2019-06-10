@@ -1,0 +1,53 @@
+<s:editable-row-table-dialog>
+    <form id="row-form">
+        <ul class="key-value-list">
+            <li>
+                <div class="li-key">
+                    <label for="row-title">Title</label>
+                </div>
+                <div class="li-value">
+                    <input type="text" maxlength="128" required="required" id="row-title"/>
+                </div>
+            </li>
+            <li>
+                <div class="li-key">
+                    <label for="row-description">Description</label>
+                </div>
+                <div class="li-value">
+                    <input type="text" maxlength="512" required="required" id="row-description"/>
+                </div>
+            </li>
+            <li>
+                <div class="li-key">
+                    <label for="row-rating">MPAA Rating</label>
+                </div>
+                <div class="li-value">
+                    <select id="row-rating">
+                        <option value="">&nbsp;</option>
+                        <option>G</option>
+                        <option>PG</option>
+                        <option>PG-13</option>
+                        <option>R</option>
+                        <option>NC-17</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="li-key">
+                    <label for="row-duration">Duration (Minutes)</label>
+                </div>
+                <div class="li-value">
+                    <input type="number" min="0" id="row-duration"/>
+                </div>
+            </li>
+            <li>
+                <div class="li-key">
+                    <label for="row-release">Release Date</label>
+                </div>
+                <div class="li-value">
+                    <input type="text" id="row-release"/>
+                </div>
+            </li>
+        </ul>
+    </form>
+</s:editable-row-table-dialog>

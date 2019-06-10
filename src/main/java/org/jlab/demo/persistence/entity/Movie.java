@@ -4,13 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,12 +17,13 @@ import javax.validation.constraints.Size;
 public class Movie implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @SequenceGenerator(name = "MovieId", sequenceName = "MOVIE_ID", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MovieId")
     @Basic(optional = false)
     @NotNull
     @Column(name = "MOVIE_ID", nullable = false, precision = 22, scale = 0)
-    private BigDecimal movieId;
+    private BigInteger movieId;
     @Size(max = 128)
     @Column(length = 128)
     private String title;
@@ -42,20 +37,20 @@ public class Movie implements Serializable {
     @Column(name = "MPAA_RATING", length = 5)
     private String mpaaRating;
     @Column(name = "DURATION_MINUTES")
-    private BigInteger durationMinutes;
+    private Integer durationMinutes;
 
     public Movie() {
     }
 
-    public Movie(BigDecimal movieId) {
+    public Movie(BigInteger movieId) {
         this.movieId = movieId;
     }
 
-    public BigDecimal getMovieId() {
+    public BigInteger getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(BigDecimal movieId) {
+    public void setMovieId(BigInteger movieId) {
         this.movieId = movieId;
     }
 
@@ -91,11 +86,11 @@ public class Movie implements Serializable {
         this.mpaaRating = mpaaRating;
     }
 
-    public BigInteger getDurationMinutes() {
+    public Integer getDurationMinutes() {
         return durationMinutes;
     }
 
-    public void setDurationMinutes(BigInteger durationMinutes) {
+    public void setDurationMinutes(Integer durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
 
