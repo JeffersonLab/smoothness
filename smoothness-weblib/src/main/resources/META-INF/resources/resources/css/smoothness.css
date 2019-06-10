@@ -62,6 +62,9 @@ h1 {
     display: inline-block;
 }
 /*Nav*/
+#primary-nav {
+    min-height: 32px;
+}
 #primary-nav ul {
     padding: 0 4px;
     list-style-type: none;
