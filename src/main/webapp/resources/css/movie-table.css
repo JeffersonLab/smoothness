@@ -1,0 +1,8 @@
+td:nth-child(4) {
+    text-align: right;
+}
+#row-description {
+    resize: none;
+    width: 200px;
+    height: 75px;
+}

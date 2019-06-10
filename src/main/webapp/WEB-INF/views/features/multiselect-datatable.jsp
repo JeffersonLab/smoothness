@@ -7,11 +7,7 @@
 <c:set var="title" value="Multiselect Datatable"/>
 <t:features-page title="${title}">  
     <jsp:attribute name="stylesheets">
-        <style type="text/css">
-            td:nth-child(4) {
-                text-align: right;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/movie-table.css"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/movie-table.js"></script>
@@ -79,7 +75,28 @@
                 $("#rating-dialog").dialog("open");
             });
 
-            
+            $(document).on("click", "#rating-save-button", function () {
+                var idArray = new Array();
+
+                if ($(".editable-row-table .selected-row").length < 1) {
+                    window.console && console.log('No rows selected');
+                    return;
+                }
+
+                $(".editable-row-table .selected-row").each(function () {
+                    var id = $(this).attr("data-id");
+
+                    idArray.push(id);
+                });
+
+                var url = jlab.contextPath + "/ajax/edit-movie-rating",
+                    rating = $("#edit-rating").val(),
+                    data = {'id[]': idArray, rating: rating},
+                    $dialog = $("#table-row-dialog");
+
+                jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+            });
+
             $(function() {
                 $("#rating-dialog").dialog({
                     autoOpen: false,
@@ -179,11 +196,18 @@
                             <label for="edit-rating">MPAA Rating</label>
                         </div>
                         <div class="li-value">
-                            <input type="text" maxlength="5" id="edit-rating"/>
+                            <select id="edit-rating">
+                                <option value="">&nbsp;</option>
+                                <option>G</option>
+                                <option>PG</option>
+                                <option>PG-13</option>
+                                <option>R</option>
+                                <option>NC-17</option>
+                            </select>
                         </div>
                     </li>                    
                 </ul>
-                <div class="rows-differ-message">WARNING: One or more selected movies have an existing rating that differs from the above</div>
+                <div class="rows-differ-message">WARNING: One or more selected movies have an existing rating that differs</div>
             </form>
             <div class="dialog-button-panel">
                 <button type="button" id="rating-save-button" class="dialog-submit-button">Save</button>

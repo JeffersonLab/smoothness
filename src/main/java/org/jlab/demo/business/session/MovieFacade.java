@@ -64,15 +64,7 @@ public class MovieFacade extends AbstractFacade<Movie> {
     public void addMovie(String title, String description, String rating, Integer duration, Date release) throws UserFriendlyException {
         Movie movie = new Movie();
 
-        if(title == null || title.isEmpty()) {
-            throw new UserFriendlyException("title must not be empty");
-        }
-
-        movie.setTitle(title);
-        movie.setDescription(description);
-        movie.setMpaaRating(rating);
-        movie.setDurationMinutes(duration);
-        movie.setReleaseDate(release);
+        updateMovie(movie, title, description, rating, duration, release);
 
         em.persist(movie);
     }
@@ -86,6 +78,36 @@ public class MovieFacade extends AbstractFacade<Movie> {
             Movie movie = find(id);
 
             em.remove(movie);
+        }
+    }
+
+    public void editMovie(BigInteger id, String title, String description, String rating, Integer duration, Date release) throws UserFriendlyException {
+        Movie movie = find(id);
+
+        updateMovie(movie, title, description, rating, duration, release);
+    }
+
+    private void updateMovie(Movie movie, String title, String description, String rating, Integer duration, Date release) throws UserFriendlyException {
+        if(title == null || title.isEmpty()) {
+            throw new UserFriendlyException("title must not be empty");
+        }
+
+        movie.setTitle(title);
+        movie.setDescription(description);
+        movie.setMpaaRating(rating);
+        movie.setDurationMinutes(duration);
+        movie.setReleaseDate(release);
+    }
+
+    public void editMovieRating(BigInteger[] idArray, String rating) throws UserFriendlyException {
+        if(idArray == null || idArray.length == 0) {
+            throw new UserFriendlyException("Please select at least one movie to remove");
+        }
+
+        for(BigInteger id: idArray) {
+            Movie movie = find(id);
+
+            movie.setMpaaRating(rating);
         }
     }
 }

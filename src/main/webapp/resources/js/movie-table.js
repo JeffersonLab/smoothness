@@ -8,19 +8,38 @@ jlab.validateTableRowForm = function () {
     return true;
 };
 
-$(document).on("click", "#table-row-save-button", function () {
-    if (!jlab.validateTableRowForm()) {
-        return;
-    }
-
+jlab.getEditableMovieData = function() {
     var title = $("#row-title").val(),
         description = $("#row-description").val(),
         rating = $("#row-rating").val(),
         duration = $("#row-duration").val(),
-        release = $("#row-release").val(),
-        url = jlab.contextPath + "/ajax/add-movie",
-        data = {title: title, description: description, rating: rating, duration: duration, release: release},
+        release = $("#row-release").val();
+
+    return {title: title, description: description, rating: rating, duration: duration, release: release};
+};
+
+$(document).on("table-row-add", function () {
+    if (!jlab.validateTableRowForm()) {
+        return;
+    }
+
+    var url = jlab.contextPath + "/ajax/add-movie",
+        data = jlab.getEditableMovieData();
         $dialog = $("#table-row-dialog");
+
+    jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+});
+
+$(document).on("table-row-edit", function () {
+    if (!jlab.validateTableRowForm()) {
+        return;
+    }
+
+    var url = jlab.contextPath + "/ajax/edit-movie",
+        data = jlab.getEditableMovieData(),
+        $dialog = $("#table-row-dialog");
+
+    data.id = $(".selected-row").attr("data-id");
 
     jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
 });

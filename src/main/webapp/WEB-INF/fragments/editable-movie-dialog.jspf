@@ -14,7 +14,7 @@
                     <label for="row-description">Description</label>
                 </div>
                 <div class="li-value">
-                    <input type="text" maxlength="512" required="required" id="row-description"/>
+                    <textarea maxlength="512" required="required" id="row-description"></textarea>
                 </div>
             </li>
             <li>
