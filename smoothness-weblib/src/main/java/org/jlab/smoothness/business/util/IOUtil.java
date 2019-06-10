@@ -1,5 +1,6 @@
 package org.jlab.smoothness.business.util;
 
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,13 +10,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author ryans
  */
 public final class IOUtil {
@@ -24,7 +29,7 @@ public final class IOUtil {
             IOUtil.class.getName());
 
     /*Only gets seeded once per JVM invocation*/
-    private static final Random random = new Random();   
+    private static final Random random = new Random();
 
     private IOUtil() {
         // private constructor
@@ -44,14 +49,14 @@ public final class IOUtil {
             output = output.replace(">", "&#062;");
         }
         return output;*/
-        
+
         return org.apache.taglibs.standard.functions.Functions.escapeXml(input);
     }
 
     /**
      * Reads in an InputStream fully and returns the result as a String.
      *
-     * @param is The InputStream
+     * @param is       The InputStream
      * @param encoding The character encoding of the String
      * @return The String representation of the data
      */
@@ -108,7 +113,7 @@ public final class IOUtil {
 
         return csv;
     }
-    
+
     public static String toSsv(Object[] items) {
         String ssv = "";
 
@@ -127,8 +132,8 @@ public final class IOUtil {
         }
 
         return ssv;
-    }    
-    
+    }
+
     public static String nullOrString(Object o) {
         String value = null;
 
@@ -137,8 +142,8 @@ public final class IOUtil {
         }
 
         return value;
-    }    
-    
+    }
+
     public static String nullOrBoolean(Boolean b) {
         String value = null;
 
@@ -147,8 +152,8 @@ public final class IOUtil {
         }
 
         return value;
-    }    
-    
+    }
+
     public static String nullOrFormat(Date d, SimpleDateFormat dateFormat) {
         String value = null;
 
@@ -157,8 +162,8 @@ public final class IOUtil {
         }
 
         return value;
-    }    
-    
+    }
+
     @SuppressWarnings("unchecked")
     public static <E> E[] removeNullValues(final E[] a, Class<E> c) {
         if (a == null) {
@@ -173,7 +178,7 @@ public final class IOUtil {
      * Copies all of the bytes from the InputStream into the OutputStream using
      * a buffer of 4096 bytes.
      *
-     * @param in The InputStream
+     * @param in  The InputStream
      * @param out The OutputStream
      * @return The number of bytes copied
      * @throws IOException If unable to copy
@@ -234,5 +239,37 @@ public final class IOUtil {
             value = "'" + value + "'";
         }
         return value;
+    }
+
+    public static SSLSocketFactory getTrustySSLSocketFactory() throws NoSuchAlgorithmException, KeyManagementException {
+        SSLContext context = null;
+        context = SSLContext.getInstance("TLS");
+        context.init(null, new TrustManager[]{new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[]{};
+            }
+        }}, new SecureRandom());
+
+        return context.getSocketFactory();
+    }
+
+    public static HostnameVerifier getTrustyHostnameVerifier() {
+        return new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        };
     }
 }

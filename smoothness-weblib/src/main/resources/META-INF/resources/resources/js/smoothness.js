@@ -212,7 +212,7 @@ jlab.getPrintUrl = function () {
     var uri = URI();
     uri.removeSearch("print");
     uri.addSearch("print", "Y");
-    return uri.toString();
+    return uri.path() + uri.search() + uri.hash();
 };
 jlab.getFullscreenUrl = function () {
     var uri = URI();
@@ -303,7 +303,7 @@ $(document).on("click", "#print-menu-item", function () {
 });
 $(document).on("click", "#image-menu-item", function () {
     var printUrl = jlab.getPrintUrl();
-    window.location = '/puppet-show/screenshot?filename=chart.png&viewportWidth=1024&viewportHeight=768&fullPage=true&omitBackground=false&ignoreHTTPSErrors=true&url=' + encodeURIComponent(printUrl);
+    window.location = jlab.contextPath + '/convert?filename=chart.png&url=' + encodeURIComponent(printUrl);
 });
 $(document).on("click", "#excel-menu-item", function () {
     $("#excel").click();
