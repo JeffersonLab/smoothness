@@ -14,7 +14,7 @@
 <%@attribute name="footnote" fragment="true" description="Footnote. (Optional)" %>
 <c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
 <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
-<c:set var="smoothnessLibver" value="2.16.0"/>
+<c:set var="smoothnessLibver" value="2.17.0"/>
 <!DOCTYPE html>
 <html>
     <head>        
