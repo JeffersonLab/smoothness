@@ -52,7 +52,7 @@ public class EditMovie extends HttpServlet {
             String description = request.getParameter("description");
             String rating = request.getParameter("rating");
             Integer duration = ParamConverter.convertInteger(request, "duration");
-            Date release = ParamConverter.convertGlobalDateTime(request, "release");
+            Date release = ParamConverter.convertFriendlyDate(request, "release");
 
             movieFacade.editMovie(id, title, description, rating, duration, release);
         } catch (EJBAccessException e) {

@@ -671,7 +671,7 @@ public final class TimeUtil {
      *
      * @return format pattern
      */
-    public static String getGlobalDateTimeFormatPattern() {
+    public static String getFriendlyDateTimePattern() {
         return "dd-MMM-yyyy HH:mm";
     }
 
@@ -680,8 +680,26 @@ public final class TimeUtil {
      *
      * @return placeholder text
      */
-    public static String getGlobalDateTimeFormatPlaceholder() {
+    public static String getFriendlyDateTimePlaceholder() {
         return "DD-MMM-YYYY hh:mm";
+    }
+
+    /**
+     * This is what is given to SimpleDateFormat
+     *
+     * @return format pattern
+     */
+    public static String getFriendlyDatePattern() {
+        return "dd-MMM-yyyy";
+    }
+
+    /**
+     * This is what users see
+     *
+     * @return placeholder text
+     */
+    public static String getFriendlyDatePlaceholder() {
+        return "DD-MMM-YYYY";
     }
 
     public static boolean isMonday() {

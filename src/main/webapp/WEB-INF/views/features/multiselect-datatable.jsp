@@ -168,7 +168,7 @@
                                     <td><c:out value="${movie.description}"/></td>
                                     <td><c:out value="${movie.mpaaRating}"/></td>
                                     <td><c:out value="${movie.durationMinutes}"/></td>
-                                    <td><c:out value="${movie.releaseDate}"/></td>
+                                    <td><fmt:formatDate value="${movie.releaseDate}" pattern="${s:getFriendlyDatePattern()}"/></td>
                                     <td><a href="#">Click</a></td>
                                 </tr>
                             </c:forEach>

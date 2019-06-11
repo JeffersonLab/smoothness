@@ -9,10 +9,18 @@
 <%@attribute name="secondaryNavigation" fragment="true"%>
 <s:tabbed-page title="${title}" category="${category}" keycloakClientIdKey="KEYCLOAK_CLIENT_ID_SMOOTHNESS_TEMPLATE">
     <jsp:attribute name="stylesheets">
+        <link rel="stylesheet" type="text/css" href="${cdnContextPath}/jquery-plugins/select2/3.5.2/select2.css"/>
+        <link rel="stylesheet" type="text/css"
+              href="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.3.1.css"/>
         <jsp:invoke fragment="stylesheets"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <jsp:invoke fragment="scripts"/>
+        <script type="text/javascript" src="${cdnContextPath}/jquery-plugins/select2/3.5.2/select2.min.js"></script>
+        <script type="text/javascript"
+                src="${cdnContextPath}/jquery-plugins/maskedinput/jquery.maskedinput-1.3.1.min.js"></script>
+        <script type="text/javascript"
+                src="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.3.1.js"></script>
+                <jsp:invoke fragment="scripts"/>
     </jsp:attribute>
     <jsp:attribute name="userExtra">
         <div>Welcome </div>
@@ -29,7 +37,7 @@
                 <a href="${pageContext.request.contextPath}/overview">Overview</a>
             </li>
             <li${fn:startsWith(currentPath, '/features') ? ' class="current-primary"' : ''}>
-                <a href="${pageContext.request.contextPath}/features/multiselect-datatable">Features</a>
+                <a href="${pageContext.request.contextPath}/features/single-select-datatable">Features</a>
             </li>
             <li${fn:startsWith(currentPath, '/breadcrumbs') ? ' class="current-primary"' : ''}>
                 <a href="${pageContext.request.contextPath}/breadcrumbs/crumb-one">Breadcrumb (demo)</a>

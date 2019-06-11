@@ -45,7 +45,7 @@
                     <label for="row-release">Release Date</label>
                 </div>
                 <div class="li-value">
-                    <input type="text" id="row-release"/>
+                    <input type="text" id="row-release" class="date-field" placeholder="${s:getFriendlyDatePlaceholder()}" autocomplete="off"/>
                 </div>
             </li>
         </ul>

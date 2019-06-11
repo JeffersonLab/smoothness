@@ -50,7 +50,7 @@ public class AddMovie extends HttpServlet {
             String description = request.getParameter("description");
             String rating = request.getParameter("rating");
             Integer duration = ParamConverter.convertInteger(request, "duration");
-            Date release = ParamConverter.convertGlobalDateTime(request, "release");
+            Date release = ParamConverter.convertFriendlyDate(request, "release");
 
             movieFacade.addMovie(title, description, rating, duration, release);
         } catch (EJBAccessException e) {

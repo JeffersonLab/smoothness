@@ -33,4 +33,24 @@
         <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
         <function-signature>boolean inArray(java.lang.Object[], java.lang.Object)</function-signature>
     </function>
+    <function>
+        <name>getFriendlyDateTimePlaceholder</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>java.lang.String getFriendlyDateTimePlaceholder()</function-signature>
+    </function>
+    <function>
+        <name>getFriendlyDatePlaceholder</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>java.lang.String getFriendlyDatePlaceholder()</function-signature>
+    </function>
+    <function>
+        <name>getFriendlyDateTimePattern</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>java.lang.String getFriendlyDateTimePattern()</function-signature>
+    </function>
+    <function>
+        <name>getFriendlyDatePattern</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>java.lang.String getFriendlyDatePattern()</function-signature>
+    </function>
 </taglib>

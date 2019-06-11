@@ -1,5 +1,7 @@
 package org.jlab.smoothness.presentation.util;
 
+import org.jlab.smoothness.business.util.TimeUtil;
+
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -209,8 +211,22 @@ public final class ParamConverter {
         return valueArray;
     }
 
-    public static Date convertGlobalDateTime(HttpServletRequest request, String name) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
+    public static Date convertFriendlyDateTime(HttpServletRequest request, String name) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat(TimeUtil.getFriendlyDateTimePattern());
+
+        Date value = null;
+
+        String valueStr = request.getParameter(name);
+
+        if (valueStr != null && !valueStr.isEmpty()) {
+            value = format.parse(valueStr);
+        }
+
+        return value;
+    }
+
+    public static Date convertFriendlyDate(HttpServletRequest request, String name) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat(TimeUtil.getFriendlyDatePattern());
 
         Date value = null;
 

@@ -1,5 +1,7 @@
 package org.jlab.smoothness.presentation.util;
 
+import org.jlab.smoothness.business.util.TimeUtil;
+
 /**
  *
  * @author ryans
@@ -23,5 +25,21 @@ public final class Functions {
         }
 
         return inArray;
+    }
+
+    public static String getFriendlyDatePlaceholder() {
+        return TimeUtil.getFriendlyDatePlaceholder();
+    }
+
+    public static String getFriendlyDateTimePlaceholder() {
+        return TimeUtil.getFriendlyDateTimePlaceholder();
+    }
+
+    public static String getFriendlyDatePattern() {
+        return TimeUtil.getFriendlyDatePattern();
+    }
+
+    public static String getFriendlyDateTimePattern() {
+        return TimeUtil.getFriendlyDateTimePattern();
     }
 }
