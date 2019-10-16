@@ -43,14 +43,27 @@ public class Feedback extends HttpServlet {
             String toCsv = System.getenv("FEEDBACK_TO_ADDRESS_CSV");
 
             // Set in your web.xml file
-            String from = getServletContext().getInitParameter("feedbackFromAddress");
+            String sender = getServletContext().getInitParameter("feedbackFromAddress");
+
+            String from = null;
+            String username = request.getRemoteUser();
+
+            if(username != null && username.contains(":")) {
+                username = username.split(":")[2];
+
+                from = username + "@jlab.org";
+            }
 
             if(toCsv == null || toCsv.isEmpty()) {
                 toCsv = getServletContext().getInitParameter("feedbackToAddressCsv");
             }
 
+            if(sender == null || sender.isEmpty()) {
+                sender = "wildfly@jlab.org";
+            }
+
             if(from == null || from.isEmpty()) {
-                from = "wildfly@jlab.org";
+                from = sender;
             }
 
             if(toCsv == null || toCsv.isEmpty()) {
@@ -58,7 +71,7 @@ public class Feedback extends HttpServlet {
             }
 
             emailService = new EmailService();
-            emailService.sendEmail(from, toCsv, subject, body, false);
+            emailService.sendEmail(sender, from, toCsv, subject, body, false);
         } catch(UserFriendlyException e) {
             errorReason = e.getMessage();
         } catch (Exception e) {

@@ -21,9 +21,10 @@ plugins {
 }
 
 group 'org.jlab'
-version '2.17.0'
+version '2.18.0'
 
-sourceCompatibility = 1.8
+sourceCompatibility = '10'
+targetCompatibility = '10'
 
 repositories {
     jcenter()

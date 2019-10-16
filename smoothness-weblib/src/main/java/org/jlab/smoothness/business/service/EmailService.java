@@ -22,8 +22,10 @@ public class EmailService {
         }
     }
 
-    private void doSend(Address from, Address[] toAddresses, String subject, String body, boolean html) throws MessagingException {
+    private void doSend(Address sender, Address from, Address[] toAddresses, String subject, String body, boolean html) throws MessagingException {
         MimeMessage message = new MimeMessage(mailSession);
+
+        message.setSender(sender);
 
         message.setFrom(from);
 
@@ -61,9 +63,14 @@ public class EmailService {
         return addressList.toArray(new Address[] {});
     }
 
-    public void sendEmail(String from, String toCsv, String subject, String body, boolean html) throws UserFriendlyException {
+    public void sendEmail(String sender, String from, String toCsv, String subject, String body, boolean html) throws UserFriendlyException {
         try {
+            Address senderAddress = new InternetAddress(sender);
             Address fromAddress = new InternetAddress(from);
+
+            if(sender == null || sender.isEmpty()) {
+                throw new UserFriendlyException("sender email address must not be empty");
+            }
 
             if(from == null || from.isEmpty()) {
                 throw new UserFriendlyException("from email address must not be empty");
@@ -83,7 +90,7 @@ public class EmailService {
 
             Address[] toAddresses = csvToAddressArray(toCsv);
 
-            doSend(fromAddress, toAddresses, subject, body, html);
+            doSend(senderAddress, fromAddress, toAddresses, subject, body, html);
         } catch (AddressException e) {
             throw new IllegalArgumentException("Invalid address", e);
         } catch (MessagingException e) {
