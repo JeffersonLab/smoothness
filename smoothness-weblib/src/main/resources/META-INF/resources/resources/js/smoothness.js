@@ -9,19 +9,19 @@ if (typeof String.prototype.startsWith !== 'function') {
 if (!String.prototype.encodeXml) {
     String.prototype.encodeXml = function () {
         return this.replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/'/g, '&apos;')
-                .replace(/"/g, '&quot;');
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/'/g, '&apos;')
+            .replace(/"/g, '&quot;');
     };
 }
 if (!String.prototype.decodeXml) {
     String.prototype.decodeXml = function () {
         return this.replace(/&quot;/g, '"')
-                .replace(/&apos;/g, '\'')
-                .replace(/&gt;/g, '>')
-                .replace(/&lt;/g, '<')
-                .replace(/&amp;/g, '&');
+            .replace(/&apos;/g, '\'')
+            .replace(/&gt;/g, '>')
+            .replace(/&lt;/g, '<')
+            .replace(/&amp;/g, '&');
     };
 }
 /**
@@ -111,13 +111,13 @@ jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
     }
 
     var $submitButton = $dialog.find(".dialog-submit-button"),
-            $cancelButton = $dialog.find(".dialog-close-button"),
-            $titleBarButton = $dialog.find(".ui-dialog-titlebar button");
+        $cancelButton = $dialog.find(".dialog-close-button"),
+        $titleBarButton = $dialog.find(".ui-dialog-titlebar button");
 
     $submitButton
-            .height($submitButton.height())
-            .width($submitButton.width())
-            .empty().append('<div class="button-indicator"></div>');
+        .height($submitButton.height())
+        .width($submitButton.width())
+        .empty().append('<div class="button-indicator"></div>');
     $cancelButton.prop("disabled", true);
     $titleBarButton.prop("disabled", true);
 
@@ -180,19 +180,19 @@ jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
 //Display a piece of another page in a dialog
 jlab.openPageInDialog = function (href, title) {
     $("<div class=\"page-dialog\"></div>")
-            .load(href + ' .dialog-content')
-            .dialog({
-                autoOpen: true,
-                title: title,
-                width: jlab.pageDialog.width,
-                height: jlab.pageDialog.height,
-                minWidth: jlab.pageDialog.minWidth,
-                minHeight: jlab.pageDialog.minHeight,
-                resizable: jlab.pageDialog.resizable,
-                close: function () {
-                    $(this).dialog('destroy').remove();
-                }
-            });
+        .load(href + ' .dialog-content')
+        .dialog({
+            autoOpen: true,
+            title: title,
+            width: jlab.pageDialog.width,
+            height: jlab.pageDialog.height,
+            minWidth: jlab.pageDialog.minWidth,
+            minHeight: jlab.pageDialog.minHeight,
+            resizable: jlab.pageDialog.resizable,
+            close: function () {
+                $(this).dialog('destroy').remove();
+            }
+        });
 };
 jlab.closePageDialogs = function () {
     $(".page-dialog").dialog('destroy').remove();
@@ -231,14 +231,14 @@ jlab.getExitFullscreenUrl = function () {
 /*Chart Axis Labels*/
 jlab.addYAxisLabel = function (label) {
     var yaxisLabel = $("<div class='axis-label y-axis-label'></div>")
-            .text(label)
-            .appendTo($("#chart-placeholder"));
+        .text(label)
+        .appendTo($("#chart-placeholder"));
     yaxisLabel.css("margin-top", yaxisLabel.width() / 2);
 };
 jlab.addXAxisLabel = function (label) {
     $("<div class='axis-label x-axis-label'></div>")
-            .text(label)
-            .appendTo($("#chart-placeholder"));
+        .text(label)
+        .appendTo($("#chart-placeholder"));
 };
 /**
  * Common Event Handlers
@@ -274,10 +274,25 @@ jlab.toFriendlyDateString = function (x) {
 
     return jlab.pad(day, 2) + '-' + jlab.triCharMonthNames[month] + '-' + year;
 };
+jlab.fromFriendlyDateTimeString = function(x) {
+    var day = parseInt(x.substring(0, 2)),
+        month = jlab.triCharMonthNames.indexOf(x.substring(3, 6)),
+        year = parseInt(x.substring(7, 11)),
+        hour = parseInt(x.substring(12, 14)),
+        minute = parseInt(x.substring(15, 17));
+    return new Date(year, month, day, hour, minute);
+};
+
+jlab.fromFriendlyDateString = function (x) {
+    var day = parseInt(x.substring(0, 2)),
+        month = jlab.triCharMonthNames.indexOf(x.substring(3, 6)),
+        year = parseInt(x.substring(7, 11));
+    return new Date(year, month, day);
+};
 jlab.updateDateRange = function (start, end, includeTime) {
     $("#custom-date-range-list").hide();
 
-    if(includeTime) {
+    if (includeTime) {
         $("#start").val(jlab.toFriendlyDateTimeString(start));
         $("#end").val(jlab.toFriendlyDateTimeString(end));
     } else {
@@ -329,10 +344,192 @@ jlab.getCcShiftEnd = function (dateInShift) {
 
     return end;
 };
-$(document).on("change", "#range", function () {
-    var selected = $("#range option:selected").val(),
+jlab.getStartOfWeek = function(dateInWeek, startDayOfWeekIndex) {
+    var startOfWeek = new Date(dateInWeek),
+         dayOfWeekIndex = dateInWeek.getDay(),
+        distance = startDayOfWeekIndex - dayOfWeekIndex;
+
+    if (distance < 0) {
+        distance = 7 + distance;
+    }
+
+    startOfWeek.setDate(startOfWeek.getDate() + distance - 7);
+
+    return startOfWeek;
+};
+jlab.getStartOfFiscalYear = function(dateInYear) {
+
+    const octIndex = 9; /* October */
+
+    var start = new Date(dateInYear);
+
+    if(start.getMonth() < octIndex) {
+        start.setFullYear(start.getFullYear() - 1);
+    }
+
+    start.setMonth(octIndex);
+    start.setDate(1);
+    start.setHours(0);
+    start.setMinutes(0);
+    start.setSeconds(0);
+    start.setMilliseconds(0);
+
+    return start;
+};
+jlab.selectRange = function() {
+    var startInput = $("input#start"),
+        endInput = $("input#end"),
+        sevenAmOffset = $("#range").hasClass("seven-am-offset"),
         includeTime = $("#range").hasClass("datetime-range"),
-        sevenAmOffset = $("#range").hasClass("seven-am-offset");
+        currentRun = null,
+        previousRun = null;
+
+    if(startInput.length > 0 && endInput.length > 0) {
+        var start = startInput.val();
+        var end = endInput.val();
+
+        if(includeTime) {
+            start = jlab.fromFriendlyDateTimeString(start);
+            end = jlab.fromFriendlyDateTimeString(end);
+        } else {
+            start = jlab.fromFriendlyDateString(start);
+            end = jlab.fromFriendlyDateString(end);
+        }
+
+        var range = jlab.encodeRange(start, end, sevenAmOffset, currentRun, previousRun);
+
+        $("#range").val(range);
+    }
+};
+jlab.encodeRange = function (start, end, sevenAmOffset, currentRun, previousRun) {
+    const wedIndex = 3; /* Wednesday */
+
+    var now = new Date();
+
+    now.setMilliseconds(0);
+    now.setSeconds(0);
+    now.setMinutes(0);
+
+    var today = new Date(now);
+
+    if (sevenAmOffset) {
+        today.setHours(7);
+    } else {
+        today.setHours(0);
+    }
+
+    var tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    var oneDayAgo = new Date(today);
+    oneDayAgo.setDate(today.getDate() - 1);
+
+    var threeDaysAgo = new Date(today);
+    threeDaysAgo.setDate(today.getDate() - 3);
+
+    var sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+
+    var tenDaysAgo = new Date(today);
+    tenDaysAgo.setDate(today.getDate() - 10);
+
+    var currentShiftStart = jlab.getCcShiftStart(now),
+        currentShiftEnd = jlab.getCcShiftEnd(now);
+
+    var dateInPreviousShift = new Date(currentShiftStart);
+    dateInPreviousShift.setHours(currentShiftStart.getHours() - 1);
+
+    var previousShiftStart = jlab.getCcShiftStart(dateInPreviousShift),
+        previousShiftEnd = jlab.getCcShiftEnd(dateInPreviousShift);
+
+    var currentWeekStart = jlab.getStartOfWeek(today, wedIndex);
+
+    var currentWeekEnd = new Date(currentWeekStart);
+    currentWeekEnd.setDate(currentWeekStart.getDate() + 7);
+
+    var previousWeekStart = new Date(currentWeekStart);
+    previousWeekStart.setDate(currentWeekStart.getDate() - 7);
+
+    var previousWeekEnd = new Date(currentWeekEnd);
+    previousWeekEnd.setDate(currentWeekEnd.getDate() - 7);
+
+    var currentMonthStart = new Date(now);
+    currentMonthStart.setDate(1);
+    currentMonthStart.setHours(0); /* now has cleared minutes, seconds, milliseconds, but not hours because shift logic uses it */
+
+    var currentMonthEnd = new Date(currentMonthStart);
+    currentMonthEnd.setMonth(currentMonthStart.getMonth() + 1);
+
+    var previousMonthStart = new Date(currentMonthStart);
+    previousMonthStart.setMonth(currentMonthStart.getMonth() - 1);
+
+    var previousMonthEnd = currentMonthStart;
+
+    var currentYearStart = new Date(currentMonthStart);
+    currentYearStart.setMonth(0); /*Zero indexed month = January*/
+
+    var currentYearEnd = new Date(currentYearStart);
+    currentYearEnd.setFullYear(currentYearStart.getFullYear() + 1);
+
+    var previousYearStart = new Date(currentYearStart);
+    previousYearStart.setFullYear(currentYearStart.getFullYear() - 1);
+
+    var previousYearEnd = currentYearStart;
+
+    var currentFiscalYearStart = jlab.getStartOfFiscalYear(now);
+
+    var currentFiscalYearEnd = new Date(currentFiscalYearStart);
+    currentFiscalYearEnd.setFullYear(currentFiscalYearStart.getFullYear() + 1);
+
+    var previousFiscalYearStart = new Date(currentFiscalYearStart);
+    previousFiscalYearStart.setFullYear(currentFiscalYearStart.getFullYear() - 1);
+
+    var previousFiscalYearEnd = currentFiscalYearStart;
+
+    var range = "custom";
+
+    if (end.getTime() == currentShiftEnd.getTime() && start.getTime() == currentShiftStart.getTime()) {
+        range = "0ccshift";
+    } else if (end.getTime() == previousShiftEnd.getTime() && start.getTime() == previousShiftStart.getTime()) {
+        range = "1ccshift";
+    } else if (end.getTime() == tomorrow.getTime() && start.getTime() == today.getTime()) {
+        range = "0day";
+    } else if (end.getTime() == today.getTime() && start.getTime() == oneDayAgo.getTime()) {
+        range = "1day";
+    } else if (end.getTime() == currentWeekEnd.getTime() && start.getTime() == currentWeekStart.getTime()) {
+        range = "0week";
+    } else if (end.getTime() == previousWeekEnd.getTime() && start.getTime() == previousWeekStart.getTime()) {
+        range = "1week";
+    } else if (end.getTime() == currentMonthEnd.getTime() && start.getTime() == currentMonthStart.getTime()) {
+        range = "0month";
+    } else if (end.getTime() == previousMonthEnd.getTime() && start.getTime() == previousMonthStart.getTime()) {
+        range = "1month";
+    } else if (end.getTime() == currentYearEnd.getTime() && start.getTime() == currentYearStart.getTime()) {
+        range = "0year";
+    } else if (end.getTime() == previousYearEnd.getTime() && start.getTime() == previousYearStart.getTime()) {
+        range = "1year";
+    } else if (end.getTime() == currentFiscalYearEnd.getTime() && start.getTime() == currentFiscalYearStart.getTime()) {
+        range = "0fiscalyear";
+    } else if (end.getTime() == previousFiscalYearEnd.getTime() && start.getTime() == previousFiscalYearStart.getTime()) {
+        range = "1fiscalyear";
+    } else if (currentRun != null && currentRun.getEnd().getTime() == end.getTime() && currentRun.getStart().getTime() == start.getTime()) {
+        range = "0run";
+    } else if (previousRun != null && previousRun.getEnd().getTime() == end.getTime() && previousRun.getStart().getTime() == start.getTime()) {
+        range = "1run";
+    } else if (end.getTime() == today.getTime()) {
+        if (start.getTime() == tenDaysAgo.getTime()) {
+            range = "past10days";
+        } else if (start.getTime() == sevenDaysAgo.getTime()) {
+            range = "past7days";
+        } else if (start.getTime() == threeDaysAgo.getTime()) {
+            range = "past3days";
+        }
+    }
+
+    return range;
+}
+jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
+    var range = {start: null, end: null};
 
     const wedIndex = 3; /* Wednesday */
     const octIndex = 9; /* October */
@@ -344,7 +541,7 @@ $(document).on("change", "#range", function () {
 
             end.setFullYear(end.getFullYear() - 1);
 
-            if(end.getMonth() < octIndex) {
+            if (end.getMonth() < octIndex) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
@@ -364,7 +561,7 @@ $(document).on("change", "#range", function () {
             var start = new Date(),
                 end = new Date();
 
-            if(end.getMonth() < octIndex) {
+            if (end.getMonth() < octIndex) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
@@ -462,7 +659,7 @@ $(document).on("change", "#range", function () {
             end.setSeconds(0);
             end.setMinutes(0);
 
-            if(sevenAmOffset) {
+            if (sevenAmOffset) {
                 end.setHours(7);
             } else {
                 end.setHours(0);
@@ -470,7 +667,7 @@ $(document).on("change", "#range", function () {
 
             var dayOfWeekIndex = end.getDay(),
                 distance = wedIndex - dayOfWeekIndex;
-            if(distance < 0) {
+            if (distance < 0) {
                 distance = 7 + distance;
             }
             end.setDate(end.getDate() + distance - 7);
@@ -488,7 +685,7 @@ $(document).on("change", "#range", function () {
             end.setSeconds(0);
             end.setMinutes(0);
 
-            if(sevenAmOffset) {
+            if (sevenAmOffset) {
                 end.setHours(7);
             } else {
                 end.setHours(0);
@@ -496,7 +693,7 @@ $(document).on("change", "#range", function () {
 
             var dayOfWeekIndex = end.getDay(),
                 distance = wedIndex - dayOfWeekIndex;
-            if(distance < 0) {
+            if (distance < 0) {
                 distance = 7 + distance;
             }
             end.setDate(end.getDate() + distance);
@@ -514,7 +711,7 @@ $(document).on("change", "#range", function () {
             end.setSeconds(0);
             end.setMinutes(0);
 
-            if(sevenAmOffset) {
+            if (sevenAmOffset) {
                 end.setHours(7);
             } else {
                 end.setHours(0);
@@ -533,7 +730,7 @@ $(document).on("change", "#range", function () {
             end.setSeconds(0);
             end.setMinutes(0);
 
-            if(sevenAmOffset) {
+            if (sevenAmOffset) {
                 end.setHours(7);
             } else {
                 end.setHours(0);
@@ -552,7 +749,7 @@ $(document).on("change", "#range", function () {
             end.setSeconds(0);
             end.setMinutes(0);
 
-            if(sevenAmOffset) {
+            if (sevenAmOffset) {
                 end.setHours(7);
             } else {
                 end.setHours(0);
@@ -571,7 +768,7 @@ $(document).on("change", "#range", function () {
             end.setSeconds(0);
             end.setMinutes(0);
 
-            if(sevenAmOffset) {
+            if (sevenAmOffset) {
                 end.setHours(7);
             } else {
                 end.setHours(0);
@@ -590,7 +787,7 @@ $(document).on("change", "#range", function () {
             end.setSeconds(0);
             end.setMinutes(0);
 
-            if(sevenAmOffset) {
+            if (sevenAmOffset) {
                 end.setHours(7);
             } else {
                 end.setHours(0);
@@ -620,6 +817,24 @@ $(document).on("change", "#range", function () {
             $("#custom-date-range-list").show();
             break;
     }
+
+    return range;
+};
+$(document).on("change", "#range", function () {
+    var selected = $("#range option:selected").val(),
+        includeTime = $("#range").hasClass("datetime-range"),
+        sevenAmOffset = $("#range").hasClass("seven-am-offset");
+
+    if(selected === 'custom') {
+        $("#custom-date-range-list").show();
+    } else {
+        var range = decodeRange(selected, sevenAmOffset, null, null);
+
+        if(range.start != null && range.end != null) {
+            jlab.updateDateRange(start, end, includeTime);
+        }
+    }
+
 });
 // Dialog events
 $(document).on("click", ".dialog-ready", function () {
@@ -700,7 +915,7 @@ $(document).on("click", "#table-row-save-button", function () {
     });
 });
 /**
- * 
+ *
  * Multiselect table
  */
 $(document).on("click", ".multiselect-table tbody tr", function (e) {
@@ -713,9 +928,9 @@ $(document).on("click", ".multiselect-table tbody tr", function (e) {
             $(this).addClass("selected-row").siblings().removeClass("selected-row");
         } else { // Select a range
             var first = jlab.editableRowTable.lastSelectedRow,
-                    second = $(this).index(),
-                    start = Math.min(first, second),
-                    end = Math.max(first, second);
+                second = $(this).index(),
+                start = Math.min(first, second),
+                end = Math.max(first, second);
 
             /*console.log('start: ' + start);
              console.log('end: ' + end);*/
@@ -760,14 +975,15 @@ $(document).on("click", ".expand-icon", function () {
     $(this).closest("table").toggleClass("expanded-table");
 });
 /**
- * DOM Ready actions 
+ * DOM Ready actions
  */
 $(function () {
     // Create report buttons
     $("#fullscreen-button, #exit-fullscreen-button").button().show();
     $("#export-menu-button").button({
         icons: {
-            secondary: "ui-icon-triangle-1-s"}
+            secondary: "ui-icon-triangle-1-s"
+        }
     }).click(function () {
         var menu = $("#export-menu").slideDown();
 
@@ -788,19 +1004,27 @@ $(function () {
         minHeight: jlab.editableRowTable.dialog.minHeight,
         resizable: jlab.editableRowTable.dialog.resizable
     });
+
+    jlab.selectRange();
 });
 /*Autologin*/
-jlab.su = function(url) {
+jlab.su = function (url) {
     var i = document.createElement('iframe');
     i.style.display = 'none';
-    i.onload = function() { i.parentNode.removeChild(i); window.location.href = url; };
+    i.onload = function () {
+        i.parentNode.removeChild(i);
+        window.location.href = url;
+    };
     i.src = jlab.logoutUrl;
     document.body.appendChild(i);
 };
-jlab.login = function(url) {
+jlab.login = function (url) {
     var i = document.createElement('iframe');
     i.style.display = 'none';
-    i.onload = function() { i.parentNode.removeChild(i); window.location.href = url; };
+    i.onload = function () {
+        i.parentNode.removeChild(i);
+        window.location.href = url;
+    };
     i.src = jlab.loginUrl;
     document.body.appendChild(i);
 };
@@ -811,7 +1035,7 @@ $(document).on("click", "#login-link", function () {
 
     return false;
 });
-$(document).on("click", "#su-link", function() {
+$(document).on("click", "#su-link", function () {
     var url = $(this).attr("href");
 
     jlab.su(url);

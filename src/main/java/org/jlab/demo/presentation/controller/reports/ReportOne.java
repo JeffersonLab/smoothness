@@ -48,7 +48,7 @@ public class ReportOne extends HttpServlet {
         String range = TimeUtil.encodeRange(params.getStart(), params.getEnd(), true, null, null);
 
         request.setAttribute("message", paramHandler.message(params));
-        request.setAttribute("range", range);
+        //request.setAttribute("range", range); // Let's like client code figure it out!
 
         request.getRequestDispatcher("/WEB-INF/views/reports/report-one.jsp").forward(request, response);
     }
