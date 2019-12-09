@@ -16,7 +16,7 @@
 <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
 <c:set var="smoothnessLibver" value="2.17.0"/>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><c:out value="${initParam.appShortName}"/> - ${empty category ? '' : category.concat(' - ')}${title}</title>
@@ -68,7 +68,7 @@
                                 <c:param name="kc_idp_hint" value="ace-su-keycloak-oidc"/>
                                 <c:param name="returnUrl" value="${absHostUrl.concat(domainRelativeReturnUrl)}"/>
                             </c:url>
-                            <a id="login-link" href="${loginUrl}">Login</a> (<a id="su-link" href="${suUrl}" href="#">SU</a>)
+                            <a id="login-link" href="${loginUrl}">Login</a> (<a id="su-link" href="${suUrl}">SU</a>)
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -112,16 +112,16 @@
             <c:when test="${'NONE' eq resourceLocation}">
             </c:when>
             <c:when test="${'CDN' eq resourceLocation}">
-                <script type="text/javascript" src="${cdnContextPath}/jquery/1.10.2.min.js"></script>
-                <script type="text/javascript" src="${cdnContextPath}/jquery-ui/1.10.3/jquery-ui.min.js"></script>
-                <script type="text/javascript" src="${cdnContextPath}/uri/uri-1.14.1.min.js"></script>
-                <script type="text/javascript" src="${cdnContextPath}/jlab-theme/smoothness/${smoothnessLibver}/js/smoothness.min.js"></script>
+                <script src="${cdnContextPath}/jquery/1.10.2.min.js"></script>
+                <script src="${cdnContextPath}/jquery-ui/1.10.3/jquery-ui.min.js"></script>
+                <script src="${cdnContextPath}/uri/uri-1.14.1.min.js"></script>
+                <script src="${cdnContextPath}/jlab-theme/smoothness/${smoothnessLibver}/js/smoothness.min.js"></script>
             </c:when>
             <c:otherwise><!-- LOCAL -->
-                <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
-                <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui-1.10.3/jquery-ui.min.js"></script>
-                <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/uri-1.14.1.min.js"></script>
-                <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
+                <script src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
+                <script src="${pageContext.request.contextPath}/resources/jquery-ui-1.10.3/jquery-ui.min.js"></script>
+                <script src="${pageContext.request.contextPath}/resources/js/uri-1.14.1.min.js"></script>
+                <script src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
             </c:otherwise>
         </c:choose>
         <c:url var="loginUrl" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/auth">
