@@ -374,6 +374,25 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    public static Date startOfFiscalYear(Date date, Calendar tz) {
+        Calendar cal = tz;
+
+        cal.setTime(date);
+
+        if(cal.get(Calendar.MONTH) < Calendar.OCTOBER) {
+            cal.add(Calendar.YEAR, -1);
+        }
+
+        cal.set(Calendar.MONTH, Calendar.OCTOBER);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        return cal.getTime();
+    }
+
     public static Date startOfNextYear(Date date, Calendar tz) {
         return addYears(startOfYear(date, tz), 1);
     }
@@ -513,6 +532,18 @@ public final class TimeUtil {
         return result;
     }
 
+    public static Date startOfWeek(Date today, int dayOfWeek) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        int currentDayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        int distance = dayOfWeek - currentDayOfWeek;
+        if(distance < 0) {
+            distance = 7 + distance;
+        }
+        c.set(Calendar.DATE, c.get(Calendar.DATE) + distance - 7);
+
+        return c.getTime();
+    }
 
     public static Date startOfDay(Date day, Calendar tz) {
         Calendar cal = tz;
@@ -562,15 +593,106 @@ public final class TimeUtil {
         return formatter.format(date);
     }
 
+    public static String encodeRange(Date start, Date end, boolean sevenAmAdjusted, DateRange currentRun, DateRange previousRun) {
+        Calendar c = Calendar.getInstance();
+        Date now = new Date();
+        c.set(Calendar.MILLISECOND, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MINUTE, 0);
+
+        if(sevenAmAdjusted) {
+            c.set(Calendar.HOUR_OF_DAY, 7);
+        } else {
+            c.set(Calendar.HOUR_OF_DAY, 0);
+        }
+
+        Date today = c.getTime();
+        c.add(Calendar.DATE, -1);
+        Date oneDayAgo = c.getTime();
+        c.add(Calendar.DATE, -6);
+        Date sevenDaysAgo = c.getTime();
+        c.add(Calendar.DATE, 8);
+        Date tomorrow = c.getTime();
+        c.add(Calendar.DATE, 18);
+
+        Date tenDaysAgo = TimeUtil.addDays(sevenDaysAgo, -3);
+        Date threeDaysAgo = TimeUtil.addDays(sevenDaysAgo, 4);
+        Date currentShiftStart = TimeUtil.getCcShiftStart(now);
+        Date currentShiftEnd = TimeUtil.getCcShiftEnd(now);
+        Date dateInPreviousShift = TimeUtil.addHours(currentShiftStart, -1);
+        Date previousShiftStart = TimeUtil.getCcShiftStart(dateInPreviousShift);
+        Date previousShiftEnd = TimeUtil.getCcShiftEnd(dateInPreviousShift);
+        Date currentWeekStart = TimeUtil.startOfWeek(today, Calendar.WEDNESDAY);
+        Date currentWeekEnd = TimeUtil.addDays(currentWeekStart, 7);
+        Date previousWeekStart = TimeUtil.addDays(currentWeekStart, -7);
+        Date previousWeekEnd = TimeUtil.addDays(currentWeekEnd, -7);
+        Date currentMonthStart = TimeUtil.startOfMonth(today, c);
+        Date currentMonthEnd = TimeUtil.startOfNextMonth(today, c);
+        Date previousMonthStart = TimeUtil.addMonths(currentMonthStart, -1);
+        Date previousMonthEnd = currentMonthStart;
+        Date currentYearStart = TimeUtil.startOfYear(today, c);
+        Date currentYearEnd = TimeUtil.startOfNextYear(today, c);
+        Date previousYearStart = TimeUtil.addYears(currentYearStart, -1);
+        Date previousYearEnd = currentYearStart;
+        Date currentFiscalYearStart = TimeUtil.startOfFiscalYear(today, c);
+        Date currentFiscalYearEnd = TimeUtil.addYears(currentFiscalYearStart, 1);
+        Date previousFiscalYearStart = TimeUtil.addYears(currentFiscalYearStart, -1);
+        Date previousFiscalYearEnd = currentFiscalYearStart;
+
+        String range = "custom";
+
+        if (end.getTime() == currentShiftEnd.getTime() && start.getTime() == currentShiftStart.getTime()) {
+            range = "0ccshift";
+        } else if (end.getTime() == previousShiftEnd.getTime() && start.getTime() == previousShiftStart.getTime()) {
+            range = "1ccshift";
+        } else if (end.getTime() == tomorrow.getTime() && start.getTime() == today.getTime()) {
+            range = "0day";
+        } else if (end.getTime() == today.getTime() && start.getTime() == oneDayAgo.getTime()) {
+            range = "1day";
+        } else if (end.getTime() == currentWeekEnd.getTime() && start.getTime() == currentWeekStart.getTime()) {
+            range = "0week";
+        } else if (end.getTime() == previousWeekEnd.getTime() && start.getTime() == previousWeekStart.getTime()) {
+            range = "1week";
+        } else if (end.getTime() == currentMonthEnd.getTime() && start.getTime() == currentMonthStart.getTime()) {
+            range = "0month";
+        } else if (end.getTime() == previousMonthEnd.getTime() && start.getTime() == previousMonthStart.getTime()) {
+            range = "1month";
+        } else if (end.getTime() == currentYearEnd.getTime() && start.getTime() == currentYearStart.getTime()) {
+            range = "0year";
+        } else if (end.getTime() == previousYearEnd.getTime() && start.getTime() == previousYearStart.getTime()) {
+            range = "1year";
+        } else if (end.getTime() == currentFiscalYearEnd.getTime() && start.getTime() == currentFiscalYearStart.getTime()) {
+            range = "0fiscalyear";
+        } else if (end.getTime() == previousFiscalYearEnd.getTime() && start.getTime() == previousFiscalYearStart.getTime()) {
+            range = "1fiscalyear";
+        } else if (currentRun != null && currentRun.getEnd().getTime() == end.getTime() && currentRun.getStart().getTime() == start.getTime()) {
+            range = "0run";
+        } else if (previousRun != null && previousRun.getEnd().getTime() == end.getTime() && previousRun.getStart().getTime() == start.getTime()) {
+            range = "1run";
+        } else if (end.getTime() == today.getTime()) {
+            if (start.getTime() == tenDaysAgo.getTime()) {
+                range = "past10days";
+            } else if (start.getTime() == sevenDaysAgo.getTime()) {
+                range = "past7days";
+            } else if (start.getTime() == threeDaysAgo.getTime()) {
+                range = "past3days";
+            }
+        }
+
+        return range;
+    }
+
     public static String formatSmartRangeSeparateTime(Date start, Date end) {
         SimpleDateFormat sFormat;
         SimpleDateFormat eFormat;
         boolean sameYear;
         boolean sameMonth;
         boolean sameDay;
+        boolean firstDayOfMonth;
         boolean oneDaySpecialCase = false;
         boolean oneMonthSpecialCase = false;
         boolean oneYearSpecialCase = false;
+        boolean fiscalYearSpecialCase = false;
         String sHourFormat = "";
         String eHourFormat = "";
         String result;
@@ -607,12 +729,19 @@ public final class TimeUtil {
             if (!oneDaySpecialCase) {
                 special.setTime(start);
                 special.add(Calendar.MONTH, 1);
-                oneMonthSpecialCase = special.getTime().equals(end);
+                firstDayOfMonth = special.get(Calendar.DAY_OF_MONTH) == 1;
+                oneMonthSpecialCase = (firstDayOfMonth && special.getTime().equals(end));
 
-                if (!oneMonthSpecialCase) {
+                if (!oneMonthSpecialCase && firstDayOfMonth) {
                     special.setTime(start);
                     special.add(Calendar.YEAR, 1);
-                    oneYearSpecialCase = special.getTime().equals(end);
+                    oneYearSpecialCase = (special.get(Calendar.MONTH) == Calendar.JANUARY &&
+                            special.getTime().equals(end));
+
+                    if(!oneYearSpecialCase) {
+                        fiscalYearSpecialCase = (special.get(Calendar.MONTH) == Calendar.OCTOBER &&
+                                special.getTime().equals(end));
+                    }
                 }
             }
         }
@@ -635,6 +764,12 @@ public final class TimeUtil {
             SimpleDateFormat formatter = new SimpleDateFormat(format);
 
             result = formatter.format(start);
+        } else if(fiscalYearSpecialCase) {
+            String format = "'Fiscal Year 'yyyy";
+
+            SimpleDateFormat formatter = new SimpleDateFormat(format);
+
+            result = formatter.format(end);
         } else {
             sameYear = sCal.get(Calendar.YEAR) == eCal.get(Calendar.YEAR);
 

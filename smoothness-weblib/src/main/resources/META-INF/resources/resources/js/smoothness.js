@@ -257,6 +257,360 @@ $(document).keyup(function (e) {
         $('#filter-flyout-panel').slideUp();
     }
 });
+// Date Range selection events
+jlab.toFriendlyDateTimeString = function (x) {
+    var year = x.getFullYear(),
+        month = x.getMonth(),
+        day = x.getDate(),
+        hour = x.getHours(),
+        minute = x.getMinutes();
+
+    return jlab.pad(day, 2) + '-' + jlab.triCharMonthNames[month] + '-' + year + ' ' + jlab.pad(hour, 2) + ':' + jlab.pad(minute, 2);
+};
+jlab.toFriendlyDateString = function (x) {
+    var year = x.getFullYear(),
+        month = x.getMonth(),
+        day = x.getDate();
+
+    return jlab.pad(day, 2) + '-' + jlab.triCharMonthNames[month] + '-' + year;
+};
+jlab.updateDateRange = function (start, end, includeTime) {
+    $("#custom-date-range-list").hide();
+
+    if(includeTime) {
+        $("#start").val(jlab.toFriendlyDateTimeString(start));
+        $("#end").val(jlab.toFriendlyDateTimeString(end));
+    } else {
+        $("#start").val(jlab.toFriendlyDateString(start));
+        $("#end").val(jlab.toFriendlyDateString(end));
+    }
+};
+jlab.getCcShiftStart = function (dateInShift) {
+    var start = new Date(dateInShift.getTime());
+
+    start.setMinutes(0);
+    start.setSeconds(0);
+    start.setMilliseconds(0);
+
+    var hour = start.getHours();
+
+    if (hour === 23) {
+        // Already start!
+    } else if (hour <= 6) {
+        start.setDate(start.getDate() - 1);
+        start.setHours(23);
+    } else if (hour <= 14) {
+        start.setHours(7);
+    } else {
+        start.setHours(15);
+    }
+
+    return start;
+};
+jlab.getCcShiftEnd = function (dateInShift) {
+    var end = new Date(dateInShift.getTime());
+
+    end.setMinutes(0);
+    end.setSeconds(0);
+    end.setMilliseconds(0);
+
+    var hour = end.getHours();
+
+    if (hour === 23) {
+        end.setDate(end.getDate() + 1);
+        end.setHours(7);
+    } else if (hour <= 6) {
+        end.setHours(7);
+    } else if (hour <= 14) {
+        end.setHours(15);
+    } else {
+        end.setHours(23);
+    }
+
+    return end;
+};
+$(document).on("change", "#range", function () {
+    var selected = $("#range option:selected").val(),
+        includeTime = $("#range").hasClass("datetime-range"),
+        sevenAmOffset = $("#range").hasClass("seven-am-offset");
+
+    const wedIndex = 3; /* Wednesday */
+    const octIndex = 9; /* October */
+
+    switch (selected) {
+        case '1fiscalyear':
+            var start = new Date(),
+                end = new Date();
+
+            end.setFullYear(end.getFullYear() - 1);
+
+            if(end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setFullYear(end.getFullYear() + 1);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '0fiscalyear':
+            var start = new Date(),
+                end = new Date();
+
+            if(end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setFullYear(end.getFullYear() + 1);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '1year':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMonth(0);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            start.setFullYear(end.getFullYear() - 1);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '0year':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMonth(0);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setFullYear(end.getFullYear() + 1);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '1run':
+            var start = jlab.previousRun.start,
+                end = jlab.previousRun.end;
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '0run':
+            var start = jlab.currentRun.start,
+                end = jlab.currentRun.end;
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '1month':
+            var start = new Date(),
+                end = new Date();
+
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            start.setMonth(end.getMonth() - 1);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '0month':
+            var start = new Date(),
+                end = new Date();
+
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 1);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '1week':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            var dayOfWeekIndex = end.getDay(),
+                distance = wedIndex - dayOfWeekIndex;
+            if(distance < 0) {
+                distance = 7 + distance;
+            }
+            end.setDate(end.getDate() + distance - 7);
+
+            start.setTime(end.getTime());
+            start.setDate(start.getDate() - 7);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break
+        case '0week':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            var dayOfWeekIndex = end.getDay(),
+                distance = wedIndex - dayOfWeekIndex;
+            if(distance < 0) {
+                distance = 7 + distance;
+            }
+            end.setDate(end.getDate() + distance);
+
+            start.setTime(end.getTime());
+            start.setDate(start.getDate() - 7);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case 'past10days':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+
+            if(sevenAmOffset) {
+                end.setHours(7);
+            } else {
+                end.setHours(0);
+            }
+
+            start.setTime(end.getTime());
+            start.setDate(start.getDate() - 10);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case 'past7days':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+
+            if(sevenAmOffset) {
+                end.setHours(7);
+            } else {
+                end.setHours(0);
+            }
+
+            start.setTime(end.getTime());
+            start.setDate(start.getDate() - 7);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case 'past3days':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+
+            if(sevenAmOffset) {
+                end.setHours(7);
+            } else {
+                end.setHours(0);
+            }
+
+            start.setTime(end.getTime());
+            start.setDate(start.getDate() - 3);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '0day':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+
+            if(sevenAmOffset) {
+                end.setHours(7);
+            } else {
+                end.setHours(0);
+            }
+
+            start.setTime(end.getTime());
+            end.setDate(end.getDate() + 1);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '1day':
+            var start = new Date(),
+                end = new Date();
+
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+
+            if(sevenAmOffset) {
+                end.setHours(7);
+            } else {
+                end.setHours(0);
+            }
+
+            start.setTime(end.getTime());
+            start.setDate(start.getDate() - 1);
+
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case '1shift':
+            var now = new Date(),
+                dateInPreviousShift = jlab.getCcShiftStart(now);
+            dateInPreviousShift.setHours(dateInPreviousShift.getHours() - 1);
+
+            var start = jlab.getCcShiftStart(dateInPreviousShift),
+                end = jlab.getCcShiftEnd(dateInPreviousShift);
+            jlab.updateDateRange(start, end);
+            break;
+        case '0shift':
+            var now = new Date(),
+                start = jlab.getCcShiftStart(now),
+                end = jlab.getCcShiftEnd(now);
+            jlab.updateDateRange(start, end, includeTime);
+            break;
+        case 'custom':
+            $("#custom-date-range-list").show();
+            break;
+    }
+});
 // Dialog events
 $(document).on("click", ".dialog-ready", function () {
     var title = $(this).attr("data-dialog-title");
