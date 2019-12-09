@@ -461,7 +461,12 @@ $(document).on("change", "#range", function () {
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
-            end.setHours(0);
+
+            if(sevenAmOffset) {
+                end.setHours(7);
+            } else {
+                end.setHours(0);
+            }
 
             var dayOfWeekIndex = end.getDay(),
                 distance = wedIndex - dayOfWeekIndex;
@@ -482,7 +487,12 @@ $(document).on("change", "#range", function () {
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
-            end.setHours(0);
+
+            if(sevenAmOffset) {
+                end.setHours(7);
+            } else {
+                end.setHours(0);
+            }
 
             var dayOfWeekIndex = end.getDay(),
                 distance = wedIndex - dayOfWeekIndex;
