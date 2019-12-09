@@ -41,7 +41,7 @@
 
                                             <option value="1month"${range eq '1month' ? ' selected="selected"' : ''}>Previous Month</option>
                                             <option value="1week"${range eq '1week' ? ' selected="selected"' : ''}>Previous Week (from Wed)</option>
-                                            <option value="1shift"${range eq '1shift' ? ' selected="selected"' : ''}>Previous CC Shift</option>
+                                            <option value="1ccshift"${range eq '1ccshift' ? ' selected="selected"' : ''}>Previous CC Shift</option>
                                             <option value="0fiscalyear"${range eq '0fiscalyear' ? ' selected="selected"' : ''}>Current Fiscal Year</option>
                                             <option value="0year"${range eq '0year' ? ' selected="selected"' : ''}>Current Year</option>
 
@@ -51,7 +51,7 @@
 
                                             <option value="0month"${range eq '0month' ? ' selected="selected"' : ''}>Current Month</option>
                                             <option value="0week"${range eq '0week' ? ' selected="selected"' : ''}>Current Week (from Wed)</option>
-                                            <option value="0shift"${range eq '0shift' ? ' selected="selected"' : ''}>Current CC Shift</option>
+                                            <option value="0ccshift"${range eq '0ccshift' ? ' selected="selected"' : ''}>Current CC Shift</option>
                                             <option value="past10days"${range eq 'past10days' ? ' selected="selected"' : ''}>Past 10 Days</option>
                                             <option value="past7days"${range eq 'past7days' ? ' selected="selected"' : ''}>Past 7 Days</option>
                                             <option value="past3days"${range eq 'past3days' ? ' selected="selected"' : ''}>Past 3 Days</option>

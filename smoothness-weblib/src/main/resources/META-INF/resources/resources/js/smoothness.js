@@ -591,16 +591,16 @@ $(document).on("change", "#range", function () {
 
             jlab.updateDateRange(start, end, includeTime);
             break;
-        case '1shift':
+        case '1ccshift':
             var now = new Date(),
                 dateInPreviousShift = jlab.getCcShiftStart(now);
             dateInPreviousShift.setHours(dateInPreviousShift.getHours() - 1);
 
             var start = jlab.getCcShiftStart(dateInPreviousShift),
                 end = jlab.getCcShiftEnd(dateInPreviousShift);
-            jlab.updateDateRange(start, end);
+            jlab.updateDateRange(start, end, includeTime);
             break;
-        case '0shift':
+        case '0ccshift':
             var now = new Date(),
                 start = jlab.getCcShiftStart(now),
                 end = jlab.getCcShiftEnd(now);
