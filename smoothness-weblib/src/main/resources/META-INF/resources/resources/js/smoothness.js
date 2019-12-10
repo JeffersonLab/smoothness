@@ -72,7 +72,7 @@ jlab.requestStart = function () {
 jlab.requestEnd = function () {
     jlab.ajaxInProgress = false;
 };
-jlab.doAjaxJsonGetRequest = function (url, data) {
+jlab.doAjaxJsonGetRequest = function (url, data, quiet) {
 
     var promise = jQuery.ajax({
         url: url,
@@ -92,7 +92,11 @@ jlab.doAjaxJsonGetRequest = function (url, data) {
         }
 
         var message = json.error || 'Server did not handle request';
-        alert('Unable to perform request: ' + message);
+        if(quiet) {
+            window.console && console.log('Unable to perform request: ' + message);
+        } else {
+            alert('Unable to perform request: ' + message);
+        }
     });
 
     return promise;
@@ -272,6 +276,36 @@ jlab.fromFriendlyDateString = function (x) {
         year = parseInt(x.substring(7, 11));
     return new Date(year, month, day);
 };
+jlab.toIsoDateTimeString = function (x) {
+    var year = x.getFullYear(),
+        month = x.getMonth() + 1,
+        day = x.getDate(),
+        hour = x.getHours(),
+        minute = x.getMinutes();
+
+    return year + '-' + jlab.pad(month, 2) + '-' + jlab.pad(day, 2) + 'T' + jlab.pad(hour, 2) + ':' + jlab.pad(minute, 2);
+};
+jlab.toIsoDateString = function (x) {
+    var year = x.getFullYear(),
+        month = x.getMonth() + 1,
+        day = x.getDate();
+    return year + '-' + jlab.pad(month, 2) + '-' + jlab.pad(day, 2);
+};
+jlab.fromIsoDateTimeString = function (x) {
+    var year = parseInt(x.substring(0, 4)),
+        month = parseInt(x.substring(5, 7)) - 1,
+        day = parseInt(x.substring(8, 10)),
+        hour = parseInt(x.substring(11, 13)),
+        minute = parseInt(x.substring(14, 16)),
+        second = parseInt(x.substring(17, 19));
+    return new Date(year, month, day, hour, minute, second);
+};
+jlab.fromIsoDateString = function (x) {
+    var year = parseInt(x.substring(0, 4)),
+        month = parseInt(x.substring(5, 7)) - 1,
+        day = parseInt(x.substring(8, 10));
+    return new Date(year, month, day);
+};
 jlab.updateDateRange = function (start, end, includeTime) {
     $("#custom-date-range-list").hide();
 
@@ -359,7 +393,7 @@ jlab.getStartOfFiscalYear = function(dateInYear) {
 
     return start;
 };
-jlab.encodeRange = function (start, end, sevenAmOffset, currentRun, previousRun) {
+jlab.encodeRange = function (start, end, sevenAmOffset) {
     const wedIndex = 3; /* Wednesday */
 
     var now = new Date();
@@ -470,9 +504,9 @@ jlab.encodeRange = function (start, end, sevenAmOffset, currentRun, previousRun)
         range = "0fiscalyear";
     } else if (end.getTime() == previousFiscalYearEnd.getTime() && start.getTime() == previousFiscalYearStart.getTime()) {
         range = "1fiscalyear";
-    } else if (currentRun != null && currentRun.getEnd().getTime() == end.getTime() && currentRun.getStart().getTime() == start.getTime()) {
+    } else if (jlab.currentRun != null && jlab.currentRun.end.getTime() == end.getTime() && jlab.currentRun.start.getTime() == start.getTime()) {
         range = "0run";
-    } else if (previousRun != null && previousRun.getEnd().getTime() == end.getTime() && previousRun.getStart().getTime() == start.getTime()) {
+    } else if (jlab.previousRun != null && jlab.previousRun.end.getTime() == end.getTime() && jlab.previousRun.start.getTime() == start.getTime()) {
         range = "1run";
     } else if (end.getTime() == today.getTime()) {
         if (start.getTime() == tenDaysAgo.getTime()) {
@@ -486,7 +520,7 @@ jlab.encodeRange = function (start, end, sevenAmOffset, currentRun, previousRun)
 
     return range;
 }
-jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
+jlab.decodeRange = function(range, sevenAmOffset) {
     const wedIndex = 3; /* Wednesday */
     const octIndex = 9; /* October */
 
@@ -549,12 +583,12 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
             end.setFullYear(end.getFullYear() + 1);
             break;
         case '1run':
-            start = previousRun.start;
-            end = previousRun.end;
+            start = jlab.previousRun.start;
+            end = jlab.previousRun.end;
             break;
         case '0run':
-            start = currentRun.start;
-            end = currentRun.end;
+            start = jlab.currentRun.start;
+            end = jlab.currentRun.end;
             break;
         case '1month':
             end.setDate(1);
@@ -711,12 +745,41 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
     return {start: start, end: end};
 };
 jlab.initDateRange = function() {
+    var promise = jlab.doAjaxJsonGetRequest('/btm/rest/runs', {}, true);
+
+    promise.done(function(json) {
+        jlab.currentRun = null;
+        jlab.previousRun = null;
+
+        if(json.current) {
+            jlab.currentRun = {};
+            jlab.currentRun.start = jlab.fromIsoDateString(json.current.start);
+            jlab.currentRun.end = jlab.fromIsoDateString(json.current.end);
+
+            $('#date-range option[value="0year"]').after('<option value="0run">Current Run</option>');
+        }
+
+        if(json.previous) {
+            jlab.previousRun = {};
+            jlab.previousRun.start = jlab.fromIsoDateString(json.previous.start);
+            jlab.previousRun.end = jlab.fromIsoDateString(json.previous.end);
+
+            $('#date-range option[value="1year"]').after('<option value="1run">Previous Run</option>');
+        }
+
+        jlab.setupDateRange();
+    });
+
+    promise.error(function(json) {
+        jlab.setupDateRange();
+    });
+}
+
+jlab.setupDateRange = function() {
     var startInput = $("input#start"),
         endInput = $("input#end"),
         sevenAmOffset = $("#date-range").hasClass("seven-am-offset"),
-        includeTime = $("#date-range").hasClass("datetime-range"),
-        currentRun = null,
-        previousRun = null;
+        includeTime = $("#date-range").hasClass("datetime-range");
 
     if(startInput.length > 0 && endInput.length > 0) {
         var start = startInput.val();
@@ -730,7 +793,7 @@ jlab.initDateRange = function() {
             end = jlab.fromFriendlyDateString(end);
         }
 
-        var range = jlab.encodeRange(start, end, sevenAmOffset, currentRun, previousRun);
+        var range = jlab.encodeRange(start, end, sevenAmOffset);
 
         $("#date-range").val(range).change();
     }
@@ -807,7 +870,7 @@ $(document).on("change", "#date-range", function () {
     if(selected === 'custom') {
         $("#custom-date-range-list").show();
     } else {
-        var range = jlab.decodeRange(selected, sevenAmOffset, null, null);
+        var range = jlab.decodeRange(selected, sevenAmOffset);
 
         if(range.start != null && range.end != null) {
             jlab.updateDateRange(range.start, range.end, includeTime);

@@ -27,65 +27,7 @@
                     <div id="filter-form-panel">
                         <fieldset>
                             <legend>Filter</legend>
-                            <ul class="key-value-list">
-                                <li>
-                                    <div class="li-key"><label class="required-field" for="date-range">Date Range</label></div>
-                                    <div class="li-value">
-                                        <select id="date-range" class="datetime-range seven-am-offset">
-                                            <option value="1fiscalyear"${range eq '1fiscalyear' ? ' selected="selected"' : ''}>Previous Fiscal Year</option>
-                                            <option value="1year"${range eq '1year' ? ' selected="selected"' : ''}>Previous Year</option>
-
-                                            <c:if test="${previousRun ne null}">
-                                                <option value="1run"${range eq '1run' ? ' selected="selected"' : ''}>Previous Run</option>
-                                            </c:if>
-
-                                            <option value="1month"${range eq '1month' ? ' selected="selected"' : ''}>Previous Month</option>
-                                            <option value="1week"${range eq '1week' ? ' selected="selected"' : ''}>Previous Week (from Wed)</option>
-                                            <option value="1ccshift"${range eq '1ccshift' ? ' selected="selected"' : ''}>Previous CC Shift</option>
-                                            <option value="0fiscalyear"${range eq '0fiscalyear' ? ' selected="selected"' : ''}>Current Fiscal Year</option>
-                                            <option value="0year"${range eq '0year' ? ' selected="selected"' : ''}>Current Year</option>
-
-                                            <c:if test="${currentRun ne null}">
-                                                <option value="0run"${range eq '0run' ? ' selected="selected"' : ''}>Current Run</option>
-                                            </c:if>
-
-                                            <option value="0month"${range eq '0month' ? ' selected="selected"' : ''}>Current Month</option>
-                                            <option value="0week"${range eq '0week' ? ' selected="selected"' : ''}>Current Week (from Wed)</option>
-                                            <option value="0ccshift"${range eq '0ccshift' ? ' selected="selected"' : ''}>Current CC Shift</option>
-                                            <option value="past10days"${range eq 'past10days' ? ' selected="selected"' : ''}>Past 10 Days</option>
-                                            <option value="past7days"${range eq 'past7days' ? ' selected="selected"' : ''}>Past 7 Days</option>
-                                            <option value="past3days"${range eq 'past3days' ? ' selected="selected"' : ''}>Past 3 Days</option>
-                                            <option value="1day"${range eq '1day' ? ' selected="selected"' : ''}>Yesterday</option>
-                                            <option value="0day"${range eq '0day' ? ' selected="selected"' : ''}>Today</option>
-                                            <option value="custom"${range eq 'custom' ? ' selected="selected"' : ''}>Custom...</option>
-                                        </select>
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul id="custom-date-range-list"
-                                class="key-value-list" ${range ne 'custom' ? 'style="display: none;"' : ''}>
-                                <li>
-                                    <div class="li-key">
-                                        <label class="required-field" for="start" title="Inclusive (Closed)">Start
-                                            Date</label>
-                                        <div class="date-note">(Inclusive)</div>
-                                    </div>
-                                    <div class="li-value">
-                                        <input type="text" class="datetime-input" id="start" name="start" autocomplete="off"
-                                               placeholder="DD-MMM-YYYY hh:mm" value="${param.start}"/>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="li-key">
-                                        <label class="required-field" for="end" title="Exclusive (Open)">End Date</label>
-                                        <div class="date-note">(Exclusive)</div>
-                                    </div>
-                                    <div class="li-value">
-                                        <input type="text" class="datetime-input" id="end" name="end" autocomplete="off"
-                                               placeholder="DD-MMM-YYYY hh:mm" value="${param.end}"/>
-                                    </div>
-                                </li>
-                            </ul>
+                            <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
                         </fieldset>	
                     </div>
                     <input type="hidden" name="qualified" value=""/>

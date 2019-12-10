@@ -9,6 +9,10 @@
         <path>/META-INF/tags/chart-widget.tag</path>
     </tag-file>
     <tag-file>
+        <name>date-range</name>
+        <path>/META-INF/tags/date-range.tag</path>
+    </tag-file>
+    <tag-file>
         <name>filter-flyout-widget</name>
         <path>/META-INF/tags/filter-flyout-widget.tag</path>
     </tag-file>
