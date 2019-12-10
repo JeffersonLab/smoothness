@@ -71,7 +71,7 @@
                                         <div class="date-note">(Inclusive)</div>
                                     </div>
                                     <div class="li-value">
-                                        <input type="text" class="date-field" id="start" name="start" autocomplete="off"
+                                        <input type="text" class="datetime-input" id="start" name="start" autocomplete="off"
                                                placeholder="DD-MMM-YYYY hh:mm" value="${param.start}"/>
                                     </div>
                                 </li>
@@ -81,7 +81,7 @@
                                         <div class="date-note">(Exclusive)</div>
                                     </div>
                                     <div class="li-value">
-                                        <input type="text" class="date-field" id="end" name="end" autocomplete="off"
+                                        <input type="text" class="datetime-input" id="end" name="end" autocomplete="off"
                                                placeholder="DD-MMM-YYYY hh:mm" value="${param.end}"/>
                                     </div>
                                 </li>
