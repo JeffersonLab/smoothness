@@ -9,22 +9,22 @@
                 <option value="1fiscalyear">Previous Fiscal Year</option>
                 <option value="1year">Previous Year</option>
                 <option value="1month">Previous Month</option>
-                <option value="1week">Previous Week (from Wed)</option>
+                <option value="1week">Previous Week (from Wed${sevenAmOffset ? ' 7:00' : ''})</option>
                 <c:if test="${datetime}">
                     <option value="1ccshift">Previous CC Shift</option>
                 </c:if>
                 <option value="0fiscalyear">Current Fiscal Year</option>
                 <option value="0year">Current Year</option>
                 <option value="0month">Current Month</option>
-                <option value="0week">Current Week (from Wed)</option>
+                <option value="0week">Current Week (from Wed${sevenAmOffset ? ' 7:00' : ''})</option>
                 <c:if test="${datetime}">
                     <option value="0ccshift">Current CC Shift</option>
                 </c:if>
-                <option value="past10days">Past 10 Days</option>
-                <option value="past7days">Past 7 Days</option>
-                <option value="past3days">Past 3 Days</option>
-                <option value="1day">Yesterday</option>
-                <option value="0day">Today</option>
+                <option value="past10days">Past 10 Days${sevenAmOffset ? ' (from 7:00)' : ''}</option>
+                <option value="past7days">Past 7 Days${sevenAmOffset ? ' (from 7:00)' : ''}</option>
+                <option value="past3days">Past 3 Days${sevenAmOffset ? ' (from 7:00)' : ''}</option>
+                <option value="1day">Yesterday${sevenAmOffset ? ' (from 7:00)' : ''}</option>
+                <option value="0day">Today${sevenAmOffset ? ' (from 7:00)' : ''}</option>
                 <option value="custom">Custom...</option>
             </select>
         </div>
