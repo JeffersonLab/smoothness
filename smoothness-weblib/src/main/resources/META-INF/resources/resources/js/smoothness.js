@@ -240,71 +240,7 @@ jlab.addXAxisLabel = function (label) {
         .text(label)
         .appendTo($("#chart-placeholder"));
 };
-// Timepickers
-jlab.initDateTimePickers = function() {
-    var myControl = {
-        create: function (tp_inst, obj, unit, val, min, max, step) {
-            $('<input class="ui-timepicker-input" value="' + val + '" style="width:50%">')
-                .appendTo(obj)
-                .spinner({
-                    min: min,
-                    max: max,
-                    step: step,
-                    change: function (e, ui) { // key events
-                        // don't call if api was used and not key press
-                        if (e.originalEvent !== undefined)
-                            tp_inst._onTimeChange();
-                        tp_inst._onSelectHandler();
-                    },
-                    spin: function (e, ui) { // spin events
-                        tp_inst.control.value(tp_inst, obj, unit, ui.value);
-                        tp_inst._onTimeChange();
-                        tp_inst._onSelectHandler();
-                    }
-                });
-            return obj;
-        },
-        options: function (tp_inst, obj, unit, opts, val) {
-            if (typeof (opts) === 'string' && val !== undefined)
-                return obj.find('.ui-timepicker-input').spinner(opts, val);
-            return obj.find('.ui-timepicker-input').spinner(opts);
-        },
-        value: function (tp_inst, obj, unit, val) {
-            if (val !== undefined)
-                return obj.find('.ui-timepicker-input').spinner('value', val);
-            return obj.find('.ui-timepicker-input').spinner('value');
-        }
-    };
-
-    $(".datetime-input").datetimepicker({
-        dateFormat: 'dd-M-yy',
-        controlType: myControl,
-        timeFormat: 'HH:mm'
-    }).mask("99-aaa-9999 99:99", {placeholder: " "});
-};
-jlab.initDatePickers = function() {
-    $(".date-input").datepicker({
-        dateFormat: 'dd-M-yy',
-    }).mask("99-aaa-9999", {placeholder: " "});
-};
-/**
- * Common Event Handlers
- */
-// Filter flyout events
-$(document).on("click", "#filter-flyout-link", function () {
-    $("#filter-flyout-panel").slideToggle();
-    return false;
-});
-$(document).on("click", "#filter-flyout-close-button", function () {
-    $("#filter-flyout-panel").slideUp();
-    return false;
-});
-$(document).keyup(function (e) {
-    if (e.keyCode === 27) {
-        $('#filter-flyout-panel').slideUp();
-    }
-});
-// Date Range selection events
+// Date/Time utilities
 jlab.toFriendlyDateTimeString = function (x) {
     var year = x.getFullYear(),
         month = x.getMonth(),
@@ -393,7 +329,7 @@ jlab.getCcShiftEnd = function (dateInShift) {
 };
 jlab.getStartOfWeek = function(dateInWeek, startDayOfWeekIndex) {
     var startOfWeek = new Date(dateInWeek),
-         dayOfWeekIndex = dateInWeek.getDay(),
+        dayOfWeekIndex = dateInWeek.getDay(),
         distance = startDayOfWeekIndex - dayOfWeekIndex;
 
     if (distance < 0) {
@@ -422,31 +358,6 @@ jlab.getStartOfFiscalYear = function(dateInYear) {
     start.setMilliseconds(0);
 
     return start;
-};
-jlab.initDateRange = function() {
-    var startInput = $("input#start"),
-        endInput = $("input#end"),
-        sevenAmOffset = $("#range").hasClass("seven-am-offset"),
-        includeTime = $("#range").hasClass("datetime-range"),
-        currentRun = null,
-        previousRun = null;
-
-    if(startInput.length > 0 && endInput.length > 0) {
-        var start = startInput.val();
-        var end = endInput.val();
-
-        if(includeTime) {
-            start = jlab.fromFriendlyDateTimeString(start);
-            end = jlab.fromFriendlyDateTimeString(end);
-        } else {
-            start = jlab.fromFriendlyDateString(start);
-            end = jlab.fromFriendlyDateString(end);
-        }
-
-        var range = jlab.encodeRange(start, end, sevenAmOffset, currentRun, previousRun);
-
-        $("#range").val(range).change();
-    }
 };
 jlab.encodeRange = function (start, end, sevenAmOffset, currentRun, previousRun) {
     const wedIndex = 3; /* Wednesday */
@@ -789,7 +700,7 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
             var now = new Date();
 
             start = jlab.getCcShiftStart(now),
-            end = jlab.getCcShiftEnd(now);
+                end = jlab.getCcShiftEnd(now);
             break;
         default:
             start = null;
@@ -799,6 +710,95 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
     return {start: start, end: end};
 };
+jlab.initDateRange = function() {
+    var startInput = $("input#start"),
+        endInput = $("input#end"),
+        sevenAmOffset = $("#range").hasClass("seven-am-offset"),
+        includeTime = $("#range").hasClass("datetime-range"),
+        currentRun = null,
+        previousRun = null;
+
+    if(startInput.length > 0 && endInput.length > 0) {
+        var start = startInput.val();
+        var end = endInput.val();
+
+        if(includeTime) {
+            start = jlab.fromFriendlyDateTimeString(start);
+            end = jlab.fromFriendlyDateTimeString(end);
+        } else {
+            start = jlab.fromFriendlyDateString(start);
+            end = jlab.fromFriendlyDateString(end);
+        }
+
+        var range = jlab.encodeRange(start, end, sevenAmOffset, currentRun, previousRun);
+
+        $("#range").val(range).change();
+    }
+};
+jlab.initDateTimePickers = function() {
+    var myControl = {
+        create: function (tp_inst, obj, unit, val, min, max, step) {
+            $('<input class="ui-timepicker-input" value="' + val + '" style="width:50%">')
+                .appendTo(obj)
+                .spinner({
+                    min: min,
+                    max: max,
+                    step: step,
+                    change: function (e, ui) { // key events
+                        // don't call if api was used and not key press
+                        if (e.originalEvent !== undefined)
+                            tp_inst._onTimeChange();
+                        tp_inst._onSelectHandler();
+                    },
+                    spin: function (e, ui) { // spin events
+                        tp_inst.control.value(tp_inst, obj, unit, ui.value);
+                        tp_inst._onTimeChange();
+                        tp_inst._onSelectHandler();
+                    }
+                });
+            return obj;
+        },
+        options: function (tp_inst, obj, unit, opts, val) {
+            if (typeof (opts) === 'string' && val !== undefined)
+                return obj.find('.ui-timepicker-input').spinner(opts, val);
+            return obj.find('.ui-timepicker-input').spinner(opts);
+        },
+        value: function (tp_inst, obj, unit, val) {
+            if (val !== undefined)
+                return obj.find('.ui-timepicker-input').spinner('value', val);
+            return obj.find('.ui-timepicker-input').spinner('value');
+        }
+    };
+
+    $(".datetime-input").datetimepicker({
+        dateFormat: 'dd-M-yy',
+        controlType: myControl,
+        timeFormat: 'HH:mm'
+    }).mask("99-aaa-9999 99:99", {placeholder: " "});
+};
+jlab.initDatePickers = function() {
+    $(".date-input").datepicker({
+        dateFormat: 'dd-M-yy',
+    }).mask("99-aaa-9999", {placeholder: " "});
+};
+/**
+ * Common Event Handlers
+ */
+// Filter flyout events
+$(document).on("click", "#filter-flyout-link", function () {
+    $("#filter-flyout-panel").slideToggle();
+    return false;
+});
+$(document).on("click", "#filter-flyout-close-button", function () {
+    $("#filter-flyout-panel").slideUp();
+    return false;
+});
+$(document).keyup(function (e) {
+    if (e.keyCode === 27) {
+        $('#filter-flyout-panel').slideUp();
+    }
+});
+// Date Range selection events
 $(document).on("change", "#range", function () {
     var selected = $("#range option:selected").val(),
         includeTime = $("#range").hasClass("datetime-range"),
