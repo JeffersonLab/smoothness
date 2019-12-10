@@ -529,16 +529,14 @@ jlab.encodeRange = function (start, end, sevenAmOffset, currentRun, previousRun)
     return range;
 }
 jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
-    var range = {start: null, end: null};
-
     const wedIndex = 3; /* Wednesday */
     const octIndex = 9; /* October */
 
-    switch (selected) {
-        case '1fiscalyear':
-            var start = new Date(),
-                end = new Date();
+    var start = new Date(),
+        end = new Date();
 
+    switch (range) {
+        case '1fiscalyear':
             end.setFullYear(end.getFullYear() - 1);
 
             if (end.getMonth() < octIndex) {
@@ -554,13 +552,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             end.setFullYear(end.getFullYear() + 1);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '0fiscalyear':
-            var start = new Date(),
-                end = new Date();
-
             if (end.getMonth() < octIndex) {
                 end.setFullYear(end.getFullYear() - 1);
             }
@@ -574,13 +567,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             end.setFullYear(end.getFullYear() + 1);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '1year':
-            var start = new Date(),
-                end = new Date();
-
             end.setMonth(0);
             end.setDate(1);
             end.setMilliseconds(0);
@@ -590,13 +578,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             start.setFullYear(end.getFullYear() - 1);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '0year':
-            var start = new Date(),
-                end = new Date();
-
             end.setMonth(0);
             end.setDate(1);
             end.setMilliseconds(0);
@@ -606,25 +589,16 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             end.setFullYear(end.getFullYear() + 1);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '1run':
-            var start = jlab.previousRun.start,
-                end = jlab.previousRun.end;
-
-            jlab.updateDateRange(start, end, includeTime);
+            start = previousRun.start;
+            end = previousRun.end;
             break;
         case '0run':
-            var start = jlab.currentRun.start,
-                end = jlab.currentRun.end;
-
-            jlab.updateDateRange(start, end, includeTime);
+            start = currentRun.start;
+            end = currentRun.end;
             break;
         case '1month':
-            var start = new Date(),
-                end = new Date();
-
             end.setDate(1);
             end.setMilliseconds(0);
             end.setSeconds(0);
@@ -633,13 +607,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             start.setMonth(end.getMonth() - 1);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '0month':
-            var start = new Date(),
-                end = new Date();
-
             end.setDate(1);
             end.setMilliseconds(0);
             end.setSeconds(0);
@@ -648,13 +617,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             end.setMonth(end.getMonth() + 1);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '1week':
-            var start = new Date(),
-                end = new Date();
-
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -674,13 +638,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             start.setDate(start.getDate() - 7);
-
-            jlab.updateDateRange(start, end, includeTime);
             break
         case '0week':
-            var start = new Date(),
-                end = new Date();
-
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -700,13 +659,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             start.setDate(start.getDate() - 7);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case 'past10days':
-            var start = new Date(),
-                end = new Date();
-
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -719,13 +673,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             start.setDate(start.getDate() - 10);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case 'past7days':
-            var start = new Date(),
-                end = new Date();
-
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -738,13 +687,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             start.setDate(start.getDate() - 7);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case 'past3days':
-            var start = new Date(),
-                end = new Date();
-
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -757,13 +701,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             start.setDate(start.getDate() - 3);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '0day':
-            var start = new Date(),
-                end = new Date();
-
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -776,13 +715,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             end.setDate(end.getDate() + 1);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '1day':
-            var start = new Date(),
-                end = new Date();
-
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -795,30 +729,28 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 
             start.setTime(end.getTime());
             start.setDate(start.getDate() - 1);
-
-            jlab.updateDateRange(start, end, includeTime);
             break;
         case '1ccshift':
             var now = new Date(),
                 dateInPreviousShift = jlab.getCcShiftStart(now);
             dateInPreviousShift.setHours(dateInPreviousShift.getHours() - 1);
 
-            var start = jlab.getCcShiftStart(dateInPreviousShift),
-                end = jlab.getCcShiftEnd(dateInPreviousShift);
-            jlab.updateDateRange(start, end, includeTime);
+            start = jlab.getCcShiftStart(dateInPreviousShift);
+            end = jlab.getCcShiftEnd(dateInPreviousShift);
             break;
         case '0ccshift':
-            var now = new Date(),
-                start = jlab.getCcShiftStart(now),
-                end = jlab.getCcShiftEnd(now);
-            jlab.updateDateRange(start, end, includeTime);
+            var now = new Date();
+
+            start = jlab.getCcShiftStart(now),
+            end = jlab.getCcShiftEnd(now);
             break;
-        case 'custom':
-            $("#custom-date-range-list").show();
+        default:
+            start = null;
+            end = null;
             break;
     }
 
-    return range;
+    return {start: start, end: end};
 };
 $(document).on("change", "#range", function () {
     var selected = $("#range option:selected").val(),
@@ -828,10 +760,10 @@ $(document).on("change", "#range", function () {
     if(selected === 'custom') {
         $("#custom-date-range-list").show();
     } else {
-        var range = decodeRange(selected, sevenAmOffset, null, null);
+        var range = jlab.decodeRange(selected, sevenAmOffset, null, null);
 
         if(range.start != null && range.end != null) {
-            jlab.updateDateRange(start, end, includeTime);
+            jlab.updateDateRange(range.start, range.end, includeTime);
         }
     }
 
