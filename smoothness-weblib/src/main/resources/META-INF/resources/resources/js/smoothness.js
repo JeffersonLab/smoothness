@@ -241,7 +241,7 @@ jlab.addXAxisLabel = function (label) {
         .appendTo($("#chart-placeholder"));
 };
 // Timepickers
-jlab.initTimePickers = function() {
+jlab.initDateTimePickers = function() {
     var myControl = {
         create: function (tp_inst, obj, unit, val, min, max, step) {
             $('<input class="ui-timepicker-input" value="' + val + '" style="width:50%">')
@@ -281,7 +281,8 @@ jlab.initTimePickers = function() {
         controlType: myControl,
         timeFormat: 'HH:mm'
     }).mask("99-aaa-9999 99:99", {placeholder: " "});
-
+};
+jlab.initDatePickers = function() {
     $(".date-input").datepicker({
         dateFormat: 'dd-M-yy',
     }).mask("99-aaa-9999", {placeholder: " "});
@@ -422,7 +423,7 @@ jlab.getStartOfFiscalYear = function(dateInYear) {
 
     return start;
 };
-jlab.selectRange = function() {
+jlab.initDateRange = function() {
     var startInput = $("input#start"),
         endInput = $("input#end"),
         sevenAmOffset = $("#range").hasClass("seven-am-offset"),
@@ -983,8 +984,15 @@ $(function () {
         resizable: jlab.editableRowTable.dialog.resizable
     });
 
-    jlab.selectRange();
-    jlab.initTimePickers();
+    if($("#range").length) {
+        jlab.initDateRange();
+    }
+    if($(".datetime-input").length) {
+        jlab.initDateTimePickers();
+    }
+    if($(".date-input").length) {
+        jlab.initDatePickers();
+    }
 });
 /*Autologin*/
 jlab.su = function (url) {
