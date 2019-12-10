@@ -713,8 +713,8 @@ jlab.decodeRange = function(range, sevenAmOffset, currentRun, previousRun) {
 jlab.initDateRange = function() {
     var startInput = $("input#start"),
         endInput = $("input#end"),
-        sevenAmOffset = $("#range").hasClass("seven-am-offset"),
-        includeTime = $("#range").hasClass("datetime-range"),
+        sevenAmOffset = $("#date-range").hasClass("seven-am-offset"),
+        includeTime = $("#date-range").hasClass("datetime-range"),
         currentRun = null,
         previousRun = null;
 
@@ -732,7 +732,7 @@ jlab.initDateRange = function() {
 
         var range = jlab.encodeRange(start, end, sevenAmOffset, currentRun, previousRun);
 
-        $("#range").val(range).change();
+        $("#date-range").val(range).change();
     }
 };
 jlab.initDateTimePickers = function() {
@@ -799,10 +799,10 @@ $(document).keyup(function (e) {
     }
 });
 // Date Range selection events
-$(document).on("change", "#range", function () {
-    var selected = $("#range option:selected").val(),
-        includeTime = $("#range").hasClass("datetime-range"),
-        sevenAmOffset = $("#range").hasClass("seven-am-offset");
+$(document).on("change", "#date-range", function () {
+    var selected = $("#date-range option:selected").val(),
+        includeTime = $("#date-range").hasClass("datetime-range"),
+        sevenAmOffset = $("#date-range").hasClass("seven-am-offset");
 
     if(selected === 'custom') {
         $("#custom-date-range-list").show();
@@ -984,7 +984,7 @@ $(function () {
         resizable: jlab.editableRowTable.dialog.resizable
     });
 
-    if($("#range").length) {
+    if($("#date-range").length) {
         jlab.initDateRange();
     }
     if($(".datetime-input").length) {

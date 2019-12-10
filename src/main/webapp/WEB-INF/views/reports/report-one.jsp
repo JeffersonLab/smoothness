@@ -29,9 +29,9 @@
                             <legend>Filter</legend>
                             <ul class="key-value-list">
                                 <li>
-                                    <div class="li-key"><label class="required-field" for="range">Date Range</label></div>
+                                    <div class="li-key"><label class="required-field" for="date-range">Date Range</label></div>
                                     <div class="li-value">
-                                        <select id="range" class="datetime-range seven-am-offset">
+                                        <select id="date-range" class="datetime-range seven-am-offset">
                                             <option value="1fiscalyear"${range eq '1fiscalyear' ? ' selected="selected"' : ''}>Previous Fiscal Year</option>
                                             <option value="1year"${range eq '1year' ? ' selected="selected"' : ''}>Previous Year</option>
 
