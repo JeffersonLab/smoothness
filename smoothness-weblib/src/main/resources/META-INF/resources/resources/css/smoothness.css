@@ -487,8 +487,12 @@ th.scrollbar-header {
 .ui-button {
     font-size: 14px;
 }
-.ui-dialog-title, .ui-dialog .ui-dialog-titlebar-close {
+.ui-dialog-title,
+.ui-dialog .ui-dialog-titlebar-close {
     font-size: 17px;
+}
+.ui-dialog-titlebar-close .ui-button-text {
+    display: none;
 }
 .ui-dialog .ui-dialog-content {
     padding: 16px;
@@ -560,6 +564,13 @@ th.scrollbar-header {
 }
 .dialog-button-panel button {
     margin: 0 0 0 8px;
+    min-width: 68px;
+    vertical-align: top;
+}
+.ajax-submit {
+    vertical-align: bottom;
+    min-width: 40px;
+    min-height: 20px;
 }
 /*Hide hour/minute echo labels in datetime dialog*/
 .ui_tpicker_time_label,
@@ -570,6 +581,10 @@ th.scrollbar-header {
 input.datetime-input,
 input.date-input {
     font-family: monospace;
+}
+/*Inclusive/Exclusive note*/
+.date-note {
+    font-size: 12px;
 }
 /* Messages and Indicators */
 .message-box {
