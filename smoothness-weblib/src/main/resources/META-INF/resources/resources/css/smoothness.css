@@ -561,6 +561,16 @@ th.scrollbar-header {
 .dialog-button-panel button {
     margin: 0 0 0 8px;
 }
+/*Hide hour/minute echo labels in datetime dialog*/
+.ui_tpicker_time_label,
+.ui_tpicker_time {
+    display: none;
+}
+/*For placeholder and input mask to line-up the font needs to be monospace*/
+input.datetime-input,
+input.date-input {
+    font-family: monospace;
+}
 /* Messages and Indicators */
 .message-box {
     font-weight: bold;
