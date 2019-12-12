@@ -230,6 +230,8 @@ jlab.getExitFullscreenUrl = function () {
     var uri = URI();
     uri.removeSearch("print");
     uri.removeSearch("fullscreen");
+    uri.addSearch("print", "N");
+    uri.addSearch("fullscreen", "N");
     return uri.toString();
 };
 /*Chart Axis Labels*/
@@ -923,8 +925,9 @@ $(document).on("click", "#print-menu-item", function () {
     window.location = jlab.getPrintUrl();
 });
 $(document).on("click", "#image-menu-item", function () {
-    var printUrl = jlab.getPrintUrl();
-    window.location = jlab.contextPath + '/convert?filename=chart.png&url=' + encodeURIComponent(printUrl);
+    var printUrl = jlab.getPrintUrl(),
+    waitForSelector = $("#image-menu-item").attr("data-wait-for-selector") || "";
+    window.location = jlab.contextPath + '/convert?filename=chart.png&waitForSelector=' + encodeURIComponent(waitForSelector) + '&url=' + encodeURIComponent(printUrl);
 });
 $(document).on("click", "#excel-menu-item", function () {
     $("#excel").click();
@@ -1056,6 +1059,9 @@ $(function () {
     if($(".date-input").length) {
         jlab.initDatePickers();
     }
+
+    var event = new Event('smoothnessready');
+    document.dispatchEvent(event);
 });
 /*Autologin*/
 jlab.su = function (url) {
@@ -1092,3 +1098,72 @@ $(document).on("click", "#su-link", function () {
 
     return false;
 });
+/*Parameter Handling*/
+/**
+ * Supports browsing mode where users can specify all parameters for a web page, partial parameters, or
+ * no parameters and the app will use provided params, a set of defaults, and session favorites to determine the
+ * effective parameters.
+ *
+ * Uses three sets of parameters in decreasing precedence to determine proper request parameters and to set a
+ * bookmarkable URL:
+ * 1. searchParams (URL params)
+ * 2. sessionStorage params (favorites from last time)
+ * 3. defaultParams (expected keys with default values)
+ *
+ * The defaultParams enumerate the list of expected parameters.  Keys and values are always strings, but a keys can
+ * have multiple values via an array of strings.
+ *
+ * A URL parameter key has three states: single present, multiple present, missing.  Values are always strings but may
+ * take on the special value of empty, which can't be reserved for private use since client's may actually want to
+ * set a parameter to empty string, which differs from missing.  With multi-valued keys empty can't be represented:
+ * a multi-valued key with a single value of empty is not the same as the key is empty.  In other words you can't
+ * distinguish the difference between a single valued key that is empty and a multi-valued key that has only one value,
+ * and that value is empty. This nuanced distinction is a huge complication.  It essentially means you can't use
+ * presence of key to determine if request parameter value is supposed to be empty or should rely on defaults/favorites.
+ *
+ * You can set a default (expected) value as an empty array.  From the URL side, without additional indication there is
+ * no way to differentiate between requests with an empty value for a given key vs request asking for defaults / session
+ * favorites for the key.
+ *
+ * To overcome this we use the special parameter named "qualified", if present, regardless of
+ * value (including empty value) then the client is saying use the supplied parameters as is (any missing
+ * parameters are missing on purpose - user trying to set empty value).  If not present, then assume missing
+ * parameters mean use value from session favorites if available, else defaults.
+ *
+ * @param defaultParams The expected keys with default values
+ */
+jlab.initParams = function(defaultParams) {
+    let redirect = false,
+        searchParams = new URLSearchParams(window.location.search);
+
+    Object.entries(defaultParams).forEach(function([key, defaultValue]){
+        if(searchParams.has(key)) {
+            sessionStorage.setItem(key, JSON.stringify(searchParams.getAll(key)));
+        } else {
+            let sessionValue = sessionStorage.getItem(key);
+            if(sessionValue && sessionValue.length > 0) {
+                jlab.searchParamsAppendAll(searchParams, key, JSON.parse(sessionValue));
+            } else {
+                jlab.searchParamsAppendAll(searchParams, key, defaultValue);
+            }
+            redirect = true;
+        }
+    });
+
+    if(redirect) {
+        window.location.search = searchParams.toString();
+    }
+
+    return redirect;
+};
+
+/**
+ * Check if value is an array and if so append all string values to searchParams otherwise just append value
+ */
+jlab.searchParamsAppendAll = function(searchParams, key, value) {
+    if(Array.isArray(value)) {
+        value.forEach(item => searchParams.append(key, item));
+    } else {
+        searchParams.append(key, value);
+    }
+}
