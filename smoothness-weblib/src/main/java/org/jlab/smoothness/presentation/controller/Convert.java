@@ -41,6 +41,7 @@ public class Convert extends HttpServlet {
         String type = request.getParameter("type");
         String filename = request.getParameter("filename");
         String urlString = request.getParameter("url");
+        String waitForSelector = request.getParameter("waitForSelector");
 
         String hostname = System.getenv("PROXY_HOSTNAME");
 
@@ -58,14 +59,22 @@ public class Convert extends HttpServlet {
 
         urlString = URLEncoder.encode(urlString, StandardCharsets.UTF_8);
 
+        if(waitForSelector == null) {
+            waitForSelector = "";
+        } else {
+            waitForSelector = URLEncoder.encode(waitForSelector, StandardCharsets.UTF_8);
+        }
+
         if ("pdf".equals(type)) {
             response.setHeader("content-type", "application/pdf");
-            path = path + "pdf?ignoreHTTPSErrors=true&printBackground=true&top=0.5in&right=0.5in&bottom=0.5in&left=0.5in&url=" + urlString;
+            path = path + "pdf";
 
         } else {
             response.setHeader("content-type", "application/png");
-            path = path + "screenshot?ignoreHTTPSErrors=true&fullPage=true&omitBackground=false&viewportWidth=1024&viewportHeight=768&url=" + urlString;
+            path = path + "screenshot";
         }
+
+        path = path + "?ignoreHTTPSErrors=true&fullPage=true&omitBackground=false&viewportWidth=1024&viewportHeight=768&waitForSelector=" + waitForSelector + "&url=" + urlString;
 
         if (filename != null && !filename.isEmpty()) {
             response.setHeader("content-disposition", "attachment; filename=\"" + filename + "\"");
