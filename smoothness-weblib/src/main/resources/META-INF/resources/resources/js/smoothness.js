@@ -775,7 +775,9 @@ jlab.initDateRange = function() {
     promise.error(function(json) {
         jlab.setupDateRange();
     });
-}
+
+    return promise;
+};
 
 jlab.setupDateRange = function() {
     var startInput = $("input#start"),
@@ -1050,9 +1052,6 @@ $(function () {
         resizable: jlab.editableRowTable.dialog.resizable
     });
 
-    if($("#date-range").length) {
-        jlab.initDateRange();
-    }
     if($(".datetime-input").length) {
         jlab.initDateTimePickers();
     }
@@ -1060,8 +1059,17 @@ $(function () {
         jlab.initDatePickers();
     }
 
-    var event = new Event('smoothnessready');
-    document.dispatchEvent(event);
+    if($("#date-range").length) {
+        var runLookupPromise = jlab.initDateRange();
+
+        runLookupPromise.always(function(){
+            var event = new Event('smoothnessready');
+            document.dispatchEvent(event);
+        });
+    } else {
+        var event = new Event('smoothnessready');
+        document.dispatchEvent(event);
+    }
 });
 /*Autologin*/
 jlab.su = function (url) {
@@ -1100,6 +1108,10 @@ $(document).on("click", "#su-link", function () {
 });
 /*Parameter Handling*/
 /**
+ * Client-side parameter handling (optional).  Smoothness template primarly assumes parameter handling is done
+ * server-side.  This is an alternative useful when client has default value info like current / previous run and
+ * server does not so client should handle params.
+ *
  * Supports browsing mode where users can specify all parameters for a web page, partial parameters, or
  * no parameters and the app will use provided params, a set of defaults, and session favorites to determine the
  * effective parameters.
@@ -1128,7 +1140,20 @@ $(document).on("click", "#su-link", function () {
  * To overcome this we use the special parameter named "qualified", if present, regardless of
  * value (including empty value) then the client is saying use the supplied parameters as is (any missing
  * parameters are missing on purpose - user trying to set empty value).  If not present, then assume missing
- * parameters mean use value from session favorites if available, else defaults.
+ * parameters mean use value from session favorites if available, else defaults.  This means partial parameter requests
+ * can not be accommodated.  So instead, we apply the qualified logic only to multi-valued keys.  Single-valued
+ * keys are treated more leniently - if not qualified but provided, we use it.  Now partial-valued requests work too,
+ * but only for single-valued keys - an unqualified partially specified request with multi-valued keys missing results
+ * in session/defaults being used - if user intention is for empty multi-valued key then they MUST qualify request.
+ * Also, if unqualified, but request contains all expected parameters then no redirect is performed.
+ *
+ * After all this logic is executed client-side
+ * the server still has to verify the URL is "good" - if any required keys are missing the server is
+ * required to deal with it.  Server must convert and validate String parameters too...
+ *
+ * It would have better performance to use the history API to update the URL client-side instead of server redirect.
+ * However, at this time the smoothness template assumes server makes decisions on what to render via params, so
+ * updated params need to be sent to server.
  *
  * @param defaultParams The expected keys with default values
  */
@@ -1136,21 +1161,38 @@ jlab.initParams = function(defaultParams) {
     let redirect = false,
         searchParams = new URLSearchParams(window.location.search);
 
-    Object.entries(defaultParams).forEach(function([key, defaultValue]){
-        if(searchParams.has(key)) {
-            sessionStorage.setItem(key, JSON.stringify(searchParams.getAll(key)));
-        } else {
-            let sessionValue = sessionStorage.getItem(key);
-            if(sessionValue && sessionValue.length > 0) {
-                jlab.searchParamsAppendAll(searchParams, key, JSON.parse(sessionValue));
+    if(searchParams.has("qualified")) {
+        // We still need to update session "favorites"
+        Object.entries(defaultParams).forEach(function([key, defaultValue]){
+            if(searchParams.has(key)) {
+                sessionStorage.setItem(key, JSON.stringify(searchParams.getAll(key)));
             } else {
-                jlab.searchParamsAppendAll(searchParams, key, defaultValue);
+                /* All this complexity is really for THIS case - client says no, really, I want an empty multi-valued
+                 * key (nothing selected in HTML select element with multiple attribute).  Single valued keys can
+                 * be empty here too, but they could also be empty via key = empty string approach.
+                 * */
+                sessionStorage.setItem(key, JSON.stringify("[]")); /* Empty array */
             }
-            redirect = true;
-        }
-    });
+        });
+    } else {
+        // Check if params we expect are here, use the ones you find, otherwise resort to session/defaults + redirect
+        Object.entries(defaultParams).forEach(function([key, defaultValue]){
+            if(searchParams.has(key)) {
+                sessionStorage.setItem(key, JSON.stringify(searchParams.getAll(key)));
+            } else {
+                let sessionValue = sessionStorage.getItem(key);
+                if(sessionValue && sessionValue.length > 0) {
+                    jlab.searchParamsAppendAll(searchParams, key, JSON.parse(sessionValue));
+                } else {
+                    jlab.searchParamsAppendAll(searchParams, key, defaultValue);
+                }
+                redirect = true;
+            }
+        });
+    }
 
     if(redirect) {
+        searchParams.set("qualified", "");
         window.location.search = searchParams.toString();
     }
 
