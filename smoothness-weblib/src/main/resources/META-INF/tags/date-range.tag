@@ -1,9 +1,10 @@
 <%@tag description="Date Range" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@attribute name="required" required="false" type="java.lang.Boolean"%>
 <%@attribute name="datetime" required="false" type="java.lang.Boolean"%>
 <%@attribute name="sevenAmOffset" required="false" type="java.lang.Boolean"%>
 <ul class="key-value-list">
     <li>
-        <div class="li-key"><label class="required-field" for="date-range">Date Range</label></div>
+        <div class="li-key"><label ${required ? 'class="required-field"' : ''} for="date-range">Date Range</label></div>
         <div class="li-value">
             <select id="date-range" class="${datetime ? 'datetime-range' : 'date-range'} ${sevenAmOffset ? ' seven-am-offset' : ' midnight-offset'}">
                 <option value="1fiscalyear">Previous Fiscal Year</option>
@@ -33,7 +34,7 @@
 <ul id="custom-date-range-list" class="key-value-list" style="display: none;">
     <li>
         <div class="li-key">
-            <label class="required-field" for="start" title="Inclusive (Closed)">Start
+            <label ${required ? 'class="required-field"' : ''} for="start" title="Inclusive (Closed)">Start
                 Date</label>
             <div class="date-note">(Inclusive)</div>
         </div>
@@ -44,7 +45,7 @@
     </li>
     <li>
         <div class="li-key">
-            <label class="required-field" for="end" title="Exclusive (Open)">End Date</label>
+            <label ${required ? 'class="required-field"' : ''} for="end" title="Exclusive (Open)">End Date</label>
             <div class="date-note">(Exclusive)</div>
         </div>
         <div class="li-value">
