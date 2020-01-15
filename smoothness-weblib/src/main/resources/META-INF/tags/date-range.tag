@@ -8,6 +8,10 @@
         <div class="li-value">
             <select id="date-range" class="${datetime ? 'datetime-range' : 'date-range'} ${sevenAmOffset ? ' seven-am-offset' : ' midnight-offset'}">
                 <option value="1fiscalyear">Previous Fiscal Year</option>
+                <option value="1fiscalyearq4">Previous Fiscal Year Q4</option>
+                <option value="1fiscalyearq3">Previous Fiscal Year Q3</option>
+                <option value="1fiscalyearq2">Previous Fiscal Year Q2</option>
+                <option value="1fiscalyearq1">Previous Fiscal Year Q1</option>
                 <option value="1year">Previous Year</option>
                 <option value="1month">Previous Month</option>
                 <option value="1week">Previous Week (from Wed${sevenAmOffset ? ' 7:00' : ''})</option>
@@ -15,6 +19,10 @@
                     <option value="1ccshift">Previous CC Shift</option>
                 </c:if>
                 <option value="0fiscalyear">Current Fiscal Year</option>
+                <option value="0fiscalyearq4">Current Fiscal Year Q4</option>
+                <option value="0fiscalyearq3">Current Fiscal Year Q3</option>
+                <option value="0fiscalyearq2">Current Fiscal Year Q2</option>
+                <option value="0fiscalyearq1">Current Fiscal Year Q1</option>
                 <option value="0year">Current Year</option>
                 <option value="0month">Current Month</option>
                 <option value="0week">Current Week (from Wed${sevenAmOffset ? ' 7:00' : ''})</option>

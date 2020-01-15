@@ -480,6 +480,38 @@ jlab.encodeRange = function (start, end, sevenAmOffset) {
 
     var previousFiscalYearEnd = currentFiscalYearStart;
 
+    var currentFiscalYearQ1Start = currentFiscalYearStart;
+    var currentFiscalYearQ1End = new Date(currentFiscalYearStart);
+    currentFiscalYearQ1End.setMonth(currentFiscalYearQ1End.getMonth() + 3);
+
+    var currentFiscalYearQ2Start = currentFiscalYearQ1End;
+    var currentFiscalYearQ2End = new Date(currentFiscalYearQ1End);
+    currentFiscalYearQ2End.setMonth(currentFiscalYearQ2End.getMonth() + 3);
+
+    var currentFiscalYearQ3Start = currentFiscalYearQ2End;
+    var currentFiscalYearQ3End = new Date(currentFiscalYearQ2End);
+    currentFiscalYearQ3End.setMonth(currentFiscalYearQ3End.getMonth() + 3);
+
+    var currentFiscalYearQ4Start = currentFiscalYearQ3End;
+    var currentFiscalYearQ4End = new Date(currentFiscalYearQ3End);
+    currentFiscalYearQ4End.setMonth(currentFiscalYearQ4End.getMonth() + 3);
+
+    var previousFiscalYearQ1Start = previousFiscalYearStart;
+    var previousFiscalYearQ1End = new Date(previousFiscalYearStart);
+    previousFiscalYearQ1End.setMonth(previousFiscalYearQ1End.getMonth() + 3);
+
+    var previousFiscalYearQ2Start = previousFiscalYearQ1End;
+    var previousFiscalYearQ2End = new Date(previousFiscalYearQ1End);
+    previousFiscalYearQ2End.setMonth(previousFiscalYearQ2End.getMonth() + 3);
+
+    var previousFiscalYearQ3Start = previousFiscalYearQ2End;
+    var previousFiscalYearQ3End = new Date(previousFiscalYearQ2End);
+    previousFiscalYearQ3End.setMonth(previousFiscalYearQ3End.getMonth() + 3);
+
+    var previousFiscalYearQ4Start = previousFiscalYearQ3End;
+    var previousFiscalYearQ4End = new Date(previousFiscalYearQ3End);
+    previousFiscalYearQ4End.setMonth(previousFiscalYearQ4End.getMonth() + 3);
+
     var range = "custom";
 
     if (end.getTime() == currentShiftEnd.getTime() && start.getTime() == currentShiftStart.getTime()) {
@@ -506,6 +538,22 @@ jlab.encodeRange = function (start, end, sevenAmOffset) {
         range = "0fiscalyear";
     } else if (end.getTime() == previousFiscalYearEnd.getTime() && start.getTime() == previousFiscalYearStart.getTime()) {
         range = "1fiscalyear";
+    } else if (end.getTime() == previousFiscalYearQ1End.getTime() && start.getTime() == previousFiscalYearQ1Start.getTime()) {
+        range = "1fiscalyearq1";
+    } else if (end.getTime() == previousFiscalYearQ2End.getTime() && start.getTime() == previousFiscalYearQ2Start.getTime()) {
+        range = "1fiscalyearq2";
+    } else if (end.getTime() == previousFiscalYearQ3End.getTime() && start.getTime() == previousFiscalYearQ3Start.getTime()) {
+        range = "1fiscalyearq3";
+    } else if (end.getTime() == previousFiscalYearQ4End.getTime() && start.getTime() == previousFiscalYearQ4Start.getTime()) {
+        range = "1fiscalyearq4";
+    } else if (end.getTime() == currentFiscalYearQ1End.getTime() && start.getTime() == currentFiscalYearQ1Start.getTime()) {
+        range = "0fiscalyearq1";
+    } else if (end.getTime() == currentFiscalYearQ2End.getTime() && start.getTime() == currentFiscalYearQ2Start.getTime()) {
+        range = "0fiscalyearq2";
+    } else if (end.getTime() == currentFiscalYearQ3End.getTime() && start.getTime() == currentFiscalYearQ3Start.getTime()) {
+        range = "0fiscalyearq3";
+    } else if (end.getTime() == currentFiscalYearQ4End.getTime() && start.getTime() == currentFiscalYearQ4Start.getTime()) {
+        range = "0fiscalyearq4";
     } else if (jlab.currentRun != null && jlab.currentRun.end.getTime() == end.getTime() && jlab.currentRun.start.getTime() == start.getTime()) {
         range = "0run";
     } else if (jlab.previousRun != null && jlab.previousRun.end.getTime() == end.getTime() && jlab.previousRun.start.getTime() == start.getTime()) {
@@ -547,6 +595,74 @@ jlab.decodeRange = function(range, sevenAmOffset) {
             start.setTime(end.getTime());
             end.setFullYear(end.getFullYear() + 1);
             break;
+        case '1fiscalyearq1':
+            end.setFullYear(end.getFullYear() - 1);
+
+            if (end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 3);
+            break;
+        case '1fiscalyearq2':
+            end.setFullYear(end.getFullYear() - 1);
+
+            if (end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex + 3);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 3);
+            break;
+        case '1fiscalyearq3':
+            end.setFullYear(end.getFullYear() - 1);
+
+            if (end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex + 6);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 3);
+            break;
+        case '1fiscalyearq4':
+            end.setFullYear(end.getFullYear() - 1);
+
+            if (end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex + 9);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 3);
+            break;
         case '0fiscalyear':
             if (end.getMonth() < octIndex) {
                 end.setFullYear(end.getFullYear() - 1);
@@ -561,6 +677,66 @@ jlab.decodeRange = function(range, sevenAmOffset) {
 
             start.setTime(end.getTime());
             end.setFullYear(end.getFullYear() + 1);
+            break;
+        case '0fiscalyearq1':
+            if (end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 3);
+            break;
+        case '0fiscalyearq2':
+            if (end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex + 3);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 3);
+            break;
+        case '0fiscalyearq3':
+            if (end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex + 6);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 3);
+            break;
+        case '0fiscalyearq4':
+            if (end.getMonth() < octIndex) {
+                end.setFullYear(end.getFullYear() - 1);
+            }
+
+            end.setMonth(octIndex + 9);
+            end.setDate(1);
+            end.setMilliseconds(0);
+            end.setSeconds(0);
+            end.setMinutes(0);
+            end.setHours(0);
+
+            start.setTime(end.getTime());
+            end.setMonth(end.getMonth() + 3);
             break;
         case '1year':
             end.setMonth(0);

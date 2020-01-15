@@ -638,6 +638,22 @@ public final class TimeUtil {
         Date currentFiscalYearEnd = TimeUtil.addYears(currentFiscalYearStart, 1);
         Date previousFiscalYearStart = TimeUtil.addYears(currentFiscalYearStart, -1);
         Date previousFiscalYearEnd = currentFiscalYearStart;
+        Date currentFiscalYearQ1Start = currentFiscalYearStart;
+        Date currentFiscalYearQ1End = TimeUtil.addMonths(currentFiscalYearStart, 3);
+        Date currentFiscalYearQ2Start = currentFiscalYearQ1End;
+        Date currentFiscalYearQ2End = TimeUtil.addMonths(currentFiscalYearQ1End, 3);
+        Date currentFiscalYearQ3Start = currentFiscalYearQ2End;
+        Date currentFiscalYearQ3End = TimeUtil.addMonths(currentFiscalYearQ2End, 3);
+        Date currentFiscalYearQ4Start = currentFiscalYearQ3End;
+        Date currentFiscalYearQ4End = TimeUtil.addMonths(currentFiscalYearQ3End, 3);
+        Date previousFiscalYearQ1Start = previousFiscalYearStart;
+        Date previousFiscalYearQ1End = TimeUtil.addMonths(previousFiscalYearStart, 3);
+        Date previousFiscalYearQ2Start = previousFiscalYearQ1End;
+        Date previousFiscalYearQ2End = TimeUtil.addMonths(previousFiscalYearQ1End, 3);
+        Date previousFiscalYearQ3Start = previousFiscalYearQ2End;
+        Date previousFiscalYearQ3End = TimeUtil.addMonths(previousFiscalYearQ2End, 3);
+        Date previousFiscalYearQ4Start = previousFiscalYearQ3End;
+        Date previousFiscalYearQ4End = TimeUtil.addMonths(previousFiscalYearQ3End, 3);
 
         String range = "custom";
 
@@ -665,6 +681,22 @@ public final class TimeUtil {
             range = "0fiscalyear";
         } else if (end.getTime() == previousFiscalYearEnd.getTime() && start.getTime() == previousFiscalYearStart.getTime()) {
             range = "1fiscalyear";
+        } else if (end.getTime() == previousFiscalYearQ1End.getTime() && start.getTime() == previousFiscalYearQ1Start.getTime()) {
+            range = "1fiscalyearq1";
+        } else if (end.getTime() == previousFiscalYearQ2End.getTime() && start.getTime() == previousFiscalYearQ2Start.getTime()) {
+            range = "1fiscalyearq2";
+        } else if (end.getTime() == previousFiscalYearQ3End.getTime() && start.getTime() == previousFiscalYearQ3Start.getTime()) {
+            range = "1fiscalyearq3";
+        } else if (end.getTime() == previousFiscalYearQ4End.getTime() && start.getTime() == previousFiscalYearQ4Start.getTime()) {
+            range = "1fiscalyearq4";
+        } else if (end.getTime() == currentFiscalYearQ1End.getTime() && start.getTime() == currentFiscalYearQ1Start.getTime()) {
+            range = "0fiscalyearq1";
+        } else if (end.getTime() == currentFiscalYearQ2End.getTime() && start.getTime() == currentFiscalYearQ2Start.getTime()) {
+            range = "0fiscalyearq2";
+        } else if (end.getTime() == currentFiscalYearQ3End.getTime() && start.getTime() == currentFiscalYearQ3Start.getTime()) {
+            range = "0fiscalyearq3";
+        } else if (end.getTime() == currentFiscalYearQ4End.getTime() && start.getTime() == currentFiscalYearQ4Start.getTime()) {
+            range = "0fiscalyearq4";
         } else if (currentRun != null && currentRun.getEnd().getTime() == end.getTime() && currentRun.getStart().getTime() == start.getTime()) {
             range = "0run";
         } else if (previousRun != null && previousRun.getEnd().getTime() == end.getTime() && previousRun.getStart().getTime() == start.getTime()) {
