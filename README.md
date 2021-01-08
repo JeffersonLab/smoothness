@@ -1,5 +1,5 @@
 # smoothness
-Java 8 EE Web application template (library) based on JQuery Smoothness theme.
+A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template (library) based on JQuery Smoothness theme.
 
 ## Build
 This [Java 8](https://adoptopenjdk.net/) project uses the [Gradle 5](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
