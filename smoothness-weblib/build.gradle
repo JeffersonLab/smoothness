@@ -1,33 +1,17 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url 'http://build.acc.jlab.org/artifactory/plugins-release'
-        }
-
-    }
-    dependencies {
-        //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
-    }
-}
-
 plugins {
     id 'java-library'
-    id 'maven'
     id 'maven-publish'
+    id 'com.jfrog.bintray' version "1.8.5"
     id "com.eriwen.gradle.css" version "2.14.0"
     id "eu.butter.gradle.js" version "2.15.1"
 }
 
 project.sourceCompatibility = JavaVersion.VERSION_11
 project.targetCompatibility = JavaVersion.VERSION_11
+description 'Smoothness web template and JSP tag library'
 group 'org.jlab'
-version '2.22.0'
-
-// Better set defaults instead of crashing build! (Publish won't work unless set correctly)
-ext.artifactory_user = project.getProperties().getOrDefault("artifactory_user", "anonymous")
-ext.artifactory_password = project.getProperties().getOrDefault("artifactory_password", "anonymous")
+version '2.23.0'
+ext.releaseDate = 'Jan 11 2021'
 
 repositories {
     jcenter()
@@ -36,19 +20,6 @@ repositories {
 dependencies {
     api 'javax:javaee-api:7.0',
          'javax.servlet:jstl:1.2'
-}
-
-
-allprojects {
-    apply plugin: "com.jfrog.artifactory"
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
 }
 
 minifyCss {
@@ -61,26 +32,57 @@ minifyJs {
     dest = file("${projectDir}/build/smoothness.min.js")
 }
 
-artifactory {
-    contextUrl = "http://build.acc.jlab.org/artifactory"
-    publish {
-        repository {
-            repoKey = 'gradle-release-local'
-            maven = true
-            username = "${artifactory_user}"
-            password = "${artifactory_password}"
-        }
-        defaults {
-            publications('mavenJava')
-            publishArtifacts = true
-            publishPom = true
+def pomConfig = {
+    licenses {
+        license {
+            name "MIT License"
+            url "http://www.opensource.org/licenses/mit-license"
+            distribution "repo"
         }
     }
-    resolve {
-        repository {
-            repoKey = 'gradle-dev'
-            maven = true
+    developers {
+        developer {
+            id "slominskir"
+            name "Ryan Slominski"
+            email "ryans@jlab.org"
+        }
+    }
 
+    scm {
+        url "https://github.com/JeffersonLab/smoothness"
+    }
+}
+
+publishing {
+    publications {
+        ProjectPublication(MavenPublication) {
+            from components.java
+            groupId group
+            artifactId project.name
+            version version
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', project.description)
+                root.appendNode('name', project.name)
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+
+    publications = ['ProjectPublication']
+
+    pkg {
+        repo = 'maven'
+        name = project.name
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/JeffersonLab/smoothness.git'
+        version {
+            name = project.version
         }
     }
 }
