@@ -24,12 +24,12 @@ gradlew build
 ## Configure
 
 ### Environment Variables
-| Name | Description | Default | 
-|---|---|---|
-| PROXY_HOSTNAME | Name of outermost proxy host (for use in hyperlinks in generated emails and log entries) | accwebtest.acc.jlab.org |
-| CDN_HOSTNAME | Name of content delivery network host for shared resources | localhost |
-| LOGBOOK_HOSTNAME | Name of Jefferson Lab logbook server | logbooktest.acc.jlab.org |
-| LOGBOOK_OPS_BOOKS_CSV | Comma separated list of logbook names | TLOG |
+| Name | Description |
+|---|---|
+| PROXY_HOSTNAME | Name of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
+| CDN_HOSTNAME | Name of content delivery network host for shared resources |
+| LOGBOOK_HOSTNAME | Name of Jefferson Lab logbook server |
+| LOGBOOK_OPS_BOOKS_CSV | Comma separated list of logbook names |
 
 ### Database
 The demo application requires an Oracle 18 database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/smoothness-demo/schema) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.
