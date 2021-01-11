@@ -23,6 +23,10 @@ plugins {
 group 'org.jlab'
 version '2.22.0'
 
+// Better set defaults instead of crashing build! (Publish won't work unless set correctly)
+ext.artifactory_user = project.getProperties().getOrDefault("artifactory_user", "anonymous")
+ext.artifactory_password = project.getProperties().getOrDefault("artifactory_password", "anonymous")
+
 sourceCompatibility = '10'
 targetCompatibility = '10'
 
