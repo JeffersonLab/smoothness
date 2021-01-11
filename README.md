@@ -4,9 +4,9 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
 ![Screenshot](https://github.com/JeffersonLab/smoothness/raw/main/smoothness-demo/Screenshot.png?raw=true "Screenshot")
 
 ---
- - [Build]()
- - [Configure]()
- - [Publish]()
+ - [Build](https://github.com/JeffersonLab/smoothness#build)
+ - [Configure](https://github.com/JeffersonLab/smoothness#configure)
+ - [Publish](https://github.com/JeffersonLab/smoothness#publish)
 ---
 
 ## Build
