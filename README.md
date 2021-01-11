@@ -25,7 +25,7 @@ gradlew build
 
 ### Environment Variables
 | Name | Description | Default | 
-|---|---|
+|---|---|---|
 | PROXY_HOSTNAME | Name of outermost proxy host (for use in hyperlinks in generated emails and log entries) | accwebtest.acc.jlab.org |
 | CDN_HOSTNAME | Name of content delivery network host for shared resources | localhost |
 | LOGBOOK_HOSTNAME | Name of Jefferson Lab logbook server | logbooktest.acc.jlab.org |
