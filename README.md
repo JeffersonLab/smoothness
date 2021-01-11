@@ -28,8 +28,12 @@ gradlew build
 |---|---|
 | PROXY_HOSTNAME | Name of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
 | CDN_HOSTNAME | Name of content delivery network host for shared resources |
+| KEYCLOAK_HOSTNAME | Name of Keycloak authentication server |
+| KEYCLOAK_CLIENT_ID_<context> | Each application context requires a unique Keycloak client ID |
 | LOGBOOK_HOSTNAME | Name of Jefferson Lab logbook server |
 | LOGBOOK_OPS_BOOKS_CSV | Comma separated list of logbook names |
+| SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
+
 
 ### Database
 The demo application requires an Oracle 18 database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/smoothness-demo/schema) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.
