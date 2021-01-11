@@ -32,7 +32,7 @@ gradlew build
 | LOGBOOK_OPS_BOOKS_CSV | Comma separated list of logbook names | TLOG |
 
 ### Database
-The Beam Auth application requires an Oracle 18 database with the following [schema](https://github.com/JeffersonLab/beam-auth/tree/main/schema) installed.   The application server hosting the Beam Auth app must also be configured with a JNDI datasource.
+The demo application requires an Oracle 18 database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/smoothness-demo/schema) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.
 
 ## Publish
 
