@@ -40,4 +40,4 @@ The demo application requires an Oracle 18 database with the following [schema](
 
 ## Publish
 
-You can publish new versions of this library to BinTray.  First ensure you have the bintray token configured in your [user gradle properties](https://gist.github.com/slominskir/dff89309ecdc424f134fdf02ceb41906).  Then use the Gradle task bintrayUpload followed by bintrayPublish.
+You can publish new versions of this library to Bintray.  First ensure you have the bintray token configured in your [user gradle properties](https://gist.github.com/slominskir/dff89309ecdc424f134fdf02ceb41906).  Then use the Gradle task bintrayUpload followed by bintrayPublish.
