@@ -1,9 +1,15 @@
 plugins {
     id 'war'
 }
+
+project.sourceCompatibility = JavaVersion.VERSION_11
+project.targetCompatibility = JavaVersion.VERSION_11
+group = 'org.jlab'
+
 repositories {
     jcenter()
 }
+
 dependencies {
     compile  project(':smoothness-weblib')
     providedCompile 'javax:javaee-api:7.0',
@@ -11,7 +17,3 @@ dependencies {
         'org.tuckey:urlrewritefilter:4.0.4',
         'org.hibernate:hibernate-core:5.4.2.Final'
  }
-
-group = 'org.jlab'
-sourceCompatibility = '10'
-targetCompatibility = '10'
