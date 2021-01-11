@@ -1,4 +1,4 @@
-# smoothness [![Java CI with Gradle](https://github.com/JeffersonLab/smoothness/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/JeffersonLab/smoothness/actions?query=workflow%3A%22Java+CI+with+Gradle%22)
+# smoothness [![Java CI with Gradle](https://github.com/JeffersonLab/smoothness/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/JeffersonLab/smoothness/actions?query=workflow%3A%22Java+CI+with+Gradle%22) [![Download](https://api.bintray.com/packages/slominskir/maven/smoothness-weblib/images/download.svg?version=2.23.0) ](https://bintray.com/slominskir/maven/smoothness-weblib/2.23.0/link)
 A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template and [JSP tag library](https://docs.oracle.com/javaee/5/tutorial/doc/bnama.html) based on the [JQuery UI Smoothness](https://jqueryui.com/themeroller/) theme.  The included demo web application showcases the template layout.
 
 ![Screenshot](https://github.com/JeffersonLab/smoothness/raw/main/smoothness-demo/Screenshot.png?raw=true "Screenshot")
