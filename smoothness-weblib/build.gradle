@@ -27,9 +27,6 @@ version '2.22.0'
 ext.artifactory_user = project.getProperties().getOrDefault("artifactory_user", "anonymous")
 ext.artifactory_password = project.getProperties().getOrDefault("artifactory_password", "anonymous")
 
-sourceCompatibility = '10'
-targetCompatibility = '10'
-
 repositories {
     jcenter()
 }
