@@ -1,20 +1,23 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'com.jfrog.bintray' version "1.8.5"
-    id "com.eriwen.gradle.css" version "2.14.0"
-    id "eu.butter.gradle.js" version "2.15.1"
+    id 'signing'
 }
 
-project.sourceCompatibility = JavaVersion.VERSION_11
-project.targetCompatibility = JavaVersion.VERSION_11
 description 'Smoothness web template and JSP tag library'
 group 'org.jlab'
-version '2.23.0'
-ext.releaseDate = 'Jan 11 2021'
+version '3.0.0'
+ext.releaseDate = 'Jun 14 2021'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    withJavadocJar()
+    withSourcesJar()
+}
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -22,67 +25,56 @@ dependencies {
          'javax.servlet:jstl:1.2'
 }
 
-minifyCss {
-    source = "${projectDir}/src/main/resources/META-INF/resources/resources/css/smoothness.css"
-    dest = file("${projectDir}/build/smoothness.min.css")
-}
-
-minifyJs {
-    source = "${projectDir}/src/main/resources/META-INF/resources/resources/js/smoothness.js"
-    dest = file("${projectDir}/build/smoothness.min.js")
-}
-
-def pomConfig = {
-    licenses {
-        license {
-            name "MIT License"
-            url "http://www.opensource.org/licenses/mit-license"
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id "slominskir"
-            name "Ryan Slominski"
-            email "ryans@jlab.org"
-        }
-    }
-
-    scm {
-        url "https://github.com/JeffersonLab/smoothness"
-    }
+signing {
+    sign publishing.publications
 }
 
 publishing {
-    publications {
-        ProjectPublication(MavenPublication) {
-            from components.java
-            groupId group
-            artifactId project.name
-            version version
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', project.description)
-                root.appendNode('name', project.name)
-                root.children().last() + pomConfig
+    repositories {
+        maven {
+            name "OSSRH"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.findProperty("ossrh.user") ?: System.getenv("OSSRH_USER")
+                password = project.findProperty("ossrh.token") ?: System.getenv("OSSRH_TOKEN")
+            }
+        }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/JeffersonLab/jaws-libj")
+            credentials {
+                username = project.findProperty("github.user") ?: System.getenv("GITHUB_USER")
+                password = project.findProperty("github.token") ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
-}
-
-bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-
-    publications = ['ProjectPublication']
-
-    pkg {
-        repo = 'maven'
-        name = project.name
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/JeffersonLab/smoothness.git'
-        version {
-            name = project.version
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+            pom {
+                name = project.name
+                description = project.description
+                url = "https://github.com/JeffersonLab/smoothness"
+                licenses {
+                    license {
+                        name = "The MIT License"
+                        url = "https://github.com/JeffersonLab/jaws-libj/blob/master/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "slominskir"
+                        name = "Ryan Slominski"
+                        email = "ryans@jlab.org"
+                    }
+                }
+                scm {
+                    url = "https://github.com/JeffersonLab/smoothness.git"
+                }
+            }
         }
+    }
+    artifacts {
+        archives javadocJar, sourcesJar
     }
 }
