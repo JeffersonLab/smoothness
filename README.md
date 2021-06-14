@@ -4,10 +4,18 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
 ![Screenshot](https://github.com/JeffersonLab/smoothness/raw/main/smoothness-demo/Screenshot.png?raw=true "Screenshot")
 
 ---
+ - [Usage](https://github.com/JeffersonLab/smoothness#usage)
  - [Build](https://github.com/JeffersonLab/smoothness#build)
  - [Configure](https://github.com/JeffersonLab/smoothness#configure)
  - [Publish](https://github.com/JeffersonLab/smoothness#publish)
 ---
+
+## Usage
+The library is a jar file plus dependencies on Java EE and the Java 11+ JVM and standard library.  You can obtain the smoothness-weblib jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
+```
+implementation 'org.jlab:smoothness-weblib:3.0.0'
+```
+You can check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) to see what has changed in each version. 
 
 ## Build
 This [Java 11](https://adoptopenjdk.net/) project uses the [Gradle 5](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
@@ -37,7 +45,3 @@ gradlew build
 
 ### Database
 The demo application requires an Oracle 18 database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/smoothness-demo/schema) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.
-
-## Publish
-
-You can publish new versions of this library to Bintray.  First ensure you have the bintray token configured in your [user gradle properties](https://gist.github.com/slominskir/dff89309ecdc424f134fdf02ceb41906).  Then use the Gradle task bintrayUpload followed by bintrayPublish.
