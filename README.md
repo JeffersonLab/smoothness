@@ -47,5 +47,5 @@ gradlew build
 The demo application requires an Oracle 18 database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/smoothness-demo/schema) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.
 
 ## See Also
-- [DTM](https://github.com/JeffersonLab/dtm)
-- [BAM](https://github.com/JeffersonLab/bam)
+- [Down time manager (DTM)](https://github.com/JeffersonLab/dtm)
+- [Beam authorization manager (BAM)](https://github.com/JeffersonLab/bam)
