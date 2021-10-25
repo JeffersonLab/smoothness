@@ -48,4 +48,4 @@ The demo application requires an Oracle 18 database with the following [schema](
 
 ## See Also
 - [DTM](https://github.com/JeffersonLab/dtm)
-- [BAM](https://github.com/JeffersonLab/beam-auth)
+- [BAM](https://github.com/JeffersonLab/bam)
