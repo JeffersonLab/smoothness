@@ -7,6 +7,7 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
  - [Usage](https://github.com/JeffersonLab/smoothness#usage)
  - [Build](https://github.com/JeffersonLab/smoothness#build)
  - [Configure](https://github.com/JeffersonLab/smoothness#configure)
+ - [See Also](https://github.com/JeffersonLab/smoothness#see-also)
 ---
 
 ## Usage
@@ -44,3 +45,7 @@ gradlew build
 
 ### Database
 The demo application requires an Oracle 18 database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/smoothness-demo/schema) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.
+
+## See Also
+- [DTM](https://github.com/JeffersonLab/dtm)
+- [BAM](https://github.com/JeffersonLab/beam-auth)
