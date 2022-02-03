@@ -23,7 +23,7 @@ The template is designed for database-centric web applications in the JLab accel
 ## Usage
 The library is a jar file plus dependencies on Java EE and the Java 11+ JVM and standard library.  You can obtain the smoothness-weblib jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
-implementation 'org.jlab:smoothness-weblib:3.0.0'
+implementation 'org.jlab:smoothness-weblib:<version>'
 ```
 You can check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) to see what has changed in each version. 
 
