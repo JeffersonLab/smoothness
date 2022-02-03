@@ -15,10 +15,11 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
 
 ## Overview
 The template is designed for database-centric web applications in the JLab accelerator environment and therefore supports interactions with the following dependent services:
- - [Keycloak](https://github.com/keycloak/keycloak) (authentication)
- - [Oracle DB](https://github.com/gvenzl/oci-oracle-xe) (data persistence)
- - [Puppet-Show](https://github.com/slominskir/puppet-show) (HTML-to-PDF reports)
- - [JLab Logbook](https://github.com/JeffersonLab/elog) (operations electronic event logging)
+ - [Keycloak](https://github.com/keycloak/keycloak) - OAuth OIDC authentication
+ - [Oracle DB](https://github.com/gvenzl/oci-oracle-xe) - data persistence (test server linked)
+ - [Puppet-Show](https://github.com/slominskir/puppet-show) - HTML-to-PDF reports
+ - [SMTP Email](https://github.com/mailhog/MailHog) - send email programmatically (test server linked)
+ - [JLab Logbook](https://github.com/JeffersonLab/elog) - operations electronic event logging
 
 ## Usage
 The library is a jar file plus dependencies on Java EE and the Java 11+ JVM and standard library.  You can obtain the smoothness-weblib jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
