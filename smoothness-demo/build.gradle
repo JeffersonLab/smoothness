@@ -1,10 +1,14 @@
 plugins {
     id 'war'
 }
+description = 'Smoothness demo app'
+group 'org.jlab'
+version '2.0.0'
+ext.releaseDate = 'Feb 3 2022'
+ext.resourceVersion = '2'
 
 project.sourceCompatibility = JavaVersion.VERSION_11
 project.targetCompatibility = JavaVersion.VERSION_11
-group = 'org.jlab'
 
 repositories {
     mavenCentral()
