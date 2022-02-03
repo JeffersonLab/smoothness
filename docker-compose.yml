@@ -31,6 +31,13 @@ services:
       - ./docker/keycloak/realm.json:/realm.json
       - ./docker/keycloak/setup.sh:/opt/jboss/startup-scripts/setup.sh
 
+  puppet:
+    image: slominskir/puppet-show:2.1.1
+    hostname: puppet
+    container_name: puppet
+    ports:
+      - "3000:3000"
+
   wildfly:
     image: quay.io/wildfly/wildfly:26.0.1.Final
     hostname: wildfly
@@ -40,7 +47,9 @@ services:
       - "9990:9990"
     entrypoint: '/docker-entrypoint.sh'
     environment:
-      CDN_HOSTNAME: 'localhost'
+      KEYCLOAK_SERVER: 'keycloak'
+      LOGBOOK_SERVER: 'elog'
+      PUPPET_SHOW_SERVER: 'puppet:3000'
     volumes:
       - ./docker/wildfly/docker-entrypoint.sh:/docker-entrypoint.sh
       - ./docker/wildfly/TestOracleConnection.java:/TestOracleConnection.java

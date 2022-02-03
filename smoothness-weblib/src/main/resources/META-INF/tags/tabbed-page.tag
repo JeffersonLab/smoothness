@@ -3,8 +3,6 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="title"%>
 <%@attribute name="category"%>
-<%@attribute name="keycloakClientIdKey"%>
-<%@attribute name="resourceLocation" description="How to load CSS/JS/IMG files. (Optional) Choose one of CDN or NONE, defaults to LOCAL" %>
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
 <%@attribute name="primaryNavigation" fragment="true"%>
@@ -14,7 +12,7 @@
 <%@attribute name="footnote" fragment="true" description="Footnote. (Optional)" %>
 <c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
 <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
-<c:set var="smoothnessLibver" value="2.22.0"/>
+<c:set var="resourceLocation" value="${env['RESOURCE_LOCATION']}"/>
 <!DOCTYPE html>
 <html lang="en">
     <head>        
@@ -26,7 +24,7 @@
             </c:when>
             <c:when test="${'CDN' eq resourceLocation}">
                 <link rel="stylesheet" type="text/css" href="${cdnContextPath}/jquery-ui/1.10.3/theme/smoothness/jquery-ui.min.css"/>
-                <link rel="stylesheet" type="text/css" href="${cdnContextPath}/jlab-theme/smoothness/${smoothnessLibver}/css/smoothness.min.css"/>
+                <link rel="stylesheet" type="text/css" href="${cdnContextPath}/jlab-theme/smoothness/${env['CDN_VERSION']}/css/smoothness.min.css"/>
             </c:when>
             <c:otherwise><!-- LOCAL -->
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/jquery-ui-1.10.3/jquery-ui.min.css"/>
@@ -115,7 +113,7 @@
                 <script src="${cdnContextPath}/jquery/1.10.2.min.js"></script>
                 <script src="${cdnContextPath}/jquery-ui/1.10.3/jquery-ui.min.js"></script>
                 <script src="${cdnContextPath}/uri/uri-1.14.1.min.js"></script>
-                <script src="${cdnContextPath}/jlab-theme/smoothness/${smoothnessLibver}/js/smoothness.min.js"></script>
+                <script src="${cdnContextPath}/jlab-theme/smoothness/${env['CDN_VERSION']}/js/smoothness.min.js"></script>
             </c:when>
             <c:otherwise><!-- LOCAL -->
                 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
@@ -124,21 +122,21 @@
                 <script src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
             </c:otherwise>
         </c:choose>
-        <c:url var="loginUrl" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/auth">
+        <c:url var="loginUrl" value="https://${env['KEYCLOAK_SERVER']}/auth/realms/jlab/protocol/openid-connect/auth">
             <c:param name="client_id" value="account"/>
             <c:param name="kc_idp_hint" value="cue-keycloak-oidc"/>
             <c:param name="response_type" value="code"/>
-            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
+            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_SERVER']}/auth/realms/jlab/account/"/>
         </c:url>
-        <c:url var="logoutUrl" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/protocol/openid-connect/logout">
-            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_HOSTNAME']}/auth/realms/jlab/account/"/>
+        <c:url var="logoutUrl" value="https://${env['KEYCLOAK_SERVER']}/auth/realms/jlab/protocol/openid-connect/logout">
+            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_SERVER']}/auth/realms/jlab/account/"/>
         </c:url>
         <script type="text/javascript">
             var jlab = jlab || {};
             jlab.contextPath = '${pageContext.request.contextPath}';
-            jlab.logbookHost = '${env["LOGBOOK_HOSTNAME"]}';
-            jlab.keycloakHostname = '${env["KEYCLOAK_HOSTNAME"]}';
-            jlab.clientId = '${env[keycloakClientIdKey]}';
+            jlab.logbookServer = '${env["LOGBOOK_SERVER"]}';
+            jlab.keycloakServer = '${env["KEYCLOAK_SERVER"]}';
+            jlab.clientId = '${env["KEYCLOAK_CLIENT_ID_" + pageContext.request.servletContext.toUpperCase()]}';
             jlab.loginUrl = '${loginUrl}';
             jlab.logoutUrl = '${logoutUrl}';
         </script>

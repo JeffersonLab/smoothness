@@ -43,9 +43,9 @@ public class Convert extends HttpServlet {
         String urlString = request.getParameter("url");
         String waitForSelector = request.getParameter("waitForSelector");
 
-        String hostname = System.getenv("PROXY_HOSTNAME");
+        String server = System.getenv("PUPPET_SHOW_SERVER");
 
-        String path = "https://" + hostname + "/puppet-show/";
+        String path = "https://" + server + "/puppet-show/";
 
         if (urlString == null) {
             throw new ServletException("url parameter must not be empty");
@@ -55,7 +55,7 @@ public class Convert extends HttpServlet {
             throw new ServletException("url parameter must not be absolute");
         }
 
-        urlString = "https://" + hostname + urlString;
+        urlString = "https://" + server + urlString;
 
         urlString = URLEncoder.encode(urlString, StandardCharsets.UTF_8);
 
