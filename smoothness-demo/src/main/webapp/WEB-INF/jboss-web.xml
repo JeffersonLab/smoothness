@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>  
     <resource-ref>  
-        <res-ref-name>jdbc/support</res-ref-name>
-        <jndi-name>java:/jdbc/support</jndi-name>
+        <res-ref-name>jdbc/smoothness</res-ref-name>
+        <jndi-name>java:/jdbc/smoothness</jndi-name>
     </resource-ref>
     <resource-ref>
         <res-ref-name>mail/jlab</res-ref-name>

@@ -5,3 +5,5 @@ out/
 smoothness-weblib/build/
 smoothness-weblib/out/
 /docker/oracle/oradata/
+/docker/wildfly/configuration/standalone_xml_history/
+/docker/wildfly/deployments/
