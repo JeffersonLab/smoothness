@@ -45,15 +45,15 @@ gradlew build
 ### Environment Variables
 | Name | Description |
 |---|---|
-| SMOOTH_PROXY_HOSTNAME | Host name and optional port of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
-| SMOOTH_RESOURCE_LOCATION | If undefined then defaults to LOCAL (serve files locally).  Other option is CDN, which looks for minified/combined files on shared Content Delivery Network (CDN) server - Nice for when multiple apps use same resources to have warm cache. |
-| SMOOTH_CDN_HOSTNAME | Host name and optional port of content delivery network host for shared smoothness resources (Only if SMOOTH_RESOURCE_LOCATION = CDN |
-| SMOOTH_CDN_SMOOTHNESS_VERSION | Version of smoothness lib on CDN (only if SMOOTH_RESOURCE_LOCATION = CDN) |
-| SMOOTH_KEYCLOAK_HOSTNAME | Host name and optional port of Keycloak authentication server |
-| SMOOTH_KEYCLOAK_CLIENT_ID_(context) | Each application context requires a unique Keycloak client ID.  The context is found with `request.getServletContext().toUpperCase()` |
-| SMOOTH_PUPPET_SHOW_HOSTNAME | Host name and optional port of Puppet Show server |
-| SMOOTH_LOGBOOK_HOSTNAME | Host name and optional port of Jefferson Lab logbook server |
-| SMOOTH_SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
+| PROXY_SERVER | Host name and optional port of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
+| RESOURCE_LOCATION | If undefined then defaults to LOCAL (serve files locally).  Other option is CDN, which looks for minified/combined files on shared Content Delivery Network (CDN) server - Nice for when multiple apps use same resources to have warm cache. |
+| CDN_SERVER | Host name and optional port of content delivery network host for shared smoothness resources (Only if RESOURCE_LOCATION = CDN |
+| CDN_VERSION | Version of smoothness lib on CDN (only if RESOURCE_LOCATION = CDN) |
+| KEYCLOAK_SERVER | Host name and optional port of Keycloak authentication server |
+| KEYCLOAK_CLIENT_ID_(context) | Each application context requires a unique Keycloak client ID.  The context is found with `request.getServletContext().toUpperCase()` |
+| PUPPET_SHOW_SERVER | Host name and optional port of Puppet Show server |
+| LOGBOOK_SERVER | Host name and optional port of Jefferson Lab logbook server |
+| SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
 
 
 ### Demo App
