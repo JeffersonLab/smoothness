@@ -1,0 +1,48 @@
+---
+version: '3.8'
+
+services:
+  oracle:
+    image: gvenzl/oracle-xe:21.3.0
+    hostname: oracle
+    container_name: oracle
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    volumes:
+      - ./docker/oracle/oradata:/opt/oracle/oradata
+      - ./docker/oracle/setup:/container-entrypoint-initdb.d
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:16.1.1
+    hostname: keycloak
+    container_name: keycloak
+    ports:
+      - "8081:8080"
+      - "9991:9990"
+    environment:
+      DB_VENDOR: h2
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /realm.json
+    volumes:
+      - ./docker/keycloak/realm.json:/realm.json
+      - ./docker/keycloak/setup.sh:/opt/jboss/startup-scripts/setup.sh
+
+  wildfly:
+    image: quay.io/wildfly/wildfly:26.0.1.Final
+    hostname: wildfly
+    container_name: wildfly
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    entrypoint: '/docker-entrypoint.sh'
+    environment:
+      CDN_HOSTNAME: 'localhost'
+    volumes:
+      - ./docker/wildfly/docker-entrypoint.sh:/docker-entrypoint.sh
+      - ./docker/wildfly/TestOracleConnection.java:/TestOracleConnection.java
+      - ./docker/wildfly/configuration/:/opt/jboss/wildfly/standalone/configuration/
+      - ./docker/wildfly/module.xml:/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/module.xml
+      - ./docker/wildfly/deployments/:/opt/jboss/wildfly/standalone/deployments/
+      - ./build/ojdbc11-21.3.0.0.jar:/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar
