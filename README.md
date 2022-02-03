@@ -43,6 +43,14 @@ gradlew build
 | SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
 
 
+### Demo App
+This git repo is actually comprised of two projects tied together in a [Gradle Multi-Project build](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html): 
+
+  1. **smoothness-weblib** - the library for sharing
+  1. **smoothness-demo** - a demo application that uses the library
+
+The demo is included in a Gradle Multi-Project build mainly so we can take advantage of the [artifact dependency feature](https://docs.gradle.org/current/userguide/declaring_dependencies_between_subprojects.html), such that we can build the library and quickly test it in the demo without having to publish to a maven artifact repo and then download it from the repo (faster build/deploy/test cycle).
+
 ### Database
 The demo application requires an Oracle 18+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/smoothness-demo/schema) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.   See [Oracle XE DB Container Notes](https://github.com/JeffersonLab/smoothness/wiki/Developer-Notes#oracle-container).
 
