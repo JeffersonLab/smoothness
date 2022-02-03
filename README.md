@@ -45,13 +45,14 @@ gradlew build
 ### Environment Variables
 | Name | Description |
 |---|---|
-| SMOOTH_PROXY_HOSTNAME | Name of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
+| SMOOTH_PROXY_HOSTNAME | Host name of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
 | SMOOTH_RESOURCE_LOCATION | If undefined then defaults to LOCAL (serve files locally).  Other option is CDN, which looks for minified/combined files on shared Content Delivery Network (CDN) server - Nice for when multiple apps use same resources to have warm cache. |
-| SMOOTH_CDN_HOSTNAME | Name of content delivery network host for shared smoothness resources (Only if SMOOTH_RESOURCE_LOCATION = CDN |
+| SMOOTH_CDN_HOSTNAME | Host name of content delivery network host for shared smoothness resources (Only if SMOOTH_RESOURCE_LOCATION = CDN |
 | SMOOTH_CDN_SMOOTHNESS_VERSION | Version of smoothness lib on CDN (only if SMOOTH_RESOURCE_LOCATION = CDN) |
-| SMOOTH_KEYCLOAK_HOSTNAME | Name of Keycloak authentication server |
-| SMOOTH_KEYCLOAK_CLIENT_ID_(context) | Each application context requires a unique Keycloak client ID |
-| SMOOTH_LOGBOOK_HOSTNAME | Name of Jefferson Lab logbook server |
+| SMOOTH_KEYCLOAK_HOSTNAME | Host name of Keycloak authentication server |
+| SMOOTH_KEYCLOAK_CLIENT_ID_(context) | Each application context requires a unique Keycloak client ID.  The context is found with `request.getServletContext().toUpperCase()` |
+| SMOOTH_PUPPET_SHOW_HOSTNAME | Host name of Puppet Show server |
+| SMOOTH_LOGBOOK_HOSTNAME | Host name of Jefferson Lab logbook server |
 | SMOOTH_SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
 
 
