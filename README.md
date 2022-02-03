@@ -46,7 +46,7 @@ gradlew build
 | Name | Description |
 |---|---|
 | SMOOTH_PROXY_HOSTNAME | Name of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
-| SMOOTH_RESOURCE_LOCATION | If undefined then defaults to LOCAL (server files locally).  Other option is CDN, which looks for minified/combined files on shared server. |
+| SMOOTH_RESOURCE_LOCATION | If undefined then defaults to LOCAL (serve files locally).  Other option is CDN, which looks for minified/combined files on shared server. |
 | SMOOTH_CDN_HOSTNAME | Name of content delivery network host for shared smoothness resources (Only if SMOOTH_RESOURCE_LOCATION = CDN |
 | SMOOTH_CDN_SMOOTHNESS_VERSION | Version of smoothness lib on CDN (only if SMOOTH_RESOURCE_LOCATION = CDN) |
 | SMOOTH_KEYCLOAK_HOSTNAME | Name of Keycloak authentication server |
