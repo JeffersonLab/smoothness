@@ -36,13 +36,15 @@ gradlew build
 ### Environment Variables
 | Name | Description |
 |---|---|
-| PROXY_HOSTNAME | Name of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
-| CDN_HOSTNAME | Name of content delivery network host for shared resources |
-| KEYCLOAK_HOSTNAME | Name of Keycloak authentication server |
-| KEYCLOAK_CLIENT_ID_(context) | Each application context requires a unique Keycloak client ID |
-| LOGBOOK_HOSTNAME | Name of Jefferson Lab logbook server |
-| LOGBOOK_OPS_BOOKS_CSV | Comma separated list of logbook names |
-| SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
+| SMOOTH_PROXY_HOSTNAME | Name of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
+| SMOOTH_RESOURCE_LOCATION | If undefined then defaults to LOCAL (server files locally).  Other option is CDN, which looks for minified/combined files on shared server. |
+| SMOOTH_CDN_HOSTNAME | Name of content delivery network host for shared smoothness resources (Only if SMOOTH_RESOURCE_LOCATION = CDN |
+| SMOOTH_CDN_SMOOTHNESS_VERSION | Version of smoothness lib on CDN (only if SMOOTH_RESOURCE_LOCATION = CDN) |
+| SMOOTH_KEYCLOAK_HOSTNAME | Name of Keycloak authentication server |
+| SMOOTH_KEYCLOAK_CLIENT_ID_(context) | Each application context requires a unique Keycloak client ID |
+| SMOOTH_LOGBOOK_HOSTNAME | Name of Jefferson Lab logbook server |
+| SMOOTH_LOGBOOK_OPS_BOOKS_CSV | Comma separated list of logbook names |
+| SMOOTH_SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
 
 
 ### Demo App
