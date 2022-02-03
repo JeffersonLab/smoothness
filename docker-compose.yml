@@ -6,6 +6,8 @@ services:
     image: gvenzl/oracle-xe:21.3.0
     hostname: oracle
     container_name: oracle
+    environment:
+      ORACLE_PASSWORD: testing
     ports:
       - "1521:1521"
       - "5500:5500"

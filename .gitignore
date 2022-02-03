@@ -4,3 +4,4 @@ out/
 .idea/
 smoothness-weblib/build/
 smoothness-weblib/out/
+/docker/oracle/oradata/
