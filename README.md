@@ -51,7 +51,7 @@ gradlew build
 | SMOOTH_CDN_SMOOTHNESS_VERSION | Version of smoothness lib on CDN (only if SMOOTH_RESOURCE_LOCATION = CDN) |
 | SMOOTH_KEYCLOAK_HOSTNAME | Host name and optional port of Keycloak authentication server |
 | SMOOTH_KEYCLOAK_CLIENT_ID_(context) | Each application context requires a unique Keycloak client ID.  The context is found with `request.getServletContext().toUpperCase()` |
-| SMOOTH_PUPPET_SHOW_HOSTNAME | Host name of Puppet Show server |
+| SMOOTH_PUPPET_SHOW_HOSTNAME | Host name and optional port of Puppet Show server |
 | SMOOTH_LOGBOOK_HOSTNAME | Host name and optional port of Jefferson Lab logbook server |
 | SMOOTH_SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
 
