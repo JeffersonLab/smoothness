@@ -47,4 +47,4 @@ services:
       - ./docker/wildfly/configuration/:/opt/jboss/wildfly/standalone/configuration/
       - ./docker/wildfly/module.xml:/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/module.xml
       - ./docker/wildfly/deployments/:/opt/jboss/wildfly/standalone/deployments/
-      - ./build/ojdbc11-21.3.0.0.jar:/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar
+      - ./smoothness/build/ojdbc11-21.3.0.0.jar:/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar

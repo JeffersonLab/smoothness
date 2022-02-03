@@ -7,13 +7,60 @@ project.targetCompatibility = JavaVersion.VERSION_11
 group = 'org.jlab'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation  project(':smoothness-weblib')
-    providedCompile 'javax:javaee-api:7.0',
-        'javax.servlet:jstl:1.2',
-        'org.tuckey:urlrewritefilter:4.0.4',
-        'org.hibernate:hibernate-core:5.4.2.Final'
- }
+    if (project.hasProperty("provided")) {
+        providedCompile 'org.jsoup:jsoup:1.11.3',
+                project(':smoothness-weblib'),
+                'org.tuckey:urlrewritefilter:4.0.4',
+                'org.hibernate:hibernate-core:5.4.2.Final',
+                'org.jlab:jlog:5.0.0'
+    } else {
+        implementation 'org.jsoup:jsoup:1.11.3',
+                project(':smoothness-weblib'),
+                'org.tuckey:urlrewritefilter:4.0.4',
+                'org.hibernate:hibernate-core:5.4.2.Final',
+                'org.jlab:jlog:5.0.0'
+    }
+
+    providedCompile('antlr:antlr') {
+        version {
+            strictly "2.7.7"
+        }
+    }
+
+    // No matter what the Java EE API is provided by the application server
+    providedCompile 'javax:javaee-api:8.0'
+
+    testRuntime 'com.oracle.database.jdbc:ojdbc11:21.3.0.0'
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ["-Xlint:deprecation", "-Xlint:unchecked"]
+}
+
+war {
+    archiveName 'smoothness-demo.war'
+    filesMatching('WEB-INF/web.xml') {
+        filter {
+            String line -> line.replaceAll("@VERSION@", project.version)
+        }
+        filter {
+            String line -> line.replaceAll("@RELEASE_DATE@", releaseDate)
+        }
+        filter {
+            String line -> line.replaceAll("@RESOURCE_VERSION@", resourceVersion)
+        }
+    }
+}
+
+task prepareTestWithOracle(type: Copy) {
+    from configurations.testRuntime
+    into "$buildDir"
+    include 'ojdbc11-*.jar'
+}
+
+build.dependsOn(prepareTestWithOracle)
