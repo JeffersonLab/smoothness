@@ -7,6 +7,8 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
  - [Usage](https://github.com/JeffersonLab/smoothness#usage)
  - [Build](https://github.com/JeffersonLab/smoothness#build)
  - [Configure](https://github.com/JeffersonLab/smoothness#configure)
+ - [Demo App](https://github.com/JeffersonLab/smoothness#demo-app)
+ - [Database](https://github.com/JeffersonLab/smoothness#database)
  - [See Also](https://github.com/JeffersonLab/smoothness#see-also)
 ---
 
