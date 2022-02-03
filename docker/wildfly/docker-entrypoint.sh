@@ -7,7 +7,7 @@ if [[ -z ${SKIP_DB_WAIT} ]]; then
   echo "-------------------------------------------------"
 
   until java -cp /:/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar \
-        /TestOracleConnection.java "jdbc:oracle:thin:BAM_OWNER/password@oracle:1521/xepdb1"
+        /TestOracleConnection.java "jdbc:oracle:thin:SMOOTHNESS_OWNER/password@oracle:1521/xepdb1"
   do
     echo -e $(date) " Still waiting for Oracle to start..."
     sleep 5

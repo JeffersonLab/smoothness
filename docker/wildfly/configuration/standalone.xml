@@ -135,7 +135,7 @@
                         <flush-strategy>EntirePool</flush-strategy>
                     </pool>
                     <security>
-                        <user-name>bam_owner</user-name>
+                        <user-name>smoothness_owner</user-name>
                         <password>password</password>
                     </security>
                     <validation>
@@ -378,9 +378,9 @@
                 <ssl-required>external</ssl-required>
                 <enable-cors>true</enable-cors>
             </provider>
-            <secure-deployment name="bam.war">
+            <secure-deployment name="smoothness-demo.war">
                 <provider>keycloak</provider>
-                <client-id>bam</client-id>
+                <client-id>smoothness</client-id>
                 <credential name="secret" secret="test-secret"/>
             </secure-deployment>
         </subsystem>
