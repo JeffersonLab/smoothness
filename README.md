@@ -15,12 +15,23 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
 ---
 
 ## Overview
-The template is designed for database-centric web applications in the JLab accelerator environment and therefore supports interactions with the following dependent services:
+The template is designed for database-centric web applications in the JLab accelerator environment and supports interactions with the following dependent services (Containers):
  - [Keycloak](https://github.com/keycloak/keycloak) - OAuth OIDC authentication
  - [Oracle DB](https://github.com/gvenzl/oci-oracle-xe) - data persistence (test server linked)
  - [Puppet-Show](https://github.com/slominskir/puppet-show) - HTML-to-PDF reports
  - [SMTP Email](https://github.com/mailhog/MailHog) - send email programmatically (test server linked)
  - [JLab Logbook](https://github.com/JeffersonLab/elog) - operations electronic event logging
+
+Client-side libraries (JavaScript):
+ - [jQuery](https://jquery.com/) - General Web API wrapper
+ - [jQuery UI](https://jqueryui.com/) - General User Interface widgets
+ - [select2](https://select2.org/) - Improved select widget (multi-select)
+ - [Flot](https://www.flotcharts.org/) - Graphing and reports
+
+Server-side librarires (Java):
+ - [Tuckey urlrewrite](https://tuckey.org/urlrewrite/) - URL Rewriting (cache busting resource versioning)
+ - [Hibernate](https://hibernate.org/) - Object-Relational Mapping (persistence).
+ - [JLog](https://github.com/JeffersonLab/jlog) - JLab elog API
 
 ## Quick Start with Compose
 1. Grab project
