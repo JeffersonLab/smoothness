@@ -127,7 +127,7 @@
         <subsystem xmlns="urn:jboss:domain:datasources:6.0">
             <datasources>
                 <datasource jndi-name="java:/jdbc/smoothness" pool-name="jdbc/smoothness">
-                    <connection-url>jdbc:oracle:thin:@//oracle:1521/xepdb1</connection-url>
+                    <connection-url>jdbc:oracle:thin:@//localhost:1521/xepdb1</connection-url>
                     <driver>oracle</driver>
                     <pool>
                         <min-pool-size>1</min-pool-size>
@@ -556,4 +556,9 @@
             <remote-destination host="smtpmail.jlab.org" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
+    <deployments>
+        <deployment name="smoothness-demo.war" runtime-name="smoothness-demo.war">
+            <fs-archive path="C:\Users\ryans\IdeaProjects\smoothness\smoothness-demo\build\libs\smoothness-demo.war"/>
+        </deployment>
+    </deployments>
 </server>
