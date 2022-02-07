@@ -24,6 +24,7 @@ services:
       - "8080:8080"
       - "9990:9990"
     environment:
+      ORACLE_SERVER: 'oracle'
       KEYCLOAK_SERVER: 'keycloak'
       LOGBOOK_SERVER: 'elog'
       PUPPET_SHOW_SERVER: 'puppet:3000'
