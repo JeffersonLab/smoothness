@@ -25,15 +25,15 @@
     </context-param>
     <context-param>
         <param-name>contentContact</param-name>
-        <param-value/>
+        <param-value>Name goes here</param-value>
     </context-param>
     <context-param>
         <param-name>technicalContact</param-name>
-        <param-value>Ryan Slominski (ryans)</param-value>
+        <param-value>Name goes here</param-value>
     </context-param>
     <context-param>
         <param-name>documentationUrl</param-name>
-        <param-value>https://devweb.acc.jlab.org/twiki/bin/view/SWDocs</param-value>
+        <param-value>https://github.com/JeffersonLab/smoothness</param-value>
     </context-param>
     <context-param>
         <param-name>feedbackFromAddress</param-name>
@@ -41,7 +41,7 @@
     </context-param>
     <context-param>
         <param-name>feedbackToAddressCsv</param-name>
-        <param-value>ryans@jlab.org</param-value>
+        <param-value>tester@jlab.org</param-value>
     </context-param>
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>
@@ -100,8 +100,7 @@
         </auth-constraint>
     </security-constraint>
     <login-config>
-        <auth-method>KEYCLOAK</auth-method>
-        <realm-name>jlab</realm-name>
+        <auth-method>OIDC</auth-method>
     </login-config>
     <security-role>
         <role-name>ipausers</role-name>
