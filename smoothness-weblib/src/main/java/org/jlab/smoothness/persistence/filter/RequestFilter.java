@@ -3,11 +3,6 @@ package org.jlab.smoothness.persistence.filter;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- *
- * @author ryans
- * @param <T>
- */
 public abstract class RequestFilter<T> {
     protected final T params;
     

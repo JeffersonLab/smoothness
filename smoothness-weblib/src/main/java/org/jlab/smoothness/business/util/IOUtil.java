@@ -200,6 +200,8 @@ public final class IOUtil {
     /**
      * Closes one or more AutoCloseable without generating any checked Exceptions.
      * If an Exception does occur while closing it is logged as a WARNING.
+     *
+     * @param resources The AutoClosable resources
      */
     public static void close(AutoCloseable... resources) {
         if (resources != null) {

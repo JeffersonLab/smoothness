@@ -6,8 +6,9 @@ plugins {
 
 description 'Smoothness web template and JSP tag library'
 group 'org.jlab'
-version '3.0.0'
-ext.releaseDate = 'Jun 14 2021'
+version rootProject.version
+ext.releaseDate = rootProject.ext.releaseDate
+ext.resourceVersion = rootProject.ext.resourceVersion
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11

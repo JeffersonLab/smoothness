@@ -3,9 +3,9 @@ plugins {
 }
 description = 'Smoothness demo app'
 group 'org.jlab'
-version '2.0.0'
-ext.releaseDate = 'Feb 3 2022'
-ext.resourceVersion = '2'
+version rootProject.version
+ext.releaseDate = rootProject.ext.releaseDate
+ext.resourceVersion = rootProject.ext.resourceVersion
 
 project.sourceCompatibility = JavaVersion.VERSION_11
 project.targetCompatibility = JavaVersion.VERSION_11

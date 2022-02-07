@@ -1,7 +1,6 @@
 package org.jlab.smoothness.presentation.util;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * Convenience utility methods for combined conversion and validation, with optional default values.
@@ -18,6 +17,7 @@ public final class ParamUtil {
      *
      * @param request The request
      * @param name The parameter name
+     * @return The int
      */
     public static int convertAndValidateNonNegativeInt(HttpServletRequest request, String name) {
         Integer value = ParamConverter.convertInteger(request, name);
@@ -33,6 +33,7 @@ public final class ParamUtil {
      * @param request The request
      * @param name The parameter name
      * @param defaultValue The default to use if the parameter is null
+     * @return The int
      */
     public static int convertAndValidateNonNegativeInt(HttpServletRequest request, String name, int defaultValue) {
         Integer value = ParamConverter.convertInteger(request, name);
@@ -51,6 +52,7 @@ public final class ParamUtil {
      *
      * @param request The request
      * @param name The parameter name
+     * @return The Integer
      */
     public static Integer convertAndValidateNonNegativeInteger(HttpServletRequest request, String name) {
         Integer value = ParamConverter.convertInteger(request, name);
@@ -67,6 +69,7 @@ public final class ParamUtil {
      *
      * @param request The request
      * @param name The parameter name
+     * @return The boolean
      */
     public static boolean convertAndValidateYNBoolean(HttpServletRequest request, String name) {
         Boolean value = ParamConverter.convertYNBoolean(request, name);
@@ -82,6 +85,7 @@ public final class ParamUtil {
      * @param request The request
      * @param name The parameter name
      * @param defaultValue The default to use if the parameter is null
+     * @return The boolean
      */
     public static boolean convertAndValidateYNBoolean(HttpServletRequest request, String name, boolean defaultValue) {
         Boolean value = ParamConverter.convertYNBoolean(request, name);

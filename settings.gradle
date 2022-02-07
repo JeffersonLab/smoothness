@@ -1,3 +1,9 @@
 rootProject.name='smoothness'
 include 'smoothness-weblib'
 include 'smoothness-demo'
+
+gradle.projectsLoaded({
+    gradle.rootProject.version '3.1.0'
+    gradle.rootProject.ext.releaseDate = 'Feb 07 2022'
+    gradle.rootProject.ext.resourceVersion = '3'
+})
