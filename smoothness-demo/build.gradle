@@ -20,14 +20,12 @@ configurations {
 
 dependencies {
     if (project.hasProperty("provided")) {
-        providedCompile 'org.jsoup:jsoup:1.11.3',
-                project(':smoothness-weblib'),
+        providedCompile project(':smoothness-weblib'),
                 'org.tuckey:urlrewritefilter:4.0.4',
                 'org.hibernate:hibernate-core:5.4.2.Final',
                 'org.jlab:jlog:5.0.0'
     } else {
-        implementation 'org.jsoup:jsoup:1.11.3',
-                project(':smoothness-weblib'),
+        implementation project(':smoothness-weblib'),
                 'org.tuckey:urlrewritefilter:4.0.4',
                 'org.hibernate:hibernate-core:5.4.2.Final',
                 'org.jlab:jlog:5.0.0'
