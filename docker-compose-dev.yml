@@ -1,0 +1,12 @@
+---
+version: '3.8'
+
+services:
+  smoothness:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./docker/wildfly/docker-entrypoint.sh:/docker-entrypoint.sh
+      - ./docker/wildfly/configuration/:/opt/jboss/wildfly/standalone/configuration/
+      - ./docker/wildfly/deployments/:/opt/jboss/wildfly/standalone/deployments/

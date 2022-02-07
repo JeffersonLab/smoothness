@@ -38,22 +38,13 @@ services:
     ports:
       - "3000:3000"
 
-  wildfly:
-    image: quay.io/wildfly/wildfly:26.0.1.Final
-    hostname: wildfly
-    container_name: wildfly
+  smoothness:
+    hostname: smoothness
+    container_name: smoothness
     ports:
       - "8080:8080"
       - "9990:9990"
-    entrypoint: '/docker-entrypoint.sh'
     environment:
       KEYCLOAK_SERVER: 'keycloak'
       LOGBOOK_SERVER: 'elog'
       PUPPET_SHOW_SERVER: 'puppet:3000'
-    volumes:
-      - ./docker/wildfly/docker-entrypoint.sh:/docker-entrypoint.sh
-      - ./docker/wildfly/TestOracleConnection.java:/TestOracleConnection.java
-      - ./docker/wildfly/configuration/:/opt/jboss/wildfly/standalone/configuration/
-      - ./docker/wildfly/module.xml:/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/module.xml
-      - ./docker/wildfly/deployments/:/opt/jboss/wildfly/standalone/deployments/
-      - ./smoothness-demo/build/ojdbc11-21.3.0.0.jar:/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar
