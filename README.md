@@ -63,8 +63,8 @@ You can check the [Release Notes](https://github.com/JeffersonLab/smoothness/rel
 
  - Download [Wildfly 26](https://www.wildfly.org/downloads/)
  - Configure Wildfly as seen in the [Docker example](https://github.com/JeffersonLab/smoothness/tree/main/docker/wildfly).  To simply use the docker wildfly config, but with a local instance of Wildfly (instead of Wildfly in a container) set the following environment variables on the host:
-   - **KEYCLOAK_SERVER**: localhost
-   - **ORACLE_SERVER**: localhost
+   - **KEYCLOAK_SERVER**: localhost:8081
+   - **ORACLE_SERVER**: localhost:1521
    - **JBOSS_MODULEPATH**: `<absolute-path-to-wildfly>`\modules;`<absolute-path-to-project>`\docker\wildfly\modules
    - **JAVA_OPTS**: -Djboss.server.base.dir=`<absolute-path-to-project>`\docker\wildfly\standalone
  - Start Wildfly 
@@ -96,14 +96,15 @@ gradlew build
 ### Environment Variables
 | Name | Description |
 |---|---|
-| PROXY_SERVER | Host name and optional port of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
+| PROXY_SERVER | Host name and port of outermost proxy host (for use in hyperlinks in generated emails and log entries) |
 | RESOURCE_LOCATION | If undefined then defaults to LOCAL (serve files locally).  Other option is CDN, which looks for minified/combined files on shared Content Delivery Network (CDN) server - Nice for when multiple apps use same resources to have warm cache. |
-| CDN_SERVER | Host name and optional port of content delivery network host for shared smoothness resources (Only if RESOURCE_LOCATION = CDN |
+| CDN_SERVER | Host name and port of content delivery network host for shared smoothness resources (Only if RESOURCE_LOCATION = CDN |
 | CDN_VERSION | Version of smoothness lib on CDN (only if RESOURCE_LOCATION = CDN) |
-| KEYCLOAK_SERVER | Host name and optional port of Keycloak authentication server |
+| KEYCLOAK_SERVER | Host name port of Keycloak authentication server |
 | KEYCLOAK_CLIENT_ID_&lt;context&gt; | Each application context requires a unique Keycloak client ID.  The context is found with `request.contextPath.substring(1).toUpperCase()`.  Root context apps are not supported. |
-| PUPPET_SHOW_SERVER | Host name and optional port of Puppet Show server |
-| LOGBOOK_SERVER | Host name and optional port of Jefferson Lab logbook server |
+| PUPPET_SHOW_SERVER | Host name port of Puppet Show server |
+| LOGBOOK_SERVER | Host name and port of Jefferson Lab logbook server |
+| ORACLE_SERVER | Host name and port of Oracle server |
 | SERVER_MESSAGE | Banner message (optional) - useful to tag test environment |
 
 
