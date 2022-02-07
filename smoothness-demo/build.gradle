@@ -69,6 +69,7 @@ task prepareTestWithOracle(type: Copy) {
     from configurations.dockerBuild
     into "$buildDir"
     include 'ojdbc11-*.jar'
+    dependsOn(war)
 }
 
 build.dependsOn(prepareTestWithOracle)
