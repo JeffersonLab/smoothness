@@ -5,6 +5,7 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
 
 ---
  - [Overview](https://github.com/JeffersonLab/smoothness#overview)
+ - [Quick Start with Compose](https://github.com/JeffersonLab/smoothness#quick-start-with-compose)
  - [Usage](https://github.com/JeffersonLab/smoothness#usage)
  - [Build](https://github.com/JeffersonLab/smoothness#build)
  - [Configure](https://github.com/JeffersonLab/smoothness#configure)
@@ -20,6 +21,23 @@ The template is designed for database-centric web applications in the JLab accel
  - [Puppet-Show](https://github.com/slominskir/puppet-show) - HTML-to-PDF reports
  - [SMTP Email](https://github.com/mailhog/MailHog) - send email programmatically (test server linked)
  - [JLab Logbook](https://github.com/JeffersonLab/elog) - operations electronic event logging
+
+## Quick Start with Compose
+1. Grab project
+```
+git clone https://github.com/JeffersonLab/smoothness
+cd smoothness
+```
+2. Launch Docker
+```
+docker compose up
+```
+3. Navigate to page ([Link](http://localhost:8080/smoothness-demo))
+```
+http://localhost:8080/smoothness-demo
+```
+
+See: Explanation of [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c).
 
 ## Usage
 The library is a jar file plus dependencies on Java EE and the Java 11+ JVM and standard library.  You can obtain the smoothness-weblib jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
