@@ -65,7 +65,7 @@ war {
 
 task prepareTestWithOracle(type: Copy) {
     from configurations.dockerBuild
-    into "$buildDir"
+    into '../docker/wildfly/modules/com/oracle/database/jdbc/main'
     include 'ojdbc11-*.jar'
     dependsOn(war)
 }
@@ -75,6 +75,6 @@ build.dependsOn(prepareTestWithOracle)
 tasks.war.doLast {
     copy {
         from war
-        into '../docker/wildfly/deployments'
+        into '../docker/wildfly/standalone/deployments'
     }
 }
