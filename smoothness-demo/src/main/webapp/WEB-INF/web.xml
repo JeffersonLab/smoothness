@@ -5,11 +5,11 @@
    http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
     <context-param>
         <param-name>appName</param-name>
-        <param-value>Smoothness Template</param-value>
+        <param-value>Smoothness Demo</param-value>
     </context-param>
     <context-param>
         <param-name>appShortName</param-name>
-        <param-value>ST</param-value>
+        <param-value>Demo</param-value>
     </context-param>
     <context-param>
         <param-name>resourceVersionNumber</param-name>
