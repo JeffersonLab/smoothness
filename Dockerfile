@@ -1,7 +1,5 @@
 ARG BUILD_IMAGE=gradle:7.3.3-jdk11
 
-ARG CUSTOM_CRT_URL
-
 # BUILD_TYPE should be one of 'remote-src', 'local-src', 'local-artifact'
 ARG BUILD_TYPE=remote-src
 
