@@ -12,3 +12,4 @@ smoothness-weblib/out/
 /docker/wildfly/standalone/tmp/
 /docker/wildfly/standalone/data/
 /docker/wildfly/standalone/configuration/application.keystore
+/docker/wildfly/standalone/configuration/logging.properties
