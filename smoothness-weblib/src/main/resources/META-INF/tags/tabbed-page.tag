@@ -54,7 +54,7 @@
                                 <jsp:invoke fragment="userExtra"/>
                             </div>
                             <div id="username-container">
-                                <c:out value="${pageContext.request.userPrincipal.name.split(':')[2]}"/>
+                                <c:out value="${pageContext.request.userPrincipal.name}"/>
                             </div>
                             <form id="logout-form" action="${pageContext.request.contextPath}/logout" method="post">
                                 <button type="submit" value="Logout">Logout</button>
