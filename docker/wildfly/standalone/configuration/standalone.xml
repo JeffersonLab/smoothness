@@ -377,6 +377,7 @@
                 <provider-url>http://${env.KEYCLOAK_SERVER}/auth/realms/test-realm</provider-url>
                 <ssl-required>external</ssl-required>
                 <enable-cors>true</enable-cors>
+                <use-resource-role-mappings>true</use-resource-role-mappings>
                 <principal-attribute>preferred_username</principal-attribute>
             </provider>
             <secure-deployment name="smoothness-demo.war">
@@ -557,9 +558,4 @@
             <remote-destination host="smtpmail.jlab.org" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
-    <deployments>
-        <deployment name="smoothness-demo.war" runtime-name="smoothness-demo.war">
-            <fs-archive path="C:\Users\RyanS\IdeaProjects\smoothness\smoothness-demo\build\libs\smoothness-demo.war"/>
-        </deployment>
-    </deployments>
 </server>
