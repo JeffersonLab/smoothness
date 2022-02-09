@@ -61,12 +61,13 @@ You can check the [Release Notes](https://github.com/JeffersonLab/smoothness/rel
 
 **Note**: Use the Docker Compose quickstart to automate the setup, else manually:
 
+ - Run the Gradle build to generate "run" directory
  - Download [Wildfly 26](https://www.wildfly.org/downloads/)
  - Configure Wildfly as seen in the [Docker example](https://github.com/JeffersonLab/smoothness/tree/main/docker/wildfly).  To simply use the docker wildfly config, but with a local instance of Wildfly (instead of Wildfly in a container) set the following environment variables on the host:
    - **KEYCLOAK_SERVER**: localhost:8081
    - **ORACLE_SERVER**: localhost:1521
-   - **JBOSS_MODULEPATH**: `<absolute-path-to-wildfly>`\modules;`<absolute-path-to-project>`\docker\wildfly\modules
-   - **JAVA_OPTS**: -Djboss.server.base.dir=`<absolute-path-to-project>`\docker\wildfly\standalone
+   - **JBOSS_MODULEPATH**: `<absolute-path-to-wildfly>`\modules;`<absolute-path-to-project>`\run\wildfly\modules
+   - **JAVA_OPTS**: -Djboss.server.base.dir=`<absolute-path-to-project>`\run\wildfly\standalone
  - Start Wildfly 
  - Copy smoothness-demo.war into the Wildfly deployments directory
  - Navigate your web browser to localhost:8080/smoothness-demo
