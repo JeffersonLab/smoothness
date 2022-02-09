@@ -83,7 +83,7 @@
             <url-pattern>/sso</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ipausers</role-name>
+            <role-name>smoothness-user</role-name>
         </auth-constraint>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
@@ -96,16 +96,16 @@
             <url-pattern>/setup/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>csm</role-name>
+            <role-name>smoothness-admin</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
         <auth-method>OIDC</auth-method>
     </login-config>
     <security-role>
-        <role-name>ipausers</role-name>
+        <role-name>smoothness-user</role-name>
     </security-role>
     <security-role>
-        <role-name>csm</role-name>
+        <role-name>smoothness-admin</role-name>
     </security-role>
 </web-app>

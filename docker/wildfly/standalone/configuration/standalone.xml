@@ -377,11 +377,12 @@
                 <provider-url>http://${env.KEYCLOAK_SERVER}/auth/realms/test-realm</provider-url>
                 <ssl-required>external</ssl-required>
                 <enable-cors>true</enable-cors>
+                <principal-attribute>preferred_username</principal-attribute>
             </provider>
             <secure-deployment name="smoothness-demo.war">
                 <provider>keycloak</provider>
                 <client-id>smoothness</client-id>
-                <credential name="secret" secret="test-secret"/>
+                <credential name="secret" secret="9AubPamv1H9fAWo0q239EP7wPuH5ihb7"/>
             </secure-deployment>
         </subsystem>
         <subsystem xmlns="urn:wildfly:health:1.0" security-enabled="false"/>
@@ -556,4 +557,9 @@
             <remote-destination host="smtpmail.jlab.org" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
+    <deployments>
+        <deployment name="smoothness-demo.war" runtime-name="smoothness-demo.war">
+            <fs-archive path="C:\Users\RyanS\IdeaProjects\smoothness\smoothness-demo\build\libs\smoothness-demo.war"/>
+        </deployment>
+    </deployments>
 </server>
