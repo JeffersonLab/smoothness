@@ -70,8 +70,10 @@ task initOracleDriver(type: Copy) {
 }
 
 task initOracleRunSetup {
-    mustRunAfter clean
-
+    outputs.dir "$rootDir/run/oracle/oradata"
+    outputs.upToDateWhen {
+        file("$rootDir/run/oracle/oradata").exists()
+    }
     doLast {
         mkdir "$rootDir/run/oracle/oradata"
     }
