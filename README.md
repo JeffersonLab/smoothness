@@ -61,7 +61,7 @@ You can check the [Release Notes](https://github.com/JeffersonLab/smoothness/rel
 
 **Note**: Use the Docker Compose quickstart to automate the setup, else manually:
 
- - Run the Gradle build to generate "run" directory
+ - Run the [Gradle build](https://github.com/JeffersonLab/smoothness#build) to generate "run" directory
  - Download [Wildfly 26](https://www.wildfly.org/downloads/)
  - Configure Wildfly as seen in the [Docker example](https://github.com/JeffersonLab/smoothness/tree/main/docker/wildfly).  To simply use the docker wildfly config, but with a local instance of Wildfly (instead of Wildfly in a container) set the following environment variables on the host:
    - **KEYCLOAK_SERVER**: localhost:8081
