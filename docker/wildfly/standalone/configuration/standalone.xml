@@ -377,7 +377,6 @@
                 <provider-url>http://${env.KEYCLOAK_SERVER}/auth/realms/test-realm</provider-url>
                 <ssl-required>external</ssl-required>
                 <enable-cors>true</enable-cors>
-                <use-resource-role-mappings>true</use-resource-role-mappings>
                 <principal-attribute>preferred_username</principal-attribute>
             </provider>
             <secure-deployment name="smoothness-demo.war">
