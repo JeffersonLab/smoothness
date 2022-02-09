@@ -3,10 +3,3 @@ out/
 .idea/
 smoothness-weblib/build/
 smoothness-weblib/out/
-/docker/oracle/oradata/
-/docker/wildfly/standalone/configuration/standalone_xml_history/
-/docker/wildfly/standalone/deployments/
-/docker/wildfly/standalone/log/
-/docker/wildfly/standalone/tmp/
-/docker/wildfly/standalone/data/
-/docker/wildfly/standalone/configuration/application.keystore

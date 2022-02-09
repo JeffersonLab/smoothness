@@ -4,12 +4,4 @@ out/
 .idea/
 smoothness-weblib/build/
 smoothness-weblib/out/
-/docker/oracle/oradata/
-/docker/wildfly/standalone/configuration/standalone_xml_history/
-/docker/wildfly/standalone/deployments/
-/docker/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar
-/docker/wildfly/standalone/log/
-/docker/wildfly/standalone/tmp/
-/docker/wildfly/standalone/data/
-/docker/wildfly/standalone/configuration/application.keystore
-/docker/wildfly/standalone/configuration/logging.properties
+/run/

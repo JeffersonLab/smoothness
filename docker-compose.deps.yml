@@ -12,7 +12,7 @@ services:
       - "1521:1521"
       - "5500:5500"
     volumes:
-      - ./docker/oracle/oradata:/opt/oracle/oradata
+      - ./run/oracle/oradata:/opt/oracle/oradata
       - ./docker/oracle/setup:/container-entrypoint-initdb.d
 
   keycloak:

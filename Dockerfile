@@ -58,7 +58,7 @@ RUN mkdir -p /unicopy/opt/jboss/wildfly/standalone/configuration  \
     && mkdir -p /unicopy/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main \
     && cp /smoothness/docker/wildfly/TestOracleConnection.java /unicopy \
     && cp /smoothness/docker/wildfly/docker-entrypoint.sh /unicopy \
-    && cp /smoothness/docker/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar /unicopy/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar \
+    && cp /smoothness/run/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar /unicopy/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/ojdbc11-21.3.0.0.jar \
     && cp /smoothness/docker/wildfly/modules/com/oracle/database/jdbc/main/module.xml /unicopy/opt/jboss/wildfly/modules/com/oracle/database/jdbc/main/module.xml \
     && cp /smoothness/docker/wildfly/standalone/configuration/* /unicopy/opt/jboss/wildfly/standalone/configuration
 
