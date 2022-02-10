@@ -38,9 +38,9 @@ public interface UrlParamHandler<E> {
     E defaults();
 
     /**
-     * Load URL Parameters from
+     * Load URL Parameters from a session.
      *
-     * @return
+     * @return The parameters
      */
     E materialize();
 

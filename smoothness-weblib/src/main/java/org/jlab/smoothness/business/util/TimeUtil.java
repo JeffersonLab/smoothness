@@ -799,6 +799,19 @@ public final class TimeUtil {
         return formatter.format(date);
     }
 
+    /**
+     * Smoothness template handles a set of human-friendly labeled ranges, and this method checks if a given
+     * start and end Date range matches one of the named ranges.  If not, "custom" is returned.  This is useful
+     * because instead of always showing users some explicit verbose date range, using familiar named ranges is
+     * convenient when possible.  For example, running a report on "Last Year" is concise.
+     *
+     * @param start The start Date
+     * @param end The end Date
+     * @param sevenAmAdjusted true if a day starts at 7 AM, not midnight.
+     * @param currentRun The current run date range (must be looked up)
+     * @param previousRun The previous run date range (must be looked up)
+     * @return The human-friendly range label, or 'custom' if not in the set of smoothness-honored ranges.
+     */
     public static String encodeRange(Date start, Date end, boolean sevenAmAdjusted, DateRange currentRun, DateRange previousRun) {
         Calendar c = Calendar.getInstance();
         Date now = new Date();
@@ -920,6 +933,16 @@ public final class TimeUtil {
         return range;
     }
 
+    /**
+     * Return a formatted String representation of a date range using "smart human" shortcuts.  Specifically, any
+     * time with zero minutes and zero hours are don't show hours and minutes (they're implied).  If the start and
+     * end are in the same month or same year, then the month or year respectively is not shown more than once (it's
+     * implied).
+     *
+     * @param start The start Date
+     * @param end The end Date
+     * @return The formatted date range
+     */
     public static String formatSmartRangeSeparateTime(Date start, Date end) {
         SimpleDateFormat sFormat;
         SimpleDateFormat eFormat;
@@ -1075,6 +1098,11 @@ public final class TimeUtil {
         return "DD-MMM-YYYY";
     }
 
+    /**
+     * Check if "today/now" is currently Monday.
+     *
+     * @return true if Monday, false otherwise
+     */
     public static boolean isMonday() {
         Calendar cal = Calendar.getInstance();
 
@@ -1083,6 +1111,13 @@ public final class TimeUtil {
         return Calendar.MONDAY == dayOfWeek;
     }
 
+    /**
+     * Check if the first Date is in the same month as the second.
+     *
+     * @param first The first Date
+     * @param second The second Date
+     * @return true if in the same month, false otherwise
+     */
     public static boolean isSameMonth(Date first, Date second) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(first);
@@ -1092,10 +1127,22 @@ public final class TimeUtil {
         return firstMonth == secondMonth;
     }
 
+    /**
+     * Check if a Date and timezone (Calendar) represent the first of a month.
+     *
+     * @param dayMonthYear The Date
+     * @param tz The timezone (Calendar)
+     * @return true if represents first of month, false otherwise
+     */
     public static boolean isFirstOfMonth(Date dayMonthYear, Calendar tz) {
         return dayMonthYear.equals(TimeUtil.startOfMonth(dayMonthYear, tz));
     }
 
+    /**
+     * Return a Calendar in UTC/GMT.
+     *
+     * @return The Calendar
+     */
     public static Calendar getUtcCalendar() {
         return Calendar.getInstance(TimeZone.getTimeZone("GMT"));
     }

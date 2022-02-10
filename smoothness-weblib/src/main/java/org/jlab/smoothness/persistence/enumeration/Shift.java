@@ -10,8 +10,17 @@ import java.util.Date;
  * @author ryans
  */
 public enum Shift {
+    /**
+     * OWL
+     */
     OWL("Owl"),
+    /**
+     * DAY
+     */
     DAY("Day"),
+    /**
+     * SWING
+     */
     SWING("Swing");
 
     private final String label;
