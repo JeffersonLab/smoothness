@@ -2,6 +2,7 @@ package org.jlab.demo.presentation.controller;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jlab.demo.business.session.StaffFacade;
 import org.jlab.demo.persistence.entity.Staff;
-import org.jlab.demo.presentation.util.FilterSelectionMessage;
 import org.jlab.smoothness.presentation.util.Paginator;
 import org.jlab.smoothness.presentation.util.ParamUtil;
 
@@ -22,6 +22,9 @@ import org.jlab.smoothness.presentation.util.ParamUtil;
 @WebServlet(name = "CrumbTwo", urlPatterns = {"/breadcrumbs/crumb-two"})
 public class CrumbTwo extends HttpServlet {
 
+    /**
+     * Staff Service
+     */
     @EJB
     StaffFacade staffFacade;
 
@@ -60,7 +63,7 @@ public class CrumbTwo extends HttpServlet {
                     + " of " + formatter.format(paginator.getTotalRecords());
         }
 
-        String filters = FilterSelectionMessage.getMessage(lastname);
+        String filters = getMessage(lastname);
 
         if (filters.length() > 0) {
             selectionMessage = selectionMessage + " with " + filters;
@@ -72,4 +75,34 @@ public class CrumbTwo extends HttpServlet {
 
         request.getRequestDispatcher("/WEB-INF/views/breadcrumbs/crumb-two.jsp").forward(request, response);
     }
+
+    /**
+     * Format selection message.
+     *
+     * @param lastname The lastname
+     * @return Formatted selection message
+     */
+    public static String getMessage(String lastname) {
+
+        List<String> filters = new ArrayList<>();
+
+        if (lastname != null && !lastname.isEmpty()) {
+            filters.add("Lastname \"" + lastname + "\"");
+        }
+
+        String message = "";
+
+        if (!filters.isEmpty()) {
+            message = filters.get(0);
+
+            for (int i = 1; i < filters.size(); i++) {
+                String filter = filters.get(i);
+                message += " and " + filter;
+            }
+        }
+
+        return message;
+    }
 }
+
+

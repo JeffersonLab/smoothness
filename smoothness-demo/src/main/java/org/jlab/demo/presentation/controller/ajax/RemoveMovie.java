@@ -29,6 +29,9 @@ public class RemoveMovie extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(
             RemoveMovie.class.getName());
 
+    /**
+     * Movie Service
+     */
     @EJB
     MovieFacade movieFacade;
 

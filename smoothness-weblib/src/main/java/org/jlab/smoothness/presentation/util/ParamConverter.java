@@ -177,6 +177,14 @@ public final class ParamConverter {
         return value;
     }
 
+    /**
+     * Convert a parameter to an array of Short values.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @param defaultValue Value to use for any indices with a null or empty value
+     * @return An array of Short values or null
+     */
     public static Short[] convertShortArray(HttpServletRequest request, String name,
                                             Short defaultValue) {
         String[] valueStrArray = request.getParameterValues(name);
@@ -201,6 +209,13 @@ public final class ParamConverter {
         return valueArray;
     }
 
+    /**
+     * Convert a parameter to an array of Long values.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return An array of Long values or null
+     */
     public static Long[] convertLongArray(HttpServletRequest request, String name) {
         String[] valueStrArray = request.getParameterValues(name);
         Long[] valueArray = null;
@@ -222,6 +237,13 @@ public final class ParamConverter {
         return valueArray;
     }
 
+    /**
+     * Convert a parameter to an array of Float values.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return An array of Float values or null
+     */
     public static Float[] convertFloatArray(HttpServletRequest request, String name) {
         String[] valueStrArray = request.getParameterValues(name);
         Float[] valueArray = null;
@@ -243,6 +265,13 @@ public final class ParamConverter {
         return valueArray;
     }
 
+    /**
+     * Convert a parameter to an array of BigInteger values.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return An array of BigInteger values or null
+     */
     public static BigInteger[] convertBigIntegerArray(HttpServletRequest request, String name) {
         String[] valueStrArray = request.getParameterValues(name);
         BigInteger[] valueArray = null;
@@ -264,6 +293,14 @@ public final class ParamConverter {
         return valueArray;
     }
 
+    /**
+     * Convert a parameter to a Date (in New_York timezone) with expectation of "dd-MMM-yyyy HH:mm" format.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A Date or null
+     * @throws ParseException If the parameter format does not match expected format
+     */
     public static Date convertFriendlyDateTime(HttpServletRequest request, String name) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat(TimeUtil.getFriendlyDateTimePattern());
 
@@ -278,6 +315,14 @@ public final class ParamConverter {
         return value;
     }
 
+    /**
+     * Convert a parameter to a Date (in New_York timezone) with expectation of "dd-MMM-yyyy" format.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A Date or null
+     * @throws ParseException If the parameter format does not match expected format
+     */
     public static Date convertFriendlyDate(HttpServletRequest request, String name) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat(TimeUtil.getFriendlyDatePattern());
 

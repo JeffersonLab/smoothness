@@ -35,21 +35,13 @@ public final class IOUtil {
         // private constructor
     }
 
-    /* My implementation is terrible so just delegate to fn:escapeXml taglib impl instead */
+    /**
+     * Escape XML entities.
+     *
+     * @param input The String to escape
+     * @return An escaped String
+     */
     public static String escapeXml(String input) {
-        /*String output = input;
-
-        // Note: if input contains entities already this will break!
-        
-        if (input != null) {
-            output = output.replace("&", "&#038;"); // Must do this one first as & within other replacements
-            output = output.replace("\"", "&#034;");            
-            output = output.replace("'", "&#039;");
-            output = output.replace("<", "&#060;");
-            output = output.replace(">", "&#062;");
-        }
-        return output;*/
-
         return org.apache.taglibs.standard.functions.Functions.escapeXml(input);
     }
 
@@ -294,8 +286,8 @@ public final class IOUtil {
     /**
      * Return NULL SQL text if the input is null, else a Comma Separated Values (CSV) String with values quoted for SQL.
      *
-     * @param array
-     * @return
+     * @param array The array of BigInteger values
+     * @return A CSV String
      */
     public static String toNullOrCsvForStoredProcedure(BigInteger[] array) {
         String value = toNullOrCsv(array);

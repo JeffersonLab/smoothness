@@ -18,6 +18,9 @@ import java.util.List;
 @WebServlet(name = "MultiselectDatatable", urlPatterns = {"/features/multiselect-datatable"})
 public class MultiselectDatatable extends HttpServlet {
 
+    /**
+     * Movie Service
+     */
     @EJB
     MovieFacade movieFacade;
 

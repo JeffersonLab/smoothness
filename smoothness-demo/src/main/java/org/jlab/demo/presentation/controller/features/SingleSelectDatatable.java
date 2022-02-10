@@ -18,6 +18,9 @@ import java.util.List;
 @WebServlet(name = "SingleSelectDatatable", urlPatterns = {"/features/single-select-datatable"})
 public class SingleSelectDatatable extends HttpServlet {
 
+    /**
+     * Movie Service
+     */
     @EJB
     MovieFacade movieFacade;
 

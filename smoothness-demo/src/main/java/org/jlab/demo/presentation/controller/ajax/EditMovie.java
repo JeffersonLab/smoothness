@@ -29,6 +29,9 @@ public class EditMovie extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(
             EditMovie.class.getName());
 
+    /**
+     * Movie Service
+     */
     @EJB
     MovieFacade movieFacade;
 
