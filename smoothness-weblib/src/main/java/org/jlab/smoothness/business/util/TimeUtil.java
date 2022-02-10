@@ -34,6 +34,12 @@ public final class TimeUtil {
         return count;
     }
 
+    /**
+     * Return the Crew Chief shift start given a Date in the shift.
+     *
+     * @param dateInShift Date in the shift
+     * @return The date representing the start of shift
+     */
     public static Date getCcShiftStart(Date dateInShift) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateInShift);
@@ -58,6 +64,12 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Return the Crew Chief shift end given a Date in the shift.
+     *
+     * @param dateInShift Date in the shift
+     * @return The Date representing the end of shift
+     */
     public static Date getCcShiftEnd(Date dateInShift) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateInShift);
@@ -107,6 +119,13 @@ public final class TimeUtil {
         return shift;
     }
 
+    /**
+     * Return a Date representing the Crew Chief shift start day and hour given a day and shift.
+     *
+     * @param day The day
+     * @param shift The shift
+     * @return The Date representing the shift start
+     */
     public static Date getCrewChiefStartDayAndHour(Date day, Shift shift) {
         int hour;
         switch (shift) {
@@ -159,6 +178,12 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Check if the provided Date is the start of the Crew Chief shift.
+     *
+     * @param startDayAndHour Date to check
+     * @return true if start of Crew Chief shift, false otherwise
+     */
     public static boolean isCrewChiefShiftStart(Date startDayAndHour) {
         Calendar cal = Calendar.getInstance();
 
@@ -169,6 +194,12 @@ public final class TimeUtil {
         return (startHourOfDay == 23 || startHourOfDay == 7 || startHourOfDay == 15);
     }
 
+    /**
+     * Check if the provided Date is the start of an Experimenter shift.
+     *
+     * @param startDayAndHour Date to check
+     * @return true if start of Experimenter shift, false otherwise
+     */
     public static boolean isExperimenterShiftStart(Date startDayAndHour) {
         Calendar cal = Calendar.getInstance();
 
@@ -179,6 +210,12 @@ public final class TimeUtil {
         return (startHourOfDay == 0 || startHourOfDay == 8 || startHourOfDay == 16);
     }
 
+    /**
+     * Calculate the previous Crew Chief shift start Date.
+     *
+     * @param currentStartDayAndHour The current shift start Date
+     * @return The previous start Date
+     */
     public static Date previousCrewChiefShiftStart(Date currentStartDayAndHour) {
         Date previousDay = currentStartDayAndHour;
 
@@ -187,6 +224,12 @@ public final class TimeUtil {
         return TimeUtil.getCrewChiefStartDayAndHour(previousDay, previousShift);
     }
 
+    /**
+     * Calculate the next Crew Chief shift start Date.
+     *
+     * @param currentStartDayAndHour The current shift start Date
+     * @return The next start Date
+     */
     public static Date nextCrewChiefShiftStart(Date currentStartDayAndHour) {
         Date nextDay = currentStartDayAndHour;
 
@@ -224,6 +267,12 @@ public final class TimeUtil {
         return shift;
     }
 
+    /**
+     * Calculate the Crew Chief shift end day and hour.
+     *
+     * @param startDayAndHour Date representing the start of the shift
+     * @return The end day and hour
+     */
     public static Date calculateCrewChiefShiftEndDayAndHour(Date startDayAndHour) {
         Calendar cal = Calendar.getInstance();
 
@@ -247,6 +296,12 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Calculate the experimenter shift end day and hour.
+     *
+     * @param startDayAndHour Date representing the start of the shift
+     * @return The end day and hour
+     */
     public static Date calculateExperimenterShiftEndDayAndHour(Date startDayAndHour) {
         Calendar cal = Calendar.getInstance();
 
@@ -301,6 +356,12 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Check if Date represents the first hour of a Crew Chief shift.
+     *
+     * @param now The date
+     * @return true if first hour of Crew Chief shift, else false
+     */
     public static boolean isFirstHourOfCrewChiefShift(Date now) {
         boolean firstHour = false;
 
@@ -315,6 +376,13 @@ public final class TimeUtil {
         return firstHour;
     }
 
+    /**
+     *  Add hours to a Date.
+     *
+     * @param date The date
+     * @param hours The number of hours to add (negative allowed)
+     * @return A new Date adjusted by hours
+     */
     public static Date addHours(Date date, int hours) {
         Calendar cal = Calendar.getInstance();
 
@@ -324,6 +392,13 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     *  Add days to a Date.
+     *
+     * @param date The date
+     * @param days The number of days to add (negative allowed)
+     * @return A new Date adjusted by days
+     */
     public static Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
 
@@ -333,6 +408,13 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Add months to a Date.
+     *
+     * @param date The date
+     * @param months The number of months to add (negative allowed)
+     * @return A new Date adjusted by months
+     */
     public static Date addMonths(Date date, int months) {
         Calendar cal = Calendar.getInstance();
 
@@ -342,6 +424,12 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Find last day of week given a Date.
+     *
+     * @param start The date
+     * @return Date representing the last day of week
+     */
     public static Date calculateWeekEndDate(Date start) {
         Calendar cal = Calendar.getInstance();
 
@@ -351,6 +439,12 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Find last day of year given a Date.
+     *
+     * @param start The date
+     * @return Date representing the last day of year
+     */
     public static Date calculateYearEndDate(Date start) {
         Calendar cal = Calendar.getInstance();
 
@@ -423,6 +517,13 @@ public final class TimeUtil {
         return addMonths(startOfMonth(date, tz), 1);
     }
 
+    /**
+     * Calculate the difference in hours between two Dates.
+     *
+     * @param first The first Date
+     * @param second The second Date
+     * @return The difference in hours
+     */
     public static long differenceInHours(Date first, Date second) {
         long hoursBetween = 0;
         long milliSecBetween = 0;
@@ -479,6 +580,12 @@ public final class TimeUtil {
         return Date.from(ldt.toInstant());
     }
 
+    /**
+     * Format a Date using the timezone in database.
+     *
+     * @param dayAndHour The Date
+     * @return The formatted date String
+     */
     public static String formatDatabaseDateTimeTZ(Date dayAndHour) {
         SimpleDateFormat databaseDateTimeTZ = new SimpleDateFormat("yyyy-MM-dd HH z");
         return databaseDateTimeTZ.format(dayAndHour);
@@ -578,6 +685,12 @@ public final class TimeUtil {
         return formatter.format(start) + " - " + formatter.format(end);
     }
 
+    /**
+     * Format as a human would - if hour and minutes are zero then don't mention them.
+     *
+     * @param date The Date
+     * @return The formatted date String
+     */
     public static String formatSmartSingleTime(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
