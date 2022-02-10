@@ -822,8 +822,7 @@ body.print {
 .print .chart-wrap-backdrop {
     border: 1px solid gray;
     padding: 16px;
-    background-color: white;    
-    background: linear-gradient(#fff, #eee);
+    background: white linear-gradient(#fff, #eee);
 }
 /*Full Screen Reports*/
 .fullscreen #exit-fullscreen-panel {
