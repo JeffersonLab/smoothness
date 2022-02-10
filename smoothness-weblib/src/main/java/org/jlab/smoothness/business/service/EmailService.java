@@ -11,9 +11,17 @@ import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Service for sending emails.
+ */
 public class EmailService {
     private final Session mailSession;
 
+    /**
+     * Creates a new EmailService.
+     *
+     * @throws UserFriendlyException If unable to initialize a mail Session from the Application Server.
+     */
     public EmailService() throws UserFriendlyException {
         try {
             mailSession = (Session) new InitialContext().lookup("mail/jlab");
@@ -22,6 +30,17 @@ public class EmailService {
         }
     }
 
+    /**
+     * Send an email given Addresses.
+     *
+     * @param sender The sender address
+     * @param from The from address
+     * @param toAddresses The to addresses
+     * @param subject The subject
+     * @param body The body
+     * @param html true if HTML body, false otherwise
+     * @throws MessagingException If unable to send
+     */
     private void doSend(Address sender, Address from, Address[] toAddresses, String subject, String body, boolean html) throws MessagingException {
         MimeMessage message = new MimeMessage(mailSession);
 
@@ -63,6 +82,17 @@ public class EmailService {
         return addressList.toArray(new Address[] {});
     }
 
+    /**
+     * Send an email given Strings representing addresses.
+     *
+     * @param sender The sender address as a String
+     * @param from The from address
+     * @param toCsv The to addresses as Strings
+     * @param subject The subject
+     * @param body The body
+     * @param html true if HTML body, false otherwise
+     * @throws UserFriendlyException If unable to send
+     */
     public void sendEmail(String sender, String from, String toCsv, String subject, String body, boolean html) throws UserFriendlyException {
         try {
             Address senderAddress = new InternetAddress(sender);

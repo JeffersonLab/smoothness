@@ -6,6 +6,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+/**
+ * A ServletContextListener that provide all environment variables to the ServletContext to allow easy configuration.
+ */
 @WebListener
 public class ConfigurationParameterInit implements ServletContextListener {
 
