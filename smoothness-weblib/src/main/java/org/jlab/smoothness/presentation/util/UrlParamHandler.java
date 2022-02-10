@@ -6,7 +6,7 @@ import java.io.IOException;
 /**
  * Handles Parameters from a ServletRequest.
  *
- * @param <E>
+ * @param <E> A class representing parameters
  */
 public interface UrlParamHandler<E> {
     /**
