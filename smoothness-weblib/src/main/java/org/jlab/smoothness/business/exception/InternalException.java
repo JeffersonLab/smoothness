@@ -7,10 +7,21 @@ package org.jlab.smoothness.business.exception;
  * @author ryans
  */
 public class InternalException extends WebApplicationException {
+    /**
+     * Create a new InternalException with a message.
+     *
+     * @param msg The message
+     */
     public InternalException(String msg) {
         super(msg);
     }
-    
+
+    /**
+     * Create a new InternalException with a message and cause.
+     *
+     * @param msg The message
+     * @param cause The cause
+     */
     public InternalException(String msg, Throwable cause) {
         super(msg, cause);
     }
