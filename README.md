@@ -81,7 +81,7 @@ gradlew -Pprovided build
 ```
 
 ## Build
-This [Java 11](https://adoptium.net/) project uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
+This [Java 17](https://adoptium.net/) project uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
 ```
 git clone https://github.com/JeffersonLab/smoothness
