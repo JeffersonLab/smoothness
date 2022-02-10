@@ -6,9 +6,21 @@ package org.jlab.smoothness.persistence.enumeration;
  * @author ryans
  */
 public enum Hall {
+    /**
+     * Hall A
+     */
     A("A"),
+    /**
+     * Hall B
+     */
     B("B"),
+    /**
+     * Hall C
+     */
     C("C"),
+    /**
+     * Hall D
+     */
     D("D");
 
     private final String label;

@@ -22,6 +22,9 @@ public class Feedback extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(
             Feedback.class.getName());
 
+    /**
+     * The email service
+     */
     private EmailService emailService;
 
     /**

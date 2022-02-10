@@ -10,10 +10,21 @@ import javax.ejb.ApplicationException;
  */
 @ApplicationException(inherited = true, rollback = true)
 public abstract class WebApplicationException extends Exception {
+    /**
+     * Create a new WebApplicationException with the provided message.
+     *
+     * @param msg The message
+     */
     public WebApplicationException(String msg) {
         super(msg);
     }
-    
+
+    /**
+     * Create a new WebApplicationException with the provided message and cause.
+     *
+     * @param msg The message
+     * @param cause The cause
+     */
     public WebApplicationException(String msg, Throwable cause) {
         super(msg, cause);
     }

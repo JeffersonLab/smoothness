@@ -72,6 +72,15 @@ public final class IOUtil {
         return str;
     }
 
+    /**
+     * Fetch HTML at the given URL with the provided timeouts.
+     *
+     * @param urlStr The URL
+     * @param connectTimeout The connect timeout in milliseconds
+     * @param readTimeout The read timeout in milliseconds
+     * @return The HTML String
+     * @throws IOException If unable to fetch the HTML
+     */
     public static String doHtmlGet(String urlStr, int connectTimeout, int readTimeout) throws
             IOException {
         URL url;
@@ -81,19 +90,29 @@ public final class IOUtil {
         con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
 
-        /*con.setUseCaches(false);
-         con.setRequestProperty("Pragma", "no-cache");
-         con.setRequestProperty("Cache-Control", "no-cache");*/
         con.setConnectTimeout(connectTimeout);
         con.setReadTimeout(readTimeout);
 
         return streamToString(con.getInputStream(), "UTF-8");
     }
 
+    /**
+     * Return a random integer between min and max.
+     *
+     * @param min The min
+     * @param max The max
+     * @return The random int
+     */
     public static int randInt(int min, int max) {
         return random.nextInt((max - min) + 1) + min;
     }
 
+    /**
+     * Convert an array of objects to a Comma Separated Values (CSV) String.
+     *
+     * @param items The objects
+     * @return A CSV String
+     */
     public static String toCsv(Object[] items) {
         String csv = "";
 
@@ -114,6 +133,12 @@ public final class IOUtil {
         return csv;
     }
 
+    /**
+     * Convert an array of objects to a Space Separated Values (SSV) String.
+     *
+     * @param items The objects
+     * @return The SSV String
+     */
     public static String toSsv(Object[] items) {
         String ssv = "";
 
@@ -134,6 +159,12 @@ public final class IOUtil {
         return ssv;
     }
 
+    /**
+     * Return null if input is null, else value of toString().
+     *
+     * @param o The object
+     * @return null or value of toString()
+     */
     public static String nullOrString(Object o) {
         String value = null;
 
@@ -144,6 +175,12 @@ public final class IOUtil {
         return value;
     }
 
+    /**
+     * Return null if input is null, else String Y or N corresponding to true or false respectively.
+     *
+     * @param b The Boolean
+     * @return null or String with "Y" or "N"
+     */
     public static String nullOrBoolean(Boolean b) {
         String value = null;
 
@@ -154,6 +191,13 @@ public final class IOUtil {
         return value;
     }
 
+    /**
+     * Return null if input is null, else String containing formatted date.
+     *
+     * @param d The date
+     * @param dateFormat The format
+     * @return null or a formatted String representation of the date
+     */
     public static String nullOrFormat(Date d, SimpleDateFormat dateFormat) {
         String value = null;
 
@@ -164,6 +208,14 @@ public final class IOUtil {
         return value;
     }
 
+    /**
+     * Removes any null values from an array.
+     *
+     * @param a The array
+     * @param c The Class of items in the array
+     * @param <E> The type of items in the array
+     * @return A new array with only the not-null values provided in the input.
+     */
     @SuppressWarnings("unchecked")
     public static <E> E[] removeNullValues(final E[] a, Class<E> c) {
         if (a == null) {
@@ -217,6 +269,12 @@ public final class IOUtil {
         }
     }
 
+    /**
+     * Return null if the input is null, else a Comma Separated Values (CSV) String.
+     *
+     * @param array The array of BigInteger values
+     * @return null or a CSV String
+     */
     public static String toNullOrCsv(BigInteger[] array) {
         String csv = null;
 
@@ -233,6 +291,12 @@ public final class IOUtil {
         return csv;
     }
 
+    /**
+     * Return NULL SQL text if the input is null, else a Comma Separated Values (CSV) String with values quoted for SQL.
+     *
+     * @param array
+     * @return
+     */
     public static String toNullOrCsvForStoredProcedure(BigInteger[] array) {
         String value = toNullOrCsv(array);
         if (value == null) {
@@ -243,6 +307,13 @@ public final class IOUtil {
         return value;
     }
 
+    /**
+     * Return a SSLSocketFactory that ignores certificates.
+     *
+     * @return The SSLSocketFactory
+     * @throws NoSuchAlgorithmException If unable to find a valid algorithm
+     * @throws KeyManagementException If a key issue occurs
+     */
     public static SSLSocketFactory getTrustySSLSocketFactory() throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext context = null;
         context = SSLContext.getInstance("TLS");
@@ -266,6 +337,11 @@ public final class IOUtil {
         return context.getSocketFactory();
     }
 
+    /**
+     * Return a Hostname verifier that doesn't actually check anything!
+     *
+     * @return The HostnameVerifier
+     */
     public static HostnameVerifier getTrustyHostnameVerifier() {
         return new HostnameVerifier() {
             @Override
