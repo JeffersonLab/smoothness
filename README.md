@@ -125,5 +125,5 @@ The demo is included in a Gradle Multi-Project build mainly so we can take advan
 The demo application requires an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.   See [Oracle XE DB Container Notes](https://github.com/JeffersonLab/smoothness/wiki/Developer-Notes#oracle-container).
 
 ## See Also
-- [Down time manager (DTM)](https://github.com/JeffersonLab/dtm)
 - [Beam authorization manager (BAM)](https://github.com/JeffersonLab/bam)
+- [Down time manager (DTM)](https://github.com/JeffersonLab/dtm)
