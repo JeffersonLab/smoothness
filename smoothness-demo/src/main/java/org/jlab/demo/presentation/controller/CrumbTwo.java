@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jlab.demo.business.session.StaffFacade;
+import org.jlab.demo.business.service.StaffService;
 import org.jlab.demo.persistence.entity.Staff;
 import org.jlab.smoothness.presentation.util.Paginator;
 import org.jlab.smoothness.presentation.util.ParamUtil;
@@ -26,7 +26,7 @@ public class CrumbTwo extends HttpServlet {
      * Staff Service
      */
     @EJB
-    StaffFacade staffFacade;
+    StaffService staffService;
 
     /**
      * Handles the HTTP
@@ -46,8 +46,8 @@ public class CrumbTwo extends HttpServlet {
         int offset = ParamUtil.convertAndValidateNonNegativeInt(request, "offset", 0);
         int max = ParamUtil.convertAndValidateNonNegativeInt(request, "max", 10);
 
-        List<Staff> staffList = staffFacade.filterList(lastname, offset, max);
-        long totalRecords = staffFacade.countList(lastname, offset, max);
+        List<Staff> staffList = staffService.filterList(lastname, offset, max);
+        long totalRecords = staffService.countList(lastname, offset, max);
 
         Paginator paginator = new Paginator(totalRecords, offset, max);
 

@@ -1,6 +1,6 @@
 package org.jlab.demo.presentation.controller.ajax;
 
-import org.jlab.demo.business.session.MovieFacade;
+import org.jlab.demo.business.service.MovieService;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 
@@ -32,7 +32,7 @@ public class AddMovie extends HttpServlet {
      * Movie Service
      */
     @EJB
-    MovieFacade movieFacade;
+    MovieService movieService;
 
     /**
      * Handles the HTTP
@@ -55,7 +55,7 @@ public class AddMovie extends HttpServlet {
             Integer duration = ParamConverter.convertInteger(request, "duration");
             Date release = ParamConverter.convertFriendlyDate(request, "release");
 
-            movieFacade.addMovie(title, description, rating, duration, release);
+            movieService.addMovie(title, description, rating, duration, release);
         } catch (EJBAccessException e) {
             LOGGER.log(Level.WARNING, "Not authorized", e);
             errorReason = "Not authorized";

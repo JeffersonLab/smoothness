@@ -1,4 +1,4 @@
-package org.jlab.demo.business.session;
+package org.jlab.demo.business.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,14 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.jlab.demo.persistence.entity.Staff;
+import org.jlab.smoothness.business.service.JPAService;
 
 /**
  *
  * @author ryans
  */
 @Stateless
-public class StaffFacade extends AbstractFacade<Staff> {
+public class StaffService extends JPAService<Staff> {
     @PersistenceContext(unitName = "webappPU")
     private EntityManager em;
 
@@ -28,7 +29,7 @@ public class StaffFacade extends AbstractFacade<Staff> {
         return em;
     }
 
-    public StaffFacade() {
+    public StaffService() {
         super(Staff.class);
     }
     

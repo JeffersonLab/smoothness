@@ -1,6 +1,6 @@
 package org.jlab.demo.presentation.controller.ajax;
 
-import org.jlab.demo.business.session.MovieFacade;
+import org.jlab.demo.business.service.MovieService;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,7 +32,7 @@ public class RemoveMovie extends HttpServlet {
      * Movie Service
      */
     @EJB
-    MovieFacade movieFacade;
+    MovieService movieService;
 
     /**
      * Handles the HTTP
@@ -52,7 +51,7 @@ public class RemoveMovie extends HttpServlet {
         try {
             BigInteger[] idArray = ParamConverter.convertBigIntegerArray(request, "id[]");
 
-            movieFacade.removeMovie(idArray);
+            movieService.removeMovie(idArray);
         } catch (EJBAccessException e) {
             LOGGER.log(Level.WARNING, "Not authorized", e);
             errorReason = "Not authorized";

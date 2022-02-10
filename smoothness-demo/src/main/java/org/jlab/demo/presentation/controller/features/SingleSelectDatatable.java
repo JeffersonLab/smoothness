@@ -1,7 +1,8 @@
 package org.jlab.demo.presentation.controller.features;
 
-import org.jlab.demo.business.session.MovieFacade;
+import org.jlab.demo.business.service.MovieService;
 import org.jlab.demo.persistence.entity.Movie;
+import org.jlab.smoothness.business.service.JPAService;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -22,7 +23,7 @@ public class SingleSelectDatatable extends HttpServlet {
      * Movie Service
      */
     @EJB
-    MovieFacade movieFacade;
+    MovieService movieService;
 
     /**
      * Handles the HTTP
@@ -36,7 +37,7 @@ public class SingleSelectDatatable extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Movie> movieList = movieFacade.filter();
+        List<Movie> movieList = movieService.findAllDefaultOrder();
 
         request.setAttribute("movieList", movieList);
 

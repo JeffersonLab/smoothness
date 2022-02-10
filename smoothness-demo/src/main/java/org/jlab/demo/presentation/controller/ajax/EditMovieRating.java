@@ -1,6 +1,6 @@
 package org.jlab.demo.presentation.controller.ajax;
 
-import org.jlab.demo.business.session.MovieFacade;
+import org.jlab.demo.business.service.MovieService;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.presentation.util.ParamConverter;
 
@@ -32,7 +32,7 @@ public class EditMovieRating extends HttpServlet {
      * Movie Service
      */
     @EJB
-    MovieFacade movieFacade;
+    MovieService movieService;
 
     /**
      * Handles the HTTP
@@ -52,7 +52,7 @@ public class EditMovieRating extends HttpServlet {
             BigInteger[] idArray = ParamConverter.convertBigIntegerArray(request, "id[]");
             String rating = request.getParameter("rating");
 
-            movieFacade.editMovieRating(idArray, rating);
+            movieService.editMovieRating(idArray, rating);
         } catch (EJBAccessException e) {
             LOGGER.log(Level.WARNING, "Not authorized", e);
             errorReason = "Not authorized";
