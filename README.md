@@ -15,7 +15,7 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
 ---
 
 ## Overview
-The template is designed for database-centric web applications in the JLab accelerator environment and supports interactions with the following dependent services (Containers):
+The template is designed for database-centric web applications in the JLab accelerator environment and supports interactions with the following dependent services (for the demo they're Containers):
  - [Keycloak](https://github.com/keycloak/keycloak) - OAuth OIDC authentication
  - [Oracle DB](https://github.com/gvenzl/oci-oracle-xe) - data persistence (test server linked)
  - [Puppet-Show](https://github.com/slominskir/puppet-show) - HTML-to-PDF reports
