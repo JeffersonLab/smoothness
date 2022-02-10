@@ -67,10 +67,13 @@
                                 <c:param name="returnUrl" value="${absHostUrl.concat(domainRelativeReturnUrl)}"/>
                             </c:url>
                             <c:url value="/sso" var="suUrl">
-                                <c:param name="kc_idp_hint" value="ace-su-keycloak-oidc"/>
+                                <c:param name="kc_idp_hint" value="${env['KEYCLOAK_SU_IDP']}"/>
                                 <c:param name="returnUrl" value="${absHostUrl.concat(domainRelativeReturnUrl)}"/>
                             </c:url>
-                            <a id="login-link" href="${loginUrl}">Login</a> (<a id="su-link" href="${suUrl}">SU</a>)
+                            <a id="login-link" href="${loginUrl}">Login</a>
+                            <c:if test="${not empty env['KEYCLOAK_SU_IDP']}">
+                                (<a id="su-link" href="${suUrl}">SU</a>)
+                            </c:if>
                         </c:otherwise>
                     </c:choose>
                 </div>
