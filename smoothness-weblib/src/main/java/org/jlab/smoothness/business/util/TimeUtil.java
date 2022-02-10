@@ -21,6 +21,13 @@ public final class TimeUtil {
         // private constructor
     }
 
+    /**
+     * Count the number of months in a date range inclusive.
+     *
+     * @param start The start Date
+     * @param end The end Date
+     * @return The number of months, inclusive
+     */
     public static int countMonthsInclusive(Date start, Date end) {
         DateIterator iterator = new DateIterator(start, end, Calendar.MONTH);
 
@@ -454,6 +461,13 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Return the start of the year given a Date in the year and timezone (Calendar).
+     *
+     * @param date The date
+     * @param tz The timezone (Calendar)
+     * @return A Date representing the start of the year
+     */
     public static Date startOfYear(Date date, Calendar tz) {
         Calendar cal = tz;
 
@@ -468,6 +482,15 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Return the start of the next fiscal year given a Date and timezone (Calendar).
+     *
+     * Fiscal year starts Oct 1.
+     *
+     * @param date The date
+     * @param tz The timezone
+     * @return The Date adjusted to the start of the next fiscal year
+     */
     public static Date startOfFiscalYear(Date date, Calendar tz) {
         Calendar cal = tz;
 
@@ -487,6 +510,13 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Return the start of next year given a Date and timezone (Calendar).
+     *
+     * @param date The date
+     * @param tz The timezone
+     * @return The Date adjusted to start of the next year
+     */
     public static Date startOfNextYear(Date date, Calendar tz) {
         return addYears(startOfYear(date, tz), 1);
     }
@@ -601,6 +631,12 @@ public final class TimeUtil {
         return new Date(unix * 1000);
     }
 
+    /**
+     * Truncate a Date to set hour, minute, second, and millisecond to zero.
+     *
+     * @param date The Date
+     * @return The Date adjusted to have no hours, minutes, seconds, and milliseconds.
+     */
     public static Date truncateToHour(Date date) {
         Calendar cal = Calendar.getInstance();
 
@@ -639,6 +675,14 @@ public final class TimeUtil {
         return result;
     }
 
+    /**
+     * Return the start of the week given a Date in the week and the day of the week which represents the start of the
+     * week.
+     *
+     * @param today The day in the week
+     * @param dayOfWeek The day representing the start of the week
+     * @return The Date adjusted to the start of the week
+     */
     public static Date startOfWeek(Date today, int dayOfWeek) {
         Calendar c = Calendar.getInstance();
         c.setTime(today);
@@ -652,6 +696,13 @@ public final class TimeUtil {
         return c.getTime();
     }
 
+    /**
+     * Return the start of the day indicated in the Date, given a timezone (Calendar).
+     *
+     * @param day The Date
+     * @param tz The timezone (Calendar)
+     * @return The Date adjusted to the start of the day
+     */
     public static Date startOfDay(Date day, Calendar tz) {
         Calendar cal = tz;
 
@@ -664,10 +715,24 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     *  Return the start of the next day given a Date and timezone (Calendar).
+     *
+     * @param date The Date
+     * @param tz The timezone (Calendar)
+     * @return The Date adjusted to the start of the next day
+     */
     public static Date startOfNextDay(Date date, Calendar tz) {
         return addDays(startOfDay(date, tz), 1);
     }
 
+    /**
+     * Return the start of the hour given a Date and timezone (in Calendar).
+     *
+     * @param date The Date
+     * @param tz The timezone (Calendar)
+     * @return The Date adjusted to the start of the hour
+     */
     public static Date startOfHour(Date date, Calendar tz) {
         Calendar cal = tz;
 
@@ -679,6 +744,13 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Format a Date range as an interval of only month and year.
+     *
+     * @param start The start Date
+     * @param end The end Date
+     * @return A formatted String representing the interval
+     */
     public static String formatMonthInterval(Date start, Date end) {
         SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy");
 

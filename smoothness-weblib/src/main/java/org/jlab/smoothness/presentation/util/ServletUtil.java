@@ -18,6 +18,13 @@ public class ServletUtil {
         // Can't instantiate publicly
     }
 
+    /**
+     * Return the current URL given simple parameters (no multiple values per key).
+     *
+     * @param request The HttpServletReqeust
+     * @param params The parameters
+     * @return The URL String
+     */
     public static String getCurrentUrl(HttpServletRequest request, Map<String, String> params) {
         Map<String, List<String>> advancedParams = new LinkedHashMap<String, List<String>>();
         for (String s : params.keySet()) {
@@ -29,16 +36,39 @@ public class ServletUtil {
         return getCurrentUrlAdvanced(request, advancedParams);
     }
 
+    /**
+     * Return the current URL given parameters with potentially multiple values per key (advanced).
+     *
+     * @param request The HttpServletRequest
+     * @param advancedParams The parameters
+     * @return The URL String
+     */
     public static String getCurrentUrlAdvanced(HttpServletRequest request,
             Map<String, List<String>> advancedParams) {
         return buildUrl(request.getContextPath(), request.getServletPath(), advancedParams, "UTF-8");
     }
 
+    /**
+     * Build a URL given the component parts.
+     *
+     * @param contextPath The context path
+     * @param servletPath The servlet path
+     * @param params The parameters
+     * @param encoding The encoding
+     * @return The URL String
+     */
     public static String buildUrl(String contextPath, String servletPath,
             Map<String, List<String>> params, String encoding) {
         return contextPath + servletPath + buildQueryString(params, encoding);
     }
 
+    /**
+     * Create a query string given a list of parameters.
+     *
+     * @param params The parameters
+     * @param encoding The encoding
+     * @return A query string
+     */
     public static String buildQueryString(Map<String, List<String>> params, String encoding) {
         StringBuilder builder = new StringBuilder();
 
