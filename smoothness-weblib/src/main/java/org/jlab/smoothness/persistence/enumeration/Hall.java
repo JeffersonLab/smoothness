@@ -13,7 +13,7 @@ public enum Hall {
 
     private final String label;
 
-    private Hall(String label) {
+    Hall(String label) {
         this.label = label;
     }
 

@@ -73,7 +73,7 @@ public final class IOUtil {
     }
 
     public static String doHtmlGet(String urlStr, int connectTimeout, int readTimeout) throws
-            MalformedURLException, ProtocolException, IOException {
+            IOException {
         URL url;
         HttpURLConnection con;
 

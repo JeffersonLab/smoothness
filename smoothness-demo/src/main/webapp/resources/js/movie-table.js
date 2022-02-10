@@ -45,7 +45,7 @@ $(document).on("table-row-edit", function () {
 });
 
 $(document).on("click", "#remove-row-button", function () {
-    var idArray = new Array();
+    var idArray = [];
 
     if ($(".editable-row-table .selected-row").length < 1) {
         window.console && console.log('No rows selected');

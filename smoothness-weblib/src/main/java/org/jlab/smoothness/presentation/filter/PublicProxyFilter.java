@@ -25,12 +25,10 @@ public class PublicProxyFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 
-        boolean publicProxy = false;
+        boolean publicProxy = request.getHeader("X-Public-Proxy") != null || request.getParameter("public-proxy")
+                != null;
 
-        if (request.getHeader("X-Public-Proxy") != null || request.getParameter("public-proxy")
-                != null) {
-            publicProxy = true; // You don't have a choice if proxy server sets this
-        }
+        // You don't have a choice if proxy server sets this
 
         request.setAttribute("publicProxy", publicProxy);
 

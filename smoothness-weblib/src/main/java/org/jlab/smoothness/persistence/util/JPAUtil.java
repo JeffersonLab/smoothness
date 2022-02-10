@@ -38,7 +38,7 @@ public class JPAUtil {
             throws IllegalArgumentException {
 
         Constructor<?> ctor =
-                (Constructor<?>) clazz.getDeclaredConstructors()[0];
+                clazz.getDeclaredConstructors()[0];
         List<T> result = new ArrayList<>();
 
         List<Object[]> list = q.getResultList();

@@ -4,19 +4,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface UrlParamHandler<E> {
-    public E convert();
+    E convert();
     
-    public void validate(E params);
+    void validate(E params);
  
-    public void store(E params);
+    void store(E params);
     
-    public E defaults();
+    E defaults();
     
-    public E materialize();
+    E materialize();
     
-    public boolean qualified();
+    boolean qualified();
     
-    public String message(E params);
+    String message(E params);
     
-    public void redirect(HttpServletResponse response, E params) throws IOException;
+    void redirect(HttpServletResponse response, E params) throws IOException;
 }

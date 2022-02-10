@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmailService {
-    private Session mailSession;
+    private final Session mailSession;
 
     public EmailService() throws UserFriendlyException {
         try {

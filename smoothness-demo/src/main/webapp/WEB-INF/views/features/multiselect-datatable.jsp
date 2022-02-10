@@ -13,12 +13,12 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/movie-table.js"></script>
         <script type="text/javascript">
             $(document).on("click", "#open-edit-rating-dialog-button", function () {
-                var idArray = new Array(),
-                        titleArray = new Array(),
-                        descriptionArray = new Array(),
-                        ratingArray = new Array(),
-                        durationArray = new Array(),
-                        releaseArray = new Array();
+                var idArray = [],
+                        titleArray = [],
+                        descriptionArray = [],
+                        ratingArray = [],
+                        durationArray = [],
+                        releaseArray = [];
 
                 if ($(".multiselect-table .selected-row").length < 1) {
                     window.console && console.log('No rows selected');
@@ -76,7 +76,7 @@
             });
 
             $(document).on("click", "#rating-save-button", function () {
-                var idArray = new Array();
+                var idArray = [];
 
                 if ($(".editable-row-table .selected-row").length < 1) {
                     window.console && console.log('No rows selected');

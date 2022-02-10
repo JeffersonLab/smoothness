@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class AuditContext {
 
-    private Map<String, Object> extra = new HashMap<>();
+    private final Map<String, Object> extra = new HashMap<>();
     private String username;
     private String ip;
 
@@ -36,7 +36,7 @@ public class AuditContext {
     protected void setUsername(String username) {
         this.username = username;
     }
-    private static ThreadLocal<AuditContext> instance = new ThreadLocal<AuditContext>() {
+    private static final ThreadLocal<AuditContext> instance = new ThreadLocal<AuditContext>() {
 
         @Override
         protected AuditContext initialValue() {

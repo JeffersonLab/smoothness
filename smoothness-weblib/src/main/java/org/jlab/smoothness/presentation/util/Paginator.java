@@ -5,9 +5,9 @@ package org.jlab.smoothness.presentation.util;
  * @author ryans
  */
 public class Paginator {
-    private long offset;
-    private long maxPerPage;
-    private long totalRecords;
+    private final long offset;
+    private final long maxPerPage;
+    private final long totalRecords;
     
     public Paginator(long totalRecords, long offset, long maxPerPage) {
         this.totalRecords = totalRecords;
@@ -48,22 +48,14 @@ public class Paginator {
     }
     
     public boolean isPrevious() {
-        boolean previous = false;
-        
-        if(offset > 0) {
-            previous = true;
-        }
-        
+        boolean previous = offset > 0;
+
         return previous;
     }
     
     public boolean isNext() {
-        boolean next = false;
-        
-        if(totalRecords > offset + maxPerPage) {
-            next = true;
-        }    
-        
+        boolean next = totalRecords > offset + maxPerPage;
+
         return next;
     }
     
