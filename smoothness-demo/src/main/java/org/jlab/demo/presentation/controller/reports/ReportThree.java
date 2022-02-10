@@ -10,31 +10,57 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Report Three Servlet controller.
  *
  * @author ryans
  */
 @WebServlet(name = "ReportThree", urlPatterns = {"/reports/report-three"})
 public class ReportThree extends HttpServlet {
 
+    /**
+     * Chart legend data for a series.
+     */
     public class LegendData {
         private final String name;
         private final int count;
         private final String color;
-        
+
+        /**
+         * Create a new LegendData.
+         *
+         * @param name The series name
+         * @param count The series count
+         * @param color The series color
+         */
         public LegendData(String name, int count, String color) {
             this.name = name;
             this.count = count;
             this.color = color;
         }
 
+        /**
+         * Return the series name.
+         *
+         * @return The name
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * Return the series count.
+         *
+         * @return The count
+         */
         public int getCount() {
             return count;
         }
 
+        /**
+         * Return the series color.
+         *
+         * @return The color
+         */
         public String getColor() {
             return color;
         }

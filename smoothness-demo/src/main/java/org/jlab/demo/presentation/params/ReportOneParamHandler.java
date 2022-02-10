@@ -17,9 +17,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Parameter Handler for ReportOne.
+ */
 public class ReportOneParamHandler implements UrlParamHandler<ReportOneParams> {
     private final HttpServletRequest request;
 
+    /**
+     * Create a new ReportoneParamHandler.
+     *
+     * @param request The HttpServletRequest
+     */
     public ReportOneParamHandler(HttpServletRequest request) {
         this.request = request;
     }

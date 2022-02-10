@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
+ * A Movie JPA Entity.
  *
  * @author ryans
  */
@@ -17,6 +18,10 @@ import javax.validation.constraints.Size;
 public class Movie implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The movie ID
+     */
     @Id
     @SequenceGenerator(name = "MovieId", sequenceName = "MOVIE_ID", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MovieId")
@@ -24,18 +29,38 @@ public class Movie implements Serializable {
     @NotNull
     @Column(name = "MOVIE_ID", nullable = false, precision = 22, scale = 0)
     private BigInteger movieId;
+
+    /**
+     * The title
+     */
     @Size(max = 128)
     @Column(length = 128)
     private String title;
+
+    /**
+     * The release date
+     */
     @Column(name = "RELEASE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date releaseDate;
+
+    /**
+     * The description
+     */
     @Size(max = 512)
     @Column(length = 512)
     private String description;
+
+    /**
+     * The MPAA rating
+     */
     @Size(max = 5)
     @Column(name = "MPAA_RATING", length = 5)
     private String mpaaRating;
+
+    /**
+     * The duration in minutes
+     */
     @Column(name = "DURATION_MINUTES")
     private Integer durationMinutes;
 
