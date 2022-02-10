@@ -35,7 +35,7 @@ public abstract class RequestFilter<T> {
     /**
      * Return the constructed SQL where clause.
      *
-     * @return
+     * @return The String representation of the where clause
      */
     public abstract String getSqlWhereClause();
 

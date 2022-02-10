@@ -26,7 +26,15 @@ public final class ParamConverter {
         // No one can instantiate due to private visibility
     }
 
-    public static Character convertCharacter(HttpServletRequest request, String name) {
+    /**
+     * Convert a parameter to a Character.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A Character or null
+     * @throws IllegalArgumentException If the parameter contains more than one character
+     */
+    public static Character convertCharacter(HttpServletRequest request, String name) throws IllegalArgumentException {
         String valueStr = request.getParameter(name);
         Character value = null;
 
@@ -41,6 +49,13 @@ public final class ParamConverter {
         return value;
     }
 
+    /**
+     * Convert a parameter to a Float.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A Float or null
+     */
     public static Float convertFloat(HttpServletRequest request, String name) {
         String valueStr = request.getParameter(name);
         Float value = null;
@@ -52,6 +67,13 @@ public final class ParamConverter {
         return value;
     }
 
+    /**
+     * Convert a parameter to an Integer.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A Integer or null
+     */
     public static Integer convertInteger(HttpServletRequest request, String name) {
         String valueStr = request.getParameter(name);
         Integer value = null;
@@ -63,7 +85,15 @@ public final class ParamConverter {
         return value;
     }
 
-    public static Boolean convertYNBoolean(HttpServletRequest request, String name) {
+    /**
+     * Convert a parameter to a Boolean.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A Boolean or null
+     * @throws IllegalArgumentException If parameter does not contain one of "Y" or "N"
+     */
+    public static Boolean convertYNBoolean(HttpServletRequest request, String name) throws IllegalArgumentException {
         String valueStr = request.getParameter(name);
         Boolean value = null;
 
@@ -80,6 +110,14 @@ public final class ParamConverter {
         return value;
     }
 
+    /**
+     * Convert a parameter to a Date (in New_York timezone) with expectation of "yyyy-MM-dd" format.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A Date or null
+     * @throws ParseException If the parameter format does not match expected format
+     */
     public static Date convertISO8601Date(HttpServletRequest request, String name) throws ParseException {
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");        
 
@@ -96,6 +134,14 @@ public final class ParamConverter {
         return value;
     }
 
+    /**
+     * Convert a parameter to a Date (in New_York timezone) with expectation of "yyyy-MM-dd HH:mm" format.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A Date or null
+     * @throws ParseException If the parameter format does not match expected format
+     */
     public static Date convertISO8601DateTime(HttpServletRequest request, String name) throws ParseException {
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); 
 
@@ -112,6 +158,13 @@ public final class ParamConverter {
         return value;
     }
 
+    /**
+     * Convert a parameter to a BigInteger.
+     *
+     * @param request The HttpServletRequest
+     * @param name The parameter name
+     * @return A BigInteger or null
+     */
     public static BigInteger convertBigInteger(HttpServletRequest request,
             String name) {
         String valueStr = request.getParameter(name);
