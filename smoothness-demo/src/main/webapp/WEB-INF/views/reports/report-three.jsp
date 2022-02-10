@@ -7,7 +7,7 @@
 <c:set var="title" value="Report Three"/>
 <t:report-page title="${title}">  
     <jsp:attribute name="stylesheets">
-        <style type="text/css">
+        <style>
             .chart-legend {
                 margin-top: 11px;
             }
