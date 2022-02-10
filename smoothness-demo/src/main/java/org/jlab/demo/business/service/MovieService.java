@@ -1,16 +1,9 @@
 package org.jlab.demo.business.service;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.jlab.demo.persistence.entity.Movie;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
