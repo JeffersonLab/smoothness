@@ -43,7 +43,13 @@ public interface UrlParamHandler<E> {
      * @return
      */
     E materialize();
-    
+
+    /**
+     * Return true if request is fully qualified, else some expected parameters are missing and defaults need to be
+     * resolved.
+     *
+     * @return true if qualified, false otherwise
+     */
     boolean qualified();
 
     /**

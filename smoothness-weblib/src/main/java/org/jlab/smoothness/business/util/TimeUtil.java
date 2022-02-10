@@ -521,6 +521,13 @@ public final class TimeUtil {
         return addYears(startOfYear(date, tz), 1);
     }
 
+    /**
+     * Return a new Date which is the result of adding the specified number of years to a given Date.
+     *
+     * @param date The Date to add to
+     * @param years The number of years (negative allowed)
+     * @return The new Date result from the addition
+     */
     public static Date addYears(Date date, int years) {
         Calendar cal = Calendar.getInstance();
 
@@ -528,8 +535,15 @@ public final class TimeUtil {
         cal.add(Calendar.YEAR, years);
 
         return cal.getTime();
-    }    
-    
+    }
+
+    /**
+     * Return the start of the month given a Date and timezone (Calendar).
+     *
+     * @param date The date in the month
+     * @param tz The timezone
+     * @return The Date representing the start of the month
+     */
     public static Date startOfMonth(Date date, Calendar tz) {
         Calendar cal = tz;
 
@@ -543,6 +557,13 @@ public final class TimeUtil {
         return cal.getTime();
     }
 
+    /**
+     * Return the start of the next month given a Date and timezone (Calendar).
+     *
+     * @param date The date
+     * @param tz The timezone (Calendar)
+     * @return The Date representing the start of the next month
+     */
     public static Date startOfNextMonth(Date date, Calendar tz) {
         return addMonths(startOfMonth(date, tz), 1);
     }
