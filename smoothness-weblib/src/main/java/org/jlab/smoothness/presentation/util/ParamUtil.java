@@ -3,7 +3,7 @@ package org.jlab.smoothness.presentation.util;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Convenience utility methods for combined conversion and validation, with optional default values.
+ * Utility methods for combined conversion and validation, with optional default values.
  *
  * @author ryans
  */

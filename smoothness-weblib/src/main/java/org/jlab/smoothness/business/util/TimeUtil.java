@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
+ * Time Utilities.
  *
  * @author ryans
  */

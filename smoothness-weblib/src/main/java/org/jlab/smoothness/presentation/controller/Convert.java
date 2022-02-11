@@ -18,7 +18,9 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Proxy requests to Puppet Show to allow HTML conversion even for external / public users.
+ * Servlet controller for proxying requests to Puppet Show to allow HTML conversion even for external / public users.
+ *
+ * This controller only allows relative URLs (relative to hosting server).
  *
  * @author ryans
  */

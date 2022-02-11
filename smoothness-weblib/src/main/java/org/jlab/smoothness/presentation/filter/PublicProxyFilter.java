@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
+ * WebFilter for automatically adjusting the CDN Context Path.
+ *
+ * If an application is hosted internally, but also is proxied externally as well
+ * (two paths to access), then the external proxy can set the X-Public-Proxy header
+ * and this filter will adjust the CDN Context Path to an externally accessible location (relative to
+ * hosting server as if using LOCAL RESOURCE_LOCATION).
  *
  * @author ryans
  */

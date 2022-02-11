@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 /**
+ * WebFilter for setting both request and response character encoding to UTF-8.
  *
  * @author ryans
  */

@@ -1,7 +1,7 @@
 package org.jlab.smoothness.business.util;
 
 /**
- * Exception Utilities
+ * Exception Utilities.
  *
  * @author ryans
  */

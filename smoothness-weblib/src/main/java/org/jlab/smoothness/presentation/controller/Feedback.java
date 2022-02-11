@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Forward feedback to interested email addresses.
+ * Servlet controller for forwarding feedback to interested email addresses.
  */
 @WebServlet(name = "Feedback", urlPatterns = {"/feedback"})
 public class Feedback extends HttpServlet {

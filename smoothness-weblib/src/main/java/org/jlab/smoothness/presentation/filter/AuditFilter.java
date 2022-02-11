@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
+ * WebFilter for setting up an AuditContext.
+ *
  * Obtain the AuditContext from anywhere using:
  * <code>
  * AuditContext context = AuditContext.getCurrentInstance();

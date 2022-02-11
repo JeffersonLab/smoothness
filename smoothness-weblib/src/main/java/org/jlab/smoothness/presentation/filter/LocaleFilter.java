@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.util.Locale;
 
 /**
+ * WebFilter to force English US locale.
+ *
+ * Note: We may need to revisit this at some point, but at the moment we
+ * have date formatting code that assumes locale exists and is US English.
  *
  * @author ryans
  */
