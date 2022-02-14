@@ -51,6 +51,8 @@ http://localhost:8080/smoothness-demo
 See: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
 ## Usage
+View the [API javadocs](https://jeffersonlab.github.io/smoothness/).
+
 The library is a jar file plus dependencies on Java EE and the Java 17+ JVM and standard library.  You can obtain the smoothness-weblib jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
 implementation 'org.jlab:smoothness-weblib:<version>'
