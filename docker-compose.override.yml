@@ -3,4 +3,4 @@ version: '3.9'
 
 services:
   smoothness:
-    image: slominskir/smoothness:3.1.0
+    image: slominskir/smoothness:3.2.0
