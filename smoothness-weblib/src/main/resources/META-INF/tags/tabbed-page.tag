@@ -135,23 +135,22 @@
                 <script src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/smoothness.js"></script>
             </c:otherwise>
         </c:choose>
-        <c:url var="loginUrl" value="https://${env['KEYCLOAK_SERVER']}/auth/realms/jlab/protocol/openid-connect/auth">
+        <c:url var="iframeLoginUrl" value="https://${env['KEYCLOAK_SERVER_FRONTEND']}/auth/realms/${env['KEYCLOAK_REALM']}/protocol/openid-connect/auth">
             <c:param name="client_id" value="account"/>
-            <c:param name="kc_idp_hint" value="cue-keycloak-oidc"/>
+            <c:param name="kc_idp_hint" value="${env['KEYCLOAK_HEADLESS_IDP']}"/>
             <c:param name="response_type" value="code"/>
-            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_SERVER']}/auth/realms/jlab/account/"/>
+            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_SERVER_FRONTEND']}/auth/realms/${env['KEYCLOAK_REALM']}/account/"/>
         </c:url>
-        <c:url var="logoutUrl" value="https://${env['KEYCLOAK_SERVER']}/auth/realms/jlab/protocol/openid-connect/logout">
-            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_SERVER']}/auth/realms/jlab/account/"/>
+        <c:url var="suLogoutUrl" value="https://${env['KEYCLOAK_SERVER_FRONTEND']}/auth/realms/${env['KEYCLOAK_REALM']}/protocol/openid-connect/logout">
+            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_SERVER_FRONTEND']}/auth/realms/${env['KEYCLOAK_REALM']}/account/"/>
         </c:url>
         <script type="text/javascript">
             var jlab = jlab || {};
             jlab.contextPath = '${pageContext.request.contextPath}';
             jlab.logbookServer = '${env["LOGBOOK_SERVER"]}';
-            jlab.keycloakServer = '${env["KEYCLOAK_SERVER"]}';
-            jlab.clientId = '${env["KEYCLOAK_CLIENT_ID_".concat(pageContext.request.contextPath.substring(1).toUpperCase())]}';
-            jlab.loginUrl = '${loginUrl}';
-            jlab.logoutUrl = '${logoutUrl}';
+            jlab.keycloakServer = '${env["KEYCLOAK_SERVER_FRONTEND"]}';
+            jlab.iframeLoginUrl = '${empty env['KEYCLOAK_HEADLESS_IDP'] ? '' : iframeLoginUrl}';
+            jlab.suLogoutUrl = '${suLogoutUrl}';
         </script>
         <jsp:invoke fragment="scripts"/>        
     </body>
