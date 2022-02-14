@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smoothness Overview</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<p>A <a href="https://en.wikipedia.org/wiki/Jakarta_EE">Java EE 8</a> web application template and
+    <a href="https://docs.oracle.com/javaee/5/tutorial/doc/bnama.html">JSP tag library</a> based on the
+    <a href="https://jqueryui.com/themeroller/">JQuery UI Smoothness</a> theme.</p>
+<div class="overview">
+    A Smoothness web application is organized using the
+    <a href="https://en.wikipedia.org/wiki/JSP_model_2_architecture">JSP Model 2 Model-View-Controller (MVC) architecture</a>.
+    With this approach the model is a <a href="https://en.wikipedia.org/wiki/JavaBeans">Java Bean</a>, a Java object
+    that has get/set
+    methods such that <a href="https://docs.oracle.com/javaee/6/tutorial/doc/gjddd.html">Expression Language</a> can be
+    used to reference the model in the view.  Most model classes used are a special type of Java Bean, a
+    <a href="https://docs.oracle.com/javaee/6/tutorial/doc/bnbqa.html">JPA Entity</a>,
+    which allows easy persistence into a database.   The view is implemented with JSP and JSP tag files.
+    The controller is implemented with
+    Java Servlets and Filters.   The Java code is further organized by three packages: persistence, business, and presentation.
+    The persistence package defines models, and leverages Hibernate / JPA to persist models into a database.  The
+    business package houses any business rules or logic and retrieves models from the persistence layer and provides
+    them to the presentation layer.  The presentation layer houses the Servlets and Filters which calls on the business layer to
+    retrieve and persist models and provides them to JSP views.  This isolation by layer helps with separation of concerns and
+    ensures only the model is shared across layers and each layer only can call into the one below it
+    (example: there are no SQL queries directly in JSP, per general best practice for large complex apps).
+</div>
+</body>
+</html>

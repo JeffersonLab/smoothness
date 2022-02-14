@@ -26,6 +26,14 @@ dependencies {
          'javax.servlet:jstl:1.2'
 }
 
+javadoc {
+    options.overview = "src/main/java/overview.html"
+    options.source = 17
+    options.with {
+        links 'https://docs.oracle.com/en/java/javase/17/docs/api/'
+    }
+}
+
 signing {
     sign publishing.publications
 }
