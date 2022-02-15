@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    api 'javax:javaee-api:7.0',
+    api 'javax:javaee-api:8.0',
          'javax.servlet:jstl:1.2'
 }
 
