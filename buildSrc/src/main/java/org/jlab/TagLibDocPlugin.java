@@ -1,6 +1,5 @@
 package org.jlab;
 
-import groovy.lang.Closure;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
