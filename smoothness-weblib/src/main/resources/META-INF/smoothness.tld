@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+    <description>Smoothness Tag Library</description>
     <display-name>Smoothness Tag Library</display-name>
     <tlib-version>1.0</tlib-version>
     <short-name>smoothness</short-name>
@@ -33,26 +34,31 @@
         <path>/META-INF/tags/tabbed-page.tag</path>
     </tag-file>
     <function>
+        <display-name>inArray</display-name>
         <name>inArray</name>
         <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
         <function-signature>boolean inArray(java.lang.Object[], java.lang.Object)</function-signature>
     </function>
     <function>
+        <display-name>getFriendlyDateTimePlaceholder</display-name>
         <name>getFriendlyDateTimePlaceholder</name>
         <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
         <function-signature>java.lang.String getFriendlyDateTimePlaceholder()</function-signature>
     </function>
     <function>
+        <display-name>getFriendlyDatePlaceholder</display-name>
         <name>getFriendlyDatePlaceholder</name>
         <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
         <function-signature>java.lang.String getFriendlyDatePlaceholder()</function-signature>
     </function>
     <function>
+        <display-name>getFriendlyDateTimePattern</display-name>
         <name>getFriendlyDateTimePattern</name>
         <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
         <function-signature>java.lang.String getFriendlyDateTimePattern()</function-signature>
     </function>
     <function>
+        <display-name>getFriendlyDatePattern</display-name>
         <name>getFriendlyDatePattern</name>
         <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
         <function-signature>java.lang.String getFriendlyDatePattern()</function-signature>
