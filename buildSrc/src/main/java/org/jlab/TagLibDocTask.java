@@ -12,16 +12,16 @@ import java.io.File;
 
 public class TagLibDocTask extends DefaultTask {
     private String outdir;
-    private String jarpath;
+    private String tldpath;
 
     @Option(option = "outdir", description = "Configures the output directory")
     public void setOutdir(String outdir) {
         this.outdir = outdir;
     }
 
-    @Option(option = "jarpath", description = "Configures the input jar path")
-    public void setJarpath(String jarpath) {
-        this.jarpath = jarpath;
+    @Option(option = "tldpath", description = "Configures the input .tld file path")
+    public void setTldpath(String tldpath) {
+        this.tldpath = tldpath;
     }
 
     @Input
@@ -30,19 +30,15 @@ public class TagLibDocTask extends DefaultTask {
     }
 
     @Input
-    public String getJarpath() {
-        return jarpath;
+    public String getTldpath() {
+        return tldpath;
     }
 
     @TaskAction
     public void run() throws GeneratorException, TransformerException {
-        System.out.println("Hello from task " + getPath() + "!");
         TLDDocGenerator generator = new TLDDocGenerator();
 
-        //File f = new File("src/main/resources/META-INF/smoothness.tld");
-        //generator.addTLD(f);
-
-        generator.addJAR(new File(jarpath));
+        generator.addTLD(new File(tldpath));
 
         generator.setOutputDirectory(new File(outdir));
 
