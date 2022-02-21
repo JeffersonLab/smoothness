@@ -373,14 +373,12 @@
             </tls>
         </subsystem>
         <subsystem xmlns="urn:wildfly:elytron-oidc-client:1.0">
-            <provider name="keycloak">
-                <provider-url>http://${env.KEYCLOAK_SERVER}/auth/realms/test-realm</provider-url>
+            <secure-deployment name="smoothness-demo.war">
+                <auth-server-url>http://${env.KEYCLOAK_SERVER}/auth</auth-server-url>
+                <realm>test-realm</realm>
                 <ssl-required>external</ssl-required>
                 <enable-cors>true</enable-cors>
                 <principal-attribute>preferred_username</principal-attribute>
-            </provider>
-            <secure-deployment name="smoothness-demo.war">
-                <provider>keycloak</provider>
                 <client-id>smoothness</client-id>
                 <credential name="secret" secret="9AubPamv1H9fAWo0q239EP7wPuH5ihb7"/>
             </secure-deployment>
