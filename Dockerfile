@@ -27,7 +27,7 @@ WORKDIR /
 
 RUN mkdir /smoothness
 
-COPY . /smoothness/
+COPY . /smoothness
 
 RUN cd /smoothness && gradle build -x test --no-watch-fs
 
