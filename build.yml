@@ -28,8 +28,3 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_TYPE: local-src
-    volumes:
-      - ./docker/wildfly/docker-entrypoint.sh:/docker-entrypoint.sh
-      - ./docker/wildfly/setup.sh:/setup.sh
-      - ./docker/wildfly/redeploy.sh:/redepoy.sh
-      - ./run/wildfly/standalone/deployments:/opt/jboss/wildfly/standalone/staging

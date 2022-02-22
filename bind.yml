@@ -1,0 +1,28 @@
+---
+version: '3.9'
+
+services:
+  oracle:
+    extends:
+      file: build.yml
+      service: oracle
+
+  keycloak:
+    extends:
+      file: build.yml
+      service: keycloak
+
+  puppet:
+    extends:
+      file: build.yml
+      service: puppet
+
+  smoothness:
+    extends:
+      file: build.yml
+      service: smoothness
+    volumes:
+      - ./docker/wildfly/docker-entrypoint.sh:/docker-entrypoint.sh
+      - ./docker/wildfly/setup.sh:/setup.sh
+      - ./docker/wildfly/redeploy.sh:/redepoy.sh
+      - ./run/wildfly/standalone/deployments:/opt/jboss/wildfly/standalone/staging
