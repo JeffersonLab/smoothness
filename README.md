@@ -7,8 +7,8 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
  - [Overview](https://github.com/JeffersonLab/smoothness#overview)
  - [Usage](https://github.com/JeffersonLab/smoothness#usage)
     - [Quick Start with Compose](https://github.com/JeffersonLab/smoothness#quick-start-with-compose) 
-    - [API](https://github.com/JeffersonLab/smoothness#api) 
     - [Install](https://github.com/JeffersonLab/smoothness#install)
+    - [API](https://github.com/JeffersonLab/smoothness#api)  
  - [Configure](https://github.com/JeffersonLab/smoothness#configure)
  - [Build](https://github.com/JeffersonLab/smoothness#build)
  - [See Also](https://github.com/JeffersonLab/smoothness#see-also)
@@ -59,9 +59,6 @@ http://localhost:8080/smoothness-demo
 
 See: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
-### API
-View the [API javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/).
-
 ### Install
 
 The software library is packaged as a jar file and has dependencies on Java EE and the Java 17+ JVM and standard library.  You can obtain the jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
@@ -87,6 +84,9 @@ Use the Docker Compose quickstart to automate the setup of the demo, else manual
 **Note**: Windows path separators shown.  For Linux replace the semicolon with a colon and the back slash with forward slash.
 
 **Note**: The demo application requires an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.   See [Oracle XE DB Container Notes](https://github.com/JeffersonLab/smoothness/wiki/Developer-Notes#oracle-container).
+
+### API
+View the [API javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/).
 
 ## Configure
 
