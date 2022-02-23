@@ -57,7 +57,7 @@ docker compose up
 http://localhost:8080/smoothness-demo
 ```
 
-See: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
+**See**: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
 ### Install
 
