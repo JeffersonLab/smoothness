@@ -12,9 +12,13 @@ version rootProject.version
 ext.releaseDate = rootProject.ext.releaseDate
 ext.resourceVersion = rootProject.ext.resourceVersion
 
+compileJava {
+    options.release = 11
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
 }
