@@ -12,7 +12,7 @@ version rootProject.version
 ext.releaseDate = rootProject.ext.releaseDate
 ext.resourceVersion = rootProject.ext.resourceVersion
 
-compileJava {
+tasks.withType(JavaCompile) {
     options.release = 11
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
