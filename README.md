@@ -5,10 +5,9 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
 
 ---
  - [Overview](https://github.com/JeffersonLab/smoothness#overview)
- - [Usage](https://github.com/JeffersonLab/smoothness#usage)
-    - [Quick Start with Compose](https://github.com/JeffersonLab/smoothness#quick-start-with-compose) 
-    - [Install](https://github.com/JeffersonLab/smoothness#install)
-    - [API](https://github.com/JeffersonLab/smoothness#api)  
+ - [Quick Start with Compose](https://github.com/JeffersonLab/smoothness#quick-start-with-compose) 
+ - [Install](https://github.com/JeffersonLab/smoothness#install)
+ - [API](https://github.com/JeffersonLab/smoothness#api)  
  - [Configure](https://github.com/JeffersonLab/smoothness#configure)
  - [Build](https://github.com/JeffersonLab/smoothness#build)
  - [See Also](https://github.com/JeffersonLab/smoothness#see-also)
@@ -40,9 +39,7 @@ This git repo is actually comprised of two projects tied together in a [Gradle M
 
 The demo is included in a Gradle Multi-Project build mainly so we can take advantage of the [artifact dependency feature](https://docs.gradle.org/current/userguide/declaring_dependencies_between_subprojects.html), such that we can build the library and quickly test it in the demo without having to publish to a maven artifact repo and then download it from the repo (faster build/deploy/test cycle).
 
-## Usage
-
-### Quick Start with Compose
+## Quick Start with Compose
 1. Grab project
 ```
 git clone https://github.com/JeffersonLab/smoothness
@@ -59,7 +56,7 @@ http://localhost:8080/smoothness-demo
 
 **See**: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
-### Install
+## Install
 
 The software library is packaged as a jar file and has dependencies on Java EE and the Java 17+ JVM and standard library.  You can obtain the jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
@@ -67,7 +64,7 @@ implementation 'org.jlab:smoothness-weblib:<version>'
 ```
 You can check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) to see what has changed in each version. 
 
-#### Demo Install
+### Demo Install
 Use the Docker Compose quickstart to automate the setup of the demo, else manually:
 
  - Run the [Gradle build](https://github.com/JeffersonLab/smoothness#build) to generate "run" directory
@@ -85,7 +82,7 @@ Use the Docker Compose quickstart to automate the setup of the demo, else manual
 
 **Note**: The demo application requires an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.   See [Oracle XE DB Container Notes](https://github.com/JeffersonLab/smoothness/wiki/Developer-Notes#oracle-container).
 
-### API
+## API
 View the [API javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/).
 
 ## Configure
