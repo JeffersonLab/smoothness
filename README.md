@@ -85,7 +85,7 @@ Use the Docker Compose quickstart to automate the setup of the demo, else manual
 **Note**: The demo application requires an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.   See [Oracle XE DB Container Notes](https://github.com/JeffersonLab/smoothness/wiki/Developer-Notes#oracle-container).
 
 ## API
-View the [API javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/).
+[javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/)
 
 ## Configure
 
