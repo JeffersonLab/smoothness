@@ -58,11 +58,13 @@ http://localhost:8080/smoothness-demo
 
 ## Install
 
-The software library is packaged as a jar file and has dependencies on Java EE and the Java 17+ JVM and standard library.  You can obtain the jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
+This library requires a Java 11+ JVM and standard library at run time, plus a Java EE 8+ application server (developed with Wildfly). 
+
+You can obtain the library jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
 implementation 'org.jlab:smoothness-weblib:<version>'
 ```
-You can check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) to see what has changed in each version. 
+Check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) to see what has changed in each version. 
 
 ### Demo Install
 Use the Docker Compose quickstart to automate the setup of the demo, else manually:
@@ -109,7 +111,7 @@ View the [API javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/).
 | DB_SERVICE               | Oracle Service name to use to connect to DB from app and from TestOracleConnection utility                                                                                                                                                                                                                                         |
 
 ## Build
-This [Java 17](https://adoptium.net/) project (compiled to Java 11 bytecode) uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
+This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
 ```
 git clone https://github.com/JeffersonLab/smoothness
