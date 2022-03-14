@@ -27,7 +27,7 @@ echo "----------------------------"
 
 /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
-until curl http://localhost:8080 -sSf -o /dev/null;
+until curl http://localhost:8080 -sf -o /dev/null;
 do
   echo -e $(date) " Still waiting for Wildfly to start..."
   sleep 5
