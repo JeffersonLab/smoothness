@@ -16,12 +16,22 @@ services:
       file: docker-compose.yml
       service: puppet
 
-  smoothness:
+  weblib:
     extends:
       file: docker-compose.yml
-      service: smoothness
+      service: weblib
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-weblib
       args:
-        BUILD_TYPE: local-src
+        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
+
+  demo:
+    extends:
+      file: docker-compose.yml
+      service: demo
+    build:
+      context: .
+      dockerfile: Dockerfile-demo
+      args:
+        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt

@@ -14,12 +14,12 @@ services:
       file: build.yml
       service: puppet
 
-  smoothness:
+  weblib:
     extends:
       file: build.yml
-      service: smoothness
-    volumes:
-      - ./docker/wildfly/docker-entrypoint.sh:/docker-entrypoint.sh
-      - ./docker/wildfly/setup.sh:/setup.sh
-      - ./docker/wildfly/redeploy.sh:/redepoy.sh
-      - ./run/wildfly/standalone/deployments:/opt/jboss/wildfly/standalone/staging
+      service: weblib
+
+  demo:
+    extends:
+      file: build.yml
+      service: demo

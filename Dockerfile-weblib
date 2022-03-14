@@ -1,0 +1,37 @@
+ARG BUILD_IMAGE=gradle:7.4-jdk17
+ARG RUN_IMAGE=quay.io/wildfly/wildfly:26.0.1.Final
+
+################## Stage 0
+FROM ${BUILD_IMAGE} as builder
+ARG CUSTOM_CRT_URL
+USER root
+WORKDIR /
+RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
+       wget -O /usr/local/share/ca-certificates/customcert.crt $CUSTOM_CRT_URL \
+       && update-ca-certificates \
+       && keytool -import -alias custom -file /usr/local/share/ca-certificates/customcert.crt -cacerts -storepass changeit -noprompt \
+       && export OPTIONAL_CERT_ARG=--cert=/etc/ssl/certs/ca-certificates.crt \
+    ; fi
+COPY . /app
+
+## Let's minimize layers in final-product by organizing files into a single copy structure
+RUN mkdir /unicopy \
+    && cp /app/docker/weblib/TestOracleConnection.java /unicopy \
+    && cp /app/docker/weblib/docker-entrypoint.sh /unicopy \
+    && cp -r /app/docker/weblib/setup /unicopy
+
+################## Stage 1
+FROM ${RUN_IMAGE} as runner
+ARG CUSTOM_CRT_URL
+ARG RUN_USER=jboss
+USER root
+COPY --from=builder /unicopy /
+RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
+       curl -sS -o /etc/pki/ca-trust/source/anchors/customcert.crt $CUSTOM_CRT_URL \
+       && update-ca-trust \
+       && keytool -import -alias custom -file /etc/pki/ca-trust/source/anchors/customcert.crt -cacerts -storepass changeit -noprompt \
+    ; fi \
+    && chown -R jboss:0 /setup \
+    && chmod -R g+rw /setup
+USER ${RUN_USER}
+ENTRYPOINT ["/docker-entrypoint.sh"]

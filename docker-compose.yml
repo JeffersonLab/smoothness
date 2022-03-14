@@ -14,9 +14,26 @@ services:
       file: deps.yml
       service: puppet
 
-  smoothness:
-    hostname: smoothness
-    container_name: smoothness
+  weblib:
+    hostname: weblib
+    container_name: weblib
+    environment:
+      KEYCLOAK_SERVER: 'keycloak:8080'
+      LOGBOOK_SERVER: 'elog'
+      PUPPET_SHOW_SERVER: 'puppet:3000'
+      ORACLE_SERVER: 'oracle:1521'
+      DB_USER: 'SMOOTHNESS_OWNER'
+      DB_PASS: 'password'
+      DB_SERVICE: 'xepdb1'
+      DATASOURCE_NAME: 'smoothness'
+      WAR: 'smoothness-demo.war'
+      SECRET: '9AubPamv1H9fAWo0q239EP7wPuH5ihb7'
+      REALM: 'test-realm'
+      RESOURCE: 'smoothness'
+
+  demo:
+    hostname: demo
+    container_name: demo
     ports:
       - "8443:8443"
       - "8080:8080"
@@ -29,3 +46,8 @@ services:
       DB_USER: 'SMOOTHNESS_OWNER'
       DB_PASS: 'password'
       DB_SERVICE: 'xepdb1'
+      DATASOURCE_NAME: 'smoothness'
+      WAR: 'smoothness-demo.war'
+      SECRET: '9AubPamv1H9fAWo0q239EP7wPuH5ihb7'
+      REALM: 'test-realm'
+      RESOURCE: 'smoothness'

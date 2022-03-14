@@ -1,5 +1,4 @@
 .gradle/
 .idea/
-smoothness-weblib/build/
-smoothness/build
+build/
 run/
