@@ -17,21 +17,6 @@ services:
   weblib:
     hostname: weblib
     container_name: weblib
-    environment:
-      KEYCLOAK_SERVER: 'keycloak:8080'
-      LOGBOOK_SERVER: 'elog'
-      PUPPET_SHOW_SERVER: 'puppet:3000'
-      ORACLE_SERVER: 'oracle:1521'
-      DB_USER: 'SMOOTHNESS_OWNER'
-      DB_PASS: 'password'
-      DB_SERVICE: 'xepdb1'
-      DATASOURCE_NAME: 'smoothness'
-      WAR: 'smoothness-demo.war'
-      SECRET: '9AubPamv1H9fAWo0q239EP7wPuH5ihb7'
-      REALM: 'test-realm'
-      RESOURCE: 'smoothness'
-      WILDFLY_USER: 'admin'
-      WILDFLY_PASSWORD: 'admin'
 
   demo:
     hostname: demo
