@@ -30,6 +30,8 @@ services:
       SECRET: '9AubPamv1H9fAWo0q239EP7wPuH5ihb7'
       REALM: 'test-realm'
       RESOURCE: 'smoothness'
+      WILDFLY_USER: 'admin'
+      WILDFLY_PASSWORD: 'admin'
 
   demo:
     hostname: demo
@@ -51,3 +53,5 @@ services:
       SECRET: '9AubPamv1H9fAWo0q239EP7wPuH5ihb7'
       REALM: 'test-realm'
       RESOURCE: 'smoothness'
+      WILDFLY_USER: 'admin'
+      WILDFLY_PASSWORD: 'admin'
