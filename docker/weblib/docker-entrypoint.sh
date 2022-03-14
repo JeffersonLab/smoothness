@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -z ${SKIP_DB_WAIT} ]]; then
+if [[ -n ${DB_USER} && -n ${DB_PASS} && -n ${ORACLE_SERVER} && -n ${DB_SERVICE} ]]; then
   echo "----------------------------------------------------"
   echo "| Step 1: Waiting for Oracle DB to start listening |"
   echo "----------------------------------------------------"
