@@ -18,7 +18,8 @@ COPY . /app
 RUN mkdir /unicopy \
     && cp /app/docker/weblib/TestOracleConnection.java /unicopy \
     && cp /app/docker/weblib/docker-entrypoint.sh /unicopy \
-    && cp -r /app/docker/weblib/setup /unicopy
+    && cp -r /app/docker/weblib/setup /unicopy \
+    && mkdir /unicopy/stage
 
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
@@ -32,6 +33,8 @@ RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
        && keytool -import -alias custom -file /etc/pki/ca-trust/source/anchors/customcert.crt -cacerts -storepass changeit -noprompt \
     ; fi \
     && chown -R jboss:0 /setup \
-    && chmod -R g+rw /setup
+    && chmod -R g+rw /setup \
+    && chown -R jboss:0 /stage \
+    && chmod -R g+rw /stage
 USER ${RUN_USER}
 ENTRYPOINT ["/docker-entrypoint.sh"]
