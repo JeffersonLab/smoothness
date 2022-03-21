@@ -3,7 +3,7 @@ include 'smoothness-weblib'
 include 'smoothness-demo'
 
 gradle.projectsLoaded({
-    gradle.rootProject.version '3.3.0'
-    gradle.rootProject.ext.releaseDate = 'Feb 22 2022'
+    gradle.rootProject.version '3.4.0'
+    gradle.rootProject.ext.releaseDate = 'March 21 2022'
     gradle.rootProject.ext.resourceVersion = '5'
 })
