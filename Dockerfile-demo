@@ -17,4 +17,4 @@ RUN cd /app && gradle build -x test --no-watch-fs $OPTIONAL_CERT_ARG
 
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
-COPY --from=builder /app/smoothness-demo/build/libs/* /opt/jboss/wildfly/standalone/deployments
+COPY --from=builder /app/smoothness-demo/build/libs/* /stage
