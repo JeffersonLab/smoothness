@@ -21,7 +21,9 @@ public class TestOracleConnection {
         try {
             testConnection(args[0]);
         } catch(Throwable t) {
-            t.printStackTrace();
+            if(args.length > 1 && "true".equals(args[1])) {
+                t.printStackTrace();
+            }
             System.exit(-1);
         }
     }
