@@ -1,5 +1,19 @@
 ARG BUILD_IMAGE=gradle:7.4-jdk17
-ARG RUN_IMAGE=slominskir/smoothness-weblib:3.4.4
+ARG RUN_IMAGE=slominskir/smoothness:1.0.0
+ARG KEYCLOAK_SERVER=keycloak:8080
+ARG LOGBOOK_SERVER=elog
+ARG PUPPET_SHOW_SERVER=puppet:3000
+ARG ORACLE_SERVER=oracle:1521
+ARG DB_USER=SMOOTHNESS_OWNER
+ARG DB_PASS=password
+ARG DB_SERVICE=xepdb1
+ARG DATASOURCE_NAME=smoothness
+ARG WAR=smoothness-demo.war
+ARG SECRET=9AubPamv1H9fAWo0q239EP7wPuH5ihb7
+ARG REALM=test-realm
+ARG RESOURCE=smoothness
+ARG WILDFLY_USER=admin
+ARG WILDFLY_PASSWORD=admin
 
 ################## Stage 0
 FROM ${BUILD_IMAGE} as builder
@@ -17,4 +31,21 @@ RUN cd /app && gradle build -x test --no-watch-fs $OPTIONAL_CERT_ARG
 
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
-COPY --from=builder /app/smoothness-demo/build/libs/* /stage
+ARG KEYCLOAK_SERVER
+ARG LOGBOOK_SERVER
+ARG PUPPET_SHOW_SERVER
+ARG ORACLE_SERVER
+ARG DB_USER
+ARG DB_PASS
+ARG DB_SERVICE
+ARG DATASOURCE_NAME
+ARG WAR
+ARG SECRET
+ARG REALM
+ARG RESOURCE
+ARG WILDFLY_USER
+ARG WILDFLY_PASSWORD
+ARG ORACLE_DRIVER_PATH=/tmp/ojdbc11-21.5.0.0.jar
+RUN curl -sS -o "${ORACLE_DRIVER_PATH}" https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc11/21.5.0.0/ojdbc11-21.5.0.0.jar \
+    && /setup.sh
+COPY --from=builder /app/smoothness-demo/build/libs/* /opt/jboss/wildfly/standalone/deployments

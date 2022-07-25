@@ -31,4 +31,4 @@ echo "----------------------------"
 echo "| Step 3: Shutdown Wildfly |"
 echo "----------------------------"
 
-/opt/jboss/wildfly/bin/standalone.sh --connect -c shutdown
+/opt/jboss/wildfly/bin/jboss-cli.sh --connect -c shutdown
