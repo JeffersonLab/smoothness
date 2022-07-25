@@ -149,7 +149,7 @@ gradlew publishMavenPublicationToOSSRHRepository
 
 **DEMO**    
 1. Update Dockerfile-demo to use the new weblib image
-2. Create a new release with the same version number as just used above, but with `-demo`.
+2. Create a new release with the same version number as just used above, but with `-demo` and attach the war file so users can easily install.
 3. Build and push Docker image for the demo `-f Dockerfile-demo`.
 4. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
 
