@@ -1,5 +1,5 @@
 ARG BUILD_IMAGE=gradle:7.4-jdk17
-ARG RUN_IMAGE=quay.io/wildfly/wildfly:26.0.1.Final
+ARG RUN_IMAGE=quay.io/wildfly/wildfly:26.1.1.Final
 
 ################## Stage 0
 FROM ${BUILD_IMAGE} as builder
@@ -17,6 +17,7 @@ COPY . /app
 ## Let's minimize layers in final-product by organizing files into a single copy structure
 RUN mkdir /unicopy \
     && cp /app/docker/weblib/TestOracleConnection.java /unicopy \
+    && cp /app/docker/weblib/setup.sh /unicopy \
     && cp /app/docker/weblib/docker-entrypoint.sh /unicopy \
     && cp -r /app/docker/weblib/setup /unicopy \
     && mkdir /unicopy/stage

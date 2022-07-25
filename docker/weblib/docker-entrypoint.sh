@@ -34,16 +34,4 @@ done
 
 echo $(date) " Wildfly started!"
 
-
-echo "---------------------------------"
-echo "| Step 3: Execute Setup Scripts |"
-echo "---------------------------------"
-
-SETUP_DIR=/setup
-
-for f in "${SETUP_DIR}"/*; do
-       echo "Executing ${f}"
-       "${f}"
-done
-
 sleep infinity
