@@ -137,7 +137,7 @@ Since this is a monorepo there are actually two projects: the weblib and the dem
 
 **WEBLIB**
 1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/jaws-effective-processor/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).  This is for the weblib.
-2. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib.
+2. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.
 3. Publish new artifact on maven central with:
 ```
 gradlew publishMavenPublicationToOSSRHRepository
@@ -149,7 +149,7 @@ gradlew publishMavenPublicationToOSSRHRepository
 **DEMO**    
 1. Update Dockerfile-demo to use the new weblib image
 2. Create a new release with the same version number as just used above, but with `-demo`.
-3. Build and push Docker image for the demo.
+3. Build and push Docker image for the demo `-f Dockerfile-demo`.
 4. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
 
 ## See Also
