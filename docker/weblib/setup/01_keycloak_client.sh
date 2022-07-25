@@ -5,7 +5,7 @@ echo "| Setup I: Config Keycloak client |"
 echo "-----------------------------------"
 
 config_keycloak_client() {
-if [[ -z "${WAR}" ]]; then
+if [[ -z "${KEYCLOAK_WAR}" ]]; then
     echo "Skipping Keycloak Client Setup: Must provide WAR in environment"
     return 0
 fi
@@ -15,29 +15,27 @@ if [[ -z "${KEYCLOAK_SERVER}" ]]; then
     return 0
 fi
 
-if [[ -z "${SECRET}" ]]; then
-    echo "Skipping Keycloak Client Setup: Must provide SECRET in environment"
+if [[ -z "${KEYCLOAK_SECRET}" ]]; then
+    echo "Skipping Keycloak Client Setup: Must provide KEYCLOAK_SECRET in environment"
     return 0
 fi
 
-if [[ -z "${REALM}" ]]; then
-    echo "Skipping Keycloak Client Setup: Must provide REALM in environment"
+if [[ -z "${KEYCLOAK_REALM}" ]]; then
+    echo "Skipping Keycloak Client Setup: Must provide KEYCLOAK_REALM in environment"
     return 0
 fi
 
-if [[ -z "${RESOURCE}" ]]; then
-    echo "Skipping Keycloak Client Setup: Must provide RESOURCE in environment"
+if [[ -z "${KEYCLOAK_RESOURCE}" ]]; then
+    echo "Skipping Keycloak Client Setup: Must provide KEYCLOAK_RESOURCE in environment"
     return 0
 fi
 
-
-AUTH_SERVER="http://${KEYCLOAK_SERVER}/auth"
-DEPLOYMENT_CONFIG=principal-attribute="preferred_username",ssl-required=EXTERNAL,resource="${RESOURCE}",realm="${REALM}",auth-server-url="${AUTH_SERVER}"
+DEPLOYMENT_CONFIG=principal-attribute="preferred_username",ssl-required=EXTERNAL,resource="${KEYCLOAK_RESOURCE}",realm="${KEYCLOAK_REALM}",auth-server-url=http://${KEYCLOAK_SERVER}/auth
 
 /opt/jboss/wildfly/bin/jboss-cli.sh -c <<EOF
 batch
 /subsystem=elytron-oidc-client/secure-deployment="${WAR}"/:add(${DEPLOYMENT_CONFIG})
-/subsystem=elytron-oidc-client/secure-deployment="${WAR}"/credential=secret:add(secret="${SECRET}")
+/subsystem=elytron-oidc-client/secure-deployment="${WAR}"/credential=secret:add(secret="${KEYCLOAK_SECRET}")
 run-batch
 EOF
 }

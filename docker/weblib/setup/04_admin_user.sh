@@ -10,12 +10,12 @@ if [[ -z "${WILDFLY_USER}" ]]; then
     return 0
 fi
 
-if [[ -z "${WILDFLY_PASSWORD}" ]]; then
-    echo "Skipping Wildfly admin user Setup: Must provide WILDFLY_PASSWORD in environment"
+if [[ -z "${WILDFLY_PASS}" ]]; then
+    echo "Skipping Wildfly admin user Setup: Must provide WILDFLY_PASS in environment"
     return 0
 fi
 
-/opt/jboss/wildfly/bin/add-user.sh "${WILDFLY_USER}" "${WILDFLY_PASSWORD}"
+/opt/jboss/wildfly/bin/add-user.sh "${WILDFLY_USER}" "${WILDFLY_PASS}"
 }
 
 config_admin_user

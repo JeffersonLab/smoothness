@@ -3,13 +3,13 @@
 echo "----------------------------------------------------"
 echo "| Step 1: Waiting for Oracle DB to start listening |"
 echo "----------------------------------------------------"
-if [[ -n ${DB_USER} && -n ${DB_PASS} && -n ${ORACLE_SERVER} && -n ${DB_SERVICE} ]]; then
+if [[ -n ${ORACLE_USER} && -n ${ORACLE_PASS} && -n ${ORACLE_SERVER} && -n ${ORACLE_SERVICE} ]]; then
   export ORACLE_DRIVER_PATH=/tmp/ojdbc11-21.5.0.0.jar
 
   curl -sS -o "${ORACLE_DRIVER_PATH}" https://repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc11/21.5.0.0/ojdbc11-21.5.0.0.jar
 
   until java -cp "/:${ORACLE_DRIVER_PATH}" \
-        /TestOracleConnection.java "jdbc:oracle:thin:${DB_USER}/${DB_PASS}@${ORACLE_SERVER}/${DB_SERVICE}" "${DB_DEBUG}"
+        /TestOracleConnection.java "jdbc:oracle:thin:${ORACLE_USER}/${ORACLE_PASS}@${ORACLE_SERVER}/${ORACLE_SERVICE}" "${DB_DEBUG}"
   do
     echo $(date) " Still waiting for Oracle to start..."
     sleep 5
