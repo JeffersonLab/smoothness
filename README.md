@@ -68,20 +68,21 @@ implementation 'org.jlab:smoothness-weblib:<version>'
 Check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) to see what has changed in each version. 
 
 ### Demo Install
-Use the Docker Compose quickstart to automate the setup of the demo, else manually:
+This application requires a Java 11+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).  Use the Docker Compose quickstart to automate the setup of the demo, else manually:
 
- - Run the [Gradle build](https://github.com/JeffersonLab/smoothness#build) to generate "run" directory
- - Download [Wildfly 26](https://www.wildfly.org/downloads/)
- - Configure Wildfly as seen in the [Docker example](https://github.com/JeffersonLab/smoothness/tree/main/docker/wildfly).  To simply use the docker wildfly config, but with a local instance of Wildfly (instead of Wildfly in a container) set the following environment variables on the host:
-   - **KEYCLOAK_SERVER**: localhost:8081
-   - **ORACLE_SERVER**: localhost:1521
-   - **JBOSS_MODULEPATH**: `<absolute-path-to-wildfly>`\modules;`<absolute-path-to-project>`\run\wildfly\modules
-   - **JAVA_OPTS**: -Djboss.server.base.dir=`<absolute-path-to-project>`\run\wildfly\standalone
- - Start Wildfly 
- - Copy smoothness-demo.war into the Wildfly deployments directory
- - Navigate your web browser to localhost:8080/smoothness-demo
+   1. Download [Wildfly 26.1.1](https://www.wildfly.org/downloads/) (or just pull it out of the Docker image config and all - see below)
+   1. Download [demo.war](https://github.com/JeffersonLab/smoothness-demo/releases) and deploy it to Wildfly
+   1. Configure Wildfly<sup>Note</sup> and start it
+   1. Navigate your web browser to localhost:8080/smoothness-demo
 
-**Note**: Windows path separators shown.  For Linux replace the semicolon with a colon and the back slash with forward slash.
+**Note**: The docker image configures Wildfly for use in the compose environment and that's a good starting point to copy from.  Outside of a compose environment you may need to tweak the standalone.xml configuration to use different host names and ports (For example Oracle and Keycloak host names would need to be updated to localhost:1521 and localhost:8081 respectively when using the deps.yml and running Wildfly outside the compose network):
+
+```
+docker compose up
+docker exec -it demo /opt/jboss/wildfly/bin/jboss-cli.sh --connect -c "undeploy smoothness-demo.war"
+docker exec -it demo /opt/jboss/wildfly/bin/jboss-cli.sh --connect -c shutdown
+docker cp demo:/opt/jboss/wildfly .
+```
 
 **Note**: The demo application requires an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.   The application server hosting the demo app must also be configured with a JNDI datasource.   See [Oracle XE DB Container Notes](https://github.com/JeffersonLab/smoothness/wiki/Developer-Notes#oracle-container).
 
