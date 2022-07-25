@@ -17,7 +17,6 @@ COPY . /app
 ## Let's minimize layers in final-product by organizing files into a single copy structure
 RUN mkdir /unicopy \
     && cp /app/docker/weblib/TestOracleConnection.java /unicopy \
-    && cp /app/docker/weblib/setup.sh /unicopy \
     && cp /app/docker/weblib/docker-entrypoint.sh /unicopy \
     && cp -r /app/docker/weblib/setup /unicopy \
     && mkdir /unicopy/stage
