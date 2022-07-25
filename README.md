@@ -84,7 +84,7 @@ docker exec -it demo /opt/jboss/wildfly/bin/jboss-cli.sh --connect -c shutdown
 docker cp demo:/opt/jboss/wildfly .
 ```
 
-**Note**: The application requires an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.   The application server hosting the app must also be configured with a JNDI datasource.
+**Note**: The application requires an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.
 
 ## API
 [javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/)
