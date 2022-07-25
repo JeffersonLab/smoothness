@@ -140,8 +140,9 @@ Since this is a monorepo there are actually two projects: the weblib and the dem
 2. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib.
 3. Publish new artifact on maven central with:
 ```
-gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+gradlew publishMavenPublicationToOSSRHRepository
 ```
+**Note**: You then must navigate to https://s01.oss.sonatype.org/ and manually click around to close and release.  There is a plugin for Gradle that automates this, but it [doesn't work](https://github.com/gradle-nexus/publish-plugin/issues/81) with multi-project builds.
 4. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).
 
 **DEMO**    
