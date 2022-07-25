@@ -1,19 +1,5 @@
 ARG BUILD_IMAGE=gradle:7.4-jdk17
 ARG RUN_IMAGE=slominskir/smoothness:latest
-ARG KEYCLOAK_SERVER=keycloak:8080
-ARG LOGBOOK_SERVER=elog
-ARG PUPPET_SHOW_SERVER=puppet:3000
-ARG ORACLE_SERVER=oracle:1521
-ARG DB_USER=SMOOTHNESS_OWNER
-ARG DB_PASS=password
-ARG DB_SERVICE=xepdb1
-ARG DATASOURCE_NAME=smoothness
-ARG WAR=smoothness-demo.war
-ARG SECRET=9AubPamv1H9fAWo0q239EP7wPuH5ihb7
-ARG REALM=test-realm
-ARG RESOURCE=smoothness
-ARG WILDFLY_USER=admin
-ARG WILDFLY_PASSWORD=admin
 
 ################## Stage 0
 FROM ${BUILD_IMAGE} as builder
