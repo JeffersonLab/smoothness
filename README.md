@@ -58,7 +58,7 @@ http://localhost:8080/smoothness-demo
 **See**: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
 ## Install
-
+### Web Lib Install
 This library requires a Java 11+ JVM and standard library at run time, plus a Java EE 8+ application server (developed with Wildfly). 
 
 You can obtain the library jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
