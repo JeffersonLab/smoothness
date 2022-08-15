@@ -34,8 +34,8 @@ DEPLOYMENT_CONFIG=principal-attribute="preferred_username",ssl-required=EXTERNAL
 
 /opt/jboss/wildfly/bin/jboss-cli.sh -c <<EOF
 batch
-/subsystem=elytron-oidc-client/secure-deployment="${WAR}"/:add(${DEPLOYMENT_CONFIG})
-/subsystem=elytron-oidc-client/secure-deployment="${WAR}"/credential=secret:add(secret="${KEYCLOAK_SECRET}")
+/subsystem=elytron-oidc-client/secure-deployment="${KEYCLOAK_WAR}"/:add(${DEPLOYMENT_CONFIG})
+/subsystem=elytron-oidc-client/secure-deployment="${KEYCLOAK_WAR}"/credential=secret:add(secret="${KEYCLOAK_SECRET}")
 run-batch
 EOF
 }
