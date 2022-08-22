@@ -1,0 +1,41 @@
+{
+  "realm" : "test-realm",
+  "users" : [ {
+    "id" : "848096af-4301-4369-852f-2bf79128721b",
+    "createdTimestamp" : 1661200361035,
+    "username" : "admin",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "firstName" : "admin",
+    "lastName" : "admin",
+    "email" : "admin@example.com",
+    "credentials" : [ {
+      "id" : "4468e827-22a4-4b47-acba-c0d4c49b0d3c",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1661200590651,
+      "secretData" : "{\"value\":\"hXnnVkJIde4t0h6otBeXaew462k3dKwvmwo07tnqpCPJXvKUvh4gKGkcUc3QN/an+JL8/i4TShyS8M05jKpQ1Q==\",\"salt\":\"kgYf+6dLkkc8EKKTy1Ouew==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "smoothness-admin", "default-roles-test-realm", "smoothness-user" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "cf711ea6-dfea-4322-a8a5-d96fdaa190ce",
+    "createdTimestamp" : 1661200139310,
+    "username" : "service-account-smoothness-demo",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "serviceAccountClientId" : "smoothness-demo",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-test-realm" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}
