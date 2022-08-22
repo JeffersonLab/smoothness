@@ -29,7 +29,7 @@ services:
       KEYCLOAK_REALM: 'test-realm'
       KEYCLOAK_RESOURCE: 'smoothness-demo'
       KEYCLOAK_SECRET: 'yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB'
-      KEYCLOAK_SERVER: 'keycloak:8080'
+      KEYCLOAK_SERVER_URL: 'http://keycloak:8080'
       KEYCLOAK_WAR: 'smoothness-demo.war'
       LOGBOOK_SERVER: 'elog'
       ORACLE_DATASOURCE: 'smoothness'

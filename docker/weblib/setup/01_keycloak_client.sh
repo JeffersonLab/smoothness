@@ -10,8 +10,8 @@ if [[ -z "${KEYCLOAK_WAR}" ]]; then
     return 0
 fi
 
-if [[ -z "${KEYCLOAK_SERVER}" ]]; then
-    echo "Skipping Keycloak Client Setup: Must provide KEYCLOAK_SERVER in environment"
+if [[ -z "${KEYCLOAK_SERVER_URL}" ]]; then
+    echo "Skipping Keycloak Client Setup: Must provide KEYCLOAK_SERVER_URL in environment"
     return 0
 fi
 
@@ -30,7 +30,7 @@ if [[ -z "${KEYCLOAK_RESOURCE}" ]]; then
     return 0
 fi
 
-DEPLOYMENT_CONFIG=principal-attribute="preferred_username",ssl-required=EXTERNAL,resource="${KEYCLOAK_RESOURCE}",realm="${KEYCLOAK_REALM}",auth-server-url=http://${KEYCLOAK_SERVER}/auth
+DEPLOYMENT_CONFIG=principal-attribute="preferred_username",ssl-required=EXTERNAL,resource="${KEYCLOAK_RESOURCE}",realm="${KEYCLOAK_REALM}",auth-server-url=${KEYCLOAK_SERVER_URL}
 
 /opt/jboss/wildfly/bin/jboss-cli.sh -c <<EOF
 batch
