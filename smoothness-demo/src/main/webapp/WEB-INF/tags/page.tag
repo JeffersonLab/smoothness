@@ -37,7 +37,7 @@
             <li${fn:startsWith(currentPath, '/reports') ? ' class="current-primary"' : ''}>
                 <a href="${pageContext.request.contextPath}/reports/report-one">Reports (demo)</a>
             </li>
-            <c:if test="${pageContext.request.isUserInRole('smoothness-admin')}">
+            <c:if test="${pageContext.request.isUserInRole('smoothness-demo-admin')}">
                 <li${fn:startsWith(currentPath, '/setup') ? ' class="current-primary"' : ''}>
                     <a href="${pageContext.request.contextPath}/setup/setup-one">Setup (demo)</a>
                 </li>

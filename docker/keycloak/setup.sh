@@ -39,7 +39,7 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create roles -r test-realm -s name=smoothness-demo
 echo "-------------------------"
 echo "| Step 4: Create Client |"
 echo "-------------------------"
-CID=$(${KEYCLOAK_HOME}/bin/kcadm.sh create clients -r test-realm -s clientId=smoothness-demo -s 'redirectUris=["http://localhost:8080/smoothness-demo/*"]' -s 'secret=yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB' -i)
+CID=$(${KEYCLOAK_HOME}/bin/kcadm.sh create clients -r test-realm -s clientId=smoothness-demo -s 'redirectUris=["https://localhost:8443/smoothness-demo/*"]' -s 'secret=yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB' -i)
 echo "CID: ${CID}"
 
 echo "------------------------"
