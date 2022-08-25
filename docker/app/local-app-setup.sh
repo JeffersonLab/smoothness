@@ -1,7 +1,13 @@
 #!/bin/bash
 
-#WILDFLY_CLI_PATH=/opt/jboss/wildfly/bin/jboss-cli.sh
-WILDFLY_CLI_PATH=/mnt/c/Users/RyanS/servers/wildfly-26.1.1.Final/bin/jboss-cli.sh
+# Linux Container
+#WILDFLY_HOME=/opt/jboss/wildfly
+
+# Windows WSL2
+#WILDFLY_HOME=/mnt/c/Users/RyanS/servers/wildfly-26.1.1.Final
+
+# MacOS
+WILDFLY_HOME=/Users/ryans/Servers/wildfly-26.1.1.Final
 
 KEYCLOAK_WAR=smoothness-demo.war
 #KEYCLOAK_SERVER_URL=http://keycloak:8080
