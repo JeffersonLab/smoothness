@@ -4,7 +4,7 @@ echo "--------------------------"
 echo "| Step 1: Start Keycloak |"
 echo "--------------------------"
 
-/opt/keycloak/bin/kc.sh start-dev &
+/opt/keycloak/bin/kc.sh start-dev --hostname $KEYCLOAK_FRONTEND_HOSTNAME --hostname-port=$KEYCLOAK_FRONTEND_PORT &
 
 echo "--------------------------------------"
 echo "| Step 2: Wait for Keycloak to start |"
