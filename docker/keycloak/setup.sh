@@ -20,43 +20,57 @@ if [[ -z "${KEYCLOAK_ADMIN_PASSWORD}" ]]; then
     return 0
 fi
 
+if [[ -z "${KEYCLOAK_REALM}" ]]; then
+    echo "Skipping Keycloak Setup: Must provide KEYCLOAK_REALM in environment"
+    return 0
+fi
+
+if [[ -z "${KEYCLOAK_RESOURCE}" ]]; then
+    echo "Skipping Keycloak Setup: Must provide KEYCLOAK_RESOURCE in environment"
+    return 0
+fi
+
+if [[ -z "${KEYCLOAK_SECRET}" ]]; then
+    echo "Skipping Keycloak Setup: Must provide KEYCLOAK_SECRET in environment"
+    return 0
+fi
+
 echo "-----------------"
-echo "| Step 1: Login |"
+echo "| Step A: Login |"
 echo "-----------------"
 ${KEYCLOAK_HOME}/bin/kcadm.sh config credentials --server "${KEYCLOAK_SERVER_URL}" --realm master --user "${KEYCLOAK_ADMIN}" --password "${KEYCLOAK_ADMIN_PASSWORD}"
 
 echo "------------------------"
-echo "| Step 2: Create Realm |"
+echo "| Step B: Create Realm |"
 echo "------------------------"
-${KEYCLOAK_HOME}/bin/kcadm.sh create realms -s realm=test-realm -s enabled=true -o
+${KEYCLOAK_HOME}/bin/kcadm.sh create realms -s realm="${KEYCLOAK_REALM}" -s enabled=true -o
 
 echo "------------------------"
-echo "| Step 3: Create Roles |"
+echo "| Step C: Create Roles |"
 echo "------------------------"
-${KEYCLOAK_HOME}/bin/kcadm.sh create roles -r test-realm -s name=smoothness-demo-user
-${KEYCLOAK_HOME}/bin/kcadm.sh create roles -r test-realm -s name=smoothness-demo-admin
+${KEYCLOAK_HOME}/bin/kcadm.sh create roles -r "${KEYCLOAK_REALM}" -s name=${KEYCLOAK_RESOURCE}-user
+${KEYCLOAK_HOME}/bin/kcadm.sh create roles -r "${KEYCLOAK_REALM}" -s name=${KEYCLOAK_RESOURCE}-admin
 
 echo "-------------------------"
-echo "| Step 4: Create Client |"
+echo "| Step D: Create Client |"
 echo "-------------------------"
-CID=$(${KEYCLOAK_HOME}/bin/kcadm.sh create clients -r test-realm -s clientId=smoothness-demo -s 'redirectUris=["https://localhost:8443/smoothness-demo/*"]' -s 'secret=yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB' -s 'serviceAccountsEnabled=true' -i)
-echo "CID: ${CID}"
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername service-account-smoothness-demo --cclientid realm-management --rolename view-users
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername service-account-smoothness-demo --cclientid realm-management --rolename view-authorization
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername service-account-smoothness-demo --cclientid realm-management --rolename view-realm
+${KEYCLOAK_HOME}/bin/kcadm.sh create clients -r "${KEYCLOAK_REALM}" -s clientId=${KEYCLOAK_RESOURCE} -s 'redirectUris=["https://localhost:8443/'${KEYCLOAK_RESOURCE}'/*"]' -s 'secret=${KEYCLOAK_SECRET}' -s 'serviceAccountsEnabled=true'
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername service-account-${KEYCLOAK_RESOURCE} --cclientid realm-management --rolename view-users
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername service-account-${KEYCLOAK_RESOURCE} --cclientid realm-management --rolename view-authorization
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername service-account-${KEYCLOAK_RESOURCE} --cclientid realm-management --rolename view-realm
 
 echo "------------------------"
-echo "| Step 5: Create Users |"
+echo "| Step E: Create Users |"
 echo "------------------------"
-${KEYCLOAK_HOME}/bin/kcadm.sh create users -r test-realm -s username=jadams -s firstName=Jane -s lastName=Adams -s enabled=true
-${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r test-realm --username jadams --new-password password
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername jadams --rolename smoothness-demo-user
+${KEYCLOAK_HOME}/bin/kcadm.sh create users -r "${KEYCLOAK_REALM}" -s username=jadams -s firstName=Jane -s lastName=Adams -s enabled=true
+${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r "${KEYCLOAK_REALM}" --username jadams --new-password password
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername jadams --rolename ${KEYCLOAK_RESOURCE}-user
 
-${KEYCLOAK_HOME}/bin/kcadm.sh create users -r test-realm -s username=jsmith -s firstName=John -s lastName=Smith -s enabled=true
-${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r test-realm --username jsmith --new-password password
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername jsmith --rolename smoothness-demo-user
+${KEYCLOAK_HOME}/bin/kcadm.sh create users -r "${KEYCLOAK_REALM}" -s username=jsmith -s firstName=John -s lastName=Smith -s enabled=true
+${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r "${KEYCLOAK_REALM}" --username jsmith --new-password password
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername jsmith --rolename ${KEYCLOAK_RESOURCE}-user
 
-${KEYCLOAK_HOME}/bin/kcadm.sh create users -r test-realm -s username=tbrown -s firstName=Tom -s lastName=Brown -s enabled=true
-${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r test-realm --username tbrown --new-password password
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername tbrown --rolename smoothness-demo-user
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername tbrown --rolename smoothness-demo-admin
+${KEYCLOAK_HOME}/bin/kcadm.sh create users -r "${KEYCLOAK_REALM}" -s username=tbrown -s firstName=Tom -s lastName=Brown -s enabled=true
+${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r "${KEYCLOAK_REALM}" --username tbrown --new-password password
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername tbrown --rolename ${KEYCLOAK_RESOURCE}-user
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername tbrown --rolename ${KEYCLOAK_RESOURCE}-admin
