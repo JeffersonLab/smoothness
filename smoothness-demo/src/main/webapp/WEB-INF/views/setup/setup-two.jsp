@@ -12,6 +12,11 @@
     <jsp:body>
         <section>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <c:url value="/setup/user-authorization-cache" var="url">
+            </c:url>
+            <p>
+                <a href="${url}">User Authorization Cache</a>
+            </p>
         </section>
     </jsp:body>         
 </t:setup-page>

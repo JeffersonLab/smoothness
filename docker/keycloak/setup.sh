@@ -39,17 +39,24 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create roles -r test-realm -s name=smoothness-demo
 echo "-------------------------"
 echo "| Step 4: Create Client |"
 echo "-------------------------"
-CID=$(${KEYCLOAK_HOME}/bin/kcadm.sh create clients -r test-realm -s clientId=smoothness-demo -s 'redirectUris=["https://localhost:8443/smoothness-demo/*"]' -s 'secret=yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB' -i)
+CID=$(${KEYCLOAK_HOME}/bin/kcadm.sh create clients -r test-realm -s clientId=smoothness-demo -s 'redirectUris=["https://localhost:8443/smoothness-demo/*"]' -s 'secret=yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB' -s 'serviceAccountsEnabled=true' -i)
 echo "CID: ${CID}"
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername service-account-smoothness-demo --cclientid realm-management --rolename view-users
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername service-account-smoothness-demo --cclientid realm-management --rolename view-authorization
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername service-account-smoothness-demo --cclientid realm-management --rolename view-realm
 
 echo "------------------------"
 echo "| Step 5: Create Users |"
 echo "------------------------"
-${KEYCLOAK_HOME}/bin/kcadm.sh create users -r test-realm -s username=user -s enabled=true
-${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r test-realm --username user --new-password user
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername user --rolename smoothness-demo-user
+${KEYCLOAK_HOME}/bin/kcadm.sh create users -r test-realm -s username=jadams -s firstName=Jane -s lastName=Adams -s enabled=true
+${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r test-realm --username jadams --new-password password
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername jadams --rolename smoothness-demo-user
 
-${KEYCLOAK_HOME}/bin/kcadm.sh create users -r test-realm -s username=admin -s enabled=true
-${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r test-realm --username admin --new-password admin
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername admin --rolename smoothness-demo-user
-${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername admin --rolename smoothness-demo-admin
+${KEYCLOAK_HOME}/bin/kcadm.sh create users -r test-realm -s username=jsmith -s firstName=John -s lastName=Smith -s enabled=true
+${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r test-realm --username jsmith --new-password password
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername jsmith --rolename smoothness-demo-user
+
+${KEYCLOAK_HOME}/bin/kcadm.sh create users -r test-realm -s username=tbrown -s firstName=Tom -s lastName=Brown -s enabled=true
+${KEYCLOAK_HOME}/bin/kcadm.sh set-password -r test-realm --username tbrown --new-password password
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername tbrown --rolename smoothness-demo-user
+${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r test-realm --uusername tbrown --rolename smoothness-demo-admin
