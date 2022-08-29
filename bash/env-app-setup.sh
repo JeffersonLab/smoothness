@@ -1,13 +1,13 @@
 #!/bin/bash
 
+DIRNAME=`dirname "$0"`
+SCRIPT_HOME=`cd -P "$DIRNAME"; pwd`
+
+. ${SCRIPT_HOME}/env/default.env
+
 if [ -z "$1" ]
-  then
-    echo "Provide name of .env override file to use"
-    exit 1
+then
+. ${SCRIPT_HOME}/env/$1
 fi
 
-. env/default.env
-
-. env/$1
-
-. app-setup.sh
+. ${SCRIPT_HOME}/app-setup.sh
