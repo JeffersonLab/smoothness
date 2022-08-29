@@ -19,6 +19,10 @@ done
 echo $(date) " Wildfly started!"
 }
 
+wildfly_reload() {
+${WILDFLY_CLI_PATH} -c reload
+}
+
 wildfly_stop() {
 ${WILDFLY_CLI_PATH} -c shutdown
 }
@@ -90,9 +94,16 @@ echo "---------------------------------"
 
 config_email
 
-echo "-------------------------"
-echo "| Setup V: Stop Wildfly |"
-echo "-------------------------"
+echo "---------------------------"
+echo "| Setup V: Reload Wildfly |"
+echo "---------------------------"
+
+# Wildfly will complain about standalone.xml history if not reloaded
+wildfly_reload
+
+echo "--------------------------"
+echo "| Setup VI: Stop Wildfly |"
+echo "--------------------------"
 
 if [[ -z "${WILDFLY_SKIP_STOP}" ]]; then
   wildfly_stop

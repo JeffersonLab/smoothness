@@ -29,7 +29,7 @@ RUN mkdir /unicopy \
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
 ARG CUSTOM_CRT_URL
-ARG RUN_USER=jboss
+ARG RUN_USER=jboss:jboss
 ARG ORACLE_DRIVER_PATH
 USER root
 COPY --from=builder /unicopy /
