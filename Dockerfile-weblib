@@ -1,9 +1,13 @@
 ARG BUILD_IMAGE=gradle:7.4-jdk17
 ARG RUN_IMAGE=quay.io/wildfly/wildfly:26.1.1.Final
+ARG ORACLE_DRIVER_URL=http://insecure.repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc11/21.7.0.0/ojdbc11-21.7.0.0.jar
+ARG ORACLE_DRIVER_PATH=/tmp/ojdbc11-21.7.0.0.jar
 
 ################## Stage 0
 FROM ${BUILD_IMAGE} as builder
 ARG CUSTOM_CRT_URL
+ARG ORACLE_DRIVER_URL
+ARG ORACLE_DRIVER_PATH
 USER root
 WORKDIR /
 RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
@@ -12,29 +16,29 @@ RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
        && keytool -import -alias custom -file /usr/local/share/ca-certificates/customcert.crt -cacerts -storepass changeit -noprompt \
        && export OPTIONAL_CERT_ARG=--cert=/etc/ssl/certs/ca-certificates.crt \
     ; fi
+RUN wget -O "${ORACLE_DRIVER_PATH}" "${ORACLE_DRIVER_URL}"
 COPY . /app
 
 ## Let's minimize layers in final-product by organizing files into a single copy structure
 RUN mkdir /unicopy \
     && cp /app/docker/weblib/TestOracleConnection.java /unicopy \
     && cp /app/docker/weblib/docker-entrypoint.sh /unicopy \
-    && cp -r /app/docker/weblib/setup /unicopy \
-    && mkdir /unicopy/stage
+    && cp -r /app/bash /unicopy \
+    && cp --parents ${ORACLE_DRIVER_PATH} /unicopy
 
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
 ARG CUSTOM_CRT_URL
 ARG RUN_USER=jboss
+ARG ORACLE_DRIVER_PATH
 USER root
 COPY --from=builder /unicopy /
 RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
        curl -sS -o /etc/pki/ca-trust/source/anchors/customcert.crt $CUSTOM_CRT_URL \
        && update-ca-trust \
        && keytool -import -alias custom -file /etc/pki/ca-trust/source/anchors/customcert.crt -cacerts -storepass changeit -noprompt \
-    ; fi \
-    && chown -R jboss:0 /setup \
-    && chmod -R g+rw /setup \
-    && chown -R jboss:0 /stage \
-    && chmod -R g+rw /stage
+    ; fi
 USER ${RUN_USER}
+RUN /bash/env-server-setup.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
+ENV ORACLE_DRIVER_PATH=$ORACLE_DRIVER_PATH
