@@ -116,12 +116,13 @@ Wildfly must be pre-configured before the first deployment of the app.  The scri
 | KEYCLOAK_SERVER_URL | Protocol, host name, and port of Keycloak authentication server          |
 | KEYCLOAK_REALM      | Keycloak realm to configure                                              |
 | KEYCLOAK_RESOURCE   | Keycloak resource to configure                                           |
-| KEYCLOAK_WAR        | Name of war file to secure with Keycloak                                 |
+| KEYCLOAK_WAR        | Name of war file to secure with Keycloak (app key)                       |
 | KEYCLOAK_SECRET     | Keycloak Secret                                                          |
+| ORACLE_DATASOURCE   | Name of Oracle datasource (app key)                                      |
 | ORACLE_SERVER       | Host name and port of Oracle server to use to connect to DB from Wildfly |
+| ORACLE_SERVICE      | Oracle Service name to use to connect to DB from Wildfly                 |
 | ORACLE_USER         | Username to use to connect to DB from Wildfly                            |
 | ORACLE_PASS         | Password to use to connect to DB from Wildfly                            |
-| ORACLE_SERVICE      | Oracle Service name to use to connect to DB from Wildfly                 |
 
 #### Global Runtime
 At runtime smoothness apps use the following global environment variables:
