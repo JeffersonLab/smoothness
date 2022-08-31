@@ -123,6 +123,7 @@ Wildfly must be pre-configured before the first deployment of the app.  The scri
 | ORACLE_SERVICE      | Oracle Service name to use to connect to DB from Wildfly                 |
 | ORACLE_USER         | Username to use to connect to DB from Wildfly                            |
 | ORACLE_PASS         | Password to use to connect to DB from Wildfly                            |
+| WILDFLY_HOME        | Path to Wildfly home dir                                                 | 
 
 #### Global Runtime
 At runtime smoothness apps use the following global environment variables:
