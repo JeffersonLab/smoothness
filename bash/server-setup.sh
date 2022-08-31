@@ -56,11 +56,25 @@ ${WILDFLY_HOME}/bin/add-user.sh "${WILDFLY_USER}" "${WILDFLY_PASS}"
 }
 
 config_email() {
+if [[ -z "${EMAIL_FROM}" ]]; then
+    echo "Skipping email Setup: Must provide EMAIL_FROM in environment"
+    return 0
+fi
+
+if [[ -z "${EMAIL_HOST}" ]]; then
+    echo "Skipping email Setup: Must provide EMAIL_HOST in environment"
+    return 0
+fi
+
+if [[ -z "${EMAIL_PORT}" ]]; then
+    echo "Skipping email Setup: Must provide EMAIL_PORT in environment"
+    return 0
+fi
 
 ${WILDFLY_CLI_PATH} -c <<EOF
 batch
-/subsystem=mail/mail-session=jlab:add(from="wildfly@jlab.org", jndi-name="java:/mail/jlab")
-/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=mail-smtp-jlab:add(host=smtpmail.jlab.org, port=25)
+/subsystem=mail/mail-session=jlab:add(from="${EMAIL_FROM}", jndi-name="java:/mail/jlab")
+/socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=mail-smtp-jlab:add(host=${EMAIL_HOST}, port=${EMAIL_PORT})
 /subsystem=mail/mail-session=jlab/server=smtp:add(outbound-socket-binding-ref=mail-smtp-jlab)
 run-batch
 EOF
