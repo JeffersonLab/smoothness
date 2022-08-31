@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jlab.demo.business.service.StaffService;
-import org.jlab.demo.persistence.entity.Staff;
+
+import org.jlab.smoothness.business.service.UserAuthorizationService;
+import org.jlab.smoothness.persistence.view.User;
 import org.jlab.smoothness.presentation.util.Paginator;
 import org.jlab.smoothness.presentation.util.ParamUtil;
 
@@ -21,12 +21,6 @@ import org.jlab.smoothness.presentation.util.ParamUtil;
  */
 @WebServlet(name = "CrumbTwo", urlPatterns = {"/breadcrumbs/crumb-two"})
 public class CrumbTwo extends HttpServlet {
-
-    /**
-     * Staff Service
-     */
-    @EJB
-    StaffService staffService;
 
     /**
      * Handles the HTTP
@@ -41,13 +35,15 @@ public class CrumbTwo extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String lastname = request.getParameter("lastname");
+        String search = request.getParameter("search");
 
         int offset = ParamUtil.convertAndValidateNonNegativeInt(request, "offset", 0);
-        int max = ParamUtil.convertAndValidateNonNegativeInt(request, "max", 10);
+        int max = ParamUtil.convertAndValidateNonNegativeInt(request, "max", 5);
 
-        List<Staff> staffList = staffService.filterList(lastname, offset, max);
-        long totalRecords = staffService.countList(lastname, offset, max);
+        UserAuthorizationService auth = UserAuthorizationService.getInstance();
+
+        List<User> userList = auth.getUsersLike(search, offset, max);
+        long totalRecords = auth.countUsersLike(search);
 
         Paginator paginator = new Paginator(totalRecords, offset, max);
 
@@ -56,21 +52,21 @@ public class CrumbTwo extends HttpServlet {
         String selectionMessage;
 
         if (paginator.getTotalRecords() == 0) {
-            selectionMessage = "Found 0 Staff";
+            selectionMessage = "Found 0 Users";
         } else {
-            selectionMessage = "Showing Staff " + formatter.format(paginator.getStartNumber())
+            selectionMessage = "Showing User " + formatter.format(paginator.getStartNumber())
                     + " - " + formatter.format(paginator.getEndNumber())
                     + " of " + formatter.format(paginator.getTotalRecords());
         }
 
-        String filters = getMessage(lastname);
+        String filters = getMessage(search);
 
         if (filters.length() > 0) {
             selectionMessage = selectionMessage + " with " + filters;
         }
 
         request.setAttribute("selectionMessage", selectionMessage);
-        request.setAttribute("staffList", staffList);
+        request.setAttribute("userList", userList);
         request.setAttribute("paginator", paginator);
 
         request.getRequestDispatcher("/WEB-INF/views/breadcrumbs/crumb-two.jsp").forward(request, response);

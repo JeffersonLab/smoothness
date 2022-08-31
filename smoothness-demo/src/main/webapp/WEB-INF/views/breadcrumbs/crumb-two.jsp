@@ -26,11 +26,11 @@
                             <ul class="key-value-list">                       
                                 <li>
                                     <div class="li-key">
-                                        <label for="lastname">Lastname</label>
+                                        <label for="search">Search</label>
                                     </div>
                                     <div class="li-value">
-                                        <input id="lastname" name="lastname" value="${fn:escapeXml(param.lastname)}"/>
-                                        (use % as wildcard)
+                                        <input id="search" name="search" value="${fn:escapeXml(param.search)}"/>
+                                        <div>(matches any attribute which starts with substring)</div>
                                     </div>
                                 </li>                        
                             </ul>
@@ -55,11 +55,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${staffList}" var="staff">
+                        <c:forEach items="${userList}" var="user">
                             <tr>
-                                <td><c:out value="${staff.lastname}"/></td>
-                                <td><c:out value="${staff.firstname}"/></td>
-                                <td><c:out value="${staff.username}"/></td>
+                                <td><c:out value="${user.lastname}"/></td>
+                                <td><c:out value="${user.firstname}"/></td>
+                                <td><c:out value="${user.username}"/></td>
                             </tr>
                         </c:forEach>
                     </tbody>

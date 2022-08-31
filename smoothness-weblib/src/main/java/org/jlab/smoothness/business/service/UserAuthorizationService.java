@@ -6,6 +6,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RoleResource;
 import org.keycloak.admin.client.resource.RolesResource;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 
 import java.util.*;
@@ -82,6 +83,58 @@ public class UserAuthorizationService {
     public void clearCache() {
         usersInRole.clear();
         userFromUsername.clear();
+    }
+
+    /**
+     * Get the users that contain the given string in one of their attributes (username, firstname, lastname, email).
+     * Keycloak is queried.
+     *
+     * @param search The search string
+     * @param firstResult The index of the first result to return (pagination)
+     * @param maxResults The maximum number of results to return (pagination)
+     * @return The list of users matching the search string
+     */
+    public List<User> getUsersLike(String search, Integer firstResult, Integer maxResults) {
+
+        List<User> users = new ArrayList<>();
+
+        UsersResource usersResource = keycloak.realm(realm).users();
+
+        List<UserRepresentation> reps = usersResource.search(search, firstResult, maxResults);
+
+        for(UserRepresentation rep: reps) {
+            User user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName());
+
+            users.add(user);
+        }
+
+        users.sort(Comparator.comparing(User::getLastname));
+
+        return Collections.unmodifiableList(users);
+    }
+
+    /**
+     * Count the users that contain the given string in one of their attributes (username, firstname, lastname, email).
+     * Keycloak is queried.
+     *
+     * @param search The search string
+     * @return The count of users matching the search string
+     */
+    public Integer countUsersLike(String search) {
+
+        List<User> users = new ArrayList<>();
+
+        UsersResource usersResource = keycloak.realm(realm).users();
+
+        Integer count;
+
+        if(search == null || search.isEmpty()) {
+            count = usersResource.count();
+        } else {
+            count = usersResource.count(search);
+        }
+
+        return count;
     }
 
     /**
