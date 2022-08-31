@@ -98,11 +98,21 @@ As an alternative, you can create a `.env` file for your environment and call th
 #### Configtime
 Wildfly must be pre-configured before the first deployment of the app.  The scripts located in the `bash` directory are used with the following environment variables:
 
+<b>Server Setup (once):</b>
+
 | Name                | Description                                                              |
 |---------------------|--------------------------------------------------------------------------|
 | EMAIL_FROM          | Default from address for the mail/jlab resource                          |
 | EMAIL_HOST          | Host for the mail/jlab resource                                          |
-| EMAIL_PORT          | Port for the mail/jlab resource                                          |  
+| EMAIL_PORT          | Port for the mail/jlab resource                                          |
+| ORACLE_DRIVER_PATH  | Oracle Service name to use to connect to DB from Wildfly                 |
+| WILDFLY_HOME        | Path to Wildfly home dir                                                 | 
+
+
+<b>App Setup (1 or more):</b>
+
+| Name                | Description                                                              |
+|---------------------|--------------------------------------------------------------------------|
 | KEYCLOAK_SERVER_URL | Protocol, host name, and port of Keycloak authentication server          |
 | KEYCLOAK_REALM      | Keycloak realm to configure                                              |
 | KEYCLOAK_RESOURCE   | Keycloak resource to configure                                           |
@@ -112,13 +122,9 @@ Wildfly must be pre-configured before the first deployment of the app.  The scri
 | ORACLE_USER         | Username to use to connect to DB from Wildfly                            |
 | ORACLE_PASS         | Password to use to connect to DB from Wildfly                            |
 | ORACLE_SERVICE      | Oracle Service name to use to connect to DB from Wildfly                 |
-| WILDFLY_HOME        | Path to Wildfly home dir                                                 |
-| WILDFLY_USER        | Optional - Adds admin user with this name                                |
-| WILDFLY_PASS        | Optional - Adds admin user with this password                            |             
 
-
-#### Runtime
-At runtime smoothness apps use the following environment variables:
+#### Global Runtime
+At runtime smoothness apps use the following global environment variables:
 
 | Name                     | Description                                                                                                                                                                                                                                                                                                                        |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -138,6 +144,16 @@ At runtime smoothness apps use the following environment variables:
 | PUPPET_SHOW_SERVER       | Host name and port of Puppet Show server                                                                                                                                                                                                                                                                                           |
 | RESOURCE_LOCATION        | Optional - If undefined then defaults to LOCAL (serve files locally).  Other option is CDN, which looks for minified/combined files on shared Content Delivery Network (CDN) server - Nice for when multiple apps use same resources to have warm cache.                                                                           |
 | SERVER_MESSAGE           | Optional - Banner message at top of all pages - useful to tag test environment or provide global announcement                                                                                                                                                                                                                      |
+
+#### Per App Runtime
+At runtime smoothness apps use the following per-app namespaced environment variables (prefix set in web.xml context init param):
+
+| Name                             | Description                                                                                                        |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| <PREFIX>_FEEDBACK_SENDER_ADDRESS | Email address to set as the sender (separate from the "from" field) when a feedback message is submitted by a user |                                                                                                                                     
+| <PREFIX>_FEEDBACK_TO_ADDRESS_CSV | Comma Separated Values of email addresses to notify when a feedback message is submitted by a user                 |
+| <PREFIX>_CONTENT_CONTACT         | Optional - Person to contact for help with app content                                                             |                                                                                                                                     
+| <PREFIX>_TECHNICAL_CONTACT       | Optional - Person to contact for help with app not working as expected                                             |
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
