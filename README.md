@@ -84,6 +84,8 @@ docker exec -it demo /opt/jboss/wildfly/bin/jboss-cli.sh --connect -c shutdown
 docker cp demo:/opt/jboss/wildfly .
 ```
 
+As an alternative, you can create a `.env` file for your environment and call the bash scripts `env-setup-server.sh` and `env-setup-app.sh` to do the initial Wildfly configuration.   Bash can be executed on Linux, Windows, and Mac with some perseverance.  See [bash setup scripts](https://github.com/JeffersonLab/smoothness/tree/main/bash).
+
 **Note**: The application requires an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.
 
 ## API
