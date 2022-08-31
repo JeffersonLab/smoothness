@@ -100,13 +100,13 @@ Wildfly must be pre-configured before the first deployment of the app.  The scri
 
 <b>Server Setup (once):</b>
 
-| Name                | Description                                                              |
-|---------------------|--------------------------------------------------------------------------|
-| EMAIL_FROM          | Default from address for the mail/jlab resource                          |
-| EMAIL_HOST          | Host for the mail/jlab resource                                          |
-| EMAIL_PORT          | Port for the mail/jlab resource                                          |
-| ORACLE_DRIVER_PATH  | Oracle Service name to use to connect to DB from Wildfly                 |
-| WILDFLY_HOME        | Path to Wildfly home dir                                                 | 
+| Name                | Description                                                  |
+|---------------------|--------------------------------------------------------------|
+| EMAIL_FROM          | Default from address for the mail/jlab resource              |
+| EMAIL_HOST          | Host for the mail/jlab resource                              |
+| EMAIL_PORT          | Port for the mail/jlab resource                              |
+| ORACLE_DRIVER_PATH  | Path to ORACLE Driver (see Dockerfile-weblib for docker env) |
+| WILDFLY_HOME        | Path to Wildfly home dir                                     | 
 
 
 <b>App Setup (1 or more):</b>
