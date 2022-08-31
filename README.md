@@ -96,20 +96,23 @@ docker cp demo:/opt/jboss/wildfly .
 #### Configtime
 Wildfly must be pre-configured before the first deployment of the app.  The scripts located in the `bash` directory are used with the following environment variables:
 
-| Name                     | Description                                                                                                                                                                                                                                                                                                                        |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| KEYCLOAK_SERVER_URL      | Protocol, host name, and port of Keycloak authentication server                                                                                                                                                                                                                                                                    |
-| KEYCLOAK_REALM           | Keycloak realm to configure                                                                                                                                                                                                                                                                                                        |
-| KEYCLOAK_RESOURCE        | Keycloak resource to configure                                                                                                                                                                                                                                                                                                     |
-| KEYCLOAK_WAR             | Name of war file to secure with Keycloak                                                                                                                                                                                                                                                                                           |
-| KEYCLOAK_SECRET          | Keycloak Secret                                                                                                                                                                                                                                                                                                                    |
-| ORACLE_SERVER            | Host name and port of Oracle server to use to connect to DB from Wildfly                                                                                                                                                                                                                                                           |
-| ORACLE_USER              | Username to use to connect to DB from Wildfly                                                                                                                                                                                                                                                                                      |
-| ORACLE_PASS              | Password to use to connect to DB from Wildfly                                                                                                                                                                                                                                                                                      |
-| ORACLE_SERVICE           | Oracle Service name to use to connect to DB from Wildfly                                                                                                                                                                                                                                                                           |
-| WILDFLY_HOME             | Path to Wildfly home dir                                                                                                                                                                                                                                                                                                           |
-| WILDFLY_USER             | Optional - Adds admin user with this name                                                                                                                                                                                                                                                                                          |
-| WILDFLY_PASS             | Optional - Adds admin user with this password                                                                                                                                                                                                                                                                                      |            
+| Name                | Description                                                              |
+|---------------------|--------------------------------------------------------------------------|
+| EMAIL_FROM          | Default from address for the mail/jlab resource                          |
+| EMAIL_HOST          | Host for the mail/jlab resource                                          |
+| EMAIL_PORT          | Port for the mail/jlab resource                                          |  
+| KEYCLOAK_SERVER_URL | Protocol, host name, and port of Keycloak authentication server          |
+| KEYCLOAK_REALM      | Keycloak realm to configure                                              |
+| KEYCLOAK_RESOURCE   | Keycloak resource to configure                                           |
+| KEYCLOAK_WAR        | Name of war file to secure with Keycloak                                 |
+| KEYCLOAK_SECRET     | Keycloak Secret                                                          |
+| ORACLE_SERVER       | Host name and port of Oracle server to use to connect to DB from Wildfly |
+| ORACLE_USER         | Username to use to connect to DB from Wildfly                            |
+| ORACLE_PASS         | Password to use to connect to DB from Wildfly                            |
+| ORACLE_SERVICE      | Oracle Service name to use to connect to DB from Wildfly                 |
+| WILDFLY_HOME        | Path to Wildfly home dir                                                 |
+| WILDFLY_USER        | Optional - Adds admin user with this name                                |
+| WILDFLY_PASS        | Optional - Adds admin user with this password                            |             
 
 
 #### Runtime
