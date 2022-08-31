@@ -923,7 +923,7 @@ jlab.decodeRange = function(range, sevenAmOffset) {
     return {start: start, end: end};
 };
 jlab.initDateRange = function() {
-    var promise = jlab.doAjaxJsonGetRequest('/btm/rest/runs', {}, true);
+    var promise = jlab.doAjaxJsonGetRequest(jlab.runUrl, {}, true);
 
     promise.done(function(json) {
         jlab.currentRun = null;
@@ -1235,15 +1235,20 @@ $(function () {
         jlab.initDatePickers();
     }
 
-    if($("#date-range").length) {
-        var runLookupPromise = jlab.initDateRange();
+    var event = new Event('smoothnessready');
 
-        runLookupPromise.always(function(){
-            var event = new Event('smoothnessready');
+    if($("#date-range").length) {
+        if(jlab.runUrl.length > 0) {
+            var runLookupPromise = jlab.initDateRange();
+
+            runLookupPromise.always(function(){
+                document.dispatchEvent(event);
+            });
+        } else {
+            jlab.setupDateRange();
             document.dispatchEvent(event);
-        });
+        }
     } else {
-        var event = new Event('smoothnessready');
         document.dispatchEvent(event);
     }
 });

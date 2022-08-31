@@ -151,6 +151,7 @@
             jlab.keycloakServer = '${env["KEYCLOAK_SERVER_FRONTEND"]}';
             jlab.iframeLoginUrl = '${empty env['KEYCLOAK_HEADLESS_IDP'] ? '' : iframeLoginUrl}';
             jlab.suLogoutUrl = '${suLogoutUrl}';
+            jlab.runUrl = '${env["JLAB_RUN_URL"]}';
         </script>
         <jsp:invoke fragment="scripts"/>        
     </body>
