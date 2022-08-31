@@ -150,10 +150,10 @@ At runtime smoothness apps use the following per-app namespaced environment vari
 
 | Name                             | Description                                                                                                        |
 |----------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| <PREFIX>_FEEDBACK_SENDER_ADDRESS | Email address to set as the sender (separate from the "from" field) when a feedback message is submitted by a user |                                                                                                                                     
-| <PREFIX>_FEEDBACK_TO_ADDRESS_CSV | Comma Separated Values of email addresses to notify when a feedback message is submitted by a user                 |
-| <PREFIX>_CONTENT_CONTACT         | Optional - Person to contact for help with app content                                                             |                                                                                                                                     
-| <PREFIX>_TECHNICAL_CONTACT       | Optional - Person to contact for help with app not working as expected                                             |
+| (PREFIX)_FEEDBACK_SENDER_ADDRESS | Email address to set as the sender (separate from the "from" field) when a feedback message is submitted by a user |                                                                                                                                     
+| (PREFIX)_FEEDBACK_TO_ADDRESS_CSV | Comma Separated Values of email addresses to notify when a feedback message is submitted by a user                 |
+| (PREFIX)_CONTENT_CONTACT         | Optional - Person to contact for help with app content                                                             |                                                                                                                                     
+| (PREFIX)_TECHNICAL_CONTACT       | Optional - Person to contact for help with app not working as expected                                             |
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
