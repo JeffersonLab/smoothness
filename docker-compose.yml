@@ -31,6 +31,10 @@ services:
       - "8080:8080"
       - "9990:9990"
     environment:
+      DEMO_FEEDBACK_SENDER_ADDRESS: 'admin@example.com'
+      DEMO_FEEDBACK_TO_ADDRESS_CSV: 'user1@example.com,user2@example.com'
+      DEMO_CONTENT_CONTACT: 'bob@example.com'
+      DEMO_TECHNICAL_CONTACT: 'larry@example.com'
       KEYCLOAK_REALM: 'test-realm'
       KEYCLOAK_RESOURCE: 'smoothness-demo'
       KEYCLOAK_SECRET: 'yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB'

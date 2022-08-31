@@ -12,6 +12,10 @@
         <param-value>Demo</param-value>
     </context-param>
     <context-param>
+        <param-name>appSpecificEnvPrefix</param-name>
+        <param-value>DEMO</param-value>
+    </context-param>
+    <context-param>
         <param-name>resourceVersionNumber</param-name>
         <param-value>@RESOURCE_VERSION@</param-value>
     </context-param>
@@ -22,18 +26,6 @@
     <context-param>
         <param-name>releaseDate</param-name>
         <param-value>@RELEASE_DATE@</param-value>
-    </context-param>
-    <context-param>
-        <param-name>contentContact</param-name>
-        <param-value>Name goes here</param-value>
-    </context-param>
-    <context-param>
-        <param-name>technicalContact</param-name>
-        <param-value>Name goes here</param-value>
-    </context-param>
-    <context-param>
-        <param-name>documentationUrl</param-name>
-        <param-value>https://github.com/JeffersonLab/smoothness</param-value>
     </context-param>
     <context-param>
         <param-name>feedbackFromAddress</param-name>

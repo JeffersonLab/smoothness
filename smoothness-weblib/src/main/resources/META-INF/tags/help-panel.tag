@@ -14,14 +14,20 @@
             <div class="li-key"><span>Release Date</span></div>
             <div class="li-value"><c:out value="${initParam.releaseDate}"/></div>
         </li>
-        <li>
-            <div class="li-key"><span>Content Contact</span></div>
-            <div class="li-value"><c:out value="${initParam.contentContact}"/></div>
-        </li>
-        <li>
-            <div class="li-key"><span>Technical Contact</span></div>
-            <div class="li-value"><c:out value="${initParam.technicalContact}"/></div>
-        </li>
+        <c:set var="contentContact" value="${env[initParam.appSpecificEnvPrefix.concat('_CONTENT_CONTACT')]}"/>
+        <c:if test="${not empty contentContact}">
+            <li>
+                <div class="li-key"><span>Content Contact</span></div>
+                <div class="li-value"><c:out value="${contentContact}"/></div>
+            </li>
+        </c:if>
+        <c:set var="techContact" value="${env[initParam.appSpecificEnvPrefix.concat('_TECHNICAL_CONTACT')]}"/>
+        <c:if test="${not empty techContact}">
+            <li>
+                <div class="li-key"><span>Technical Contact</span></div>
+                <div class="li-value"><c:out value="${techContact}"/></div>
+            </li>
+        </c:if>
     </ul>
     <jsp:doBody var="bodyText"/>
     <c:if test="${not empty fn:trim(bodyText)}">

@@ -7,6 +7,7 @@ public final class User {
     private final String username;
     private final String firstname;
     private final String lastname;
+    private final String email;
 
     /**
      * Create a new User
@@ -14,11 +15,13 @@ public final class User {
      * @param username The username
      * @param firstname The firstname
      * @param lastname The lastname
+     * @param email The email address
      */
-    public User(String username, String firstname, String lastname) {
+    public User(String username, String firstname, String lastname, String email) {
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.email = email;
     }
 
     /**
@@ -49,11 +52,20 @@ public final class User {
     }
 
     /**
+     * Get the email.
+     *
+     * @return The email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
      * Get a String representation.
      *
      * @return The String representation
      */
     public String toString() {
-        return firstname + " " + lastname + "(" + username + ")";
+        return firstname + " " + lastname + "(" + username + ") [" + email + "]";
     }
 }

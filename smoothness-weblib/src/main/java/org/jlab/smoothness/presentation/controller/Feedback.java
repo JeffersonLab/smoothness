@@ -2,6 +2,8 @@ package org.jlab.smoothness.presentation.controller;
 
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.service.EmailService;
+import org.jlab.smoothness.business.service.UserAuthorizationService;
+import org.jlab.smoothness.persistence.view.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,30 +48,34 @@ public class Feedback extends HttpServlet {
             String body = request.getParameter("body");
 
             // Environment variable is used to override email address on test environments
-            String toCsv = System.getenv("FEEDBACK_TO_ADDRESS_CSV");
+
+            String prefix = getServletContext().getInitParameter("appSpecificEnvPrefix");
+
+            String toCsv = System.getenv(prefix + "_FEEDBACK_TO_ADDRESS_CSV");
 
             // Set in your web.xml file
-            String sender = getServletContext().getInitParameter("feedbackFromAddress");
+            String sender = System.getenv(prefix +"_FEEDBACK_SENDER_ADDRESS");
 
-            String from = null;
             String username = request.getRemoteUser();
 
-            if(username != null && username.contains(":")) {
-                username = username.split(":")[2];
+            System.err.println("Looking up username: " + username);
 
-                from = username + "@jlab.org";
+            UserAuthorizationService auth = UserAuthorizationService.getInstance();
+
+            User user = auth.getUserFromUsername(username);
+
+            if(user == null) {
+                throw new UserFriendlyException("User not found");
             }
 
-            if(toCsv == null || toCsv.isEmpty()) {
-                toCsv = getServletContext().getInitParameter("feedbackToAddressCsv");
-            }
+            String from = user.getEmail();
 
             if(sender == null || sender.isEmpty()) {
-                sender = "wildfly@jlab.org";
+                throw new UserFriendlyException("No Sender configured");
             }
 
             if(from == null || from.isEmpty()) {
-                from = sender;
+                throw new UserFriendlyException("No From found");
             }
 
             if(toCsv == null || toCsv.isEmpty()) {

@@ -103,7 +103,7 @@ public class UserAuthorizationService {
         List<UserRepresentation> reps = usersResource.search(search, firstResult, maxResults);
 
         for(UserRepresentation rep: reps) {
-            User user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName());
+            User user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName(), rep.getEmail());
 
             users.add(user);
         }
@@ -191,7 +191,7 @@ public class UserAuthorizationService {
         Set<UserRepresentation> members = roleResource.getRoleUserMembers();
 
         for(UserRepresentation rep: members) {
-            User user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName());
+            User user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName(), rep.getEmail());
 
             users.add(user);
         }
@@ -208,10 +208,10 @@ public class UserAuthorizationService {
 
         if(users != null && !users.isEmpty()) {
             UserRepresentation rep = users.get(0);
-            user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName());
+            user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName(), rep.getEmail());
         } else {
             System.err.println("Could not find username: " + username);
-            user = new User(username, "", "");
+            user = new User(username, "", "", "");
         }
 
         return user;
