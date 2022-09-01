@@ -5,5 +5,4 @@ include 'smoothness-demo'
 gradle.projectsLoaded({
     gradle.rootProject.version '3.7.0-alpha1'
     gradle.rootProject.ext.releaseDate = 'Aug 31 2022'
-    gradle.rootProject.ext.resourceVersion = '5'
 })

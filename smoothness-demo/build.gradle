@@ -5,7 +5,6 @@ description = 'Smoothness demo app'
 group 'org.jlab'
 version rootProject.version
 ext.releaseDate = rootProject.ext.releaseDate
-ext.resourceVersion = rootProject.ext.resourceVersion
 
 tasks.withType(JavaCompile) {
     options.release = 11
@@ -48,9 +47,6 @@ war {
         }
         filter {
             String line -> line.replaceAll("@RELEASE_DATE@", releaseDate)
-        }
-        filter {
-            String line -> line.replaceAll("@RESOURCE_VERSION@", resourceVersion)
         }
     }
 }

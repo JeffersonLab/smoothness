@@ -7,10 +7,10 @@
 <c:set var="title" value="Single Select Datatable"/>
 <t:features-page title="${title}">  
     <jsp:attribute name="stylesheets">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/css/movie-table.css"/>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/movie-table.css"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.resourceVersionNumber}/js/movie-table.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/movie-table.js"></script>
         <script>
             $(document).on("click", "#open-edit-row-dialog-button", function () {
                 var $selectedRow = $(".editable-row-table tbody tr.selected-row");
