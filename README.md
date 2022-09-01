@@ -55,6 +55,8 @@ docker compose up
 http://localhost:8080/smoothness-demo
 ```
 
+**Note**: Login with demo username "tbrown" and password "password". 
+
 **See**: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
 ## Install
