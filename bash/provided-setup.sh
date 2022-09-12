@@ -24,18 +24,21 @@ config_provided_dep() {
 
 cd /tmp
 
-LOCAL_RESOURCES_CSV=()
+LOCAL_RESOURCES=()
 IFS=","
 read -a resources <<<"${RESOURCES_CSV}"
 for x in "${resources[@]}" ;do
     #echo "> [$x]"
     wget -nv ${x}
-    LOCAL_RESOURCES_CSV+=(/tmp/`basename "${x}"`)
+    LOCAL_RESOURCES+=(/tmp/`basename "${x}"`)
 done
+
+IFS=","
+LOCAL_RESOURCES_CSV=`echo "${LOCAL_RESOURCES[*]}"`
 
 ${WILDFLY_CLI_PATH} -c <<EOF
 batch
-module add --name=${DEP_NAME} --resources=${LOCAL_RESOURCES_CSV} --dependencies=${DEPENDENCIES_CSV}
+module add --name=${DEP_NAME} --resource-delimiter=, --resources=${LOCAL_RESOURCES_CSV} --dependencies=${DEPENDENCIES_CSV}
 /subsystem=ee/:list-add(name=global-modules,value={"name"=>"${DEP_NAME}","slot"=>"main"})
 run-batch
 EOF
