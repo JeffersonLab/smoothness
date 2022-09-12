@@ -1,14 +1,29 @@
 #!/bin/bash
 
-if [[ -z "${WILDFLY_HOME}" ]]; then
-    echo "Skipping Setup: Must provide WILDFLY_HOME in environment"
-    exit 0
-fi
+# Verify expected env set:
+while read var; do
+  [ -z "${!var}" ] && { echo "$var is not set. Exiting.."; exit 1; }
+done << EOF
+EMAIL_FROM
+EMAIL_HOST
+EMAIL_PORT
+ORACLE_DRIVER_PATH
+ORACLE_DRIVER_URL
+WILDFLY_APP_HOME
+WILDFLY_USER
+WILDFLY_PASS
+EOF
 
-WILDFLY_CLI_PATH=${WILDFLY_HOME}/bin/jboss-cli.sh
+# Optional params
+# - MAX_PARAM_COUNT
+# - PERSISTENT_SESSIONS
+# - WILDFLY_SKIP_START
+# - WILDFLY_SKIP_STOP
+
+WILDFLY_CLI_PATH=${WILDFLY_APP_HOME}/bin/jboss-cli.sh
 
 wildfly_start_and_wait() {
-${WILDFLY_HOME}/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &
+${WILDFLY_APP_HOME}/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
 until curl http://localhost:8080 -sf -o /dev/null;
 do
@@ -33,6 +48,8 @@ if [[ -z "${ORACLE_DRIVER_PATH}" ]]; then
     return 0
 fi
 
+wget -O "${ORACLE_DRIVER_PATH}" "${ORACLE_DRIVER_URL}"
+
 ${WILDFLY_CLI_PATH} -c <<EOF
 batch
 module add --name=com.oracle.database.jdbc --resources=${ORACLE_DRIVER_PATH} --dependencies=javax.api,javax.transaction.api
@@ -42,40 +59,28 @@ EOF
 }
 
 config_admin_user() {
-if [[ -z "${WILDFLY_USER}" ]]; then
-    echo "Skipping Wildfly admin user Setup: Must provide WILDFLY_USER in environment"
-    return 0
-fi
-
-if [[ -z "${WILDFLY_PASS}" ]]; then
-    echo "Skipping Wildfly admin user Setup: Must provide WILDFLY_PASS in environment"
-    return 0
-fi
-
-${WILDFLY_HOME}/bin/add-user.sh "${WILDFLY_USER}" "${WILDFLY_PASS}"
+${WILDFLY_APP_HOME}/bin/add-user.sh "${WILDFLY_USER}" "${WILDFLY_PASS}"
 }
 
 config_email() {
-if [[ -z "${EMAIL_FROM}" ]]; then
-    echo "Skipping email Setup: Must provide EMAIL_FROM in environment"
-    return 0
-fi
-
-if [[ -z "${EMAIL_HOST}" ]]; then
-    echo "Skipping email Setup: Must provide EMAIL_HOST in environment"
-    return 0
-fi
-
-if [[ -z "${EMAIL_PORT}" ]]; then
-    echo "Skipping email Setup: Must provide EMAIL_PORT in environment"
-    return 0
-fi
-
 ${WILDFLY_CLI_PATH} -c <<EOF
 batch
 /subsystem=mail/mail-session=jlab:add(from="${EMAIL_FROM}", jndi-name="java:/mail/jlab")
 /socket-binding-group=standard-sockets/remote-destination-outbound-socket-binding=mail-smtp-jlab:add(host=${EMAIL_HOST}, port=${EMAIL_PORT})
 /subsystem=mail/mail-session=jlab/server=smtp:add(outbound-socket-binding-ref=mail-smtp-jlab)
+run-batch
+EOF
+}
+
+config_persist_sessions_on_redeploy() {
+${WILDFLY_CLI_PATH} -c "/subsystem=undertow/servlet-container=default/setting=persistent-sessions:add()"
+}
+
+config_param_limits() {
+${WILDFLY_CLI_PATH} -c <<EOF
+batch
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-parameters,value=${MAX_PARAM_COUNT})
+/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=max-parameters,value=${MAX_PARAM_COUNT})
 run-batch
 EOF
 }
@@ -108,16 +113,36 @@ echo "---------------------------------"
 
 config_email
 
-echo "---------------------------"
-echo "| Setup V: Reload Wildfly |"
-echo "---------------------------"
+echo "---------------------------------------"
+echo "| Setup V: Config Persistent Sessions |"
+echo "---------------------------------------"
+
+if [[ -z "${PERSISTENT_SESSIONS}" ]]; then
+  echo "Skipping persistent sessions on redeploy because PERSISTENT_SESSIONS undefined"
+else
+  config_persist_sessions_on_redeploy
+fi
+
+echo "------------------------------------"
+echo "| Setup VI: Config Max Param Count |"
+echo "------------------------------------"
+
+if [[ -z "${MAX_PARAM_COUNT}" ]]; then
+  echo "Skipping max param count because MAX_PARAM_COUNT undefined"
+else
+  config_param_limits
+fi
+
+echo "-----------------------------"
+echo "| Setup VII: Reload Wildfly |"
+echo "-----------------------------"
 
 # Wildfly will complain about standalone.xml history if not reloaded
 wildfly_reload
 
-echo "--------------------------"
-echo "| Setup VI: Stop Wildfly |"
-echo "--------------------------"
+echo "----------------------------"
+echo "| Setup VIII: Stop Wildfly |"
+echo "----------------------------"
 
 if [[ -z "${WILDFLY_SKIP_STOP}" ]]; then
   wildfly_stop
