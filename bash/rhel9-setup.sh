@@ -18,6 +18,7 @@ EOF
 remove_java_11() {
 # We're assuming this leaves only JDK17
 yum remove java-11-openjdk-headless -y
+alternatives --auto java
 }
 
 create_user_and_group() {

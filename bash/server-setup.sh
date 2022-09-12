@@ -15,6 +15,7 @@ WILDFLY_PASS
 EOF
 
 # Optional params
+# - PROVIDED_DEPS_FILE
 # - MAX_PARAM_COUNT
 # - PERSISTENT_SESSIONS
 # - WILDFLY_SKIP_START
@@ -85,6 +86,12 @@ run-batch
 EOF
 }
 
+config_provided_deps() {
+DIRNAME=`dirname "$0"`
+SCRIPT_HOME=`cd -P "$DIRNAME"; pwd`
+${SCRIPT_HOME}/provided-setup.sh ${PROVIDED_DEPS_FILE}
+}
+
 echo "--------------------------"
 echo "| Setup I: Start Wildfly |"
 echo "--------------------------"
@@ -131,6 +138,16 @@ if [[ -z "${MAX_PARAM_COUNT}" ]]; then
   echo "Skipping max param count because MAX_PARAM_COUNT undefined"
 else
   config_param_limits
+fi
+
+echo "-----------------------------------"
+echo "| Setup VII: Config Provided Deps |"
+echo "-----------------------------------"
+
+if [[ -z "${PROVIDED_DEPS_FILE}" ]]; then
+  echo "Skipping config of provided dependencies because PROVIDED_DEPS_FILE undefined"
+else
+  config_provided_deps
 fi
 
 echo "-----------------------------"
