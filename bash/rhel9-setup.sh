@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ ! -z "$1" ] && [ -f "$1" ]
+then
+echo "$1 exists, loading"
+. $1
+fi
+
 # Verify expected env set:
 while read var; do
   [ -z "${!var}" ] && { echo "$var is not set. Exiting.."; exit 1; }
