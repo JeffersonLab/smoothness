@@ -10,8 +10,10 @@ fi
 while read var; do
   [ -z "${!var}" ] && { echo "$var is not set. Exiting.."; exit 1; }
 done << EOF
+WILDFLY_BIND_ADDRESS
 WILDFLY_GROUP
 WILDFLY_GROUP_ID
+WILDFLY_HTTPS_PORT
 WILDFLY_USER
 WILDFLY_USER_HOME
 WILDFLY_USER_ID
@@ -55,6 +57,11 @@ sed -i "s/Xmx512m/Xmx${JDK_MAX_HEAP}/g" ${WILDFLY_APP_HOME}/bin/standalone.conf
 }
 
 create_systemd_service() {
+if (( ${WILDFLY_HTTPS_PORT} < 1024 ))
+then
+  sysctl net.ipv4.ip_unprivileged_port_start=${WILDFLY_HTTPS_PORT}
+fi
+
 cat > /etc/systemd/system/wildfly.service << EOF
 [Unit]
 Description=The WildFly Application Server
@@ -66,7 +73,7 @@ Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
 User=${WILDFLY_USER}
 LimitNOFILE=102642
 PIDFile=/run/wildfly.pid
-ExecStart=${WILDFLY_APP_HOME}/bin/standalone.sh
+ExecStart=${WILDFLY_APP_HOME}/bin/standalone.sh -b ${WILDFLY_BIND_ADDRESS} -Djboss.https.port=${WILDFLY_HTTPS_PORT}
 StandardOutput=null
 [Install]
 WantedBy=multi-user.target
