@@ -4,14 +4,15 @@
 while read var; do
   [ -z "${!var}" ] && { echo "$var is not set. Exiting.."; exit 1; }
 done << EOF
-WILDFLY_VERSION
-WILDFLY_USER
 WILDFLY_GROUP
-WILDFLY_USER_ID
 WILDFLY_GROUP_ID
-WILDFLY_HOME
-JVM_MAX_META
-JVM_MAX_HEAP
+WILDFLY_USER
+WILDFLY_USER_HOME
+WILDFLY_USER_ID
+WILDFLY_VERSION
+JDK_HOME
+JDK_MAX_HEAP
+JDK_MAX_META
 EOF
 
 remove_java_11() {
@@ -21,27 +22,29 @@ yum remove java-11-openjdk-headless -y
 
 create_user_and_group() {
 groupadd -r -g ${WILDFLY_GROUP_ID} ${WILDFLY_GROUP}
-useradd -r -m -u ${WILDFLY_USER_ID} -g ${WILDFLY_GROUP_ID} -d ${WILDFLY_HOME} -s /bin/bash ${WILDFLY_USER}
+useradd -r -m -u ${WILDFLY_USER_ID} -g ${WILDFLY_GROUP_ID} -d ${WILDFLY_USER_HOME} -s /bin/bash ${WILDFLY_USER}
 }
 
 download_and_unzip() {
 cd /tmp
 wget https://github.com/wildfly/wildfly/releases/download/${WILDFLY_VERSION}/wildfly-${WILDFLY_VERSION}.zip
-unzip /tmp/wildfly-${WILDFLY_VERSION}.zip -d ${WILDFLY_HOME}
-mv ${WILDFLY_HOME}/wildfly-${WILDFLY_VERSION} ${WILDFLY_HOME}/${WILDFLY_VERSION}
-chown -R ${WILDFLY_USER}:${WILDFLY_GROUP} ${WILDFLY_HOME}
+unzip /tmp/wildfly-${WILDFLY_VERSION}.zip -d ${WILDFLY_USER_HOME}
+export WILDFLY_APP_HOME=${WILDFLY_USER_HOME}/${WILDFLY_VERSION}
+mv ${WILDFLY_USER_HOME}/wildfly-${WILDFLY_VERSION} ${WILDFLY_APP_HOME}
+chown -R ${WILDFLY_USER}:${WILDFLY_GROUP} ${WILDFLY_USER_HOME}
 }
 
 create_symbolic_links() {
-cd ${WILDFLY_HOME}
-ln -s ${WILDFLY_VERSION} pro
-ln -s pro/standalone/configuration configuration
-ln -s pro/standalone/log log
+cd ${WILDFLY_USER_HOME}
+ln -s ${WILDFLY_VERSION} current
+ln -s current/standalone/configuration configuration
+ln -s current/standalone/log log
 }
 
 adjust_jvm_options() {
-sed -i "s/MaxMetaspaceSize=256m/MaxMetaspaceSize=${JVM_MAX_META}/g" ${WILDFLY_HOME}/pro/bin/standalone.conf
-sed -i "s/Xmx512m/Xmx${JVM_MAX_HEAP}/g" ${WILDFLY_HOME}/pro/bin/standalone.conf
+sed -i "s|#JAVA_HOME=\"/opt/java/jdk\"|JAVA_HOME=\"${JDK_HOME}\"|g" ${WILDFLY_APP_HOME}/bin/standalone.conf
+sed -i "s/MaxMetaspaceSize=256m/MaxMetaspaceSize=${JDK_MAX_META}/g" ${WILDFLY_APP_HOME}/bin/standalone.conf
+sed -i "s/Xmx512m/Xmx${JDK_MAX_HEAP}/g" ${WILDFLY_APP_HOME}/bin/standalone.conf
 }
 
 create_systemd_service() {
@@ -56,7 +59,7 @@ Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
 User=${WILDFLY_USER}
 LimitNOFILE=102642
 PIDFile=/run/wildfly.pid
-ExecStart=${WILDFLY_HOME}/${WILDFLY_VERSION}/bin/standalone.sh
+ExecStart=${WILDFLY_APP_HOME}/bin/standalone.sh
 StandardOutput=null
 [Install]
 WantedBy=multi-user.target
@@ -68,8 +71,8 @@ systemctl start wildfly
 create_log_file_cleanup_cron() {
 cat > /root/delete-old-wildfly-logs.sh << EOF
 #!/bin/sh
-if [ -d ${WILDFLY_HOME}/log ] ; then
- /usr/bin/find ${WILDFLY_HOME}/log/ -mtime +30 -exec /usr/bin/rm {} \;
+if [ -d ${WILDFLY_USER_HOME}/log ] ; then
+ /usr/bin/find ${WILDFLY_USER_HOME}/log/ -mtime +30 -exec /usr/bin/rm {} \;
 fi
 EOF
 chmod +x /root/delete-old-wildfly-logs.sh
