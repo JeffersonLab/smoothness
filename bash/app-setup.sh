@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -z "$1" && -f "$1" ]
+if [ ! -z "$1" ] && [ -f "$1" ]
 then
 echo "$1 exists, loading"
 . $1
