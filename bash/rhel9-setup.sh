@@ -1,8 +1,20 @@
 #!/bin/bash
 
+FUNCTIONS=(remove_java_11 create_user_and_group download_and_unzip create_symbolic_links adjust_jvm_options create_systemd_service create_log_file_cleanup_cron)
+
+if [[ $# -eq 0 ]] ; then
+    echo "Usage: $0 [env file] <optional action>"
+    echo "The env file arg should be the path to a file with bash variables that will be sourced."
+    echo "The optional action if provided is the sole function name to call, else all functions are invoked."
+    printf 'Actions: '
+    printf '%s ' "${FUNCTIONS[@]}"
+    printf '\n'
+    exit 0
+fi
+
 if [ ! -z "$1" ] && [ -f "$1" ]
 then
-echo "$1 exists, loading"
+echo "Loading environment $1"
 . $1
 fi
 
@@ -95,8 +107,6 @@ cat > /etc/cron.d/delete-old-wildfly-logs.cron << EOF
 0 0 * * * /root/delete-old-wildfly-logs.sh >/dev/null 2>&1
 EOF
 }
-
-FUNCTIONS=(remove_java_11 create_user_and_group download_and_unzip create_symbolic_links adjust_jvm_options create_systemd_service create_log_file_cleanup_cron)
 
 if [ ! -z "$2" ]
 then
