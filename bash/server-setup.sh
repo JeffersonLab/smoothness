@@ -1,24 +1,48 @@
 #!/bin/bash
 
+FUNCTIONS=(wildfly_start_and_wait
+           config_oracle_driver
+           config_admin_user
+           config_email
+           config_persist_sessions_on_redeploy
+           config_param_limits
+           config_provided_deps
+           wildfly_reload
+           wildfly_stop)
+
+VARIABLES=(EMAIL_FROM
+           EMAIL_HOST
+           EMAIL_PORT
+           ORACLE_DRIVER_PATH
+           ORACLE_DRIVER_URL
+           WILDFLY_APP_HOME
+           WILDFLY_USER
+           WILDFLY_PASS)
+
+if [[ $# -eq 0 ]] ; then
+    echo "Usage: $0 [var file] <optional function>"
+    echo "The var file arg should be the path to a file with bash variables that will be sourced."
+    echo "The optional function name arg if provided is the sole function to call, else all functions are invoked sequentially."
+    printf 'Variables: '
+    printf '%s ' "${VARIABLES[@]}"
+    printf '\n'
+    printf 'Functions: '
+    printf '%s ' "${FUNCTIONS[@]}"
+    printf '\n'
+    exit 0
+fi
+
 if [ ! -z "$1" ] && [ -f "$1" ]
 then
-echo "$1 exists, loading"
+echo "Loading environment $1"
 . $1
 fi
 
 # Verify expected env set:
-while read var; do
-  [ -z "${!var}" ] && { echo "$var is not set. Exiting.."; exit 1; }
-done << EOF
-EMAIL_FROM
-EMAIL_HOST
-EMAIL_PORT
-ORACLE_DRIVER_PATH
-ORACLE_DRIVER_URL
-WILDFLY_APP_HOME
-WILDFLY_USER
-WILDFLY_PASS
-EOF
+for i in "${!VARIABLES[@]}"; do
+  var=${VARIABLES[$i]}
+  [ -z "${!var}" ] && { echo "$var is not set. Exiting."; exit 1; }
+done
 
 # Optional params
 # - PROVIDED_DEPS_FILE
@@ -30,6 +54,11 @@ EOF
 WILDFLY_CLI_PATH=${WILDFLY_APP_HOME}/bin/jboss-cli.sh
 
 wildfly_start_and_wait() {
+if [[ ! -z "${WILDFLY_SKIP_START}" ]]; then
+  echo "Skipping Wildfly start because WILDFLY_SKIP_START defined"
+  return 0
+fi
+
 ${WILDFLY_APP_HOME}/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
 until curl http://localhost:8080 -sf -o /dev/null;
@@ -39,14 +68,6 @@ do
 done
 
 echo $(date) " Wildfly started!"
-}
-
-wildfly_reload() {
-${WILDFLY_CLI_PATH} -c reload
-}
-
-wildfly_stop() {
-${WILDFLY_CLI_PATH} -c shutdown
 }
 
 config_oracle_driver() {
@@ -80,10 +101,20 @@ EOF
 }
 
 config_persist_sessions_on_redeploy() {
+if [[ -z "${PERSISTENT_SESSIONS}" ]]; then
+  echo "Skipping persistent sessions on redeploy because PERSISTENT_SESSIONS undefined"
+  return 0
+fi
+
 ${WILDFLY_CLI_PATH} -c "/subsystem=undertow/servlet-container=default/setting=persistent-sessions:add()"
 }
 
 config_param_limits() {
+if [[ -z "${MAX_PARAM_COUNT}" ]]; then
+  echo "Skipping max param count because MAX_PARAM_COUNT undefined"
+  return 0
+fi
+
 ${WILDFLY_CLI_PATH} -c <<EOF
 batch
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-parameters,value=${MAX_PARAM_COUNT})
@@ -93,82 +124,45 @@ EOF
 }
 
 config_provided_deps() {
+if [[ -z "${PROVIDED_DEPS_FILE}" ]]; then
+  echo "Skipping config of provided dependencies because PROVIDED_DEPS_FILE undefined"
+  return 0
+fi
+
 DIRNAME=`dirname "$0"`
 SCRIPT_HOME=`cd -P "$DIRNAME"; pwd`
 ${SCRIPT_HOME}/provided-setup.sh ${PROVIDED_DEPS_FILE}
 }
 
-echo "--------------------------"
-echo "| Setup I: Start Wildfly |"
-echo "--------------------------"
+wildfly_reload() {
+${WILDFLY_CLI_PATH} -c reload
+}
 
-if [[ -z "${WILDFLY_SKIP_START}" ]]; then
-  wildfly_start_and_wait
-else
-  echo "Skipping Wildfly start because WILDFLY_SKIP_START defined"
-fi
-
-echo "------------------------------------"
-echo "| Setup II: Oracle Database Driver |"
-echo "------------------------------------"
-
-config_oracle_driver
-
-echo "-----------------------------"
-echo "| Setup III: Add Admin User |"
-echo "-----------------------------"
-
-config_admin_user
-
-echo "---------------------------------"
-echo "| Setup IV: Config Email client |"
-echo "---------------------------------"
-
-config_email
-
-echo "---------------------------------------"
-echo "| Setup V: Config Persistent Sessions |"
-echo "---------------------------------------"
-
-if [[ -z "${PERSISTENT_SESSIONS}" ]]; then
-  echo "Skipping persistent sessions on redeploy because PERSISTENT_SESSIONS undefined"
-else
-  config_persist_sessions_on_redeploy
-fi
-
-echo "------------------------------------"
-echo "| Setup VI: Config Max Param Count |"
-echo "------------------------------------"
-
-if [[ -z "${MAX_PARAM_COUNT}" ]]; then
-  echo "Skipping max param count because MAX_PARAM_COUNT undefined"
-else
-  config_param_limits
-fi
-
-echo "-----------------------------------"
-echo "| Setup VII: Config Provided Deps |"
-echo "-----------------------------------"
-
-if [[ -z "${PROVIDED_DEPS_FILE}" ]]; then
-  echo "Skipping config of provided dependencies because PROVIDED_DEPS_FILE undefined"
-else
-  config_provided_deps
-fi
-
-echo "-----------------------------"
-echo "| Setup VII: Reload Wildfly |"
-echo "-----------------------------"
-
-# Wildfly will complain about standalone.xml history if not reloaded
-wildfly_reload
-
-echo "----------------------------"
-echo "| Setup VIII: Stop Wildfly |"
-echo "----------------------------"
-
-if [[ -z "${WILDFLY_SKIP_STOP}" ]]; then
-  wildfly_stop
-else
+wildfly_stop() {
+if [[ ! -z "${WILDFLY_SKIP_STOP}" ]]; then
   echo "Skipping Wildfly stop because WILDFLY_SKIP_STOP defined"
+  return 0
 fi
+
+${WILDFLY_CLI_PATH} -c shutdown
+}
+
+if [ ! -z "$2" ]
+then
+  echo "------------------------"
+  echo "$2"
+  echo "------------------------"
+  $2
+else
+for i in "${!FUNCTIONS[@]}"; do
+  echo "------------------------"
+  echo "${FUNCTIONS[$i]}"
+  echo "------------------------"
+  ${FUNCTIONS[$i]};
+done
+fi
+
+
+
+
+
