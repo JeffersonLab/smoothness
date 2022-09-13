@@ -1,12 +1,33 @@
 #!/bin/bash
 
-FUNCTIONS=(remove_java_11 create_user_and_group download_and_unzip create_symbolic_links adjust_jvm_options create_systemd_service create_log_file_cleanup_cron)
+FUNCTIONS=(remove_java_11
+           create_user_and_group
+           download_and_unzip
+           create_symbolic_links
+           adjust_jvm_options
+           create_systemd_service
+           create_log_file_cleanup_cron)
+
+VARIABLES=(WILDFLY_BIND_ADDRESS
+           WILDFLY_GROUP
+           WILDFLY_GROUP_ID
+           WILDFLY_HTTPS_PORT
+           WILDFLY_USER
+           WILDFLY_USER_HOME
+           WILDFLY_USER_ID
+           WILDFLY_VERSION
+           JDK_HOME
+           JDK_MAX_HEAP
+           JDK_MAX_META)
 
 if [[ $# -eq 0 ]] ; then
-    echo "Usage: $0 [env file] <optional action>"
-    echo "The env file arg should be the path to a file with bash variables that will be sourced."
-    echo "The optional action if provided is the sole function name to call, else all functions are invoked."
-    printf 'Actions: '
+    echo "Usage: $0 [var file] <optional function>"
+    echo "The var file arg should be the path to a file with bash variables that will be sourced."
+    echo "The optional function name arg if provided is the sole function to call, else all functions are invoked sequentially."
+    printf 'Variables: '
+    printf '%s ' "${VARIABLES[@]}"
+    printf '\n'
+    printf 'Functions: '
     printf '%s ' "${FUNCTIONS[@]}"
     printf '\n'
     exit 0
@@ -19,21 +40,10 @@ echo "Loading environment $1"
 fi
 
 # Verify expected env set:
-while read var; do
-  [ -z "${!var}" ] && { echo "$var is not set. Exiting.."; exit 1; }
-done << EOF
-WILDFLY_BIND_ADDRESS
-WILDFLY_GROUP
-WILDFLY_GROUP_ID
-WILDFLY_HTTPS_PORT
-WILDFLY_USER
-WILDFLY_USER_HOME
-WILDFLY_USER_ID
-WILDFLY_VERSION
-JDK_HOME
-JDK_MAX_HEAP
-JDK_MAX_META
-EOF
+for i in "${!VARIABLES[@]}"; do
+  var=${VARIABLES[$i]}
+  [ -z "${!var}" ] && { echo "$var is not set. Exiting."; exit 1; }
+done
 
 WILDFLY_APP_HOME=${WILDFLY_USER_HOME}/${WILDFLY_VERSION}
 
