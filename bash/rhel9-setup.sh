@@ -2,7 +2,8 @@
 
 FUNCTIONS=(remove_java_11
            create_user_and_group
-           download_and_unzip
+           download
+           unzip_and_chmod
            create_symbolic_links
            adjust_jvm_options
            create_systemd_service
@@ -58,9 +59,12 @@ groupadd -r -g ${WILDFLY_GROUP_ID} ${WILDFLY_GROUP}
 useradd -r -m -u ${WILDFLY_USER_ID} -g ${WILDFLY_GROUP_ID} -d ${WILDFLY_USER_HOME} -s /bin/bash ${WILDFLY_USER}
 }
 
-download_and_unzip() {
+download() {
 cd /tmp
 wget https://github.com/wildfly/wildfly/releases/download/${WILDFLY_VERSION}/wildfly-${WILDFLY_VERSION}.zip
+}
+
+unzip_and_chmod() {
 unzip /tmp/wildfly-${WILDFLY_VERSION}.zip -d ${WILDFLY_USER_HOME}
 mv ${WILDFLY_USER_HOME}/wildfly-${WILDFLY_VERSION} ${WILDFLY_APP_HOME}
 chown -R ${WILDFLY_USER}:${WILDFLY_GROUP} ${WILDFLY_USER_HOME}
