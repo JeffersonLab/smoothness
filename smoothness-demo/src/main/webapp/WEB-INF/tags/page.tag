@@ -9,6 +9,7 @@
 <%@attribute name="secondaryNavigation" fragment="true"%>
 <s:tabbed-page title="${title}" category="${category}">
     <jsp:attribute name="stylesheets">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/demo.css"/>
         <jsp:invoke fragment="stylesheets"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
