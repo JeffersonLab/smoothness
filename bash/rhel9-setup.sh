@@ -23,6 +23,8 @@ JDK_MAX_HEAP
 JDK_MAX_META
 EOF
 
+WILDFLY_APP_HOME=${WILDFLY_USER_HOME}/${WILDFLY_VERSION}
+
 remove_java_11() {
 # We're assuming this leaves only JDK17
 yum remove java-11-openjdk-headless -y
@@ -38,7 +40,6 @@ download_and_unzip() {
 cd /tmp
 wget https://github.com/wildfly/wildfly/releases/download/${WILDFLY_VERSION}/wildfly-${WILDFLY_VERSION}.zip
 unzip /tmp/wildfly-${WILDFLY_VERSION}.zip -d ${WILDFLY_USER_HOME}
-export WILDFLY_APP_HOME=${WILDFLY_USER_HOME}/${WILDFLY_VERSION}
 mv ${WILDFLY_USER_HOME}/wildfly-${WILDFLY_VERSION} ${WILDFLY_APP_HOME}
 chown -R ${WILDFLY_USER}:${WILDFLY_GROUP} ${WILDFLY_USER_HOME}
 }
@@ -95,37 +96,19 @@ cat > /etc/cron.d/delete-old-wildfly-logs.cron << EOF
 EOF
 }
 
-echo "--------------------------"
-echo "| Setup I: Remove JDK 11 |"
-echo "--------------------------"
-remove_java_11
+FUNCTIONS=(remove_java_11 create_user_and_group download_and_unzip create_symbolic_links adjust_jvm_options create_systemd_service create_log_file_cleanup_cron)
 
-echo "-----------------------------------"
-echo "| Setup II: Create user and group |"
-echo "-----------------------------------"
-create_user_and_group
-
-echo "-----------------------------------------"
-echo "| Setup III: Download and unzip Wildfly |"
-echo "-----------------------------------------"
-download_and_unzip
-
-echo "-----------------------------------"
-echo "| Setup IV: Create symbolic links |"
-echo "-----------------------------------"
-create_symbolic_links
-
-echo "-------------------------------"
-echo "| Setup V: Adjust JVM Options |"
-echo "-------------------------------"
-adjust_jvm_options
-
-echo "------------------------------------"
-echo "| Setup VI: Create systemd service |"
-echo "------------------------------------"
-create_systemd_service
-
-echo "-------------------------------------------"
-echo "| Setup VII: Create log file cleanup cron |"
-echo "-------------------------------------------"
-create_log_file_cleanup_cron
+if [ ! -z "$2" ]
+then
+  echo "------------------------"
+  echo "$2"
+  echo "------------------------"
+  $2
+else
+for i in "${!FUNCTIONS[@]}"; do
+  echo "------------------------"
+  echo "${FUNCTIONS[$i]}"
+  echo "------------------------"
+  ${FUNCTIONS[$i]};
+done
+fi
