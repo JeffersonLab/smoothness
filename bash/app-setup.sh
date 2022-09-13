@@ -1,27 +1,47 @@
 #!/bin/bash
 
+FUNCTIONS=(wildfly_start_and_wait
+           config_keycloak_client
+           config_oracle_client
+           wildfly_reload
+           wildfly_stop)
+
+VARIABLES=(KEYCLOAK_REALM
+           KEYCLOAK_RESOURCE
+           KEYCLOAK_SECRET
+           KEYCLOAK_SERVER_URL
+           KEYCLOAK_WAR
+           ORACLE_DATASOURCE
+           ORACLE_PASS
+           ORACLE_SERVER
+           ORACLE_SERVICE
+           ORACLE_USER
+           WILDFLY_APP_HOME)
+
+if [[ $# -eq 0 ]] ; then
+    echo "Usage: $0 [var file] <optional function>"
+    echo "The var file arg should be the path to a file with bash variables that will be sourced."
+    echo "The optional function name arg if provided is the sole function to call, else all functions are invoked sequentially."
+    printf 'Variables: '
+    printf '%s ' "${VARIABLES[@]}"
+    printf '\n'
+    printf 'Functions: '
+    printf '%s ' "${FUNCTIONS[@]}"
+    printf '\n'
+    exit 0
+fi
+
 if [ ! -z "$1" ] && [ -f "$1" ]
 then
-echo "$1 exists, loading"
+echo "Loading environment $1"
 . $1
 fi
 
 # Verify expected env set:
-while read var; do
-  [ -z "${!var}" ] && { echo "$var is not set. Exiting.."; exit 1; }
-done << EOF
-KEYCLOAK_REALM
-KEYCLOAK_RESOURCE
-KEYCLOAK_SECRET
-KEYCLOAK_SERVER_URL
-KEYCLOAK_WAR
-ORACLE_DATASOURCE
-ORACLE_PASS
-ORACLE_SERVER
-ORACLE_SERVICE
-ORACLE_USER
-WILDFLY_APP_HOME
-EOF
+for i in "${!VARIABLES[@]}"; do
+  var=${VARIABLES[$i]}
+  [ -z "${!var}" ] && { echo "$var is not set. Exiting."; exit 1; }
+done
 
 # Optional params
 # - WILDFLY_SKIP_START
@@ -30,6 +50,11 @@ EOF
 WILDFLY_CLI_PATH=${WILDFLY_APP_HOME}/bin/jboss-cli.sh
 
 wildfly_start_and_wait() {
+if [[ ! -z "${WILDFLY_SKIP_START}" ]]; then
+  echo "Skipping Wildfly start because WILDFLY_SKIP_START defined"
+  return 0
+fi
+
 ${WILDFLY_APP_HOME}/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &
 
 until curl http://localhost:8080 -sf -o /dev/null;
@@ -39,14 +64,6 @@ do
 done
 
 echo $(date) " Wildfly started!"
-}
-
-wildfly_reload() {
-${WILDFLY_CLI_PATH} -c reload
-}
-
-wildfly_stop() {
-${WILDFLY_CLI_PATH} -c shutdown
 }
 
 config_keycloak_client() {
@@ -68,42 +85,30 @@ run-batch
 EOF
 }
 
-echo "--------------------------"
-echo "| Setup I: Start Wildfly |"
-echo "--------------------------"
+wildfly_reload() {
+${WILDFLY_CLI_PATH} -c reload
+}
 
-if [[ -z "${WILDFLY_SKIP_START}" ]]; then
-  wildfly_start_and_wait
-else
-  echo "Skipping Wildfly start because WILDFLY_SKIP_START defined"
+wildfly_stop() {
+if [[ ! -z "${WILDFLY_SKIP_STOP}" ]]; then
+  echo "Skipping Wildfly stop because WILDFLY_SKIP_STOP defined"
+  return 0
 fi
 
+${WILDFLY_CLI_PATH} -c shutdown
+}
 
-echo "------------------------------------"
-echo "| Setup II: Config Keycloak client |"
-echo "------------------------------------"
-
-config_keycloak_client
-
-echo "--------------------------------------------"
-echo "| Setup III: Config Oracle Database client |"
-echo "--------------------------------------------"
-
-config_oracle_client
-
-echo "----------------------------"
-echo "| Setup IV: Reload Wildfly |"
-echo "----------------------------"
-
-# Wildfly will complain about standalone.xml history if not reloaded
-wildfly_reload
-
-echo "-------------------------"
-echo "| Setup V: Stop Wildfly |"
-echo "-------------------------"
-
-if [[ -z "${WILDFLY_SKIP_STOP}" ]]; then
-  wildfly_stop
+if [ ! -z "$2" ]
+then
+  echo "------------------------"
+  echo "$2"
+  echo "------------------------"
+  $2
 else
-  echo "Skipping Wildfly stop because WILDFLY_SKIP_STOP defined"
+for i in "${!FUNCTIONS[@]}"; do
+  echo "------------------------"
+  echo "${FUNCTIONS[$i]}"
+  echo "------------------------"
+  ${FUNCTIONS[$i]};
+done
 fi
