@@ -122,7 +122,7 @@
                 <script src="${cdnContextPath}/uri/uri-1.14.1.min.js"></script>
                 <script src="${cdnContextPath}/jquery-plugins/select2/3.5.2/select2.min.js"></script>
                 <script src="${cdnContextPath}/jquery-plugins/maskedinput/jquery.maskedinput-1.3.1.min.js"></script>
-                <script src="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.5.0.js"></script>
+                <script src="${cdnContextPath}/jquery-plugins/timepicker/jquery-ui-timepicker-1.5.0.min.js"></script>
                 <script src="${cdnContextPath}/jlab-theme/smoothness/${env['CDN_VERSION']}/js/smoothness.min.js"></script>
             </c:when>
             <c:otherwise><!-- LOCAL -->
