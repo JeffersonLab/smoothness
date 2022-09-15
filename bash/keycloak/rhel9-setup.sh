@@ -73,6 +73,7 @@ create_symbolic_links() {
 cd ${KEYCLOAK_USER_HOME}
 ln -s ${KEYCLOAK_VERSION} current
 ln -s current/conf conf
+ln -s current/data/log log
 }
 
 create_systemd_service() {
@@ -91,7 +92,7 @@ EnvironmentFile=/run/keycloak.env
 User=${KEYCLOAK_USER}
 LimitNOFILE=102642
 PIDFile=/run/keycloak.pid
-ExecStart=${KEYCLOAK_APP_HOME}/bin/kc.sh start-dev
+ExecStart=${KEYCLOAK_APP_HOME}/bin/kc.sh start-dev --log=file
 StandardOutput=null
 [Install]
 WantedBy=multi-user.target
