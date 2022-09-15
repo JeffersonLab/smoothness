@@ -3,6 +3,7 @@
 FUNCTIONS=(wildfly_start_and_wait
            config_oracle_driver
            config_admin_user
+           config_ssl
            config_email
            config_persist_sessions_on_redeploy
            config_param_limits
@@ -47,6 +48,8 @@ done
 # Optional params
 # - PROVIDED_DEPS_FILE
 # - MAX_PARAM_COUNT
+# - KEYSTORE_NAME
+# - KEYSTORE_PASS
 # - PERSISTENT_SESSIONS
 # - WILDFLY_SKIP_START
 # - WILDFLY_SKIP_STOP
@@ -88,6 +91,23 @@ EOF
 
 config_admin_user() {
 ${WILDFLY_APP_HOME}/bin/add-user.sh "${WILDFLY_USER}" "${WILDFLY_PASS}"
+}
+
+config_ssl() {
+if [[ -z "${KEYSTORE_NAME}" ]]; then
+  echo "Skipping config ssl because KEYSTORE_NAME undefined"
+  return 0
+fi
+
+${WILDFLY_CLI_PATH} -c <<EOF
+batch
+/subsystem=elytron/key-store=httpsKS:add(path=${KEYSTORE_NAME},relative-to=jboss.server.config.dir,credential-reference={clear-text=${KEYSTORE_PASS},type=PKCS12)
+/subsystem=elytron/key-manager=httpsKM:add(key-store=httpsKS,credential-reference={clear-text=${KEYSTORE_PASS}})
+/subsystem=elytron/server-ssl-context=httpsSSC:add(key-manager=httpsKM,protocols=["TLSv1.2"])
+/subsystem=undertow/server=default-server/https-listener=https:undefine-attribute(name=security-realm)
+/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context,value=httpsSSC)
+run-batch
+EOF
 }
 
 config_email() {
