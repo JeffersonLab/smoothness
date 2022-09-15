@@ -5,7 +5,6 @@ FUNCTIONS=(remove_java_11
            download
            unzip_and_chmod
            create_symbolic_links
-           adjust_jvm_options
            create_systemd_service
            create_log_file_cleanup_cron)
 
@@ -75,12 +74,6 @@ cd ${KEYCLOAK_USER_HOME}
 ln -s ${KEYCLOAK_VERSION} current
 ln -s current/standalone/configuration configuration
 ln -s current/standalone/log log
-}
-
-adjust_jvm_options() {
-sed -i "s|#JAVA_HOME=\"/opt/java/jdk\"|JAVA_HOME=\"${JDK_HOME}\"|g" ${KEYCLOAK_APP_HOME}/bin/standalone.conf
-sed -i "s/MaxMetaspaceSize=256m/MaxMetaspaceSize=${JDK_MAX_META}/g" ${KEYCLOAK_APP_HOME}/bin/standalone.conf
-sed -i "s/Xmx512m/Xmx${JDK_MAX_HEAP}/g" ${KEYCLOAK_APP_HOME}/bin/standalone.conf
 }
 
 create_systemd_service() {
