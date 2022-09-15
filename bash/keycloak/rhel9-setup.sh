@@ -65,8 +65,8 @@ wget https://github.com/keycloak/keycloak/releases/download/${KEYCLOAK_VERSION}/
 }
 
 unzip_and_chmod() {
-unzip /tmp/KEYCLOAK-${KEYCLOAK_VERSION}.zip -d ${KEYCLOAK_USER_HOME}
-mv ${KEYCLOAK_USER_HOME}/KEYCLOAK-${KEYCLOAK_VERSION} ${KEYCLOAK_APP_HOME}
+unzip /tmp/keycloak-${KEYCLOAK_VERSION}.zip -d ${KEYCLOAK_USER_HOME}
+mv ${KEYCLOAK_USER_HOME}/keycloak-${KEYCLOAK_VERSION} ${KEYCLOAK_APP_HOME}
 chown -R ${KEYCLOAK_USER}:${KEYCLOAK_GROUP} ${KEYCLOAK_USER_HOME}
 }
 
