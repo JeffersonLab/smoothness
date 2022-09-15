@@ -72,8 +72,7 @@ chown -R ${KEYCLOAK_USER}:${KEYCLOAK_GROUP} ${KEYCLOAK_USER_HOME}
 create_symbolic_links() {
 cd ${KEYCLOAK_USER_HOME}
 ln -s ${KEYCLOAK_VERSION} current
-ln -s current/standalone/configuration configuration
-ln -s current/standalone/log log
+ln -s current/conf conf
 }
 
 create_systemd_service() {
