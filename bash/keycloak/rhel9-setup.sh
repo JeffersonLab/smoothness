@@ -92,7 +92,7 @@ EnvironmentFile=/run/keycloak.env
 User=${KEYCLOAK_USER}
 LimitNOFILE=102642
 PIDFile=/run/keycloak.pid
-ExecStart=${KEYCLOAK_APP_HOME}/bin/standalone.sh -b ${KEYCLOAK_BIND_ADDRESS} -Djboss.https.port=${KEYCLOAK_HTTPS_PORT}
+ExecStart=${KEYCLOAK_APP_HOME}/bin/kc.sh start-dev
 StandardOutput=null
 [Install]
 WantedBy=multi-user.target
