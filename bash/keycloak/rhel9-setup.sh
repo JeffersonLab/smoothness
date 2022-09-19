@@ -92,13 +92,12 @@ EnvironmentFile=/run/keycloak.env
 User=${KEYCLOAK_USER}
 LimitNOFILE=102642
 PIDFile=/run/keycloak.pid
-ExecStart=${KEYCLOAK_APP_HOME}/bin/kc.sh start-dev --log=file
+ExecStart=${KEYCLOAK_APP_HOME}/bin/kc.sh start --optimized
 StandardOutput=null
 [Install]
 WantedBy=multi-user.target
 EOF
 systemctl enable keycloak
-systemctl start keycloak
 }
 
 create_log_file_cleanup_cron() {
