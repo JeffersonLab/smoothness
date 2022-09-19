@@ -79,7 +79,7 @@ ln -s current/data/log log
 create_systemd_service() {
 if (( ${KEYCLOAK_HTTPS_PORT} < 1024 ))
 then
-  sysctl net.ipv4.ip_unprivileged_port_start=${KEYCLOAK_HTTPS_PORT}
+  sysctl -w net.ipv4.ip_unprivileged_port_start=${KEYCLOAK_HTTPS_PORT} >> /etc/sysctl.conf
 fi
 
 cat > /etc/systemd/system/keycloak.service << EOF
@@ -88,7 +88,7 @@ Description=The Keycloak Server
 After=syslog.target network.target
 Before=httpd.service
 [Service]
-EnvironmentFile=/run/keycloak.env
+EnvironmentFile=${KEYCLOAK_APP_HOME}/keycloak-run.env
 User=${KEYCLOAK_USER}
 LimitNOFILE=102642
 PIDFile=/run/keycloak.pid

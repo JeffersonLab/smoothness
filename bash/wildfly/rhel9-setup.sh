@@ -86,7 +86,7 @@ sed -i "s/Xmx512m/Xmx${JDK_MAX_HEAP}/g" ${WILDFLY_APP_HOME}/bin/standalone.conf
 create_systemd_service() {
 if (( ${WILDFLY_HTTPS_PORT} < 1024 ))
 then
-  sysctl net.ipv4.ip_unprivileged_port_start=${WILDFLY_HTTPS_PORT}
+  sysctl -w net.ipv4.ip_unprivileged_port_start=${WILDFLY_HTTPS_PORT} >> /etc/sysctl.conf
 fi
 
 cat > /etc/systemd/system/wildfly.service << EOF
@@ -95,7 +95,7 @@ Description=The WildFly Application Server
 After=syslog.target network.target
 Before=httpd.service
 [Service]
-EnvironmentFile=/run/wildfly.env
+EnvironmentFile=${WILDFLY_APP_HOME}/wildfly-run.env
 Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
 User=${WILDFLY_USER}
 LimitNOFILE=102642
