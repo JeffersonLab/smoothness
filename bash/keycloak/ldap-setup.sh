@@ -54,8 +54,8 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create components -r ${KEYCLOAK_REALM} -s parentId
 -s providerId=ldap -s providerType=org.keycloak.storage.UserStorageProvider \
 -s config.debug=${KEYCLOAK_DEBUG} \
 -s config.authType='["simple"]' \
--s config.vendor='["other"]' \
--s config.priority='["1"]' \
+-s config.vendor='["rhds"]' \
+-s config.priority='["0"]' \
 -s config.connectionUrl=${KEYCLOAK_LDAP_CONNECTION_URL} \
 -s config.editMode='["READ_ONLY"]' \
 -s config.usersDn=${KEYCLOAK_USERS_DN} \
