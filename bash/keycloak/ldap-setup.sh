@@ -87,7 +87,8 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create components -r ${KEYCLOAK_REALM} -s parentId
 }
 
 fix_first_name_mapper() {
-
+MAPPER_ID=`${KEYCLOAK_HOME}/bin/kcadm.sh get components -r ${KEYCLOAK_REALM} -q name='first name' --fields id | jq -r .[0].id`
+${KEYCLOAK_HOME}/bin/kcadm.sh update components/${MAPPER_ID} -r ${KEYCLOAK_REALM} -s 'config."ldap.attribute"=["givenName"]'
 }
 
 create_role_mapper() {
