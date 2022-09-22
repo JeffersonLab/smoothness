@@ -92,7 +92,19 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh update components/${MAPPER_ID} -r ${KEYCLOAK_REALM
 }
 
 create_role_mapper() {
-
+${KEYCLOAK_HOME}/bin/kcadm.sh create components -r ${KEYCLOAK_REALM} -s parentId=${KEYCLOAK_REALM}-ldap-provider \
+-s id=${KEYCLOAK_REALM}-ldap-role-mapper -s name=${KEYCLOAK_REALM}-ldap-role-mapper \
+-s providerId=role-ldap-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper \
+-s 'config."roles.dn"'=${KEYCLOAK_ROLES_DN} \
+-s 'config."role.name.ldap.attribute"=["cn"]' \
+-s 'config."role.object.classes"=["groupOfNames"]' \
+-s 'config."membership.ldap.attribute"=["member"]' \
+-s 'config."membership.attribute.type"=["DN"]' \
+-s 'config."membership.user.ldap.attribute"=["uid"]' \
+-s 'config.mode=["READ_ONLY"]' \
+-s 'config."user.roles.retrieve.strategy"=["GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE"]' \
+-s 'config."memberof.ldap.attribute"=["memberOf"]' \
+-s 'config."use.realm.roles.mapping"=["true"]'
 }
 
 if [ ! -z "$2" ]
