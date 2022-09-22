@@ -1,22 +1,14 @@
 #!/bin/bash
 
 FUNCTIONS=(login
-           create_realm
-           create_ldap_storage_provider)
+           create_realm)
 
 VARIABLES=(KEYCLOAK_ADMIN
            KEYCLOAK_ADMIN_PASSWORD
            KEYCLOAK_HOME
            KEYCLOAK_REALM
            KEYCLOAK_REALM_DISPLAY_NAME
-           KEYCLOAK_SERVER_URL
-           KEYCLOAK_SERVER_PRINCIPLE
-           KEYCLOAK_BIND_CREDENTIAL
-           KEYCLOAK_USERS_DN
-           KEYCLOAK_DEBUG
-           KEYCLOAK_LDAP_CONNECTION_URL
-           KEYCLOAK_KEYTAB
-           KEYCLOAK_KERBEROS_REALM)
+           KEYCLOAK_SERVER_URL)
 
 if [[ $# -eq 0 ]] ; then
     echo "Usage: $0 [var file] <optional function>"
@@ -51,48 +43,6 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh config credentials --server "${KEYCLOAK_SERVER_URL
 create_realm() {
 ${KEYCLOAK_HOME}/bin/kcadm.sh create realms -s id=${KEYCLOAK_REALM} -s realm="${KEYCLOAK_REALM}" -s enabled=true -s displayName=${KEYCLOAK_REALM_DISPLAY_NAME} -s loginWithEmailAllowed=false
 }
-
-create_ldap_storage_provider() {
-if [[ -z "${KEYCLOAK_CONFIG_LDAP}" ]]; then
-    echo "Skipping LDAP Setup: Must provide KEYCLOAK_CONFIG_LDAP in environment"
-    return 0
-fi
-${KEYCLOAK_HOME}/bin/kcadm.sh create components -r ${KEYCLOAK_REALM} -s parentId=${KEYCLOAK_REALM} \
--s id=${KEYCLOAK_REALM}-ldap-provider -s name=${KEYCLOAK_REALM}-ldap-provider \
--s providerId=ldap -s providerType=org.keycloak.storage.UserStorageProvider \
--s config.debug=${KEYCLOAK_DEBUG} \
--s config.authType='["simple"]' \
--s config.cachePolicy='["DEFAULT"]' \
--s config.vendor='["other"]' \
--s config.priority='["1"]' \
--s config.connectionUrl=${KEYCLOAK_LDAP_CONNECTION_URL} \
--s config.editMode='["READ_ONLY"]' \
--s config.usersDn=${KEYCLOAK_USERS_DN} \
--s config.serverPrincipal=${KEYCLOAK_SERVER_PRINCIPLE} \
--s config.bindCredential=${KEYCLOAK_BIND_CREDENTIAL} \
--s 'config.fullSyncPeriod=["-1"]' \
--s 'config.changedSyncPeriod=["-1"]' \
--s 'config.cachePolicy=["DEFAULT"]' \
--s config.evictionDay=[] \
--s config.evictionHour=[] \
--s config.evictionMinute=[] \
--s config.maxLifespan=[] \
--s 'config.batchSizeForSync=["1000"]' \
--s 'config.syncRegistrations=["false"]' \
--s 'config.usernameLDAPAttribute=["uid"]' \
--s 'config.rdnLDAPAttribute=["uid"]' \
--s 'config.uuidLDAPAttribute=["uid"]' \
--s 'config.userObjectClasses=["inetOrgPerson, organizationalPerson"]' \
--s 'config.searchScope=["1"]' \
--s 'config.useTruststoreSpi=["ldapsOnly"]' \
--s 'config.connectionPooling=["true"]' \
--s 'config.pagination=["true"]' \
--s 'config.allowKerberosAuthentication=["true"]' \
--s config.keyTab=${KEYCLOAK_KEYTAB} \
--s config.kerberosRealm=${KEYCLOAK_KERBEROS_REALM} \
--s 'config.useKerberosForPasswordAuthentication=["true"]'
-}
-
 
 if [ ! -z "$2" ]
 then
