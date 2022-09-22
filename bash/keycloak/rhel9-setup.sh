@@ -85,8 +85,7 @@ fi
 cat > /etc/systemd/system/keycloak.service << EOF
 [Unit]
 Description=The Keycloak Server
-After=syslog.target network.target
-Before=httpd.service
+After=syslog.target network.target sssd.service
 [Service]
 EnvironmentFile=${KEYCLOAK_APP_HOME}/keycloak-run.env
 User=${KEYCLOAK_USER}
