@@ -1,7 +1,8 @@
 #!/bin/bash
 
 FUNCTIONS=(login
-           create_prioritized_idp_flow)
+           create_prioritized_idp_flow
+           set_as_realm_default)
 
 VARIABLES=(KEYCLOAK_ADMIN
            KEYCLOAK_ADMIN_PASSWORD
@@ -46,6 +47,10 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/flows/browser/copy -r ${KEYC
 
 EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh get -r ace authentication/flows/${KEYCLOAK_ALIAS}/executions | jq -r ".[] | select(.displayName == \"Identity Provider Redirector\") | .id")
 ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/executions/${EXECUTION_ID}/raise-priority -r ${KEYCLOAK_REALM}
+}
+
+set_as_realm_default() {
+${KEYCLOAK_HOME}/bin/kcadm.sh update realms/${KEYCLOAK_REALM} -b '{"browserFlow":"'${KEYCLOAK_ALIAS}'"}'
 }
 
 if [ ! -z "$2" ]
