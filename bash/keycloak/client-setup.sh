@@ -9,7 +9,8 @@ VARIABLES=(KEYCLOAK_ADMIN
            KEYCLOAK_REALM
            KEYCLOAK_CLIENT_NAME
            KEYCLOAK_REDIRECT_URIS
-           KEYCLOAK_SERVER_URL)
+           KEYCLOAK_SERVER_URL
+           KEYCLOAK_SERVICE_ACCOUNT_ENABLED)
 
 if [[ $# -eq 0 ]] ; then
     echo "Usage: $0 [var file] <optional function>"
@@ -42,10 +43,12 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh config credentials --server "${KEYCLOAK_SERVER_URL
 }
 
 create_client() {
-${KEYCLOAK_HOME}/bin/kcadm.sh create clients -r "${KEYCLOAK_REALM}" -s clientId=${KEYCLOAK_CLIENT_NAME} -s id=${KEYCLOAK_CLIENT_NAME} -s enabled=true -s serviceAccountsEnabled=true -s redirectUris=${KEYCLOAK_REDIRECT_URIS} -s secret=${KEYCLOAK_SECRET}
+${KEYCLOAK_HOME}/bin/kcadm.sh create clients -r "${KEYCLOAK_REALM}" -s clientId=${KEYCLOAK_CLIENT_NAME} -s id=${KEYCLOAK_CLIENT_NAME} -s enabled=true -s serviceAccountsEnabled=${KEYCLOAK_SERVICE_ACCOUNT_ENABLED} -s redirectUris=${KEYCLOAK_REDIRECT_URIS} -s secret=${KEYCLOAK_SECRET}
+if [ ${KEYCLOAK_SERVICE_ACCOUNT_ENABLED} = 'true' ] ; then
 ${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername service-account-${KEYCLOAK_CLIENT_NAME} --cclientid realm-management --rolename view-users
 ${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername service-account-${KEYCLOAK_CLIENT_NAME} --cclientid realm-management --rolename view-authorization
 ${KEYCLOAK_HOME}/bin/kcadm.sh add-roles -r "${KEYCLOAK_REALM}" --uusername service-account-${KEYCLOAK_CLIENT_NAME} --cclientid realm-management --rolename view-realm
+fi
 }
 
 if [ ! -z "$2" ]
