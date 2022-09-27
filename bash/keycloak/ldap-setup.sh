@@ -62,14 +62,14 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create components -r ${KEYCLOAK_REALM} -s parentId
 -s config.serverPrincipal=${KEYCLOAK_SERVER_PRINCIPLE} \
 -s config.bindDn=${KEYCLOAK_BIND_DN} \
 -s config.bindCredential=${KEYCLOAK_BIND_CREDENTIAL} \
--s 'config.fullSyncPeriod=["-1"]' \
+-s 'config.fullSyncPeriod=["86400"]' \
 -s 'config.changedSyncPeriod=["-1"]' \
 -s 'config.cachePolicy=["NO_CACHE"]' \
 -s config.evictionDay=[] \
 -s config.evictionHour=[] \
 -s config.evictionMinute=[] \
 -s config.maxLifespan=[] \
--s config.importEnabled='["false"]' \
+-s config.importEnabled='["true"]' \
 -s 'config.batchSizeForSync=["1000"]' \
 -s 'config.syncRegistrations=["false"]' \
 -s 'config.usernameLDAPAttribute=["uid"]' \
