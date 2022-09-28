@@ -95,7 +95,7 @@ Description=The WildFly Application Server
 After=syslog.target network.target
 Before=httpd.service
 [Service]
-EnvironmentFile=${WILDFLY_APP_HOME}/wildfly-run.env
+EnvironmentFile=${WILDFLY_APP_HOME}/run.env
 Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
 User=${WILDFLY_USER}
 LimitNOFILE=102642
