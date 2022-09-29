@@ -71,7 +71,8 @@
             <url-pattern>/sso</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>*</role-name>
+            <!-- ** = any authenticated user.  See https://javaee.github.io/servlet-spec/downloads/servlet-4.0/servlet-4_0_FINAL.pdf section 13.8 -->
+            <role-name>**</role-name>
         </auth-constraint>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
@@ -90,9 +91,6 @@
     <login-config>
         <auth-method>OIDC</auth-method>
     </login-config>
-    <security-role>
-        <role-name>*</role-name>
-    </security-role>
     <security-role>
         <role-name>smoothness-demo-admin</role-name>
     </security-role>
