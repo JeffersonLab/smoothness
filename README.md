@@ -183,13 +183,24 @@ gradlew -Pprovided build
 **See**: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
 
 ## Release
-Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Often a new version of the weblib is tagged and released first then then the sister demo version is released, conventionally by creating a new release tag with the same version but with the `-demo` suffix.
+Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Often a new version of the weblib is tagged and released first then then the sister demo version is released, conventionally by creating a new release tag with the same version but with the `-demo` suffix.  Alternatively we can edit the release and add the demo war.  The release tag must already exist though as we build the weblib Docker image from the github tag.
 
 0. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
+1. Run the build locally for weblib to make sure everything is good and tag it temporarily for testing with demo:
+```
+docker build -f Dockerfile-weblib --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt . -t slominskir/smoothness-weblib:<version> --no-cache --progress=plain
+```
+2. Update Dockerfile-demo to use the new weblib image
+3. Build the "build" compose project and test it before moving forward:
+```
+docker compose -f build.yml build demo --no-cache --progress=plain
+...
+docker compose -f build.yml up
+```
 
 **WEBLIB**
-1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/jaws-effective-processor/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).  This is for the weblib.
-2. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.
+1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/jaws-effective-processor/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).
+2. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.
 3. Publish new artifact on maven central with:
 ```
 gradlew publishMavenPublicationToOSSRHRepository
@@ -199,10 +210,9 @@ gradlew publishMavenPublicationToOSSRHRepository
 4. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).
 
 **DEMO**    
-1. Update Dockerfile-demo to use the new weblib image
-2. Create a new release with the same version number as just used above, but with `-demo` and attach the war file so users can easily install.
-3. Build and push Docker image for the demo `-f Dockerfile-demo`.
-4. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
+
+1. Build and push Docker image for the demo `-f Dockerfile-demo`.
+2. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
 
 ## See Also
 - [Beam authorization manager (BAM)](https://github.com/JeffersonLab/bam)
