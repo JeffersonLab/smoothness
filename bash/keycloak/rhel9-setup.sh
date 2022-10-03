@@ -15,10 +15,7 @@ VARIABLES=(KEYCLOAK_BIND_ADDRESS
            KEYCLOAK_USER
            KEYCLOAK_USER_HOME
            KEYCLOAK_USER_ID
-           KEYCLOAK_VERSION
-           JDK_HOME
-           JDK_MAX_HEAP
-           JDK_MAX_META)
+           KEYCLOAK_VERSION)
 
 if [[ $# -eq 0 ]] ; then
     echo "Usage: $0 [var file] <optional function>"
