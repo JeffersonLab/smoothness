@@ -3,7 +3,8 @@
 FUNCTIONS=(login
            create_ldap_storage_provider
            fix_first_name_mapper
-           create_role_mapper)
+           create_role_mapper
+           run_sync)
 
 VARIABLES=(KEYCLOAK_ADMIN
            KEYCLOAK_ADMIN_PASSWORD
@@ -105,6 +106,10 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create components -r ${KEYCLOAK_REALM} -s parentId
 -s 'config."user.roles.retrieve.strategy"=["GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE"]' \
 -s 'config."memberof.ldap.attribute"=["memberOf"]' \
 -s 'config."use.realm.roles.mapping"=["true"]'
+}
+
+run_sync() {
+${KEYCLOAK_HOME}/bin/kcadm.sh create -r ${KEYCLOAK_REALM} user-storage/ace-ldap-provider/sync?action=triggerFullSync
 }
 
 if [ ! -z "$2" ]
