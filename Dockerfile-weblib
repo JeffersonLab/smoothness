@@ -1,5 +1,5 @@
 ARG BUILD_IMAGE=gradle:7.4-jdk17
-ARG RUN_IMAGE=quay.io/wildfly/wildfly:26.1.1.Final
+ARG RUN_IMAGE=quay.io/wildfly/wildfly:26.1.2.Final
 ARG ORACLE_DRIVER_URL=http://insecure.repo1.maven.org/maven2/com/oracle/database/jdbc/ojdbc11/21.7.0.0/ojdbc11-21.7.0.0.jar
 ARG ORACLE_DRIVER_PATH=/tmp/ojdbc11-21.7.0.0.jar
 
