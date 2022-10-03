@@ -17,6 +17,7 @@ VARIABLES=(EMAIL_FROM
            ORACLE_DRIVER_PATH
            ORACLE_DRIVER_URL
            WILDFLY_APP_HOME
+           WILDFLY_RUN_USER
            WILDFLY_USER
            WILDFLY_PASS)
 
@@ -62,7 +63,7 @@ if [[ ! -z "${WILDFLY_SKIP_START}" ]]; then
   return 0
 fi
 
-${WILDFLY_APP_HOME}/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &
+su ${WILDFLY_RUN_USER} -c "${WILDFLY_APP_HOME}/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &"
 
 until curl http://localhost:8080 -sf -o /dev/null;
 do
