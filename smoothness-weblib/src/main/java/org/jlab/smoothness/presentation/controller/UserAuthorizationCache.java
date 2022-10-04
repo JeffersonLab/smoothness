@@ -40,10 +40,6 @@ public class UserAuthorizationCache extends HttpServlet {
         request.setAttribute("userCache", userCache);
         request.setAttribute("roleCache", roleCache);
 
-        for(User user: userCache.values()) {
-            System.err.println("viewing user: " + user);
-        }
-
         request.getRequestDispatcher("/WEB-INF/views/user-authorization-cache.jsp").forward(request, response);
     }
 
@@ -68,9 +64,6 @@ public class UserAuthorizationCache extends HttpServlet {
             case "user":
                 String username = request.getParameter("username");
                 User user = auth.getUserFromUsername(username);
-
-                System.err.println("Added User: " + user);
-
                 break;
             case "role":
                 String role = request.getParameter("role");

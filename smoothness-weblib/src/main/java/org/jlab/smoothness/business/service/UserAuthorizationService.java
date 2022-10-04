@@ -179,9 +179,6 @@ public class UserAuthorizationService {
 
     private List<User> lookupUsersInRole(String role) {
 
-        System.err.println("Looking up role: " + role);
-        System.err.println("Using realm: " + realm);
-
         List<User> users = new ArrayList<>();
 
         RolesResource roles = keycloak.realm(realm).roles();
@@ -210,7 +207,7 @@ public class UserAuthorizationService {
             UserRepresentation rep = users.get(0);
             user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName(), rep.getEmail());
         } else {
-            System.err.println("Could not find username: " + username);
+            //System.err.println("Could not find username: " + username);
             user = new User(username, "", "", "");
         }
 

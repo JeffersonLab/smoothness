@@ -58,8 +58,6 @@ public class Feedback extends HttpServlet {
 
             String username = request.getRemoteUser();
 
-            System.err.println("Looking up username: " + username);
-
             UserAuthorizationService auth = UserAuthorizationService.getInstance();
 
             User user = auth.getUserFromUsername(username);
