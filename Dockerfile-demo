@@ -1,5 +1,5 @@
 ARG BUILD_IMAGE=gradle:7.4-jdk17
-ARG RUN_IMAGE=slominskir/smoothness-weblib:3.7.1
+ARG RUN_IMAGE=slominskir/smoothness-weblib:3.7.2
 
 ################## Stage 0
 FROM ${BUILD_IMAGE} as builder
@@ -18,5 +18,6 @@ RUN cd /app && gradle build -x test --no-watch-fs $OPTIONAL_CERT_ARG
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
 COPY --from=builder /app/docker/demo/smoothness-demo-setup.env /
-RUN /app-setup.sh /smoothness-demo-setup.env
+RUN /app-setup.sh /smoothness-demo-setup.env \
+        && rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history
 COPY --from=builder /app/smoothness-demo/build/libs/* /opt/jboss/wildfly/standalone/deployments

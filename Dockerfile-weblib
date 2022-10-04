@@ -37,7 +37,8 @@ RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
     ; fi \
     && yum install -y wget \
     && chsh -s /bin/bash jboss \
-    && /server-setup.sh /docker-server.env
+    && /server-setup.sh /docker-server.env \
+    && rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history
 ENTRYPOINT ["/docker-entrypoint.sh"]
 ENV ORACLE_DRIVER_PATH=$ORACLE_DRIVER_PATH
 USER ${RUN_USER}
