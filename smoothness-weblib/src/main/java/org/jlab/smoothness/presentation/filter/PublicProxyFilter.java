@@ -5,7 +5,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * WebFilter for automatically adjusting the CDN Context Path.
@@ -20,10 +19,6 @@ import java.util.logging.Logger;
 @WebFilter(filterName = "PublicProxyFilter", urlPatterns = {"/*"}, dispatcherTypes = {
     DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class PublicProxyFilter implements Filter {
-
-    private static final Logger LOGGER = Logger.getLogger(
-            PublicProxyFilter.class.getName());
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp,
             FilterChain chain)
