@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class JPAUtil {
 
-    private static final Logger logger = Logger.getLogger(
+    private static final Logger LOGGER = Logger.getLogger(
             JPAUtil.class.getName());
 
     private JPAUtil() {
@@ -107,9 +107,9 @@ public class JPAUtil {
     public static void logObjectTypes(Object[] objArray) {
         for (Object obj : objArray) {
             if(obj == null) {
-                logger.log(Level.INFO, "null");
+                LOGGER.log(Level.INFO, "null");
             } else {
-                logger.log(Level.INFO, obj.getClass().getName());
+                LOGGER.log(Level.INFO, obj.getClass().getName());
             }
         }
     }
