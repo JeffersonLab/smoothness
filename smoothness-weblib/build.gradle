@@ -28,9 +28,9 @@ repositories {
 }
 
 dependencies {
-    api 'javax:javaee-api:8.0.1',
-         'javax.servlet:jstl:1.2'
+    api 'javax.servlet:jstl:1.2'
     implementation 'org.keycloak:keycloak-admin-client:19.0.2'
+    compileOnly 'javax:javaee-api:8.0.1'
 }
 
 javadoc {
