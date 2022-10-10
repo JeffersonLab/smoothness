@@ -84,7 +84,7 @@ cat > /etc/systemd/system/keycloak.service << EOF
 Description=The Keycloak Server
 After=syslog.target network.target sssd.service
 [Service]
-EnvironmentFile=${KEYCLOAK_APP_HOME}/keycloak-run.env
+EnvironmentFile=${KEYCLOAK_APP_HOME}/run.env
 User=${KEYCLOAK_USER}
 LimitNOFILE=102642
 PIDFile=/run/keycloak.pid
