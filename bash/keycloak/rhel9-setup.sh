@@ -84,11 +84,11 @@ cat > /etc/systemd/system/keycloak.service << EOF
 Description=The Keycloak Server
 After=syslog.target network.target sssd.service
 [Service]
-EnvironmentFile=${KEYCLOAK_APP_HOME}/run.env
+EnvironmentFile=${KEYCLOAK_USER_HOME}/current/conf/run.env
 User=${KEYCLOAK_USER}
 LimitNOFILE=102642
 PIDFile=/run/keycloak.pid
-ExecStart=${KEYCLOAK_APP_HOME}/bin/kc.sh start --optimized
+ExecStart=${KEYCLOAK_USER_HOME}/current/bin/kc.sh start --optimized
 StandardOutput=null
 [Install]
 WantedBy=multi-user.target
