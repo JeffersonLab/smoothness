@@ -4,6 +4,7 @@ FUNCTIONS=(wildfly_start_and_wait
            config_oracle_driver
            config_admin_user
            config_ssl
+           config_gzip
            config_email
            config_persist_sessions_on_redeploy
            config_param_limits
@@ -107,6 +108,15 @@ batch
 /subsystem=elytron/server-ssl-context=httpsSSC:add(key-manager=httpsKM,protocols=["TLSv1.2"])
 /subsystem=undertow/server=default-server/https-listener=https:undefine-attribute(name=security-realm)
 /subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context,value=httpsSSC)
+run-batch
+EOF
+}
+
+config_gzip() {
+${WILDFLY_CLI_PATH} -c <<EOF
+batch
+/subsystem=undertow/configuration=filter/gzip=gzipFilter:add()
+/subsystem=undertow/server=default-server/host=default-host/filter-ref=gzipFilter:add()
 run-batch
 EOF
 }
