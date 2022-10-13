@@ -3,7 +3,7 @@
 <%@attribute name="title"%>
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
-<t:page title="${title}" category="Features">
+<t:page title="${title}" category="Features" description="Enumerates the features of the smoothness weblib.">
     <jsp:attribute name="stylesheets">       
         <jsp:invoke fragment="stylesheets"/>
     </jsp:attribute>

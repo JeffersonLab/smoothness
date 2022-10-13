@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="title"%>
+<%@attribute name="description"%>
 <%@attribute name="category"%>
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
@@ -17,6 +18,7 @@
 <html lang="en">
     <head>        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="${fn:escapeXml(description)}">
         <title><c:out value="${initParam.appShortName}"/> - ${empty category ? '' : category.concat(' - ')}${title}</title>
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/img/favicon.ico"/>
         <c:choose>
