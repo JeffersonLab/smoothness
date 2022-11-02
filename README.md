@@ -199,7 +199,7 @@ docker compose -f build.yml up
 ```
 
 **WEBLIB**
-1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/jaws-effective-processor/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).
+1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).
 2. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.
 3. Publish new artifact on maven central with:
 ```
