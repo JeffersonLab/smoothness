@@ -46,7 +46,7 @@ The demo is included in a Gradle Multi-Project build mainly so we can take advan
 git clone https://github.com/JeffersonLab/smoothness
 cd smoothness
 ```
-2. Launch Docker
+2. Launch [Compose](https://github.com/docker/compose)
 ```
 docker compose up
 ```
