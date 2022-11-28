@@ -44,19 +44,21 @@ run-batch
 EOF
 }
 
-while read LINE; do
-    #echo "${LINE}"
-    IFS="|"
-    read -a fields <<<"${LINE}"
-    DEP_NAME=${fields[0]}
-    RESOURCES_CSV=${fields[1]}
-    DEPENDENCIES_CSV=${fields[2]}
+IFS=$'\n'
+for LINE in $(cat $1)
+do
+  echo "${LINE}"
+  IFS="|"
+  read -a fields <<<"${LINE}"
+  DEP_NAME=${fields[0]}
+  RESOURCES_CSV=${fields[1]}
+  DEPENDENCIES_CSV=${fields[2]}
 
-    #echo "DEP_NAME: ${DEP_NAME}"
-    #echo "RESOURCES_CSV: ${RESOURCES_CSV}"
-    #echo "DEPENDENCIES_CSV: ${DEPENDENCIES_CSV}"
+  echo "DEP_NAME: ${DEP_NAME}"
+  echo "RESOURCES_CSV: ${RESOURCES_CSV}"
+  echo "DEPENDENCIES_CSV: ${DEPENDENCIES_CSV}"
 
-    config_provided_dep
-
-done < "$1"
+  config_provided_dep
+done
+unset IFS
 
