@@ -20,17 +20,16 @@ dependencies {
     if (project.hasProperty("provided")) {
         providedCompile project(':smoothness-weblib'),
                 'org.tuckey:urlrewritefilter:4.0.4',
-                'org.hibernate.orm:hibernate-core:6.1.3.Final',
                 'org.jlab:jlog:5.0.0'
     } else {
         implementation project(':smoothness-weblib'),
                 'org.tuckey:urlrewritefilter:4.0.4',
-                'org.hibernate.orm:hibernate-core:6.1.3.Final',
                 'org.jlab:jlog:5.0.0'
     }
 
-    // No matter what the Java EE API is provided by the application server
-    providedCompile 'javax:javaee-api:8.0.1'
+    // Wildfly 26.1.2.Final provides:
+    providedCompile 'javax:javaee-api:8.0.1',
+                    'org.hibernate:hibernate-core:5.3.28.Final'
 }
 
 war {
