@@ -103,7 +103,7 @@ fi
 
 ${WILDFLY_CLI_PATH} -c <<EOF
 batch
-/subsystem=elytron/key-store=httpsKS:add(path=${KEYSTORE_NAME},relative-to=jboss.server.config.dir,credential-reference={clear-text=${KEYSTORE_PASS},type=PKCS12)
+/subsystem=elytron/key-store=httpsKS:add(path=${KEYSTORE_NAME},relative-to=jboss.server.config.dir,credential-reference={clear-text=${KEYSTORE_PASS}},type=PKCS12)
 /subsystem=elytron/key-manager=httpsKM:add(key-store=httpsKS,credential-reference={clear-text=${KEYSTORE_PASS}})
 /subsystem=elytron/server-ssl-context=httpsSSC:add(key-manager=httpsKM,protocols=["TLSv1.2"])
 /subsystem=undertow/server=default-server/https-listener=https:undefine-attribute(name=security-realm)
