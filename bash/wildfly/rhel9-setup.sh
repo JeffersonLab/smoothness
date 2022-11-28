@@ -89,13 +89,15 @@ then
   sysctl -w net.ipv4.ip_unprivileged_port_start=${WILDFLY_HTTPS_PORT} >> /etc/sysctl.conf
 fi
 
+mv ${WILDFLY_USER_HOME}/run.env ${WILDFLY_USER_HOME}/configuration/run.env
+
 cat > /etc/systemd/system/wildfly.service << EOF
 [Unit]
 Description=The WildFly Application Server
 After=syslog.target network.target
 Before=httpd.service
 [Service]
-EnvironmentFile=${WILDFLY_APP_HOME}/run.env
+EnvironmentFile=${WILDFLY_USER_HOME}/configuration/run.env
 Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
 User=${WILDFLY_USER}
 LimitNOFILE=102642
