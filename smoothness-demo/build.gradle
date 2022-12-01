@@ -30,9 +30,9 @@ dependencies {
     // Wildfly 26.1.2.Final provides:
     providedCompile 'javax:javaee-api:8.0.1',
                     'org.jboss.resteasy:resteasy-client:4.7.7.Final',
-                    'org.jboss.resteasy:resteasy-multipart-provider:4.7.4.Final',
-                    'org.jboss.resteasy:resteasy-jackson2-provider:4.7.4.Final',
-                    'org.jboss.resteasy:resteasy-jaxb-provider:4.7.4.Final'
+                    'org.jboss.resteasy:resteasy-multipart-provider:4.7.7.Final',
+                    'org.jboss.resteasy:resteasy-jackson2-provider:4.7.7.Final',
+                    'org.jboss.resteasy:resteasy-jaxb-provider:4.7.7.Final'
                     'org.hibernate:hibernate-core:5.3.28.Final'
 }
 
