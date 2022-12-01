@@ -30,7 +30,13 @@ repositories {
 dependencies {
     api 'javax.servlet:jstl:1.2'
     implementation 'org.keycloak:keycloak-admin-client:19.0.2'
-    compileOnly 'javax:javaee-api:8.0.1'
+
+    // Wildfly 26.1.2.Final provides:
+    compileOnly 'javax:javaee-api:8.0.1',
+                'org.jboss.resteasy:resteasy-client:4.7.7.Final',
+                'org.jboss.resteasy:resteasy-multipart-provider:4.7.4.Final',
+                'org.jboss.resteasy:resteasy-jackson2-provider:4.7.4.Final',
+                'org.jboss.resteasy:resteasy-jaxb-provider:4.7.4.Final'
 }
 
 javadoc {
