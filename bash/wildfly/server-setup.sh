@@ -8,7 +8,7 @@ FUNCTIONS=(wildfly_start_and_wait
            config_email
            config_persist_sessions_on_redeploy
            config_param_limits
-           config_provided_deps
+           config_provided
            wildfly_reload
            wildfly_stop)
 
@@ -48,7 +48,7 @@ for i in "${!VARIABLES[@]}"; do
 done
 
 # Optional params
-# - PROVIDED_DEPS_FILE
+# - PROVIDED_LIBS
 # - MAX_PARAM_COUNT
 # - KEYSTORE_NAME
 # - KEYSTORE_PASS
@@ -57,6 +57,7 @@ done
 # - WILDFLY_SKIP_STOP
 
 WILDFLY_CLI_PATH=${WILDFLY_APP_HOME}/bin/jboss-cli.sh
+ENV_FILE=$1
 
 wildfly_start_and_wait() {
 if [[ ! -z "${WILDFLY_SKIP_START}" ]]; then
@@ -154,15 +155,17 @@ run-batch
 EOF
 }
 
-config_provided_deps() {
-if [[ -z "${PROVIDED_DEPS_FILE}" ]]; then
-  echo "Skipping config of provided dependencies because PROVIDED_DEPS_FILE undefined"
+config_provided() {
+if [[ -z "${PROVIDED_LIBS}" ]]; then
+  echo "Skipping config of provided dependencies because PROVIDED_LIBS undefined"
   return 0
 fi
 
+echo "Using env file: ${ENV_FILE}"
+
 DIRNAME=`dirname "$0"`
 SCRIPT_HOME=`cd -P "$DIRNAME"; pwd`
-${SCRIPT_HOME}/provided-setup.sh ${PROVIDED_DEPS_FILE}
+${SCRIPT_HOME}/provided-setup.sh "${ENV_FILE}"
 }
 
 wildfly_reload() {

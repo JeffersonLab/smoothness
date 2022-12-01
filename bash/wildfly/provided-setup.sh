@@ -1,22 +1,34 @@
 #!/bin/bash
 
-if [ -z "$1" ]
-  then
-    echo "No file path provided"
-    exit 1
+FUNCTIONS=(config_provided)
+
+VARIABLES=(PROVIDED_LIBS
+           WILDFLY_APP_HOME)
+
+if [[ $# -eq 0 ]] ; then
+    echo "Usage: $0 [var file] <optional function>"
+    echo "The var file arg should be the path to a file with bash variables that will be sourced."
+    echo "The optional function name arg if provided is the sole function to call, else all functions are invoked sequentially."
+    printf 'Variables: '
+    printf '%s ' "${VARIABLES[@]}"
+    printf '\n'
+    printf 'Functions: '
+    printf '%s ' "${FUNCTIONS[@]}"
+    printf '\n'
+    exit 0
 fi
 
-if [ ! -f "$1" ]; then
-    echo "$1 does not exist."
-    exit 1
+if [ ! -z "$1" ] && [ -f "$1" ]
+then
+echo "Loading environment $1"
+. $1
 fi
 
 # Verify expected env set:
-while read var; do
-  [ -z "${!var}" ] && { echo "$var is not set. Exiting.."; exit 1; }
-done << EOF
-WILDFLY_APP_HOME
-EOF
+for i in "${!VARIABLES[@]}"; do
+  var=${VARIABLES[$i]}
+  [ -z "${!var}" ] && { echo "$var is not set. Exiting."; exit 1; }
+done
 
 WILDFLY_CLI_PATH=${WILDFLY_APP_HOME}/bin/jboss-cli.sh
 
@@ -45,7 +57,7 @@ EOF
 }
 
 IFS=$'\n'
-for LINE in $(cat $1)
+for LINE in $(echo "${PROVIDED_LIBS}")
 do
   echo "${LINE}"
   IFS="|"

@@ -21,6 +21,7 @@ RUN mkdir /unicopy \
     && cp /app/docker/weblib/docker-entrypoint.sh /unicopy \
     && cp /app/docker/weblib/docker-server.env /unicopy \
     && cp /app/bash/wildfly/server-setup.sh /unicopy \
+    && cp /app/bash/wildfly/provided-setup.sh /unicopy \
     && cp /app/bash/wildfly/app-setup.sh /unicopy
 
 ################## Stage 1

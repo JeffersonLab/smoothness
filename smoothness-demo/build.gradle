@@ -17,16 +17,6 @@ repositories {
 }
 
 dependencies {
-    if (project.hasProperty("provided")) {
-        providedCompile project(':smoothness-weblib'),
-                'org.tuckey:urlrewritefilter:4.0.4',
-                'org.jlab:jlog:5.0.0'
-    } else {
-        implementation project(':smoothness-weblib'),
-                'org.tuckey:urlrewritefilter:4.0.4',
-                'org.jlab:jlog:5.0.0'
-    }
-
     // Wildfly 26.1.2.Final provides:
     providedCompile 'javax:javaee-api:8.0.1',
                     'org.jboss.resteasy:resteasy-client:4.7.7.Final',
@@ -34,7 +24,15 @@ dependencies {
                     'org.jboss.resteasy:resteasy-jackson2-provider:4.7.7.Final',
                     'org.jboss.resteasy:resteasy-jaxb-provider:4.7.7.Final'
                     'org.hibernate:hibernate-core:5.3.28.Final'
+
+    // Smoothness setup should install these into Wildfly
+    providedCompile 'org.tuckey:urlrewritefilter:4.0.4',
+                    'org.jlab:jlog:5.0.0'
+
+    // For consumers this should be installed into Wildfly, but for demo development it's included in war
+    implementation project(':smoothness-weblib')
 }
+
 
 war {
     archiveFileName = 'smoothness-demo.war'
