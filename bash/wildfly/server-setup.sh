@@ -156,8 +156,8 @@ EOF
 }
 
 config_provided() {
-if [[ -z "${PROVIDED_LIBS}" ]]; then
-  echo "Skipping config of provided dependencies because PROVIDED_LIBS undefined"
+if [[ -z "${GLOBAL_ADD_LIBS}" ]]; then
+  echo "Skipping config of provided dependencies because GLOBAL_ADD_LIBS undefined"
   return 0
 fi
 

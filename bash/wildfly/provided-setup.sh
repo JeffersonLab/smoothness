@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FUNCTIONS=(add_globals,
+FUNCTIONS=(add_globals
            enable_globals)
 
 VARIABLES=(WILDFLY_APP_HOME)
