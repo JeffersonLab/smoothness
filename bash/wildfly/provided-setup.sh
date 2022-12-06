@@ -1,9 +1,9 @@
 #!/bin/bash
 
-FUNCTIONS=(config_provided)
+FUNCTIONS=(add_globals,
+           enable_globals)
 
-VARIABLES=(PROVIDED_LIBS
-           WILDFLY_APP_HOME)
+VARIABLES=(WILDFLY_APP_HOME)
 
 if [[ $# -eq 0 ]] ; then
     echo "Usage: $0 [var file] <optional function>"
@@ -32,7 +32,11 @@ done
 
 WILDFLY_CLI_PATH=${WILDFLY_APP_HOME}/bin/jboss-cli.sh
 
-config_provided_dep() {
+enable_global() {
+${WILDFLY_CLI_PATH} -c "/subsystem=ee/:list-add(name=global-modules,value={\"name\"=>\"${MODULE_NAME}\",\"slot\"=>\"main\"})"
+}
+
+add_global() {
 
 cd /tmp
 
@@ -56,8 +60,14 @@ run-batch
 EOF
 }
 
+add_globals() {
+  if [[ -z "${GLOBAL_ADD_LIBS}" ]]; then
+    echo "Skipping add_globals because GLOBAL_ADD_LIBS undefined"
+    return 0
+  fi
+
 IFS=$'\n'
-for LINE in $(echo "${PROVIDED_LIBS}")
+for LINE in $(echo "${GLOBAL_ADD_LIBS}")
 do
   echo "${LINE}"
   IFS="|"
@@ -70,7 +80,39 @@ do
   echo "RESOURCES_CSV: ${RESOURCES_CSV}"
   echo "DEPENDENCIES_CSV: ${DEPENDENCIES_CSV}"
 
-  config_provided_dep
+  add_global
 done
 unset IFS
+}
+
+enable_globals() {
+  if [[ -z "${GLOBAL_ENABLE_LIBS}" ]]; then
+    echo "Skipping enable_globals because GLOBAL_ENABLE_LIBS undefined"
+    return 0
+  fi
+
+IFS=$'\n'
+for LINE in $(echo "${GLOBAL_ENABLE_LIBS}")
+do
+  echo "${LINE}"
+  MODULE_NAME=${LINE}
+  enable_global
+done
+unset IFS
+}
+
+if [ ! -z "$2" ]
+then
+  echo "------------------------"
+  echo "$2"
+  echo "------------------------"
+  $2
+else
+for i in "${!FUNCTIONS[@]}"; do
+  echo "------------------------"
+  echo "${FUNCTIONS[$i]}"
+  echo "------------------------"
+  ${FUNCTIONS[$i]};
+done
+fi
 

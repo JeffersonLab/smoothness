@@ -28,11 +28,11 @@ repositories {
 }
 
 dependencies {
-    api 'javax.servlet:jstl:1.2'
     implementation 'org.keycloak:keycloak-admin-client:20.0.1'
 
     // Wildfly 26.1.2.Final provides:
-    compileOnly 'javax:javaee-api:8.0.1'
+    compileOnly 'javax:javaee-api:8.0.1',
+                'javax.servlet:jstl:1.2'
 }
 
 javadoc {
