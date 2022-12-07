@@ -1,5 +1,5 @@
 {
-    "name": "my-project-devcontainer",
+    "name": "smoothness-devcontainer",
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
         "ghcr.io/devcontainers/features/java:1": {
