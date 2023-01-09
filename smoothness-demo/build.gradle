@@ -28,7 +28,7 @@ dependencies {
 
     // For consumers weblib should be installed into Wildfly, but for demo development it's included in war
     implementation project(':smoothness-weblib')
-    providedCompile 'org.keycloak:keycloak-admin-client:20.0.1'
+    providedCompile 'org.keycloak:keycloak-admin-client:20.0.2'
 }
 
 
