@@ -2,6 +2,7 @@
 
 FUNCTIONS=(wildfly_start_and_wait
            config_oracle_driver
+           config_access_log
            config_admin_user
            config_ssl
            config_gzip
@@ -9,6 +10,7 @@ FUNCTIONS=(wildfly_start_and_wait
            config_persist_sessions_on_redeploy
            config_param_limits
            config_provided
+           config_proxy
            wildfly_reload
            wildfly_stop)
 
@@ -109,6 +111,22 @@ batch
 /subsystem=elytron/server-ssl-context=httpsSSC:add(key-manager=httpsKM,protocols=["TLSv1.2"])
 /subsystem=undertow/server=default-server/https-listener=https:undefine-attribute(name=security-realm)
 /subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context,value=httpsSSC)
+run-batch
+EOF
+}
+
+config_proxy() {
+${WILDFLY_CLI_PATH} -c <<EOF
+batch
+/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=proxy-address-forwarding,value=true)
+run-batch
+EOF
+}
+
+config_access_log() {
+${WILDFLY_CLI_PATH} -c <<EOF
+batch
+/subsystem=undertow/server=default-server/host=default-host/setting=access-log:add(pattern="%h %l %u %t \"%r\" %s %b")
 run-batch
 EOF
 }
