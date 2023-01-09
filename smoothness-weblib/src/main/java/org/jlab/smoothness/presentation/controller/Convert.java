@@ -12,10 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Servlet controller for proxying requests to Puppet Show to allow HTML conversion even for external / public users.
@@ -26,6 +29,9 @@ import java.security.NoSuchAlgorithmException;
  */
 @WebServlet(name = "Convert", urlPatterns = {"/convert"})
 public class Convert extends HttpServlet {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            Convert.class.getName());
 
     /**
      * Handles the HTTP
@@ -45,9 +51,16 @@ public class Convert extends HttpServlet {
         String urlString = request.getParameter("url");
         String waitForSelector = request.getParameter("waitForSelector");
 
-        String server = System.getenv("PUPPET_SHOW_SERVER");
+        String puppetServer = System.getenv("PUPPET_SHOW_SERVER_URL");
+        String internalServer = System.getenv("INTERNAL_SERVER_URL");
 
-        String path = "https://" + server + "/puppet-show/";
+        if(puppetServer == null) {
+            puppetServer = "http://localhost";
+        }
+
+        if(internalServer == null) {
+            internalServer = "http://localhost";
+        }
 
         if (urlString == null) {
             throw new ServletException("url parameter must not be empty");
@@ -57,9 +70,13 @@ public class Convert extends HttpServlet {
             throw new ServletException("url parameter must not be absolute");
         }
 
-        urlString = "https://" + server + urlString;
+        if(!urlString.startsWith("/")){
+            urlString = "/" + urlString;
+        }
 
-        urlString = URLEncoder.encode(urlString, StandardCharsets.UTF_8);
+        internalServer = internalServer + urlString;
+
+        internalServer = URLEncoder.encode(internalServer, StandardCharsets.UTF_8);
 
         if(waitForSelector == null) {
             waitForSelector = "";
@@ -69,22 +86,26 @@ public class Convert extends HttpServlet {
 
         if ("pdf".equals(type)) {
             response.setHeader("content-type", "application/pdf");
-            path = path + "pdf";
+            puppetServer = puppetServer + "/puppet-show/pdf";
 
         } else {
             response.setHeader("content-type", "application/png");
-            path = path + "screenshot";
+            puppetServer = puppetServer + "/puppet-show/screenshot";
         }
 
-        path = path + "?ignoreHTTPSErrors=true&fullPage=true&omitBackground=false&viewportWidth=1024&viewportHeight=768&waitForSelector=" + waitForSelector + "&url=" + urlString;
+        puppetServer = puppetServer + "?ignoreHTTPSErrors=true&fullPage=true&omitBackground=false&viewportWidth=1024&viewportHeight=768&waitForSelector=" + waitForSelector + "&url=" + internalServer;
 
         if (filename != null && !filename.isEmpty()) {
             response.setHeader("content-disposition", "attachment; filename=\"" + filename + "\"");
         }
 
-        URL url = new URL(path);
+        LOGGER.log(Level.INFO, "Puppet URL Request: " + puppetServer);
 
-        HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+        URL url = new URL(puppetServer);
+
+        URLConnection con = url.openConnection();
+
+        /*HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
 
         con.setHostnameVerifier(IOUtil.getTrustyHostnameVerifier());
 
@@ -92,7 +113,7 @@ public class Convert extends HttpServlet {
             con.setSSLSocketFactory(IOUtil.getTrustySSLSocketFactory());
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             throw new ServletException("Unable to disable SSL Certificate Verification", e);
-        }
+        }*/
 
         InputStream in = con.getInputStream();
         OutputStream out = response.getOutputStream();

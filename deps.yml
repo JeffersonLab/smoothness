@@ -39,6 +39,7 @@ services:
     container_name: puppet
     ports:
       - "3000:3000"
+    privileged: true
 
   mailhog:
     image: mailhog/mailhog:v1.0.1
