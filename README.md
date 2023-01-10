@@ -181,14 +181,15 @@ gradlew build
 **See**: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
 
 ## Release
-Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Often a new version of the weblib is tagged and released first then then the sister demo version is released, conventionally by creating a new release tag with the same version but with the `-demo` suffix.  Alternatively we can edit the release and add the demo war.  The release tag must already exist though as we build the weblib Docker image from the github tag.
+Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Further, both projects have two artifacts: a Java distributable (demo war and weblib jar) and a Docker image.  The Docker build is complicated by fact that dependencies generally should be installed directly into Wildfly as opposed to being bundled inside war, but during development bundling the smoothness lib allows iteration without constantly updating weblib code installed in Wildfly.   Since the demo has a dependency on the weblib, either all artificats needed for both subprojects need to tagged together, else two separate releases would be needed as a release corresponds to a git tag and Docker images are build using the Git tag context.  We attempt to avoid needing two tags per release by updating the demo image reference to point to the upcoming release before it even exists.
 
-1. Run the build locally to ensure everything is working.   You can use deps.yml Docker Compose in concert with a local Wildfly instance during development.
-2. Run the build locally for weblib to make sure everything is good and tag it as SNAPSHOT for testing with demo:
+1. During development the build is run locally to ensure everything is working.   You can use deps.yml Docker Compose in concert with a local Wildfly instance to quickly iterate.
+2. To confirm the new Docker images are good, run the docker build locally for weblib and tag it as SNAPSHOT for testing with demo:
 ```
 docker build -f Dockerfile-weblib --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt --build-arg EXCLUDE_SMOOTH_LIB=Y . -t weblib:snapshot --no-cache --progress=plain
 ```
-**Note**: This step could go in the `build.yml` if there was a way to instruct services to depend on each other at BUILD time.  Currently `depends_on` only works at runtime (builds are parallel).  We also exclude the smoothness lib itself during the build such that the version bundled with `demo.war` is used.   Wildfly Classloader precedence goes to modules installed in Wildfly over libs found inside the war.
+**Note**: This step could go in the `build.yml` if there was a way to instruct services to depend on each other at BUILD time.  Currently `depends_on` only works at runtime (builds are parallel).  We also exclude the smoothness lib itself during the docker weblib snapshot build such that the version bundled with `demo.war` is used.   Wildfly Classloader precedence goes to modules installed in Wildfly over libs found inside the war.    
+
 3. Build the "build" compose project that leverages the SNAPSHOT weblib and test it before moving forward:
 ```
 docker compose -f build.yml build demo --no-cache --progress=plain
