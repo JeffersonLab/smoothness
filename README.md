@@ -183,18 +183,21 @@ gradlew build
 ## Release
 Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Often a new version of the weblib is tagged and released first then then the sister demo version is released, conventionally by creating a new release tag with the same version but with the `-demo` suffix.  Alternatively we can edit the release and add the demo war.  The release tag must already exist though as we build the weblib Docker image from the github tag.
 
-0. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
-1. Run the build locally for weblib to make sure everything is good and tag it temporarily for testing with demo:
+1. Run the build locally to ensure everything is working.   You can use deps.yml Docker Compose in concert with a local Wildfly instance during development.
+2. Run the build locally for weblib to make sure everything is good and tag it as SNAPSHOT for testing with demo:
 ```
-docker build -f Dockerfile-weblib --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt . -t slominskir/smoothness-weblib:<version> --no-cache --progress=plain
+docker build -f Dockerfile-weblib --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt --build-arg EXCLUDE_SMOOTH_LIB=Y . -t weblib:snapshot --no-cache --progress=plain
 ```
-2. Update Dockerfile-demo to use the new weblib image
-3. Build the "build" compose project and test it before moving forward:
+**Note**: This step could go in the `build.yml` if there was a way to instruct services to depend on each other at BUILD time.  Currently `depends_on` only works at runtime (builds are parallel).  We also exclude the smoothness lib itself during the build such that the version bundled with `demo.war` is used.   Wildfly Classloader precedence goes to modules installed in Wildfly over libs found inside the war.
+3. Build the "build" compose project that leverages the SNAPSHOT weblib and test it before moving forward:
 ```
 docker compose -f build.yml build demo --no-cache --progress=plain
 ...
 docker compose -f build.yml up
 ```
+4. Update Dockerfile-demo to use the upcoming new weblib image version.  Do this first before creating release else you'll have to create second release since we run Docker build from GitHub tag.
+5. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)). 
+
 
 **WEBLIB**
 1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).

@@ -21,16 +21,6 @@ services:
       file: docker-compose.yml
       service: mailhog
 
-  weblib:
-    extends:
-      file: docker-compose.yml
-      service: weblib
-    build:
-      context: .
-      dockerfile: Dockerfile-weblib
-      args:
-        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
-
   demo:
     extends:
       file: docker-compose.yml
@@ -40,3 +30,5 @@ services:
       dockerfile: Dockerfile-demo
       args:
         - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
+        - RUN_IMAGE=weblib:snapshot
+    pull_policy: never

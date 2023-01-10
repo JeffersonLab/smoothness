@@ -22,11 +22,13 @@ RUN mkdir /unicopy \
     && cp /app/docker/weblib/docker-server.env /unicopy \
     && cp /app/bash/wildfly/server-setup.sh /unicopy \
     && cp /app/bash/wildfly/provided-setup.sh /unicopy \
-    && cp /app/bash/wildfly/app-setup.sh /unicopy
+    && cp /app/bash/wildfly/app-setup.sh /unicopy \
+    && grep gradle.rootProject.version /app/settings.gradle | tr -s ' ' | cut -d' ' -f3 | tr -d '\047' > /unicopy/version.txt
 
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
 ARG CUSTOM_CRT_URL
+ARG EXCLUDE_SMOOTH_LIB
 ARG RUN_USER=jboss:jboss
 ARG ORACLE_DRIVER_PATH
 USER root
@@ -38,6 +40,22 @@ RUN if [ -z "${CUSTOM_CRT_URL}" ] ; then echo "No custom cert needed"; else \
     ; fi \
     && yum install -y wget \
     && chsh -s /bin/bash jboss \
+    && if [ -n "${EXCLUDE_SMOOTH_LIB}" ] ; then echo "Smooth lib excluded"; else \
+    echo "Smooth lib included" \
+    && SMOOTH_VER=`cat /version.txt | tr -d '\r'` \
+    && echo SMOOTH_VER: $SMOOTH_VER \
+    && A='GLOBAL_ADD_LIBS=' \
+    && A+="'org.jlab.smoothness-weblib" \
+    && A+='|https://repo1.maven.org/maven2/org/jlab/smoothness-weblib/' \
+    && A+="${SMOOTH_VER}/smoothness-weblib-${SMOOTH_VER}.jar" \
+    && A+='|javaee.api,org.jboss.as.web,org.keycloak.admin-client' \
+    && A+="'" \
+    && echo "${A}" > /lib.env \
+    && echo WILDFLY_APP_HOME=/opt/jboss/wildfly >> /lib.env \
+    && echo "cat lib.env: " \
+    && cat /lib.env \
+    && echo EXTRA_ADD_ENV_FILE=/lib.env >> /docker-server.env \
+    ; fi \
     && /server-setup.sh /docker-server.env \
     && rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history
 ENTRYPOINT ["/docker-entrypoint.sh"]

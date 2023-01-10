@@ -10,6 +10,7 @@ FUNCTIONS=(wildfly_start_and_wait
            config_persist_sessions_on_redeploy
            config_param_limits
            config_provided
+           config_extra_provided
            config_proxy
            wildfly_reload
            wildfly_stop)
@@ -59,7 +60,7 @@ done
 # - WILDFLY_SKIP_STOP
 
 WILDFLY_CLI_PATH=${WILDFLY_APP_HOME}/bin/jboss-cli.sh
-ENV_FILE=$1
+MAIN_ENV_FILE=$1
 
 wildfly_start_and_wait() {
 if [[ ! -z "${WILDFLY_SKIP_START}" ]]; then
@@ -173,17 +174,34 @@ run-batch
 EOF
 }
 
+do_provided_config() {
+echo "Using env file: ${ENV_FILE}"
+
+DIRNAME=`dirname "$0"`
+SCRIPT_HOME=`cd -P "$DIRNAME"; pwd`
+${SCRIPT_HOME}/provided-setup.sh "${ENV_FILE}"
+}
+
 config_provided() {
 if [[ -z "${GLOBAL_ADD_LIBS}" ]]; then
   echo "Skipping config of provided dependencies because GLOBAL_ADD_LIBS undefined"
   return 0
 fi
 
-echo "Using env file: ${ENV_FILE}"
+ENV_FILE="${MAIN_ENV_FILE}"
 
-DIRNAME=`dirname "$0"`
-SCRIPT_HOME=`cd -P "$DIRNAME"; pwd`
-${SCRIPT_HOME}/provided-setup.sh "${ENV_FILE}"
+do_provided_config
+}
+
+config_extra_provided() {
+if [[ -z "${EXTRA_ADD_ENV_FILE}" ]]; then
+  echo "Skipping config of extra provided dependencies because EXTRA_ADD_ENV_FILE undefined"
+  return 0
+fi
+
+ENV_FILE="${EXTRA_ADD_ENV_FILE}"
+
+do_provided_config
 }
 
 wildfly_reload() {
