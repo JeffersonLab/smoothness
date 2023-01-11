@@ -202,12 +202,13 @@ docker compose -f build.yml up
 
 **WEBLIB**
 1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).
-2. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.
-3. Publish new artifact on maven central with:
+2. Publish new artifact on maven central with:
 ```
-gradlew publishMavenPublicationToOSSRHRepository
+gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 ```
-**Note**: You then must navigate to https://s01.oss.sonatype.org/ and manually click around to close and release.  There is a plugin for Gradle that automates this, but it [doesn't work](https://github.com/gradle-nexus/publish-plugin/issues/81) with multi-project builds.
+**Note**: There is a [GitHub action](https://github.com/JeffersonLab/smoothness/actions/workflows/maven-pubilsh.yml) for this to happen automatically. To run locally you'll need to configure credentials. See: [Gradle Publish Notes](https://gist.github.com/slominskir/5fcd5cf84182bf1542c07cbca953904a)
+
+3. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.  You must wait for maven artifact to sync.
 
 4. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).
 
