@@ -206,7 +206,7 @@ docker compose -f build.yml up
 ```
 gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 ```
-**Note**: There is a [GitHub action](https://github.com/JeffersonLab/smoothness/actions/workflows/maven-pubilsh.yml) for this to happen automatically. To run locally you'll need to configure credentials. See: [Gradle Publish Notes](https://gist.github.com/slominskir/5fcd5cf84182bf1542c07cbca953904a)
+**Note**: There is a [GitHub action](https://github.com/JeffersonLab/smoothness/actions/workflows/maven-publish.yml) for this to happen automatically. To run locally you'll need to configure credentials. See: [Gradle Publish Notes](https://gist.github.com/slominskir/5fcd5cf84182bf1542c07cbca953904a)
 
 3. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.  You must wait for maven artifact to sync.
 
