@@ -19,10 +19,6 @@ services:
       file: deps.yml
       service: mailhog
 
-  weblib:
-    hostname: weblib
-    container_name: weblib
-
   demo:
     hostname: demo
     container_name: demo
