@@ -27,11 +27,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.keycloak:keycloak-admin-client:20.0.2'
+    // Smoothness setup should install this into Wildfly
+    compileOnly 'org.keycloak:keycloak-admin-client:20.0.2'
 
     // Wildfly 26.1.2.Final provides:
     compileOnly 'javax:javaee-api:8.0.1',
                 'javax.servlet:jstl:1.2'
+                //'org.apache.taglibs:taglibs-standard-compat:1.2.6-RC1'
 }
 
 javadoc {

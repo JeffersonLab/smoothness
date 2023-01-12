@@ -24,11 +24,11 @@ dependencies {
 
     // Smoothness setup should install these into Wildfly
     providedCompile 'org.tuckey:urlrewritefilter:4.0.4',
-                    'org.jlab:jlog:5.0.0'
+                    'org.jlab:jlog:5.0.0',
+                    'org.keycloak:keycloak-admin-client:20.0.2'
 
-    // For consumers weblib should be installed into Wildfly, but for demo development it's included in war
+    // weblib should be included in war: https://github.com/JeffersonLab/smoothness/issues/4
     implementation project(':smoothness-weblib')
-    providedCompile 'org.keycloak:keycloak-admin-client:20.0.2'
 }
 
 

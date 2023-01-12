@@ -186,7 +186,7 @@ Since this is a monorepo there are actually two projects: the weblib and the dem
 1. During development the build is run locally to ensure everything is working.   You can use deps.yml Docker Compose in concert with a local Wildfly instance to quickly iterate.
 2. To confirm the new Docker images are good, run the docker build locally for weblib and tag it as SNAPSHOT for testing with demo:
 ```
-docker build -f Dockerfile-weblib --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt --build-arg EXCLUDE_SMOOTH_LIB=Y . -t weblib:snapshot --no-cache --progress=plain
+docker build -f Dockerfile-weblib --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt . -t weblib:snapshot --no-cache --progress=plain
 ```
 **Note**: This step could go in the `build.yml` if there was a way to instruct services to depend on each other at BUILD time.  Currently `depends_on` only works at runtime (builds are parallel).  We also exclude the smoothness lib itself during the docker weblib snapshot build such that the version bundled with `demo.war` is used.   Wildfly Classloader precedence goes to modules installed in Wildfly over libs found inside the war.    
 
