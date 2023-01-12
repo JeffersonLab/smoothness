@@ -207,13 +207,13 @@ gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 ```
 **Note**: There is a [GitHub action](https://github.com/JeffersonLab/smoothness/actions/workflows/maven-publish.yml) for this to happen automatically. To run locally you'll need to configure credentials. See: [Gradle Publish Notes](https://gist.github.com/slominskir/5fcd5cf84182bf1542c07cbca953904a)
 
-3. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.
+3. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.  This is automated as a [GitHub Action](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish.yml) and should be done automatically on new release published.
 
 4. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).
 
 **DEMO**    
 
-1. Build and push Docker image for the demo `-f Dockerfile-demo`.  You must wait for weblib image to post on DockerHub else build on same host with already locally cached weblib image.
+1. Build and push Docker image for the demo `-f Dockerfile-demo`.  You must wait for weblib image to post on DockerHub else build on same host with already locally cached weblib image. This is automated as a [GitHub Action](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish-demo.yml) but must be manually invoked after the weblib image is published.
 2. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
 
 ## See Also
