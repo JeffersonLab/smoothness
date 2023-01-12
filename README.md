@@ -196,9 +196,8 @@ docker compose -f build.yml build demo --no-cache --progress=plain
 ...
 docker compose -f build.yml up
 ```
-4. Update Dockerfile-demo to use the upcoming new weblib image version.  Do this first before creating release else you'll have to create second release since we run Docker build from GitHub tag.
-5. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)). 
-
+4. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)). 
+5. Update Dockerfile-demo to use the new weblib image version and commit and push to GitHub.  Do this first before creating release else you'll have to create second release since we run Docker build from GitHub tag.
 
 **WEBLIB**
 1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).
