@@ -1,6 +1,3 @@
 services:
-  weblib:
-    image: slominskir/smoothness-weblib:3.8.0
-
   demo:
-    image: slominskir/smoothness-demo:3.8.0
+    image: slominskir/smoothness-demo:3.9.2
