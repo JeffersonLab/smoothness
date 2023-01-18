@@ -32,6 +32,14 @@ echo "Loading environment $1"
 . $1
 fi
 
+if [ ! -z "$COMMON_ENV_FILE" ] && [ -f "$COMMON_ENV_FILE" ]
+then
+echo "Loading common env: $COMMON_ENV_FILE"
+. $COMMON_ENV_FILE
+else
+echo "No common env"
+fi
+
 # Verify expected env set:
 for i in "${!VARIABLES[@]}"; do
   var=${VARIABLES[$i]}
