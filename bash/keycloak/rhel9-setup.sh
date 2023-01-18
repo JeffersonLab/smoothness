@@ -90,6 +90,7 @@ LimitNOFILE=102642
 PIDFile=/run/keycloak.pid
 ExecStart=${KEYCLOAK_USER_HOME}/current/bin/kc.sh start --optimized
 StandardOutput=null
+SuccessExitStatus=143
 [Install]
 WantedBy=multi-user.target
 EOF
