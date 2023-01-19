@@ -1,7 +1,6 @@
 #!/bin/bash
 
-FUNCTIONS=(remove_java_11
-           create_user_and_group
+FUNCTIONS=(create_user_and_group
            download
            unzip_and_chmod
            create_symbolic_links
