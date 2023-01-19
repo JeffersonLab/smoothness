@@ -1,8 +1,8 @@
 name: Publish to DockerHub (Demo)
 
 on:
-  release:
-    types: [published]
+#  release:
+#    types: [published]
   workflow_dispatch:
 
 jobs:
