@@ -13,8 +13,7 @@
     <jsp:body>
         <s:help-panel title="${title}">
             <ul>
-                <li><a href="https://google.com">Document 1</a></li>
-                <li><a href="https://jlab.org">Document 2</a></li>
+                <li><a href="https://github.com/JeffersonLab/smoothness">Smoothness Home</a></li>
             </ul>
         </s:help-panel>
     </jsp:body>         

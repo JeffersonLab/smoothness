@@ -23,7 +23,7 @@
         <a href="https://jlab.org">Jefferson Lab</a>
     </jsp:attribute>
     <jsp:attribute name="headerExtra">
-         <a href="https://github.com/JeffersonLab/bam">BAM</a> | <a href="https://accweb.acc.jlab.org/btm">BTM</a> | <a href="https://accweb.acc.jlab.org/cnm">CNM</a> | <a href="https://github.com/JeffersonLab/dtm">DTM</a> | <a href="https://accweb.acc.jlab.org/hco">SRM</a>
+         <a href="https://github.com/JeffersonLab/bam">BAM</a> | <a href="https://github.com/JeffersonLab/btm">BTM</a> | <a href="https://github.com/JeffersonLab/cnm">CNM</a> | <a href="https://github.com/JeffersonLab/dtm">DTM</a> | <a href="https://github.com/JeffersonLab/srm">SRM</a>
     </jsp:attribute>
     <jsp:attribute name="primaryNavigation">
         <ul>

@@ -43,27 +43,39 @@
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <p>
                 <a href="crumb-three">Even More Ahead!</a>
-            </p>              
-            <div class="message-box"><c:out value="${selectionMessage}"/></div>
+            </p>
+            <c:if test="${pageContext.request.userPrincipal ne null}">
+                <div class="message-box"><c:out value="${selectionMessage}"/></div>
+            </c:if>
             <div class="dialog-content">
-                <table class="data-table stripped-table">
-                    <thead>
-                        <tr>
-                            <th>Lastname</th>
-                            <th>Firstname</th>
-                            <th>Username</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${userList}" var="user">
+                <c:choose>
+                    <c:when test="${pageContext.request.userPrincipal ne null}">
+                        <table class="data-table stripped-table">
+                            <thead>
                             <tr>
-                                <td><c:out value="${user.lastname}"/></td>
-                                <td><c:out value="${user.firstname}"/></td>
-                                <td><c:out value="${user.username}"/></td>
+                                <th>Lastname</th>
+                                <th>Firstname</th>
+                                <th>Username</th>
                             </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${userList}" var="user">
+                                <tr>
+                                    <td><c:out value="${user.lastname}"/></td>
+                                    <td><c:out value="${user.firstname}"/></td>
+                                    <td><c:out value="${user.username}"/></td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:when>
+                    <c:otherwise>
+                        <c:url var="doLoginUrl" value="/sso">
+                            <c:param name="returnUrl" value="${pageContext.request.contextPath}/crumb-two"/>
+                        </c:url>
+                        <h3><a href="${doLoginUrl}">Login to view</a></h3>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <button id="previous-button" type="button" data-offset="${paginator.previousOffset}" value="Previous"${paginator.previous ? '' : ' disabled="disabled"'}>Previous</button>                        
             <button id="next-button" type="button" data-offset="${paginator.nextOffset}" value="Next"${paginator.next ? '' : ' disabled="disabled"'}>Next</button>                              
