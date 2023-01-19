@@ -89,8 +89,6 @@ then
   sysctl -w net.ipv4.ip_unprivileged_port_start=${WILDFLY_HTTPS_PORT} >> /etc/sysctl.conf
 fi
 
-mv ${WILDFLY_USER_HOME}/run.env ${WILDFLY_USER_HOME}/configuration/run.env
-
 cat > /etc/systemd/system/wildfly.service << EOF
 [Unit]
 Description=The WildFly Application Server
@@ -108,7 +106,6 @@ StandardOutput=null
 WantedBy=multi-user.target
 EOF
 systemctl enable wildfly
-systemctl start wildfly
 }
 
 create_log_file_cleanup_cron() {
