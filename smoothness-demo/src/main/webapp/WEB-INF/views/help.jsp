@@ -12,9 +12,7 @@
     </jsp:attribute>            
     <jsp:body>
         <s:help-panel title="${title}">
-            <ul>
-                <li><a href="https://github.com/JeffersonLab/smoothness">Smoothness Home</a></li>
-            </ul>
+
         </s:help-panel>
     </jsp:body>         
 </t:page>

@@ -30,8 +30,18 @@
         </c:if>
     </ul>
     <jsp:doBody var="bodyText"/>
+    <c:set var="docCsv" value="${env[initParam.appSpecificEnvPrefix.concat('_DOC_CSV')]}"/>
+    <c:if test="${not empty docCsv}">
+    <c:set var="docArray" value="${docCsv.split(',')}"/>
+    <h3>Documentation</h3>
+    <ul>
+        <c:forEach items="${docArray}" var="doc">
+            <c:set var="mtuple" value="${doc.split('\\\|')}"/>
+            <li><a href="${mtuple[0]}">${mtuple[1]}</a></li>
+        </c:forEach>
+    </ul>
+    </c:if>
     <c:if test="${not empty fn:trim(bodyText)}">
-        <h3>Documentation</h3>
         ${bodyText}
     </c:if>
     <c:choose>

@@ -31,6 +31,7 @@ services:
       DEMO_FEEDBACK_TO_ADDRESS_CSV: 'user1@example.com,user2@example.com'
       DEMO_CONTENT_CONTACT: 'bob@example.com'
       DEMO_TECHNICAL_CONTACT: 'larry@example.com'
+      DEMO_DOC_CSV: 'https://github.com/JeffersonLab/smoothness|Smoothness Home,https://jlab.org|JLAB Home'
       KEYCLOAK_REALM: 'test-realm'
       KEYCLOAK_RESOURCE: 'smoothness-demo'
       KEYCLOAK_SECRET: 'yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB'
