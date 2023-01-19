@@ -218,4 +218,7 @@ gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 
 ## See Also
 - [Beam authorization manager (BAM)](https://github.com/JeffersonLab/bam)
+- [Beam time manager (BTM)](https://github.com/JeffersonLab/btm)
+- [CEBAF nomenclature manager (CNM)](https://github.com/JeffersonLab/cnm)
 - [Down time manager (DTM)](https://github.com/JeffersonLab/dtm)
+- [System readiness manager (SRM)](https://github.com/JeffersonLab/srm)
