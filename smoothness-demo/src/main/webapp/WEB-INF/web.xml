@@ -87,6 +87,22 @@
         <auth-constraint>
             <role-name>smoothness-demo-admin</role-name>
         </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Enforce auth on feature pages</display-name>
+        <web-resource-collection>
+            <web-resource-name>Feature Pages</web-resource-name>
+            <url-pattern>/features/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>**</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
     </security-constraint>
     <login-config>
         <auth-method>OIDC</auth-method>
