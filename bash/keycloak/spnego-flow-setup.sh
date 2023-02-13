@@ -2,6 +2,7 @@
 
 FUNCTIONS=(login
            create_flow
+           order_execution
            add_execution
            delete_kerberos
            set_as_realm_default)
@@ -55,7 +56,9 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh config credentials --server "${KEYCLOAK_SERVER_URL
 create_flow() {
 ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/flows/browser/copy -r ${KEYCLOAK_REALM} \
 -s newName=${KEYCLOAK_ALIAS}
+}
 
+order_execution() {
 EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh get -r ${KEYCLOAK_REALM} authentication/flows/${KEYCLOAK_ALIAS}/executions | jq -r ".[] | select(.displayName == \"Identity Provider Redirector\") | .id")
 ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/executions/${EXECUTION_ID}/raise-priority -r ${KEYCLOAK_REALM}
 }
