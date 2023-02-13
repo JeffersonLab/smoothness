@@ -2,6 +2,8 @@
 
 FUNCTIONS=(login
            create_prioritized_idp_flow
+           add_conditional_spnego
+           delete_kerberos
            set_as_realm_default)
 
 VARIABLES=(KEYCLOAK_ADMIN
@@ -9,7 +11,8 @@ VARIABLES=(KEYCLOAK_ADMIN
            KEYCLOAK_HOME
            KEYCLOAK_ALIAS
            KEYCLOAK_REALM
-           KEYCLOAK_SERVER_URL)
+           KEYCLOAK_SERVER_URL
+           KEYCLOAK_WHITELIST_PATTERN)
 
 if [[ $# -eq 0 ]] ; then
     echo "Usage: $0 [var file] <optional function>"
@@ -55,6 +58,18 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/flows/browser/copy -r ${KEYC
 
 EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh get -r ace authentication/flows/${KEYCLOAK_ALIAS}/executions | jq -r ".[] | select(.displayName == \"Identity Provider Redirector\") | .id")
 ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/executions/${EXECUTION_ID}/raise-priority -r ${KEYCLOAK_REALM}
+}
+
+add_conditional_spnego() {
+EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/flows/${KEYCLOAK_ALIAS}/executions/execution -r ${KEYCLOAK_REALM} -s provider=conditional-auth-spnego -i)
+${KEYCLOAK_HOME}/bin/kcadm.sh update authentication/flows/${KEYCLOAK_ALIAS}/executions -r ${KEYCLOAK_REALM} -b '{"id":"'${EXECUTION_ID}'","requirement":"ALTERNATIVE"}'
+${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/executions/${EXECUTION_ID}/raise-priority -r ${KEYCLOAK_REALM}
+${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/executions/${EXECUTION_ID}/config -r ${KEYCLOAK_REALM} -b "{\"config\":{\"XForwardedForWhitelistPattern\":\"${KEYCLOAK_WHITELIST_PATTERN}\"},\"alias\":\"conditional_spnego_config\"}"
+}
+
+delete_kerberos() {
+EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh get -r ace authentication/flows/${KEYCLOAK_ALIAS}/executions | jq -r ".[] | select(.displayName == \"Kerberos\") | .id")
+${KEYCLOAK_HOME}/bin/kcadm.sh delete authentication/executions/${EXECUTION_ID} -r ${KEYCLOAK_REALM}
 }
 
 set_as_realm_default() {
