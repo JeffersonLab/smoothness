@@ -1,8 +1,8 @@
 #!/bin/bash
 
 FUNCTIONS=(login
-           create_prioritized_idp_flow
-           add_conditional_spnego
+           create_flow
+           add_execution
            delete_kerberos
            set_as_realm_default)
 
@@ -52,15 +52,15 @@ login() {
 ${KEYCLOAK_HOME}/bin/kcadm.sh config credentials --server "${KEYCLOAK_SERVER_URL}" --realm master --user "${KEYCLOAK_ADMIN}" --password "${KEYCLOAK_ADMIN_PASSWORD}"
 }
 
-create_prioritized_idp_flow() {
+create_flow() {
 ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/flows/browser/copy -r ${KEYCLOAK_REALM} \
 -s newName=${KEYCLOAK_ALIAS}
 
-EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh get -r ace authentication/flows/${KEYCLOAK_ALIAS}/executions | jq -r ".[] | select(.displayName == \"Identity Provider Redirector\") | .id")
+EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh get -r ${KEYCLOAK_REALM} authentication/flows/${KEYCLOAK_ALIAS}/executions | jq -r ".[] | select(.displayName == \"Identity Provider Redirector\") | .id")
 ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/executions/${EXECUTION_ID}/raise-priority -r ${KEYCLOAK_REALM}
 }
 
-add_conditional_spnego() {
+add_execution() {
 EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/flows/${KEYCLOAK_ALIAS}/executions/execution -r ${KEYCLOAK_REALM} -s provider=conditional-auth-spnego -i)
 ${KEYCLOAK_HOME}/bin/kcadm.sh update authentication/flows/${KEYCLOAK_ALIAS}/executions -r ${KEYCLOAK_REALM} -b '{"id":"'${EXECUTION_ID}'","requirement":"ALTERNATIVE"}'
 ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/executions/${EXECUTION_ID}/raise-priority -r ${KEYCLOAK_REALM}
@@ -68,7 +68,7 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create authentication/executions/${EXECUTION_ID}/c
 }
 
 delete_kerberos() {
-EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh get -r ace authentication/flows/${KEYCLOAK_ALIAS}/executions | jq -r ".[] | select(.displayName == \"Kerberos\") | .id")
+EXECUTION_ID=$(${KEYCLOAK_HOME}/bin/kcadm.sh get -r ${KEYCLOAK_REALM} authentication/flows/${KEYCLOAK_ALIAS}/executions | jq -r ".[] | select(.displayName == \"Kerberos\") | .id")
 ${KEYCLOAK_HOME}/bin/kcadm.sh delete authentication/executions/${EXECUTION_ID} -r ${KEYCLOAK_REALM}
 }
 
