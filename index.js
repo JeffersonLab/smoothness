@@ -10,9 +10,9 @@ function addToList(obj) {
   const li = document.createElement("li");
   const a1 = document.createElement("a");
   const a2 = document.createElement("a");
-  a1.href = obj.name + '/javadoc';
+  a1.href = obj.name + '/javadoc/';
   a1.innerText = 'javadoc';
-  a2.href = obj.name + '/tlddoc';
+  a2.href = obj.name + '/tlddoc/';
   a2.innerText = 'tlddoc';
   li.appendChild(document.createTextNode(obj.name + ' '));
   li.appendChild(a1);
