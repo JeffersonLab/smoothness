@@ -210,7 +210,7 @@ gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 
 3. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.  This is automated as a [GitHub Action](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish.yml) and should be done automatically on new release published.
 
-4. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).
+4. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).  This should occur automatically via [Publish to gh-pages](https://github.com/JeffersonLab/smoothness/actions/workflows/gh-pages-publish.yml) GitHub Action.
 5. Copy updated minified JS and CSS to any CDN as needed.
 
 **DEMO**    
