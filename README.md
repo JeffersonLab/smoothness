@@ -72,7 +72,7 @@ Check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) t
 ### Demo Install
 This application requires a Java 11+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).  Use the Docker Compose quickstart to automate the setup of the app, else manually:
 
-   1. Download [Wildfly 26.1.2](https://www.wildfly.org/downloads/) (or just pull it out of the Docker image config and all - see below)
+   1. Download [Wildfly 26.1.3](https://www.wildfly.org/downloads/) (or just pull it out of the Docker image config and all - see below)
    1. Download [demo.war](https://github.com/JeffersonLab/smoothness-demo/releases) and deploy it to Wildfly
    1. Configure Wildfly<sup>Note</sup> and start it
    1. Navigate your web browser to localhost:8080/smoothness-demo
