@@ -3,18 +3,26 @@ const url = 'https://api.github.com/repos/' + repo + '/contents/?ref=gh-pages';
 
 const list = document.getElementById('dirlist');
 
+function sortSemVer(arr, reverse = false) {
+    let semVerArr = arr.map(i => i.replace(/(\d+)/g, m => +m + 100000)).sort();
+    if (reverse)
+        semVerArr = semVerArr.reverse();
 
-function addToList(obj) {
-  //console.log('addToList', obj);
+    return semVerArr.map(i => i.replace(/(\d+)/g, m => +m - 100000));
+}
+
+
+function addToList(name) {
+  //console.log('addToList', name);
 
   const li = document.createElement("li");
   const a1 = document.createElement("a");
   const a2 = document.createElement("a");
-  a1.href = obj.name + '/javadoc/';
+  a1.href = name + '/javadoc/';
   a1.innerText = 'javadoc';
-  a2.href = obj.name + '/tlddoc/';
+  a2.href = name + '/tlddoc/';
   a2.innerText = 'tlddoc';
-  li.appendChild(document.createTextNode(obj.name + ' '));
+  li.appendChild(document.createTextNode(name + ' '));
   li.appendChild(a1);
   li.appendChild(document.createTextNode(' '));
   li.appendChild(a2);
@@ -37,10 +45,15 @@ async function fetchData() {
     });
 
     
-    dirs.sort((a, b) => a.name < b.name ? 1 : -1);
+    let names = dirs.map(i => i.name);
+
+    
+    //console.log(names);
+
+    sorted = sortSemVer(names, true);
 
 
-    dirs.forEach(addToList);    
+    sorted.forEach(addToList);    
     
 }
 
