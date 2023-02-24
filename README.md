@@ -77,7 +77,7 @@ This application requires a Java 11+ JVM and standard library to run, plus a Jav
    1. Configure Wildfly<sup>Note</sup> and start it
    1. Navigate your web browser to localhost:8080/smoothness-demo
 
-**Note**: The application requires [configuration](https://github.com/JeffersonLab/smoothness#configure) before running and an Oracle 21+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.
+**Note**: The application requires [configuration](https://github.com/JeffersonLab/smoothness#configure) before running and an Oracle 18+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.
 
 ## API
 [javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/)
