@@ -32,7 +32,7 @@ repositories {
 
 dependencies {
     // Smoothness setup should install this into Wildfly
-    compileOnly 'org.keycloak:keycloak-admin-client:20.0.2'
+    compileOnly 'org.keycloak:keycloak-admin-client:20.0.5'
 
     // Wildfly 26.1.2.Final provides:
     compileOnly 'javax:javaee-api:8.0.1',
