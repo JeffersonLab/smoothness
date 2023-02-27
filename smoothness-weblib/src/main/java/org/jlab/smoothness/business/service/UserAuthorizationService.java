@@ -1,6 +1,7 @@
 package org.jlab.smoothness.business.service;
 
 import org.jlab.smoothness.persistence.view.User;
+import org.jlab.smoothness.presentation.controller.Convert;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -9,8 +10,11 @@ import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 
+import javax.ejb.Schedule;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * User Authorization Service.
@@ -19,6 +23,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * cleared by either re-deploying the app, or via the clear cache HTTP endpoint.
  */
 public class UserAuthorizationService {
+    private static final Logger LOGGER = Logger.getLogger(
+            UserAuthorizationService.class.getName());
+
     private static UserAuthorizationService instance = null;
     private ConcurrentHashMap<String, List<User>> usersInRole = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, User> userFromUsername = new ConcurrentHashMap<>();
@@ -166,6 +173,10 @@ public class UserAuthorizationService {
      */
     public User getUserFromUsername(String username) {
 
+        if(username == null) {
+            return new User("", "", "", "");
+        }
+
         User user = userFromUsername.get(username);
 
         if(user == null) {
@@ -199,16 +210,17 @@ public class UserAuthorizationService {
     }
 
     private User lookupUserFromUsername(String username) {
-        User user = null;
+        User user = new User(username, "", "", "");
 
-        List<UserRepresentation> users = keycloak.realm(realm).users().search(username, 0, 1);
+        if(username != null) {
+            List<UserRepresentation> users = keycloak.realm(realm).users().search(username, 0, 1);
 
-        if(users != null && !users.isEmpty()) {
-            UserRepresentation rep = users.get(0);
-            user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName(), rep.getEmail());
-        } else {
-            //System.err.println("Could not find username: " + username);
-            user = new User(username, "", "", "");
+            if (users != null && !users.isEmpty()) {
+                UserRepresentation rep = users.get(0);
+                if (username.equals(rep.getUsername())) {
+                    user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName(), rep.getEmail());
+                }
+            }
         }
 
         return user;
