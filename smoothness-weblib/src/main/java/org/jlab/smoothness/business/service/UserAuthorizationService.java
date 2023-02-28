@@ -215,7 +215,7 @@ public class UserAuthorizationService {
         User user = new User(username, "", "", "");
 
         if(username != null) {
-            List<UserRepresentation> users = keycloak.realm(realm).users().search(username, 0, 1);
+            List<UserRepresentation> users = keycloak.realm(realm).users().search(username, true);
 
             if (users != null && !users.isEmpty()) {
                 UserRepresentation rep = users.get(0);
