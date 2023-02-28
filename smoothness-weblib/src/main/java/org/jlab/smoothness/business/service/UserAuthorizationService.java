@@ -11,6 +11,7 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 
 import javax.ejb.Schedule;
+import javax.ws.rs.NotFoundException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -194,17 +195,21 @@ public class UserAuthorizationService {
 
         RolesResource roles = keycloak.realm(realm).roles();
 
-        RoleResource roleResource = roles.get(role);
+        try {
+            RoleResource roleResource = roles.get(role);
 
-        Set<UserRepresentation> members = roleResource.getRoleUserMembers();
+            Set<UserRepresentation> members = roleResource.getRoleUserMembers();
 
-        for(UserRepresentation rep: members) {
-            User user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName(), rep.getEmail());
+            for (UserRepresentation rep : members) {
+                User user = new User(rep.getUsername(), rep.getFirstName(), rep.getLastName(), rep.getEmail());
 
-            users.add(user);
+                users.add(user);
+            }
+
+            users.sort(Comparator.comparing(User::getLastname));
+        } catch (NotFoundException e) {
+            LOGGER.log(Level.INFO, "Role not found in Keycloak: " + role);
         }
-
-        users.sort(Comparator.comparing(User::getLastname));
 
         return Collections.unmodifiableList(users);
     }
