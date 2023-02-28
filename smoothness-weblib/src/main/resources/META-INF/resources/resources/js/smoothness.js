@@ -81,7 +81,7 @@ jlab.doAjaxJsonGetRequest = function (url, data, quiet) {
         dataType: "json"
     });
 
-    promise.error(function (xhr, textStatus) {
+    promise.fail(function (xhr, textStatus) {
         var json;
 
         try {
@@ -144,7 +144,7 @@ jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
         }
     });
 
-    promise.error(function (xhr, textStatus) {
+    promise.fail(function (xhr, textStatus) {
         var json, html;
 
         try {
@@ -948,7 +948,7 @@ jlab.initDateRange = function() {
         jlab.setupDateRange();
     });
 
-    promise.error(function(json) {
+    promise.fail(function(json) {
         jlab.setupDateRange();
     });
 
