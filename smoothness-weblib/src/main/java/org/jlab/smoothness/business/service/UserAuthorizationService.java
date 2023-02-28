@@ -1,7 +1,6 @@
 package org.jlab.smoothness.business.service;
 
 import org.jlab.smoothness.persistence.view.User;
-import org.jlab.smoothness.presentation.controller.Convert;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -10,7 +9,6 @@ import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 
-import javax.ejb.Schedule;
 import javax.ws.rs.NotFoundException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +17,6 @@ import java.util.logging.Logger;
 
 /**
  * User Authorization Service.
- *
  * This class queries Keycloak for user data and caches it in memory to avoid costly lookups.  The cache can be
  * cleared by either re-deploying the app, or via the clear cache HTTP endpoint.
  */
@@ -28,12 +25,12 @@ public class UserAuthorizationService {
             UserAuthorizationService.class.getName());
 
     private static UserAuthorizationService instance = null;
-    private ConcurrentHashMap<String, List<User>> usersInRole = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, User> userFromUsername = new ConcurrentHashMap<>();
-    private Keycloak keycloak;
-    private String realm;
-    private String resource;
-    private String secret;
+    private final ConcurrentHashMap<String, List<User>> usersInRole = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, User> userFromUsername = new ConcurrentHashMap<>();
+    private final Keycloak keycloak;
+    private final String realm;
+    private final String resource;
+    private final String secret;
 
     private UserAuthorizationService() {
         // Private constructor; must use factory method

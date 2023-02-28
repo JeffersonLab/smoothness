@@ -177,7 +177,7 @@ public final class IOUtil {
         String value = null;
 
         if (b != null) {
-            value = (b == true ? "Y" : "N");
+            value = (b ? "Y" : "N");
         }
 
         return value;

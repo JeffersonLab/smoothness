@@ -35,7 +35,7 @@ public class ParamBuilder {
     public void add(String key, Object[] array) {
         List<String> list = new ArrayList<>();
 
-        if (array != null && array.length > 0) {
+        if (array != null) {
             for (Object o : array) {
                 if(o != null) {
                     list.add(o.toString());

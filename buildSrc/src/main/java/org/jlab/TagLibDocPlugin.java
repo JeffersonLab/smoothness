@@ -37,9 +37,7 @@ public class TagLibDocPlugin implements Plugin<Project> {
             if (i > 0 && i < name.length() - 1) {
                 String desiredExtension = name.substring(i + 1).
                         toLowerCase(Locale.ENGLISH);
-                if (desiredExtension.equals("tld")) {
-                    return true;
-                }
+                return desiredExtension.equals("tld");
             }
 
             return false;
