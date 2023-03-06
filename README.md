@@ -101,6 +101,8 @@ Create a `.env` file for your environment and call the bash scripts [server-setu
 | EMAIL_PORT          | Port for the mail/jlab resource                              |
 | ORACLE_DRIVER_PATH  | Path to ORACLE Driver (see Dockerfile-weblib for docker env) |
 | WILDFLY_HOME        | Path to Wildfly home dir                                     | 
+| WILDFLY_PASS        | Admin password (if empty no admin user is created)           |
+| WILDFLY_USER        | Admin username (if empty no admin user is created)           |
 
 
 <b>App Setup (1 or more):</b>
