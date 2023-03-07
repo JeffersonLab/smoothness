@@ -89,8 +89,9 @@ This application requires a Java 11+ JVM and standard library to run, plus a Jav
 #### Configtime
 Wildfly must be pre-configured before the first deployment of the app.  The scripts located in the `bash` directory are used with the following environment variables:
 
-Create a `.env` file for your environment and call the bash scripts [server-setup.sh](https://github.com/JeffersonLab/smoothness/blob/main/bash/wildfly/server-setup.sh) (example: [docker config](https://github.com/JeffersonLab/smoothness/blob/main/docker/weblib/docker-server.env)) and [app-setup.sh](https://github.com/JeffersonLab/smoothness/blob/main/bash/wildfly/app-setup.sh) (example: [demo docker config](https://github.com/JeffersonLab/smoothness/blob/main/docker/demo/smoothness-demo-setup.env)) to do the initial Wildfly configuration.   Bash can be executed on Linux, Windows, and Mac with some perseverance.  See [bash setup scripts](https://github.com/JeffersonLab/smoothness/tree/main/bash).
+Create a `.env` file for your environment and call the bash scripts [server-setup.sh](https://github.com/JeffersonLab/smoothness/blob/main/bash/wildfly/server-setup.sh) (example: [docker config](https://github.com/JeffersonLab/smoothness/blob/main/docker/weblib/docker-server.env)) and [app-setup.sh](https://github.com/JeffersonLab/smoothness/blob/main/bash/wildfly/app-setup.sh) (example: [demo docker config](https://github.com/JeffersonLab/smoothness/blob/main/docker/demo/smoothness-demo-setup.env)) to do the initial Wildfly configuration.   Bash can be executed on Linux, Windows (WSL2), and Mac with some perseverance.  See [bash setup scripts](https://github.com/JeffersonLab/smoothness/tree/main/bash).
 
+**Note**: If you are using Windows and WSL2 you may need to run dos2unix on .env and .sh files
 
 <b>Server Setup (once):</b>
 
