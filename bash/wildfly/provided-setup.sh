@@ -83,7 +83,7 @@ do
 
   add_module
 
-  if [[ ]]; then
+  if [[ "global" = "${SCOPE}" ]]; then
     MODULE_NAME="${DEP_NAME}"
     set_global
   fi
