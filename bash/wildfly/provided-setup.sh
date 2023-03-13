@@ -32,7 +32,7 @@ done
 
 WILDFLY_CLI_PATH=${WILDFLY_APP_HOME}/bin/jboss-cli.sh
 
-enable_global() {
+set_global() {
 ${WILDFLY_CLI_PATH} -c "/subsystem=ee/:list-add(name=global-modules,value={\"name\"=>\"${MODULE_NAME}\",\"slot\"=>\"main\"})"
 }
 
@@ -105,7 +105,7 @@ for LINE in $(echo "${GLOBAL_ENABLE_LIBS}")
 do
   echo "${LINE}"
   MODULE_NAME=${LINE}
-  enable_global
+  set_global
 done
 unset IFS
 }
