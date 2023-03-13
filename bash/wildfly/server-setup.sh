@@ -183,8 +183,8 @@ ${SCRIPT_HOME}/provided-setup.sh "${ENV_FILE}"
 }
 
 config_provided() {
-if [[ -z "${GLOBAL_ADD_LIBS}" ]]; then
-  echo "Skipping config of provided dependencies because GLOBAL_ADD_LIBS undefined"
+if [[ -z "${ADD_JBOSS_MODULES}" ]]; then
+  echo "Skipping config of provided dependencies because ADD_JBOSS_MODULES undefined"
   return 0
 fi
 

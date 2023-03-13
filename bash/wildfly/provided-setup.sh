@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FUNCTIONS=(add_globals
+FUNCTIONS=(add_modules
            enable_globals)
 
 VARIABLES=(WILDFLY_APP_HOME)
@@ -36,7 +36,7 @@ enable_global() {
 ${WILDFLY_CLI_PATH} -c "/subsystem=ee/:list-add(name=global-modules,value={\"name\"=>\"${MODULE_NAME}\",\"slot\"=>\"main\"})"
 }
 
-add_global() {
+add_module() {
 
 cd /tmp
 
@@ -55,36 +55,47 @@ LOCAL_RESOURCES_CSV=`echo "${LOCAL_RESOURCES[*]}"`
 ${WILDFLY_CLI_PATH} -c <<EOF
 batch
 module add --name=${DEP_NAME} --resource-delimiter=, --resources=${LOCAL_RESOURCES_CSV} --dependencies=${DEPENDENCIES_CSV}
-/subsystem=ee/:list-add(name=global-modules,value={"name"=>"${DEP_NAME}","slot"=>"main"})
 run-batch
 EOF
 }
 
-add_globals() {
-  if [[ -z "${GLOBAL_ADD_LIBS}" ]]; then
-    echo "Skipping add_globals because GLOBAL_ADD_LIBS undefined"
+add_modules() {
+  if [[ -z "${ADD_JBOSS_MODULES}" ]]; then
+    echo "Skipping add_globals because ADD_JBOSS_MODULES undefined"
     return 0
   fi
 
 IFS=$'\n'
-for LINE in $(echo "${GLOBAL_ADD_LIBS}")
+for LINE in $(echo "${ADD_JBOSS_MODULES}")
 do
   echo "${LINE}"
   IFS="|"
   read -a fields <<<"${LINE}"
-  DEP_NAME=${fields[0]}
-  RESOURCES_CSV=${fields[1]}
-  DEPENDENCIES_CSV=${fields[2]}
+  SCOPE=${fields[0]}
+  DEP_NAME=${fields[1]}
+  RESOURCES_CSV=${fields[2]}
+  DEPENDENCIES_CSV=${fields[3]}
 
+  echo "SCOPE: ${SCOPE}"
   echo "DEP_NAME: ${DEP_NAME}"
   echo "RESOURCES_CSV: ${RESOURCES_CSV}"
   echo "DEPENDENCIES_CSV: ${DEPENDENCIES_CSV}"
 
-  add_global
+  add_module
+
+  if [[ ]]; then
+    MODULE_NAME="${DEP_NAME}"
+    set_global
+  fi
 done
 unset IFS
 }
 
+# It's possible that Wildfly already includes a lib you want and you simply need to enable it.
+# This is rare however, because Wildfly is pretty aggressive of implicitly enabling libs it has
+# and actually you may find you need to manually exclude libs that conflict with app libs.
+# You can always use jboss-deployment-structure.xml or a Manifest to add instead of making global.
+# See: https://docs.wildfly.org/26/Developer_Guide.html
 enable_globals() {
   if [[ -z "${GLOBAL_ENABLE_LIBS}" ]]; then
     echo "Skipping enable_globals because GLOBAL_ENABLE_LIBS undefined"
