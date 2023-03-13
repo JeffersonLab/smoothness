@@ -53,9 +53,7 @@ IFS=","
 LOCAL_RESOURCES_CSV=`echo "${LOCAL_RESOURCES[*]}"`
 
 ${WILDFLY_CLI_PATH} -c <<EOF
-batch
 module add --name=${DEP_NAME} --resource-delimiter=, --resources=${LOCAL_RESOURCES_CSV} --dependencies=${DEPENDENCIES_CSV}
-run-batch
 EOF
 }
 
@@ -120,6 +118,7 @@ then
   $2
 else
 for i in "${!FUNCTIONS[@]}"; do
+  echo ""
   echo "------------------------"
   echo "${FUNCTIONS[$i]}"
   echo "------------------------"
