@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author ryans
  */
-@WebServlet(name = "ExportExcel", urlPatterns = {"/calendar.xlsx"})
+@WebServlet(name = "ExportExcel", urlPatterns = {"/features/export.xlsx"})
 public class ExportExcel extends HttpServlet {
 
     @EJB
@@ -39,7 +39,7 @@ public class ExportExcel extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("content-disposition", "attachment;filename=\"calendar.xlsx\"");
+        response.setHeader("content-disposition", "attachment;filename=\"export.xlsx\"");
 
         List<Movie> movieList = movieService.findAllDefaultOrder();
 

@@ -36,6 +36,7 @@
                     <ul id="export-menu">
                         <li id="image-menu-item">Image</li>
                         <li id="print-menu-item">Print</li>
+                        <li id="excel-menu-item">Excel</li>
                     </ul>
                 </div>
             </div>
@@ -93,5 +94,8 @@
         <div id="exit-fullscreen-panel">
             <button id="exit-fullscreen-button">Exit Full Screen</button>
         </div>
+        <form id="excel-form" method="get" action="${pageContext.request.contextPath}/features/export.xlsx">
+            <button id="excel" type="submit" style="display: none;">Excel</button>
+        </form>
     </jsp:body>         
 </t:features-page>

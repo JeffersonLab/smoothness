@@ -109,3 +109,7 @@ $(".date-time-field").datetimepicker({
 $(".date-field").datepicker({
     dateFormat: "dd-M-yy"
 });
+
+$(document).on("click", "#excel-menu-item", function() {
+    $("#excel").click();
+});
