@@ -1,4 +1,4 @@
-# smoothness [![CI](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yml/badge.svg)](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yml) [![Docker (weblib)](https://img.shields.io/docker/v/slominskir/smoothness-weblib?sort=semver&label=DockerHub+weblib)](https://hub.docker.com/r/slominskir/smoothness-weblib) [![Docker (demo)](https://img.shields.io/docker/v/slominskir/smoothness-demo?sort=semver&label=DockerHub+demo)](https://hub.docker.com/r/slominskir/smoothness-demo) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/smoothness-weblib)](https://repo1.maven.org/maven2/org/jlab/smoothness-weblib/) 
+# smoothness [![CI](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yml/badge.svg)](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yml) [![Docker (demo)](https://img.shields.io/docker/v/jeffersonlab/smoothness-demo?sort=semver&label=DockerHub+demo)](https://hub.docker.com/r/jeffersonlab/smoothness-demo) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/smoothness-weblib)](https://repo1.maven.org/maven2/org/jlab/smoothness-weblib/) 
 A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template and [JSP tag library](https://docs.oracle.com/javaee/5/tutorial/doc/bnama.html) based on the [JQuery UI Smoothness](https://jqueryui.com/themeroller/) theme.  The included demo web application showcases the template layout.
 
 ![Screenshot](https://github.com/JeffersonLab/smoothness/raw/main/smoothness-demo/Screenshot.png?raw=true "Screenshot")
@@ -185,41 +185,29 @@ gradlew build
 **See**: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
 
 ## Release
-Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Further, both projects have two artifacts: a Java distributable (demo war and weblib jar) and a Docker image.  The Docker build is complicated by fact that dependencies generally should be installed directly into Wildfly as opposed to being bundled inside a war file, but the smoothness weblib itself should not and must be packaged inside the war file of each app using the lib.  This is necessary as the smoothness weblib is [incompatible as a JBoss Module](https://github.com/JeffersonLab/smoothness/issues/4), plus this bundling makes development of the lib easier as it allows iteration without constantly updating weblib code installed in Wildfly.   Since the demo has a dependency on the weblib, either all artifacts needed for both subprojects need to tagged together, else two separate releases would be needed as a release corresponds to a git tag and Docker images are built using the Git tag context.  We attempt to avoid needing two tags per release by updating the demo image reference to point to the upcoming release before it even exists.
+Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Further, both projects have two artifacts: a Java distributable (demo war and weblib jar), plus there is a demo Docker image.
+
+Dependencies (libraries) generally should be installed directly into Wildfly as opposed to being bundled inside a war file, but the smoothness weblib itself should not and must be packaged inside the war file of each app using the lib.  This is necessary as the smoothness weblib is [incompatible as a JBoss Module](https://github.com/JeffersonLab/smoothness/issues/4), plus this bundling makes development of the lib easier as it allows iteration without constantly updating weblib code installed in Wildfly.   Since the demo has a dependency on the weblib, either all artifacts needed for both subprojects need to tagged together, else two separate releases would be needed as a release corresponds to a git tag and Docker images are built using the Git tag context.  We use a shared release.
 
 1. During development the build is run locally to ensure everything is working.   You can use deps.yml Docker Compose in concert with a local Wildfly instance to quickly iterate.
-2. To confirm the new Docker images are good, run the docker build locally for weblib and tag it as SNAPSHOT for testing with demo:
-```
-docker build -f Dockerfile-weblib --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt . -t weblib:snapshot --no-cache --progress=plain
-```
-**Note**: This step could go in the `build.yml` if there was a way to instruct services to depend on each other at BUILD time.  Currently `depends_on` only works at runtime (builds are parallel).    
-
-3. Build the "build" compose project that leverages the SNAPSHOT weblib and test it before moving forward:
+2. To confirm the new demo Docker image is good, run the docker build and test locally:
 ```
 docker compose -f build.yml build demo --no-cache --progress=plain
 ...
 docker compose -f build.yml up
 ```
-4. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)). 
-5. Update Dockerfile-demo to use the new weblib image version and commit and push to GitHub.  Do this first before creating release else you'll have to create second release since we run Docker build from GitHub tag.
-
-**WEBLIB**
-1. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).  Attach the smoothness-demo.war.
-2. Publish new artifact on maven central with:
+3. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
+4. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).  Attach the smoothness-demo.war.
+5. Publish new artifact on maven central with:
 ```
 gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 ```
 **Note**: There is a [GitHub action](https://github.com/JeffersonLab/smoothness/actions/workflows/maven-publish.yml) for this to happen automatically. To run locally you'll need to configure credentials. See: [Gradle Publish Notes](https://gist.github.com/slominskir/5fcd5cf84182bf1542c07cbca953904a)
 
-3. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag).  For the weblib so use `-f Dockerfile-weblib`.  This time we use the github tagged context instead of local `.`.  This is automated as a [GitHub Action](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish.yml) and should be done automatically on new release published.
-
-4. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).  This should occur automatically via [Publish to gh-pages](https://github.com/JeffersonLab/smoothness/actions/workflows/gh-pages-publish.yml) GitHub Action.
-5. Copy updated minified JS and CSS to any CDN as needed.
-
-**DEMO**    
-
-1. Build and push Docker image for the demo `-f Dockerfile-demo`.  You must wait for weblib image to post on DockerHub else build on same host with already locally cached weblib image. This is automated as a [GitHub Action](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish-demo.yml) but must be manually invoked after the weblib image is published.
-2. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
+5. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag) for the demo.  This time we use the github tagged context instead of local `.`.  This is automated as a [GitHub Action](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish.yml) and should be done automatically on new release published.
+6. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).  This should occur automatically via [Publish to gh-pages](https://github.com/JeffersonLab/smoothness/actions/workflows/gh-pages-publish.yml) GitHub Action.
+7. Copy updated minified JS and CSS to any CDN as needed.
+8. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
 
 ## See Also
 - [Beam authorization manager (BAM)](https://github.com/JeffersonLab/bam)

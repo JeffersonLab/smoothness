@@ -1,5 +1,5 @@
 ARG BUILD_IMAGE=gradle:7.4-jdk17
-ARG RUN_IMAGE=slominskir/smoothness-weblib:3.13.0
+ARG RUN_IMAGE=jeffersonlab/wildfly:1.0.0
 
 ################## Stage 0
 FROM ${BUILD_IMAGE} as builder
@@ -18,6 +18,13 @@ RUN cd /app && gradle build -x test --no-watch-fs $OPTIONAL_CERT_ARG
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
 COPY --from=builder /app/docker/demo/smoothness-demo-setup.env /
-RUN /app-setup.sh /smoothness-demo-setup.env \
-        && rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history
+USER root
+RUN /server-setup.sh /smoothness-demo-setup.env wildfly_start_and_wait \
+     && /app-setup.sh /smoothness-demo-setup.env config_keycloak_client \
+     && /app-setup.sh /smoothness-demo-setup.env config_oracle_client \
+     && /server-setup.sh /smoothness-demo-setup.env config_email \
+     && /server-setup.sh /smoothness-demo-setup.env wildfly_reload \
+     && /server-setup.sh /smoothness-demo-setup.env wildfly_stop \
+     && rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history \
+USER jboss:jboss
 COPY --from=builder /app/smoothness-demo/build/libs/* /opt/jboss/wildfly/standalone/deployments

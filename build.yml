@@ -27,8 +27,7 @@ services:
       service: demo
     build:
       context: .
-      dockerfile: Dockerfile-demo
+      dockerfile: Dockerfile
       args:
         - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
-        - RUN_IMAGE=weblib:snapshot
     pull_policy: never
