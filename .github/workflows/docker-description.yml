@@ -18,5 +18,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: jeffersonlab/${{ github.event.repository.name }}
+          repository: jeffersonlab/${{ github.event.repository.name }}-demo
           short-description: ${{ github.event.repository.description }}
