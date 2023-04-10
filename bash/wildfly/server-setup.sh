@@ -95,6 +95,15 @@ run-batch
 EOF
 }
 
+apply_elytron_patch() {
+if [[ -z "${APPLY_ELYTRON_PATCH}}" ]]; then
+  echo "Skipping elytron patch because APPLY_ELYTRON_PATCH undefined"
+  return 0
+fi
+# https://github.com/slominskir/wildfly-elytron/releases/tag/v1.19.1.Patch1
+wget -O "${WILDFLY_APP_HOME}/modules/system/layers/base/org/wildfly/security/elytron-http-oidc/main/wildfly-elytron-http-oidc-1.19.1.Final.jar" https://github.com/slominskir/wildfly-elytron/releases/download/v1.19.1.Patch1/wildfly-elytron-http-oidc-1.19.1.Final.jar
+}
+
 config_admin_user() {
 ${WILDFLY_APP_HOME}/bin/add-user.sh "${WILDFLY_USER}" "${WILDFLY_PASS}"
 }
