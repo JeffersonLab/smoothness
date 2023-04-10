@@ -1,6 +1,7 @@
 #!/bin/bash
 
-FUNCTIONS=(wildfly_start_and_wait
+FUNCTIONS=(apply_elytron_patch
+           wildfly_start_and_wait
            config_oracle_driver
            config_access_log
            config_admin_user
