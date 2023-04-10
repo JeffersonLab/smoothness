@@ -35,10 +35,10 @@ public class UserAuthorizationService {
     private UserAuthorizationService() {
         // Private constructor; must use factory method
 
-        String keycloakServerUrl = System.getenv("KEYCLOAK_SERVER_URL");
+        String keycloakServerUrl = System.getenv("KEYCLOAK_BACKEND_SERVER_URL");
 
         if(keycloakServerUrl == null) {
-            throw new RuntimeException("KEYCLOAK_SERVER_URL env required");
+            throw new RuntimeException("KEYCLOAK_BACKEND_SERVER_URL env required");
         }
 
        realm = System.getenv("KEYCLOAK_REALM");

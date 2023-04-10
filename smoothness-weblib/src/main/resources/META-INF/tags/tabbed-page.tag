@@ -64,7 +64,7 @@
                             </form>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="absHostUrl" value="${'https://'.concat(env['PROXY_SERVER'])}"/>
+                            <c:set var="absHostUrl" value="${env['FRONTEND_SERVER_URL']}"/>
                             <c:url value="/sso" var="loginUrl">
                                 <c:param name="returnUrl" value="${absHostUrl.concat(domainRelativeReturnUrl)}"/>
                             </c:url>
@@ -137,20 +137,20 @@
                 <script src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/smoothness.js"></script>
             </c:otherwise>
         </c:choose>
-        <c:url var="iframeLoginUrl" value="https://${env['KEYCLOAK_SERVER_FRONTEND']}/auth/realms/${env['KEYCLOAK_REALM']}/protocol/openid-connect/auth">
+        <c:url var="iframeLoginUrl" value="${env['KEYCLOAK_FRONTEND_SERVER_URL']}/auth/realms/${env['KEYCLOAK_REALM']}/protocol/openid-connect/auth">
             <c:param name="client_id" value="account"/>
             <c:param name="kc_idp_hint" value="${env['KEYCLOAK_HEADLESS_IDP']}"/>
             <c:param name="response_type" value="code"/>
-            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_SERVER_FRONTEND']}/auth/realms/${env['KEYCLOAK_REALM']}/account/"/>
+            <c:param name="redirect_uri" value="${env['KEYCLOAK_FRONTEND_SERVER_URL']}/auth/realms/${env['KEYCLOAK_REALM']}/account/"/>
         </c:url>
-        <c:url var="suLogoutUrl" value="https://${env['KEYCLOAK_SERVER_FRONTEND']}/auth/realms/${env['KEYCLOAK_REALM']}/protocol/openid-connect/logout">
-            <c:param name="redirect_uri" value="https://${env['KEYCLOAK_SERVER_FRONTEND']}/auth/realms/${env['KEYCLOAK_REALM']}/account/"/>
+        <c:url var="suLogoutUrl" value="${env['KEYCLOAK_FRONTEND_SERVER_URL']}/auth/realms/${env['KEYCLOAK_REALM']}/protocol/openid-connect/logout">
+            <c:param name="redirect_uri" value="${env['KEYCLOAK_FRONTEND_SERVER_URL']}/auth/realms/${env['KEYCLOAK_REALM']}/account/"/>
         </c:url>
         <script type="text/javascript">
             var jlab = jlab || {};
             jlab.contextPath = '${pageContext.request.contextPath}';
-            jlab.logbookServer = '${env["LOGBOOK_SERVER"]}';
-            jlab.keycloakServer = '${env["KEYCLOAK_SERVER_FRONTEND"]}';
+            jlab.logbookServerUrl = '${env["LOGBOOK_SERVER_URL"]}';
+            jlab.keycloakServerUrl = '${env["KEYCLOAK_FRONTEND_SERVER_URL"]}';
             jlab.iframeLoginUrl = '${empty env['KEYCLOAK_HEADLESS_IDP'] ? '' : iframeLoginUrl}';
             jlab.suLogoutUrl = '${suLogoutUrl}';
             jlab.runUrl = '${env["JLAB_RUN_URL"]}';
