@@ -17,14 +17,14 @@ RUN cd /app && gradle build -x test --no-watch-fs $OPTIONAL_CERT_ARG
 
 ################## Stage 1
 FROM ${RUN_IMAGE} as runner
-COPY --from=builder /app/docker/demo/smoothness-demo-setup.env /
+COPY --from=builder /app/docker/app/app-setup.env /
 USER root
-RUN /server-setup.sh /smoothness-demo-setup.env wildfly_start_and_wait \
-     && /app-setup.sh /smoothness-demo-setup.env config_keycloak_client \
-     && /app-setup.sh /smoothness-demo-setup.env config_oracle_client \
-     && /server-setup.sh /smoothness-demo-setup.env config_email \
-     && /server-setup.sh /smoothness-demo-setup.env wildfly_reload \
-     && /server-setup.sh /smoothness-demo-setup.env wildfly_stop \
+RUN /server-setup.sh /app-setup.env wildfly_start_and_wait \
+     && /app-setup.sh /app-setup.env config_keycloak_client \
+     && /app-setup.sh /app-setup.env config_oracle_client \
+     && /server-setup.sh /app-setup.env config_email \
+     && /server-setup.sh /app-setup.env wildfly_reload \
+     && /server-setup.sh /app-setup.env wildfly_stop \
      && rm -rf /opt/jboss/wildfly/standalone/configuration/standalone_xml_history \
 USER jboss:jboss
 COPY --from=builder /app/smoothness-demo/build/libs/* /opt/jboss/wildfly/standalone/deployments
