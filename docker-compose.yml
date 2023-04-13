@@ -35,6 +35,7 @@ services:
       KEYCLOAK_REALM: 'test-realm'
       KEYCLOAK_RESOURCE: 'smoothness-demo'
       KEYCLOAK_SECRET: 'yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB'
+      KEYCLOAK_FRONTEND_SERVER_URL: 'http://localhost:8081'
       KEYCLOAK_BACKEND_SERVER_URL: 'http://keycloak:8080'
       LOGBOOK_SERVER_URL: 'https://logbooks.jlab.org'
       ORACLE_DATASOURCE: 'smoothness'
