@@ -56,6 +56,7 @@
                                 <th>Lastname</th>
                                 <th>Firstname</th>
                                 <th>Username</th>
+                                <th>Formatted</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -64,6 +65,7 @@
                                     <td><c:out value="${user.lastname}"/></td>
                                     <td><c:out value="${user.firstname}"/></td>
                                     <td><c:out value="${user.username}"/></td>
+                                    <td><c:out value="${s:formatUser(user)}"/></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
