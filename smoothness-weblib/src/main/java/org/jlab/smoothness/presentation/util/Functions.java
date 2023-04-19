@@ -1,6 +1,8 @@
 package org.jlab.smoothness.presentation.util;
 
+import org.jlab.smoothness.business.service.UserAuthorizationService;
 import org.jlab.smoothness.business.util.TimeUtil;
+import org.jlab.smoothness.persistence.view.User;
 
 /**
  * Utility functions.
@@ -69,5 +71,61 @@ public final class Functions {
      */
     public static String getFriendlyDateTimePattern() {
         return TimeUtil.getFriendlyDateTimePattern();
+    }
+
+    /**
+     * Obtain a User from a username.
+     *
+     * @param username The username
+     * @return The User
+     */
+    public static User lookupUserByUsername(String username) {
+        UserAuthorizationService auth = UserAuthorizationService.getInstance();
+
+        return auth.getUserFromUsername(username);
+    }
+
+    /**
+     * Format a user by username.  A Smoothness standard format.
+     *
+     * @param username The username
+     * @return The formatted string
+     */
+    public static String formatUsername(String username) {
+        User user = lookupUserByUsername(username);
+
+        if(user != null) {
+            return formatUser(user);
+        } else {
+            return username;
+        }
+    }
+
+    /**
+     * Format a user by User object.   A Smoothness standard format.
+     *
+     * @param user The User
+     * @return The formatted string
+     */
+    public static String formatUser(User user) {
+        StringBuilder builder = new StringBuilder();
+
+        if (user != null && user.getUsername() != null && !user.getUsername().isEmpty()) {
+            if(user.getFirstname() == null || user.getLastname() == null ||
+                    user.getFirstname().isEmpty() || user.getLastname().isEmpty()) {
+                builder.append("(");
+                builder.append(user.getUsername());
+                builder.append(")");
+            } else {
+                builder.append(user.getLastname());
+                builder.append(", ");
+                builder.append(user.getFirstname());
+                builder.append(" (");
+                builder.append(user.getUsername());
+                builder.append(")");
+            }
+        }
+
+        return builder.toString();
     }
 }

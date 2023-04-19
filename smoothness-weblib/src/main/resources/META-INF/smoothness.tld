@@ -63,4 +63,19 @@
         <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
         <function-signature>java.lang.String getFriendlyDatePattern()</function-signature>
     </function>
+    <function>
+        <name>lookupUserByUsername</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>org.jlab.smoothness.persistence.view.User lookupUserByUsername(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>formatUsername</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>java.lang.String formatUsername(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>formatUser</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>java.lang.String formatUser(org.jlab.smoothness.persistence.view.User)</function-signature>
+    </function>
 </taglib>
