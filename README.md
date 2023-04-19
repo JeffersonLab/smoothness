@@ -72,12 +72,11 @@ Check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) t
 ### Demo Install
 This application requires a Java 11+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).  Use the Docker Compose quickstart to automate the setup of the app, else manually:
 
-   1. Download [Wildfly 26.1.3](https://www.wildfly.org/downloads/) (or just pull it out of the Docker image config and all - see below)
-   1. Download [demo.war](https://github.com/JeffersonLab/smoothness-demo/releases) and deploy it to Wildfly
-   1. Configure Wildfly<sup>Note</sup> and start it
-   1. Navigate your web browser to localhost:8080/smoothness-demo
-
-**Note**: The application requires [configuration](https://github.com/JeffersonLab/smoothness#configure) before running and an Oracle 18+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/docker/oracle/setup) installed.
+1. Install service [dependencies](https://github.com/JeffersonLab/smoothness/blob/main/deps.yml)
+2. Download [Wildfly 26.1.3](https://www.wildfly.org/downloads/)
+3. [Configure](https://github.com/JeffersonLab/smoothness#configure) Wildfly and start it
+4. Download [demo.war](https://github.com/JeffersonLab/smoothness-demo/releases) and deploy it to Wildfly
+5. Navigate your web browser to [localhost:8080/smoothness-demo](http://localhost:8080/smoothness-demo)
 
 ## API
 [javadocs and tlddocs](https://jeffersonlab.github.io/smoothness/)
