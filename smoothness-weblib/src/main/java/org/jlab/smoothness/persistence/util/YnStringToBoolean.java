@@ -3,6 +3,9 @@ package org.jlab.smoothness.persistence.util;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+/**
+ * JPA Converter for Oracle Boolean to String.
+ */
 @Converter
 public class YnStringToBoolean implements AttributeConverter<Boolean, String> {
     /**
