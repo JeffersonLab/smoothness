@@ -54,6 +54,17 @@
                                     <div class="li-key"><span class="key-label">Key 2</span></div>
                                     <div class="li-value">Value 2</div>
                                 </li>
+                                <li>
+                                    <div class="li-key"><span class="key-label">Key 3</span></div>
+                                    <div class="li-value">
+                                        <select id="mpaa-select" multiple="multiple">
+                                            <option>G</option>
+                                            <option>PG</option>
+                                            <option>R</option>
+                                            <option>NC-17</option>
+                                        </select>
+                                    </div>
+                                </li>
                             </ul>
                         </fieldset>	
                     </div>

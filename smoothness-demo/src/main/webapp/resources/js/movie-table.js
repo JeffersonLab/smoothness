@@ -113,3 +113,7 @@ $(".date-field").datepicker({
 $(document).on("click", "#excel-menu-item", function() {
     $("#excel").click();
 });
+
+$("#mpaa-select").select2({
+    width: 200
+});
