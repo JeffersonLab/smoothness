@@ -410,7 +410,7 @@ th.scrollbar-header {
     letter-spacing: normal;
     line-height: 30px;
     margin: 0;
-    padding: 0 12px 0 12px;
+    padding: 0 14px;
     position: relative;
     white-space: nowrap;
     word-spacing: normal;
@@ -440,12 +440,12 @@ th.scrollbar-header {
 }
 .breadcrumb li:after {
     bottom: 0;
-    transform: skew(-30deg);
+    transform: skew(-45deg);
     border-bottom: 1px solid black;
 }
 .breadcrumb li:before {
     top: 0;
-    transform: skew(30deg);
+    transform: skew(45deg);
     border-top: 1px solid black;
 }
 .breadcrumb li a {
