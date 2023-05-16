@@ -341,33 +341,23 @@ th.scrollbar-header {
     height: 0;
     border-left: 16px solid transparent;
 }
-.filter-flyout-ribbon #filter-flyout-button a:before {
-    border-bottom: 15px solid transparent;
-    border-left: 15px solid black;
-    border-top: 15px solid transparent;
+.filter-flyout-ribbon #filter-flyout-button a {
+    z-index: 2;
+}
+.filter-flyout-ribbon #filter-flyout-button a:after {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    transform: scale(0.707) rotate(45deg);
     bottom: 0;
     content: " ";
     display: block;
-    height: 0;
     position: absolute;
     right: -16px;
     top: 0;
-    width: 0;
     z-index: 1;
-}
-.filter-flyout-ribbon #filter-flyout-button a:after {
-    border-bottom: 15px solid transparent;
-    border-left: 15px solid white;
-    border-top: 15px solid transparent;
-    bottom: 0;
-    content: " ";
-    display: block;
-    height: 0;
-    position: absolute;
-    right: -15px;
-    top: 0;
-    width: 0;
-    z-index: 2;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
 }
 .filter-flyout-ribbon #filter-flyout-button:after {
     bottom: 0;
