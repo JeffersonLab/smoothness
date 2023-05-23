@@ -343,8 +343,9 @@ th.scrollbar-header {
 }
 .filter-flyout-ribbon #filter-flyout-button a {
     z-index: 2;
+    position: relative;
 }
-.filter-flyout-ribbon #filter-flyout-button a:after {
+.filter-flyout-ribbon #filter-flyout-button:before {
     width: 30px;
     height: 30px;
     background-color: white;
