@@ -17,8 +17,8 @@
         </script>
     </jsp:attribute>        
     <jsp:body>
-        <div class="breadbox">
-            <ul class="breadcrumb">
+        <div class="banner-breadbox">
+            <ul class="skewbreadtrail">
                 <li><a href="crumb-one">Crumb One</a></li>
                 <li><a href="crumb-two">Crumb Two</a></li>
                 <li>Crumb Three</li>
@@ -27,6 +27,7 @@
         <section>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <p><a href="crumb-two?max=100" class="dialog-ready" data-dialog-title="Hello World">Check this out</a></p>
+            <p><a href="crumb-four">Keep Going</a></p>
         </section>
     </jsp:body>         
 </t:page>

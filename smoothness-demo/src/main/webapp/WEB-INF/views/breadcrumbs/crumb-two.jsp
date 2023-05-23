@@ -11,8 +11,8 @@
     <jsp:attribute name="scripts"> 
     </jsp:attribute>        
     <jsp:body>
-        <div class="breadbox">
-            <ul class="breadcrumb">
+        <div class="banner-breadbox">
+            <ul class="skewbreadtrail">
                 <li><a href="crumb-one">Crumb One</a></li>
                 <li>Crumb Two</li>
             </ul>
