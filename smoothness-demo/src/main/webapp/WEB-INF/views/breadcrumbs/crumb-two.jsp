@@ -12,7 +12,7 @@
     </jsp:attribute>        
     <jsp:body>
         <div class="banner-breadbox">
-            <ul class="skewbreadtrail">
+            <ul>
                 <li><a href="crumb-one">Crumb One</a></li>
                 <li>Crumb Two</li>
             </ul>
@@ -40,6 +40,13 @@
                     <input id="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
+            <div class="float-breadbox">
+                <ul>
+                    <li><div><a href="crumb-one">Previous</a></div></li>
+                    <li><div>Some middle ground</div></li>
+                    <li><a href="crumb-three">Next</a></li>
+                </ul>
+            </div>
             <h2 id="page-header-title"><c:out value="${title}"/></h2>
             <p>
                 <a href="crumb-three">Even More Ahead!</a>

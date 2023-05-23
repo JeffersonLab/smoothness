@@ -384,9 +384,6 @@ th.scrollbar-header {
     background-color: white;
     box-shadow: 6px 8px 4px -4px #979797;
 }
-.ribbon-breadbox .rotatebreadtrail {
-    margin: 0;
-}
 .ribbon-breadbox:before {
     content: '';
     position: absolute;
@@ -398,15 +395,15 @@ th.scrollbar-header {
     height: 0;
     border-left: 16px solid transparent;
 }
-.rotatebreadtrail {
+.ribbon-breadbox > ul {
+    margin: 0;
     font-size: 0;
     letter-spacing: 0;
     list-style: none outside none;
-    margin: 16px 0;
     padding: 0;
     word-spacing: 0;
 }
-.rotatebreadtrail > li {
+.ribbon-breadbox > ul > li {
     background-color: inherit;
     display: inline-block;
     font-size: 16px;
@@ -423,7 +420,7 @@ th.scrollbar-header {
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
-.rotatebreadtrail > li:before {
+.ribbon-breadbox > ul > li:before {
     width: 30px;
     height: 30px;
     background-color: white;
@@ -438,7 +435,10 @@ th.scrollbar-header {
     border-top: 1px solid black;
     border-right: 1px solid black;
 }
-.rotatebreadtrail > li:after {
+.ribbon-breadbox > ul > li:first-child {
+    padding-left: 8px;
+}
+.ribbon-breadbox > ul > li:last-child:after {
     bottom: 0;
     content: " ";
     height: 16px;
@@ -448,27 +448,104 @@ th.scrollbar-header {
     transform: rotate(-45deg);
     width: 28px;
     z-index: 0;
-}
-.rotatebreadtrail > li:first-child {
-    padding-left: 8px;
-}
-.rotatebreadtrail > li:last-child:after {
     box-shadow: 0 8px 4px -4px #979797;
 }
-.rotatebreadtrail li > * {
+.ribbon-breadbox > ul > li > * {
     position: relative;
     display: inline-block;
     z-index: 2;
 }
-.rotatebreadtrail #filter-flyout-button {
+.ribbon-breadbox #filter-flyout-button {
     border: none;
     padding: 0;
     margin-right: 0;
 }
-.rotatebreadtrail #filter-flyout-panel {
+.ribbon-breadbox #filter-flyout-panel {
     left: -9px;
 }
 
+
+
+.float-breadbox {
+    float: right;
+    position: relative;
+    margin-right: 10px;
+    box-shadow: 6px 8px 4px -4px #979797;
+}
+.float-breadbox ul {
+    margin: 0;
+    font-size: 0;
+    letter-spacing: 0;
+    list-style: none outside none;
+    padding: 0;
+    word-spacing: 0;
+}
+.float-breadbox li {
+    background-color: inherit;
+    display: inline-block;
+    font-size: 16px;
+    height: 30px;
+    letter-spacing: normal;
+    line-height: 30px;
+    margin: 0;
+    padding: 0 10px;
+    position: relative;
+    white-space: nowrap;
+    word-spacing: normal;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+.float-breadbox li:first-child:before {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    transform: scale(0.707) rotate(45deg);
+    bottom: 0;
+    content: " ";
+    display: block;
+    position: absolute;
+    left: -16px;
+    top: 0;
+    z-index: 1;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+.float-breadbox li:last-child:before {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    transform: scale(0.707) rotate(45deg);
+    bottom: 0;
+    content: " ";
+    display: block;
+    position: absolute;
+    right: -16px;
+    top: 0;
+    z-index: 1;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+.float-breadbox li > * {
+    position: relative;
+    display: inline-block;
+    z-index: 2;
+    min-width: 75px;
+    text-align: center;
+}
+.float-breadbox li:last-child:after {
+    bottom: 0;
+    content: " ";
+    height: 16px;
+    position: absolute;
+    right: -14px;
+    top: 12px;
+    transform: rotate(-45deg);
+    width: 28px;
+    z-index: 0;
+    box-shadow: 0 8px 4px -4px #979797;
+}
 
 
 .banner-breadbox {
@@ -476,18 +553,15 @@ th.scrollbar-header {
     padding: 16px;
     border-bottom: 1px solid black;
 }
-.banner-breadbox .skewbreadtrail {
+.banner-breadbox ul {
     margin: 0;
-}
-.skewbreadtrail {
     font-size: 0;
     letter-spacing: 0;
     list-style: none outside none;
-    margin: 16px 0;
     padding: 0;
     word-spacing: 0;
 }
-.skewbreadtrail li {
+.banner-breadbox li {
     background-color: inherit;
     display: inline-block;
     font-size: 16px;
@@ -500,16 +574,16 @@ th.scrollbar-header {
     white-space: nowrap;
     word-spacing: normal;
 }
-.skewbreadtrail li:last-child {
+.banner-breadbox li:last-child {
     background-color: inherit;
     border: medium none;
 }
-.skewbreadtrail li:last-child:before,
-.skewbreadtrail li:last-child:after {
+.banner-breadbox li:last-child:before,
+.banner-breadbox li:last-child:after {
     display: none;
 }
-.skewbreadtrail li:before,
-.skewbreadtrail li:after {
+.banner-breadbox li:before,
+.banner-breadbox li:after {
     content: " ";
     position: absolute;
     left: 0;
@@ -520,17 +594,17 @@ th.scrollbar-header {
     height: 50%;
     width: 100%;
 }
-.skewbreadtrail li:after {
+.banner-breadbox li:after {
     bottom: 0;
     transform: skew(-45deg);
     border-bottom: 1px solid black;
 }
-.skewbreadtrail li:before {
+.banner-breadbox li:before {
     top: 0;
     transform: skew(45deg);
     border-top: 1px solid black;
 }
-.skewbreadtrail li a {
+.banner-breadbox li a {
     position: relative;
     display: inline-block;
     z-index: 2;

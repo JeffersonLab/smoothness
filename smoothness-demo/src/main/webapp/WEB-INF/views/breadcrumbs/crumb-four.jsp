@@ -12,7 +12,7 @@
     </jsp:attribute>        
     <jsp:body>
         <div class="banner-breadbox">
-            <ul class="skewbreadtrail">
+            <ul>
                 <li><a href="crumb-one">Crumb One</a></li>
                 <li><a href="crumb-two">Crumb Two</a></li>
                 <li><a href="crumb-three">Crumb Three</a></li>
@@ -21,7 +21,7 @@
         </div>            
         <section>
             <div class="ribbon-breadbox">
-                <ul class="rotatebreadtrail">
+                <ul>
                     <li>
                         <s:filter-flyout-widget>
                             <form id="filter-form" method="get" action="crumb-two">

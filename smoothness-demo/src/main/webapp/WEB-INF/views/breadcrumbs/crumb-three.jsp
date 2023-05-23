@@ -18,7 +18,7 @@
     </jsp:attribute>        
     <jsp:body>
         <div class="banner-breadbox">
-            <ul class="skewbreadtrail">
+            <ul>
                 <li><a href="crumb-one">Crumb One</a></li>
                 <li><a href="crumb-two">Crumb Two</a></li>
                 <li>Crumb Three</li>
