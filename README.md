@@ -138,7 +138,7 @@ gradlew build
 **See**: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
 
 ## Release
-Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Further, both projects have two artifacts: a Java distributable (demo war and weblib jar), plus there is a demo Docker image.
+Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Further, both projects have a Java distributable (demo war and weblib jar), plus there is a demo Docker image.
 
 Dependencies (libraries) generally should be installed directly into Wildfly as opposed to being bundled inside a war file, but the smoothness weblib itself should not and must be packaged inside the war file of each app using the lib.  This is necessary as the smoothness weblib is [incompatible as a JBoss Module](https://github.com/JeffersonLab/smoothness/issues/4), plus this bundling makes development of the lib easier as it allows iteration without constantly updating weblib code installed in Wildfly.   Since the demo has a dependency on the weblib, either all artifacts needed for both subprojects need to tagged together, else two separate releases would be needed as a release corresponds to a git tag and Docker images are built using the Git tag context.  We use a shared release.
 
