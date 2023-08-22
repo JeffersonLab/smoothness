@@ -14,7 +14,7 @@ import java.util.Locale;
  *
  * @author ryans
  */
-@WebFilter(filterName = "LocaleFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST})
+@WebFilter(filterName = "LocaleFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST}, asyncSupported = true)
 public class LocaleFilter implements Filter {
 
     @Override

@@ -15,7 +15,7 @@ import java.io.IOException;
  *
  * @author ryans
  */
-@WebFilter(filterName = "AuditFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
+@WebFilter(filterName = "AuditFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD}, asyncSupported = true)
 public class AuditFilter implements Filter {
     
     @Override

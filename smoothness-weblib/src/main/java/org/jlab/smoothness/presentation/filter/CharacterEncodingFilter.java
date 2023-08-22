@@ -9,7 +9,7 @@ import java.io.IOException;
  *
  * @author ryans
  */
-@WebFilter(filterName = "CharacterEncodingFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST})
+@WebFilter(filterName = "CharacterEncodingFilter", urlPatterns = {"/*"}, dispatcherTypes = {DispatcherType.REQUEST}, asyncSupported = true)
 public class CharacterEncodingFilter implements Filter {
 
     @Override
