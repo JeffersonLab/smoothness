@@ -10,8 +10,10 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template
  - [API](https://github.com/JeffersonLab/smoothness#api)  
  - [Configure](https://github.com/JeffersonLab/smoothness#configure)
  - [Build](https://github.com/JeffersonLab/smoothness#build)
+ - [Develop](https://github.com/JeffersonLab/smoothness#develop) 
  - [Release](https://github.com/JeffersonLab/smoothness#release)
- - [See Also](https://github.com/JeffersonLab/smoothness#see-also)
+ - [Deploy](https://github.com/JeffersonLab/smoothness#deploy)
+ - [See Also](https://github.com/JeffersonLab/smoothness#see-also)   
 ---
 
 ## Overview
@@ -137,6 +139,20 @@ gradlew build
 
 **See**: [Docker Development Quick Reference](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#development-quick-reference)
 
+## Develop
+In order to iterate rapidly when making changes it's often useful to run the app directly on the local workstation, perhaps leveraging an IDE.  In this scenario run the service dependencies with:
+```
+docker compose -f deps.yml up
+```
+**Note**: The local install of Wildfly should be [configured](https://github.com/JeffersonLab/smoothness#configure) to proxy connections to services via localhost and therefore the environment variables should contain:
+```
+KEYCLOAK_BACKEND_SERVER_URL=http://localhost:8081
+FRONTEND_SERVER_URL=https://localhost:8443
+```
+Further, the local DataSource must also leverage localhost port forwarding so the `standalone.xml` connection-url field should be: `jdbc:oracle:thin:@//localhost:1521/xepdb1`.  
+
+The [server](https://github.com/JeffersonLab/wildfly/blob/main/scripts/server-setup.sh) and [app](https://github.com/JeffersonLab/wildfly/blob/main/scripts/app-setup.sh) setup scripts can be used to setup a local instance of Wildfly. 
+
 ## Release
 Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Further, both projects have a Java distributable (demo war and weblib jar), plus there is a demo Docker image.
 
@@ -162,9 +178,14 @@ gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
 7. Copy updated minified JS and CSS to any CDN as needed.
 8. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
 
+## Deploy
+At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
+
+```
+/root/setup/deploy.sh smoothness-demo v1.2.3
+```
+
+**JLab Internal Docs**:  [InstallGuideWildflyRHEL9](https://accwiki.acc.jlab.org/do/view/SysAdmin/InstallGuideWildflyRHEL9)
+
 ## See Also
-- [Beam authorization manager (BAM)](https://github.com/JeffersonLab/bam)
-- [Beam time manager (BTM)](https://github.com/JeffersonLab/btm)
-- [CEBAF nomenclature manager (CNM)](https://github.com/JeffersonLab/cnm)
-- [Down time manager (DTM)](https://github.com/JeffersonLab/dtm)
-- [System readiness manager (SRM)](https://github.com/JeffersonLab/srm)
+- [JLab ACE smoothness list](https://github.com/search?q=org%3Ajeffersonlab+topic%3Aace+topic%3Asmoothness&type=repositories)
