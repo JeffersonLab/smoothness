@@ -167,16 +167,11 @@ docker compose -f build.yml up
 ```
 3. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
 4. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).  Attach the smoothness-demo.war.
-5. Publish new artifact on maven central with:
-```
-gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
-```
-**Note**: There is a [GitHub action](https://github.com/JeffersonLab/smoothness/actions/workflows/maven-publish.yml) for this to happen automatically. To run locally you'll need to configure credentials. See: [Gradle Publish Notes](https://gist.github.com/slominskir/5fcd5cf84182bf1542c07cbca953904a)
-
-5. Build and push [Docker image](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c#8-build-an-image-based-of-github-tag) for the demo.  This time we use the github tagged context instead of local `.`.  This is automated as a [GitHub Action](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish.yml) and should be done automatically on new release published.
-6. Update javadocs and tlddocs by copying them from build dir into gh-pages branch and updating index.html (commit, push).  This should occur automatically via [Publish to gh-pages](https://github.com/JeffersonLab/smoothness/actions/workflows/gh-pages-publish.yml) GitHub Action.
-7. Copy updated minified JS and CSS to any CDN as needed.
-8. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
+5. [Publish to MavenCentral](https://github.com/JeffersonLab/smoothness/actions/workflows/maven-publish.yml) GitHub Action should run automatically.
+7. [Publish to gh-pages](https://github.com/JeffersonLab/smoothness/actions/workflows/gh-pages-publish.yml) GitHub Action should run automatically.
+8. [Publish to DockerHub](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish.yml) GitHub Action should run automatically. 
+9. Copy updated minified JS and CSS to any CDN as needed.
+10. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
 
 ## Deploy
 At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
