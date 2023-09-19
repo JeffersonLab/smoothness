@@ -81,7 +81,7 @@ public class Feedback extends HttpServlet {
             }
 
             emailService = new EmailService();
-            emailService.sendEmail(sender, from, toCsv, subject, body, false);
+            emailService.sendEmail(sender, from, toCsv, null, subject, body, false);
         } catch(UserFriendlyException e) {
             errorReason = e.getMessage();
         } catch (Exception e) {

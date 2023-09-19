@@ -36,12 +36,13 @@ public class EmailService {
      * @param sender The sender address
      * @param from The from address
      * @param toAddresses The to addresses
+     * @parma ccAddresses The cc addresses
      * @param subject The subject
      * @param body The body
      * @param html true if HTML body, false otherwise
      * @throws MessagingException If unable to send
      */
-    private void doSend(Address sender, Address from, Address[] toAddresses, String subject, String body, boolean html) throws MessagingException {
+    private void doSend(Address sender, Address from, Address[] toAddresses, Address[] ccAddresses, String subject, String body, boolean html) throws MessagingException {
         MimeMessage message = new MimeMessage(mailSession);
 
         message.setSender(sender);
@@ -49,6 +50,7 @@ public class EmailService {
         message.setFrom(from);
 
         message.setRecipients(Message.RecipientType.TO, toAddresses);
+        message.setRecipients(Message.RecipientType.CC, ccAddresses);
         message.setSubject(subject);
 
         if(html) {
@@ -65,7 +67,14 @@ public class EmailService {
         tr.close();
     }
 
-    private Address[] csvToAddressArray(String toCsv) throws AddressException {
+    /**
+     * Convert a Comma Separated Values String to an array of Addresses.
+     *
+     * @param toCsv The CSV String
+     * @return The array
+     * @throws AddressException If unable to create an InternetAddress
+     */
+    public static Address[] csvToAddressArray(String toCsv) throws AddressException {
         List<Address> addressList = new ArrayList<>();
 
         if(toCsv != null && !toCsv.isEmpty()) {
@@ -88,12 +97,13 @@ public class EmailService {
      * @param sender The sender address as a String
      * @param from The from address
      * @param toCsv The to addresses as Strings
+     * @param ccCsv The cc addresses as Strings
      * @param subject The subject
      * @param body The body
      * @param html true if HTML body, false otherwise
      * @throws UserFriendlyException If unable to send
      */
-    public void sendEmail(String sender, String from, String toCsv, String subject, String body, boolean html) throws UserFriendlyException {
+    public void sendEmail(String sender, String from, String toCsv, String ccCsv, String subject, String body, boolean html) throws UserFriendlyException {
         try {
             Address senderAddress = new InternetAddress(sender);
             Address fromAddress = new InternetAddress(from);
@@ -120,7 +130,9 @@ public class EmailService {
 
             Address[] toAddresses = csvToAddressArray(toCsv);
 
-            doSend(senderAddress, fromAddress, toAddresses, subject, body, html);
+            Address[] ccAddresses = csvToAddressArray(ccCsv);
+
+            doSend(senderAddress, fromAddress, toAddresses, ccAddresses, subject, body, html);
         } catch (AddressException e) {
             throw new IllegalArgumentException("Invalid address", e);
         } catch (MessagingException e) {
