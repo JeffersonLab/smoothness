@@ -17,7 +17,14 @@ VARIABLES=(KEYCLOAK_ADMIN
            KEYCLOAK_DEBUG
            KEYCLOAK_LDAP_CONNECTION_URL
            KEYCLOAK_KEYTAB
-           KEYCLOAK_KERBEROS_REALM)
+           KEYCLOAK_KERBEROS_REALM
+           KEYCLOAK_VENDOR
+           KEYCLOAK_IMPORT
+           KEYCLOAK_OBJ_CLASSES
+           KEYCLOAK_SPNEGO
+           KEYCLOAK_USERNAME_ATTR
+           KEYCLOAK_RDN
+           KEYCLOAK_UUID)
 
 if [[ $# -eq 0 ]] ; then
     echo "Usage: $0 [var file] <optional function>"
@@ -63,7 +70,7 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create components -r ${KEYCLOAK_REALM} -s parentId
 -s providerId=ldap -s providerType=org.keycloak.storage.UserStorageProvider \
 -s config.debug=${KEYCLOAK_DEBUG} \
 -s config.authType='["simple"]' \
--s config.vendor='["rhds"]' \
+-s config.vendor=${KEYCLOAK_VENDOR} \
 -s config.priority='["0"]' \
 -s config.connectionUrl=${KEYCLOAK_LDAP_CONNECTION_URL} \
 -s config.editMode='["READ_ONLY"]' \
@@ -78,18 +85,18 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh create components -r ${KEYCLOAK_REALM} -s parentId
 -s config.evictionHour=[] \
 -s config.evictionMinute=[] \
 -s config.maxLifespan=[] \
--s config.importEnabled='["true"]' \
+-s config.importEnabled=${KEYCLOAK_IMPORT} \
 -s 'config.batchSizeForSync=["1000"]' \
--s 'config.syncRegistrations=["false"]' \
--s 'config.usernameLDAPAttribute=["uid"]' \
--s 'config.rdnLDAPAttribute=["uid"]' \
--s 'config.uuidLDAPAttribute=["uid"]' \
--s 'config.userObjectClasses=["inetOrgPerson, organizationalPerson"]' \
+-s config.syncRegistrations='["false"]' \
+-s config.usernameLDAPAttribute=${KEYCLOAK_USERNAME_ATTR} \
+-s config.rdnLDAPAttribute=${KEYCLOAK_RDN} \
+-s config.uuidLDAPAttribute=${KEYCLOAK_UUID} \
+-s config.userObjectClasses=${KEYCLOAK_OBJ_CLASSES} \
 -s 'config.searchScope=["1"]' \
 -s 'config.useTruststoreSpi=["ldapsOnly"]' \
 -s 'config.connectionPooling=["true"]' \
 -s 'config.pagination=["true"]' \
--s 'config.allowKerberosAuthentication=["true"]' \
+-s config.allowKerberosAuthentication=${KEYCLOAK_SPNEGO} \
 -s config.keyTab=${KEYCLOAK_KEYTAB} \
 -s config.kerberosRealm=${KEYCLOAK_KERBEROS_REALM} \
 -s 'config.useKerberosForPasswordAuthentication=["true"]'
