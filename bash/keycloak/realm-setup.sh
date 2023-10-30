@@ -8,6 +8,8 @@ VARIABLES=(KEYCLOAK_ADMIN
            KEYCLOAK_HOME
            KEYCLOAK_REALM
            KEYCLOAK_REALM_DISPLAY_NAME
+           KEYCLOAK_SESSION_IDLE_TIMEOUT
+           KEYCLOAK_SESSION_MAX_LIFESPAN
            KEYCLOAK_SERVER_URL)
 
 if [[ $# -eq 0 ]] ; then
@@ -49,7 +51,7 @@ ${KEYCLOAK_HOME}/bin/kcadm.sh config credentials --server "${KEYCLOAK_SERVER_URL
 }
 
 create_realm() {
-${KEYCLOAK_HOME}/bin/kcadm.sh create realms -s id=${KEYCLOAK_REALM} -s realm="${KEYCLOAK_REALM}" -s enabled=true -s displayName=${KEYCLOAK_REALM_DISPLAY_NAME} -s loginWithEmailAllowed=false
+${KEYCLOAK_HOME}/bin/kcadm.sh create realms -s id=${KEYCLOAK_REALM} -s realm="${KEYCLOAK_REALM}" -s enabled=true -s displayName=${KEYCLOAK_REALM_DISPLAY_NAME} -s ssoSessionIdleTimeout=${KEYCLOAK_SESSION_IDLE_TIMEOUT} -s ssoSessionMaxLifespan=${KEYCLOAK_SESSION_MAX_LIFESPAN}  -s loginWithEmailAllowed=false
 }
 
 if [ ! -z "$2" ]
