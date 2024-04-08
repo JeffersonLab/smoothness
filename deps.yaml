@@ -9,7 +9,7 @@ services:
       - "1521:1521"
       - "5500:5500"
     volumes:
-      - ./docker/oracle/setup:/container-entrypoint-initdb.d
+      - ./container/oracle/initdb.d:/container-entrypoint-initdb.d
 
   keycloak:
     image: quay.io/keycloak/keycloak:20.0.5
