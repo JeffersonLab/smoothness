@@ -48,6 +48,8 @@ javadoc {
     }
 }
 
+javadoc.finalizedBy(tlddoc)
+
 task cssMinifyIt(type: org.gradlewebtools.minify.CssMinifyTask) {
     srcDir = project.file('src/main/resources/META-INF/resources/resources/css')
     dstDir = project.file('build')
