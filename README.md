@@ -74,7 +74,7 @@ Check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) t
 ### Demo Install
 This application requires a Java 11+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).  Use the Docker Compose quickstart to automate the setup of the app, else manually:
 
-1. Install service [dependencies](https://github.com/JeffersonLab/smoothness/blob/main/deps.yml)
+1. Install service [dependencies](https://github.com/JeffersonLab/smoothness/blob/main/deps.yaml)
 2. Download [Wildfly 26.1.3](https://www.wildfly.org/downloads/)
 3. [Configure](https://github.com/JeffersonLab/smoothness#configure) Wildfly and start it
 4. Download [demo.war](https://github.com/JeffersonLab/smoothness-demo/releases) and deploy it to Wildfly
@@ -142,7 +142,7 @@ gradlew build
 ## Develop
 In order to iterate rapidly when making changes it's often useful to run the app directly on the local workstation, perhaps leveraging an IDE.  In this scenario run the service dependencies with:
 ```
-docker compose -f deps.yml up
+docker compose -f deps.yaml up
 ```
 **Note**: The local install of Wildfly should be [configured](https://github.com/JeffersonLab/smoothness#configure) to proxy connections to services via localhost and therefore the environment variables should contain:
 ```
@@ -158,12 +158,12 @@ Since this is a monorepo there are actually two projects: the weblib and the dem
 
 Dependencies (libraries) generally should be installed directly into Wildfly as opposed to being bundled inside a war file, but the smoothness weblib itself should not and must be packaged inside the war file of each app using the lib.  This is necessary as the smoothness weblib is [incompatible as a JBoss Module](https://github.com/JeffersonLab/smoothness/issues/4), plus this bundling makes development of the lib easier as it allows iteration without constantly updating weblib code installed in Wildfly.   Since the demo has a dependency on the weblib, either all artifacts needed for both subprojects need to tagged together, else two separate releases would be needed as a release corresponds to a git tag and Docker images are built using the Git tag context.  We use a shared release.
 
-1. During development the build is run locally to ensure everything is working.   You can use deps.yml Docker Compose in concert with a local Wildfly instance to quickly iterate.
+1. During development the build is run locally to ensure everything is working.   You can use deps.yaml Docker Compose in concert with a local Wildfly instance to quickly iterate.
 2. To confirm the new demo Docker image is good, run the docker build and test locally:
 ```
-docker compose -f build.yml build demo --no-cache --progress=plain
+docker compose -f build.yaml build demo --no-cache --progress=plain
 ...
-docker compose -f build.yml up
+docker compose -f build.yaml up
 ```
 3. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
 4. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).  Attach the smoothness-demo.war.
@@ -171,7 +171,7 @@ docker compose -f build.yml up
 7. [Publish to gh-pages](https://github.com/JeffersonLab/smoothness/actions/workflows/gh-pages-publish.yml) GitHub Action should run automatically.
 8. [Publish to DockerHub](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish.yml) GitHub Action should run automatically. 
 9. Copy updated minified JS and CSS to any CDN as needed.
-10. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/docker-compose.override.yml).  For the demo.
+10. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/compose.override.yaml).  For the demo.
 
 ## Deploy
 At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
