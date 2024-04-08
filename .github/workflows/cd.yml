@@ -1,0 +1,47 @@
+name: CD
+
+on:
+  push:
+    paths:
+      - 'VERSION'
+
+jobs:
+  release:
+    uses: jeffersonlab/java-workflows/.github/workflows/gh-release.yml@v1
+    with:
+      files: smoothness-demo/build/libs/smoothness-demo.war
+    secrets: inherit
+
+  artifact_publish:
+    needs:
+      - release
+    uses: jeffersonlab/java-workflows/.github/workflows/maven-publish.yml@v1
+    secrets: inherit
+
+  docs_publish:
+    needs:
+      - release
+    uses: jeffersonlab/java-workflows/.github/workflows/gh-pages-publish.yml@v1
+    with:
+      semvertag: ${{ needs.release.outputs.semvertag }}
+      folder: smoothness-weblib/build/docs
+    secrets: inherit
+
+  docker_publish:
+    needs:
+      - release
+    uses: jeffersonlab/container-workflows/.github/workflows/docker-publish.yml@v1
+    with:
+      semvertag: ${{ needs.release.outputs.semvertag }}
+      images: jeffersonlab/${{ github.event.repository.name }}-demo
+    secrets: inherit
+
+  acctest_deploy:
+    needs:
+      - release
+    uses: jeffersonlab/general-workflows/.github/workflows/jlab-deploy-app.yml@v1
+    with:
+      app: smoothness-demo
+      env: acctest
+      ver: ${{ needs.release.outputs.semver }}
+    secrets: inherit
