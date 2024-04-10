@@ -165,13 +165,14 @@ docker compose -f build.yaml build demo --no-cache --progress=plain
 ...
 docker compose -f build.yaml up
 ```
-3. Bump the version number and release date in settings.gradle and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
-4. Create a new release on the GitHub [Releases](https://github.com/JeffersonLab/smoothness/releases) page corresponding to same version in settings.gradle (Enumerate changes and link issues).  Attach the smoothness-demo.war.
-5. [Publish to MavenCentral](https://github.com/JeffersonLab/smoothness/actions/workflows/maven-publish.yml) GitHub Action should run automatically.
-7. [Publish to gh-pages](https://github.com/JeffersonLab/smoothness/actions/workflows/gh-pages-publish.yml) GitHub Action should run automatically.
-8. [Publish to DockerHub](https://github.com/JeffersonLab/smoothness/actions/workflows/docker-publish.yml) GitHub Action should run automatically. 
-9. Copy updated minified JS and CSS to any CDN as needed.
-10. Bump and commit quick start [image version](https://github.com/JeffersonLab/smoothness/blob/main/compose.override.yaml).  For the demo.
+3. Bump the version number in the VERSION file and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
+4. The [CD](https://github.com/JeffersonLab/smoothness/blob/main/.github/workflows/cd.yml) GitHub Action should run automatically invoking:
+    - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-release.yml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.  A war file artifact is attached to the release.
+    - The [Publish artifact](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/maven-publish.yml) GitHub Action to create a deployment artifact on maven central.
+    - The [Publish docs](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-pages-publish.yml) GitHub Action to create javadocs.
+    - The [Publish docker image](https://github.com/JeffersonLab/container-workflows/blob/main/.github/workflows/docker-publish.yml) GitHub Action to create a new demo Docker image, and bump the [compose.override.yaml](https://github.com/JeffersonLab/smoothness/blob/main/compose.override.yaml) to use the new image.
+    - The [Deploy to JLab](https://github.com/JeffersonLab/general-workflows/blob/main/.github/workflows/jlab-deploy-app.yml) GitHub Action to deploy to the JLab test environment.
+5. Copy updated minified JS and CSS to any CDN as needed.
 
 ## Deploy
 At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
