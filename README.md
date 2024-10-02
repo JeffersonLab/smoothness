@@ -1,4 +1,4 @@
-# smoothness [![CI](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yml/badge.svg)](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yml) [![Docker (demo)](https://img.shields.io/docker/v/jeffersonlab/smoothness-demo?sort=semver&label=DockerHub+demo)](https://hub.docker.com/r/jeffersonlab/smoothness-demo) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/smoothness-weblib)](https://repo1.maven.org/maven2/org/jlab/smoothness-weblib/) 
+# smoothness [![CI](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yaml/badge.svg)](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yaml) [![Docker (demo)](https://img.shields.io/docker/v/jeffersonlab/smoothness-demo?sort=semver&label=DockerHub+demo)](https://hub.docker.com/r/jeffersonlab/smoothness-demo) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/smoothness-weblib)](https://repo1.maven.org/maven2/org/jlab/smoothness-weblib/) 
 A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application template and [JSP tag library](https://docs.oracle.com/javaee/5/tutorial/doc/bnama.html) based on the [JQuery UI Smoothness](https://jqueryui.com/themeroller/) theme.  The included demo web application showcases the template layout.
 
 ![Screenshot](https://github.com/JeffersonLab/smoothness/raw/main/smoothness-demo/Screenshot.png?raw=true "Screenshot")
@@ -166,12 +166,12 @@ docker compose -f build.yaml build demo --no-cache --progress=plain
 docker compose -f build.yaml up
 ```
 3. Bump the version number in the VERSION file and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
-4. The [CD](https://github.com/JeffersonLab/smoothness/blob/main/.github/workflows/cd.yml) GitHub Action should run automatically invoking:
-    - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-release.yml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.  A war file artifact is attached to the release.
-    - The [Publish artifact](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/maven-publish.yml) GitHub Action to create a deployment artifact on maven central.
-    - The [Publish docs](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-pages-publish.yml) GitHub Action to create javadocs.
-    - The [Publish docker image](https://github.com/JeffersonLab/container-workflows/blob/main/.github/workflows/docker-publish.yml) GitHub Action to create a new demo Docker image, and bump the [compose.override.yaml](https://github.com/JeffersonLab/smoothness/blob/main/compose.override.yaml) to use the new image.
-    - The [Deploy to JLab](https://github.com/JeffersonLab/general-workflows/blob/main/.github/workflows/jlab-deploy-app.yml) GitHub Action to deploy to the JLab test environment.
+4. The [CD](https://github.com/JeffersonLab/smoothness/blob/main/.github/workflows/cd.yaml) GitHub Action should run automatically invoking:
+    - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-release.yaml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.  A war file artifact is attached to the release.
+    - The [Publish artifact](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/maven-publish.yaml) GitHub Action to create a deployment artifact on maven central.
+    - The [Publish docs](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-pages-publish.yaml) GitHub Action to create javadocs.
+    - The [Publish docker image](https://github.com/JeffersonLab/container-workflows/blob/main/.github/workflows/docker-publish.yaml) GitHub Action to create a new demo Docker image.
+    - The [Deploy to JLab](https://github.com/JeffersonLab/general-workflows/blob/main/.github/workflows/jlab-deploy-app.yaml) GitHub Action to deploy to the JLab test environment.
 5. Copy updated minified JS and CSS to any CDN as needed.
 
 ## Deploy
