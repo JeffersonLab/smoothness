@@ -65,7 +65,7 @@ http://localhost:8080/smoothness-demo
 ### Web Lib Install
 This library requires a Java 11+ JVM and standard library at run time, plus a Java EE 8+ application server (developed with Wildfly). 
 
-You can obtain the library jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
+You can obtain the library jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly (or [Intermediate Staging](https://s01.oss.sonatype.org/content/groups/staging/org/jlab/)) or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
 implementation 'org.jlab:smoothness-weblib:<version>'
 ```
