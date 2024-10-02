@@ -97,6 +97,8 @@ public class Convert extends HttpServlet {
             + internalServer;
 
     if (filename != null && !filename.isEmpty()) {
+      filename = removeSpecial(filename);
+
       response.setHeader("content-disposition", "attachment; filename=\"" + filename + "\"");
     }
 
@@ -122,5 +124,9 @@ public class Convert extends HttpServlet {
     in.transferTo(out);
 
     in.close();
+  }
+
+  private static String removeSpecial(String str) {
+    return str.replaceAll("[^a-zA-Z.]", "");
   }
 }
