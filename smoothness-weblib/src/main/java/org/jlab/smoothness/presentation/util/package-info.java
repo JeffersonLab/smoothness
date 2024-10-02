@@ -1,4 +1,2 @@
-/**
- * Presentation layer utilities
- */
+/** Presentation layer utilities */
 package org.jlab.smoothness.presentation.util;

@@ -1,5 +1,6 @@
 <%@tag description="Date Range" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="required" required="false" type="java.lang.Boolean"%>
 <%@attribute name="datetime" required="false" type="java.lang.Boolean"%>
 <%@attribute name="sevenAmOffset" required="false" type="java.lang.Boolean"%>
@@ -49,7 +50,7 @@
         </div>
         <div class="li-value">
             <input type="text" class="${datetime ? 'datetime' : 'date'}-input" id="start" name="start" autocomplete="off"
-                   placeholder="DD-MMM-YYYY ${datetime ? 'hh:mm' : ''}" value="${param.start}"/>
+                   placeholder="DD-MMM-YYYY ${datetime ? 'hh:mm' : ''}" value="${fn:escapeXml(param.start)}"/>
         </div>
     </li>
     <li>
@@ -59,7 +60,7 @@
         </div>
         <div class="li-value">
             <input type="text" class="${datetime ? 'datetime' : 'date'}-input" id="end" name="end" autocomplete="off"
-                   placeholder="DD-MMM-YYYY ${datetime ? 'hh:mm' : ''}" value="${param.end}"/>
+                   placeholder="DD-MMM-YYYY ${datetime ? 'hh:mm' : ''}" value="${fn:escapeXml(param.end)}"/>
         </div>
     </li>
 </ul>
