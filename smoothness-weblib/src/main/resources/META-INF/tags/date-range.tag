@@ -1,4 +1,5 @@
 <%@tag description="Date Range" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="required" required="false" type="java.lang.Boolean"%>
 <%@attribute name="datetime" required="false" type="java.lang.Boolean"%>
