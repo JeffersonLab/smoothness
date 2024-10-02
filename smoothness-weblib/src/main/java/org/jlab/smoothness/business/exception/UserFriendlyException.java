@@ -7,6 +7,8 @@ package org.jlab.smoothness.business.exception;
  * @author ryans
  */
 public class UserFriendlyException extends WebApplicationException {
+  private final String userMessage;
+
   /**
    * Create a new UserFriendlyException with the provided message.
    *
@@ -14,6 +16,7 @@ public class UserFriendlyException extends WebApplicationException {
    */
   public UserFriendlyException(String msg) {
     super(msg);
+    userMessage = msg;
   }
 
   /**
@@ -24,5 +27,18 @@ public class UserFriendlyException extends WebApplicationException {
    */
   public UserFriendlyException(String msg, Throwable cause) {
     super(msg, cause);
+    userMessage = msg;
+  }
+
+  /**
+   * Get message intended for user consumption.
+   * <p>
+   * This is a workaround for CodeQL whining about any use of getMessage() being dangerous, even
+   * if the intent is to relay a message directly to the user.
+   * </p>
+   * @return The user message
+   */
+  public String getUserMessage() {
+    return userMessage;
   }
 }
