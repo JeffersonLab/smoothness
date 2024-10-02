@@ -1,4 +1,2 @@
-/**
- * Business layer utilities
- */
+/** Business layer utilities */
 package org.jlab.smoothness.business.util;
