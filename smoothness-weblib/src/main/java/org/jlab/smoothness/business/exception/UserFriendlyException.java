@@ -7,6 +7,9 @@ package org.jlab.smoothness.business.exception;
  * @author ryans
  */
 public class UserFriendlyException extends WebApplicationException {
+  /**
+   * Message explicitly intended for user consumption.
+   */
   private final String userMessage;
 
   /**
