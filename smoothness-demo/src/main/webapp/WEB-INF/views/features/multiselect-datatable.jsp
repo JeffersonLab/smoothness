@@ -48,7 +48,7 @@
                 $selectedList.empty();
 
                 for (var i = 0; i < titleArray.length; i++) {
-                    $selectedList.append('<li>' + titleArray[i] + '</li>');
+                    $selectedList.append('<li>' + String(titleArray[i]).encodeXml() + '</li>');
                 }
 
                 var count = $("#selected-count").text() * 1;
