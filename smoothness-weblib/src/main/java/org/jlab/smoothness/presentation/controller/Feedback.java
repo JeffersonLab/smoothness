@@ -78,10 +78,10 @@ public class Feedback extends HttpServlet {
       emailService = new EmailService();
       emailService.sendEmail(sender, from, toCsv, null, subject, body, false);
     } catch (UserFriendlyException e) {
-      errorReason = e.getMessage();
+      errorReason = e.getUserMessage();
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Unable to send email", e);
-      errorReason = e.getMessage();
+      errorReason = "Unable to send email";
     }
 
     // Using actual XML with AJAX is so outdated.  Maybe we update to JSON like the cool kids?
