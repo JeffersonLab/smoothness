@@ -24,6 +24,8 @@ The template is designed for database-centric web applications in the JLab accel
  - [SMTP Email](https://github.com/mailhog/MailHog) - send email programmatically (test server linked)
  - [JLab Logbook](https://github.com/JeffersonLab/elog) - operations electronic event logging
 
+[Version Info](https://github.com/JeffersonLab/smoothness/blob/main/deps.yaml)
+
 Client-side libraries (JavaScript):
  - [jQuery](https://jquery.com/) - General Web API wrapper
  - [jQuery UI](https://jqueryui.com/) - General User Interface widgets
