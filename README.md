@@ -37,6 +37,8 @@ Server-side librarires (Java):
  - [Hibernate](https://hibernate.org/) - Object-Relational Mapping (persistence).
  - [JLog](https://github.com/JeffersonLab/jlog) - JLab elog API
 
+[Version Info](https://github.com/JeffersonLab/smoothness/blob/485f9cee249a2e897e8d61081342023754312ddb/smoothness-demo/build.gradle#L21-L31)
+
 This git repo is actually comprised of two projects tied together in a [Gradle Multi-Project build](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html): 
 
   1. **smoothness-weblib** - the library for sharing
