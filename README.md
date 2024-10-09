@@ -30,6 +30,8 @@ Client-side libraries (JavaScript):
  - [select2](https://select2.org/) - Improved select widget (multi-select)
  - [Flot](https://www.flotcharts.org/) - Graphing and reports
 
+[Version info](https://github.com/JeffersonLab/smoothness/tree/main/smoothness-weblib/src/main/resources/META-INF/resources/resources)
+
 Server-side librarires (Java):
  - [Tuckey urlrewrite](https://tuckey.org/urlrewrite/) - URL Rewriting (cache busting resource versioning)
  - [Hibernate](https://hibernate.org/) - Object-Relational Mapping (persistence).
