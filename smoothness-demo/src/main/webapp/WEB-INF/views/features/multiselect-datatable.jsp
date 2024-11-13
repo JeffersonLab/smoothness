@@ -41,7 +41,7 @@
                     releaseArray.push(release);
                 });
 
-                var $selectedList = $("#selected-row-list");
+                var $selectedList = $("#movie-selected-row-list");
 
                 $selectedList.attr("data-id-json", JSON.stringify(idArray));
 
@@ -184,10 +184,10 @@
                 <ul class="key-value-list">
                     <li>
                         <div class="li-key">
-                            <label for="selected-row-list">Movie</label>
+                            <label for="movie-selected-row-list">Movie</label>
                         </div>
                         <div class="li-value">
-                            <ul id="selected-row-list"></ul>
+                            <ul id="movie-selected-row-list" class="selected-row-list"></ul>
                             <span id="dialog-selected-count"></span>
                         </div>
                     </li>                       

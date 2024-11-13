@@ -692,7 +692,7 @@ th.scrollbar-header {
     font-weight: bold;
     color: red;
 }
-#selected-row-list {
+.selected-row-list {
     border: 1px solid gray;
     height: 10em;
     list-style-type: none;
