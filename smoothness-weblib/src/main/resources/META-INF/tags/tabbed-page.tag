@@ -41,7 +41,12 @@
     </head>
     <body class="${param.print eq 'Y' ? 'print ' : ''} ${param.fullscreen eq 'Y' ? 'fullscreen' : ''}">
         <c:if test="${env['SERVER_MESSAGE'] ne null}">
-            <div id="notification-bar"><c:out value="${env['SERVER_MESSAGE']}"/></div>
+            <div id="notification-bar">
+                <c:out value="${env['SERVER_MESSAGE']}"/>
+                <c:if test="${not empty env['SERVER_MESSAGE_URL'] && not empty env['SERVER_MESSAGE_URL_TEXT']}">
+                    (<a href="${env['SERVER_MESSAGE_URL']}"><c:out value="${env['SERVER_MESSAGE_URL_TEXT']}"/></a>)
+                </c:if>
+            </div>
         </c:if>        
         <div id="page">
             <header>
