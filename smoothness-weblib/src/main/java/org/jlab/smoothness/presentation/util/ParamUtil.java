@@ -1,6 +1,7 @@
 package org.jlab.smoothness.presentation.util;
 
 import javax.servlet.http.HttpServletRequest;
+import org.jlab.smoothness.business.exception.UserFriendlyException;
 
 /**
  * Utility methods for combined conversion and validation, with optional default values.
@@ -72,8 +73,10 @@ public final class ParamUtil {
    * @param request The request
    * @param name The parameter name
    * @return The boolean
+   * @throws UserFriendlyException If the input string cannot be parsed
    */
-  public static boolean convertAndValidateYNBoolean(HttpServletRequest request, String name) {
+  public static boolean convertAndValidateYNBoolean(HttpServletRequest request, String name)
+      throws UserFriendlyException {
     Boolean value = ParamConverter.convertYNBoolean(request, name);
 
     ParamValidator.validateNonNull(name, value);
@@ -88,9 +91,10 @@ public final class ParamUtil {
    * @param name The parameter name
    * @param defaultValue The default to use if the parameter is null
    * @return The boolean
+   * @throws UserFriendlyException If the input string cannot be parsed
    */
   public static boolean convertAndValidateYNBoolean(
-      HttpServletRequest request, String name, boolean defaultValue) {
+      HttpServletRequest request, String name, boolean defaultValue) throws UserFriendlyException {
     Boolean value = ParamConverter.convertYNBoolean(request, name);
 
     if (value == null) {

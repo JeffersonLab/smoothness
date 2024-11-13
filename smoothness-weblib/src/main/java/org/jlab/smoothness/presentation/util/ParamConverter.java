@@ -8,14 +8,20 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
+import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.TimeUtil;
 
 /**
  * Utility methods for converting parameters. Built-in unchecked exceptions such as
- * NumberFormatException and IllegalArgumentException are thrown if conversion fails. In some cases
- * the built-in checked ParseException is thrown, as declared.
+ * NumberFormatException and IllegalArgumentException are wrapped in UserFriendlyException if
+ * conversion fails. In some cases DateTimeParseException or ParseException is also wrapped in a
+ * UserFriendlyException.
+ *
+ * <p>The UserFriendlyException.getUserMessage() can be used to provide a user-friendly message to
+ * the user without tripping the CodeQL Scanner.
  *
  * @author ryans
  */
@@ -31,16 +37,16 @@ public final class ParamConverter {
    * @param request The HttpServletRequest
    * @param name The parameter name
    * @return A Character or null
-   * @throws IllegalArgumentException If the parameter contains more than one character
+   * @throws UserFriendlyException If the parameter contains more than one character
    */
   public static Character convertCharacter(HttpServletRequest request, String name)
-      throws IllegalArgumentException {
+      throws UserFriendlyException {
     String valueStr = request.getParameter(name);
     Character value = null;
 
     if (valueStr != null && !valueStr.isEmpty()) {
       if (valueStr.length() > 1) {
-        throw new IllegalArgumentException("String contains more than one Character");
+        throw new UserFriendlyException("String contains more than one Character");
       } else {
         value = valueStr.charAt(0);
       }
@@ -91,10 +97,10 @@ public final class ParamConverter {
    * @param request The HttpServletRequest
    * @param name The parameter name
    * @return A Boolean or null
-   * @throws IllegalArgumentException If parameter does not contain one of "Y" or "N"
+   * @throws UserFriendlyException If parameter does not contain one of "Y" or "N"
    */
   public static Boolean convertYNBoolean(HttpServletRequest request, String name)
-      throws IllegalArgumentException {
+      throws UserFriendlyException {
     String valueStr = request.getParameter(name);
     Boolean value = null;
 
@@ -104,7 +110,7 @@ public final class ParamConverter {
       } else if ("Y".equals(valueStr)) {
         value = true;
       } else {
-        throw new IllegalArgumentException("Value must be one of 'Y' or 'N'");
+        throw new UserFriendlyException("Value must be one of 'Y' or 'N'");
       }
     }
 
@@ -117,10 +123,10 @@ public final class ParamConverter {
    * @param request The HttpServletRequest
    * @param name The parameter name
    * @return A Date or null
-   * @throws ParseException If the parameter format does not match expected format
+   * @throws UserFriendlyException If the parameter format does not match expected format
    */
   public static Date convertISO8601Date(HttpServletRequest request, String name)
-      throws ParseException {
+      throws UserFriendlyException {
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     Date value = null;
@@ -128,9 +134,13 @@ public final class ParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDate ld = formatter.parse(valueStr, LocalDate::from);
-      final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
-      value = Date.from(zdt.toInstant());
+      try {
+        final LocalDate ld = formatter.parse(valueStr, LocalDate::from);
+        final ZonedDateTime zdt = ld.atStartOfDay(ZoneId.of("America/New_York"));
+        value = Date.from(zdt.toInstant());
+      } catch (DateTimeParseException e) {
+        throw new UserFriendlyException("Date format error", e);
+      }
     }
 
     return value;
@@ -143,10 +153,10 @@ public final class ParamConverter {
    * @param request The HttpServletRequest
    * @param name The parameter name
    * @return A Date or null
-   * @throws ParseException If the parameter format does not match expected format
+   * @throws UserFriendlyException If the parameter format does not match expected format
    */
   public static Date convertISO8601DateTime(HttpServletRequest request, String name)
-      throws ParseException {
+      throws UserFriendlyException {
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     Date value = null;
@@ -154,9 +164,13 @@ public final class ParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      final LocalDateTime ldt = formatter.parse(valueStr, LocalDateTime::from);
-      final ZonedDateTime zdt = ldt.atZone(ZoneId.of("America/New_York"));
-      value = Date.from(zdt.toInstant());
+      try {
+        final LocalDateTime ldt = formatter.parse(valueStr, LocalDateTime::from);
+        final ZonedDateTime zdt = ldt.atZone(ZoneId.of("America/New_York"));
+        value = Date.from(zdt.toInstant());
+      } catch (DateTimeParseException e) {
+        throw new UserFriendlyException("Date format error", e);
+      }
     }
 
     return value;
@@ -303,10 +317,10 @@ public final class ParamConverter {
    * @param request The HttpServletRequest
    * @param name The parameter name
    * @return A Date or null
-   * @throws ParseException If the parameter format does not match expected format
+   * @throws UserFriendlyException If the parameter format does not match expected format
    */
   public static Date convertFriendlyDateTime(HttpServletRequest request, String name)
-      throws ParseException {
+      throws UserFriendlyException {
     SimpleDateFormat format = new SimpleDateFormat(TimeUtil.getFriendlyDateTimePattern());
 
     Date value = null;
@@ -314,7 +328,11 @@ public final class ParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      value = format.parse(valueStr);
+      try {
+        value = format.parse(valueStr);
+      } catch (ParseException e) {
+        throw new UserFriendlyException("format error", e);
+      }
     }
 
     return value;
@@ -326,10 +344,10 @@ public final class ParamConverter {
    * @param request The HttpServletRequest
    * @param name The parameter name
    * @return A Date or null
-   * @throws ParseException If the parameter format does not match expected format
+   * @throws UserFriendlyException If the parameter format does not match expected format
    */
   public static Date convertFriendlyDate(HttpServletRequest request, String name)
-      throws ParseException {
+      throws UserFriendlyException {
     SimpleDateFormat format = new SimpleDateFormat(TimeUtil.getFriendlyDatePattern());
 
     Date value = null;
@@ -337,7 +355,11 @@ public final class ParamConverter {
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      value = format.parse(valueStr);
+      try {
+        value = format.parse(valueStr);
+      } catch (ParseException e) {
+        throw new UserFriendlyException("format error", e);
+      }
     }
 
     return value;

@@ -1,7 +1,6 @@
 package org.jlab.demo.presentation.params;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.jlab.demo.business.params.ReportOneParams;
+import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.IOUtil;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.presentation.util.ParamBuilder;
@@ -37,7 +37,7 @@ public class ReportOneParamHandler implements UrlParamHandler<ReportOneParams> {
     try {
       start = ParamConverter.convertFriendlyDateTime(request, "start");
       end = ParamConverter.convertFriendlyDateTime(request, "end");
-    } catch (ParseException e) {
+    } catch (UserFriendlyException e) {
       throw new RuntimeException("Unable to parse date", e);
     }
 
