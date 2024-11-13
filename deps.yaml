@@ -12,7 +12,7 @@ services:
       - ./container/oracle/initdb.d:/container-entrypoint-initdb.d
 
   keycloak:
-    image: quay.io/keycloak/keycloak:20.0.5
+    image: jeffersonlab/keycloak:1.1.1
     hostname: keycloak
     container_name: keycloak
     ports:
@@ -29,9 +29,7 @@ services:
       KEYCLOAK_RESOURCE: 'smoothness-demo'
       KEYCLOAK_SECRET: 'yHi6W2raPmLvPXoxqMA7VWbLAA2WN0eB'
     volumes:
-      - ./docker/keycloak/docker-entrypoint.sh:/docker-entrypoint.sh
-      - ./docker/keycloak/setup.sh:/setup.sh
-    entrypoint: /docker-entrypoint.sh
+      - ./container/keycloak/initdb.d:/container-entrypoint-initdb.d
 
   puppet:
     image: slominskir/puppet-show:2.1.1
