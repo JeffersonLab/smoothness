@@ -25,13 +25,13 @@
             <c:when test="${'NONE' eq resourceLocation}">
             </c:when>
             <c:when test="${'CDN' eq resourceLocation}">
-                <link rel="stylesheet" type="text/css" href="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-ui/1.13.2/theme/smoothness/jquery-ui.min.css"/>
+                <link rel="stylesheet" type="text/css" href="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-ui/1.14.1/theme/smoothness/jquery-ui.min.css"/>
                 <link rel="stylesheet" type="text/css" href="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jlab-theme/smoothness/${env[initParam.appSpecificEnvPrefix.concat('_SMOOTHNESS_VERSION')]}/css/smoothness.min.css"/>
                 <link rel="stylesheet" type="text/css" href="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-plugins/select2/4.0.13/select2.min.css"/>
                 <link rel="stylesheet" type="text/css" href="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-plugins/timepicker/jquery-ui-timepicker-1.5.0.css"/>
             </c:when>
             <c:otherwise><!-- LOCAL -->
-                <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/jquery-ui-1.13.2/jquery-ui.min.css"/>
+                <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/jquery-ui-1.14.1/jquery-ui.min.css"/>
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/smoothness.css"/>
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/jquery-plugins/select2/4.0.13/select2.min.css"/>
                 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/jquery-plugins/timepicker/1.5.0.min.css"/>
@@ -125,7 +125,7 @@
             </c:when>
             <c:when test="${'CDN' eq resourceLocation}">
                 <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery/3.6.1.min.js"></script>
-                <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-ui/1.13.2/jquery-ui.min.js"></script>
+                <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-ui/1.14.1/jquery-ui.min.js"></script>
                 <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/uri/uri-1.14.1.min.js"></script>
                 <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-plugins/select2/4.0.13/select2.min.js"></script>
                 <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-plugins/maskedinput/jquery.maskedinput-1.3.1.min.js"></script>
@@ -134,7 +134,7 @@
             </c:when>
             <c:otherwise><!-- LOCAL -->
                 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.6.1.min.js"></script>
-                <script src="${pageContext.request.contextPath}/resources/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+                <script src="${pageContext.request.contextPath}/resources/jquery-ui-1.14.1/jquery-ui.min.js"></script>
                 <script src="${pageContext.request.contextPath}/resources/js/uri-1.14.1.min.js"></script>
                 <script src="${pageContext.request.contextPath}/resources/jquery-plugins/select2/4.0.13/select2.min.js"></script>
                 <script src="${pageContext.request.contextPath}/resources/jquery-plugins/maskedinput/1.3.1.min.js"></script>
