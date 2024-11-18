@@ -13,7 +13,7 @@
             jlab.pageDialog.height = 600;
             /*jlab.pageDialog.minWidth = 800;
             jlab.pageDialog.minHeight = 600;*/
-            jlab.pageDialog.resizable = false;
+            jlab.pageDialog.resizable = true;
         </script>
     </jsp:attribute>        
     <jsp:body>
