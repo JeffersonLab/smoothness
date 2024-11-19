@@ -26,8 +26,19 @@
         </div>
         <div class="dialog-content">
             <section>
+                <div class="float-breadbox">
+                    <ul>
+                        <li>
+                            <div><a href="crumb-two" data-dialog-title="Crumb Two" class="dialog-friendly">Previous</a></div>
+                        </li>
+                        <li class="hide-in-dialog">
+                            <div><a href="crumb-three" class="dialog-ready" data-dialog-title="Crumb Three">🗗</a></div>
+                        </li>
+                        <li><a href="crumb-four" data-dialog-title="Crumb Four" class="dialog-friendly">Next</a></li>
+                    </ul>
+                </div>
                 <h2 class="page-header-title"><c:out value="${title}"/></h2>
-                <p><a href="crumb-four" data-dialog-title="Crumb Four" class="dialog-friendly">Keep Going</a></p>
+                <p>Nothing to see here.</p>
             </section>
         </div>
     </jsp:body>         

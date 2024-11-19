@@ -54,10 +54,19 @@
                         <input class="filter-form-submit-button" type="submit" value="Apply"/>
                     </form>
                 </s:filter-flyout-widget>
+                <div class="float-breadbox right-only">
+                    <ul>
+                        <li class="hide-in-dialog">
+                            <div><a href="crumb-one" class="dialog-ready" data-dialog-title="Crumb One">🗗</a></div>
+                        </li>
+                        <li>
+                            <div><a href="crumb-two" data-dialog-title="Crumb Two" class="dialog-friendly">Next</a></div>
+                        </li>
+                    </ul>
+                </div>
                 <h2 class="page-header-title"><c:out value="${title}"/></h2>
                 <p>
-                    <a href="crumb-two" data-dialog-title="Crumb Two" class="dialog-friendly">Next Crumb</a>
-                    <p><a href="crumb-one" class="dialog-ready" data-dialog-title="Crumb One">Nested Modal</a></p>
+                    Hello World
                 </p>
             </section>
         </div>

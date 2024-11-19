@@ -503,7 +503,7 @@ th.scrollbar-header {
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
-.float-breadbox li:first-child:before {
+.float-breadbox:not(.right-only) li:first-child:before {
     width: 30px;
     height: 30px;
     background-color: white;
@@ -518,7 +518,7 @@ th.scrollbar-header {
     border-bottom: 1px solid black;
     border-left: 1px solid black;
 }
-.float-breadbox li:last-child:before {
+.float-breadbox:not(.left-only) li:last-child:before {
     width: 30px;
     height: 30px;
     background-color: white;
@@ -540,7 +540,7 @@ th.scrollbar-header {
     min-width: 75px;
     text-align: center;
 }
-.float-breadbox li:last-child:after {
+.float-breadbox:not(.left-only) li:last-child:after {
     bottom: 0;
     content: " ";
     height: 16px;
@@ -636,6 +636,7 @@ th.scrollbar-header {
     display: none;
 }
 /*Dialogs*/
+.page-dialog .hide-in-dialog,
 .dialog {
     display: none;
 }

@@ -59,8 +59,18 @@
                         </li>
                     </ul>
                 </div>
+                <div class="float-breadbox left-only">
+                    <ul>
+                        <li>
+                            <div><a href="crumb-three" data-dialog-title="Crumb Three" class="dialog-friendly">Previous</a></div>
+                        </li>
+                        <li class="hide-in-dialog">
+                            <div><a href="crumb-four" class="dialog-ready" data-dialog-title="Crumb Four">🗗</a></div>
+                        </li>
+                    </ul>
+                </div>
                 <h2 class="page-header-title"><c:out value="${title}"/></h2>
-                <p>The End</p>
+                <p>Try this in a dialog: <a href="${pageContext.request.contextPath}/features/multiselect-datatable" class="dialog-ready" data-dialog-title="Multi-Select Datatable">Multi-select Datatable</a></p>
             </section>
         </div>
     </jsp:body>

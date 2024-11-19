@@ -46,8 +46,8 @@
                         <li>
                             <div><a href="crumb-one" data-dialog-title="Crumb One" class="dialog-friendly">Previous</a></div>
                         </li>
-                        <li>
-                            <div>Some middle ground</div>
+                        <li class="hide-in-dialog">
+                            <div><a href="crumb-two" class="dialog-ready" data-dialog-title="Crumb One">🗗</a></div>
                         </li>
                         <li><a href="crumb-three" data-dialog-title="Crumb Three" class="dialog-friendly">Next</a></li>
                     </ul>
