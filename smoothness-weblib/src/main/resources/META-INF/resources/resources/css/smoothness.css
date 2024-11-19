@@ -237,19 +237,19 @@ th.scrollbar-header {
     min-height: 500px;
 }
 /*Filter Flyout Widget*/
-#filter-flyout-widget {
+.filter-flyout-widget {
     display: inline-block;
 }
-#filter-flyout-button {
+.filter-flyout-button {
     border: 1px solid black;
     display: inline-block;
     padding: 4px;
     margin-right: 8px;
 }
-#filter-flyout-handle {
+.filter-flyout-handle {
     position: relative;
 }
-#filter-flyout-panel {
+.filter-flyout-panel {
     display: none;
     background-color: white;
     border: 1px solid black;
@@ -263,17 +263,17 @@ th.scrollbar-header {
     width: 525px;
     z-index: 3;
 }
-#filter-flyout-close-button {
+.filter-flyout-close-button {
     float: right;
 }
-#filter-form-submit-button {
+.filter-form-submit-button {
     margin-top: 16px;
     float: right;
 }
-#filter-form fieldset {
+.filter-form fieldset {
     margin-top: 16px;
 }
-#filter-flyout-title {
+.filter-flyout-title {
     font-weight: bold;
 }
 .reset-clear-panel {
@@ -283,7 +283,7 @@ th.scrollbar-header {
 .default-selection-panel {
     font-weight: normal;
 }
-#page-header-title {
+.page-header-title {
     display: inline-block;
     margin: 0;
     vertical-align: bottom;
@@ -296,23 +296,23 @@ th.scrollbar-header {
     overflow-y: scroll;
     padding: 1em;
 }
-#filter-form .scrollable-filter-form > fieldset:first-child {
+.filter-form .scrollable-filter-form > fieldset:first-child {
     margin-top: 0;
 }
 .scrollable-filter-form > fieldset:last-child {
     margin-bottom: 16px;
 }
-.filter-flyout-ribbon + #page-header-title {
+.filter-flyout-ribbon:not(.page-dialog *) + .page-header-title {
     position: relative;
     left: -18px;
 }
-.filter-flyout-ribbon {
+.filter-flyout-ribbon:not(.page-dialog *) {
     position: relative;
     left: -42px;
     background-color: white;
     box-shadow: 6px 8px 4px -4px #979797;
 }
-.filter-flyout-ribbon #filter-flyout-button {
+.filter-flyout-ribbon:not(.page-dialog *) .filter-flyout-button {
     line-height: 30px;
     vertical-align: middle;
     height: 30px;
@@ -329,8 +329,8 @@ th.scrollbar-header {
     position: relative;
     white-space: nowrap;
     word-spacing: normal;
-} 
-.filter-flyout-ribbon:before {
+}
+.filter-flyout-ribbon:not(.page-dialog *):before {
     content: '';
     position: absolute;
     display: block;
@@ -341,11 +341,11 @@ th.scrollbar-header {
     height: 0;
     border-left: 16px solid transparent;
 }
-.filter-flyout-ribbon #filter-flyout-button a {
+.filter-flyout-ribbon:not(.page-dialog *) .filter-flyout-button a {
     z-index: 2;
     position: relative;
 }
-.filter-flyout-ribbon #filter-flyout-button:before {
+.filter-flyout-ribbon:not(.page-dialog *) .filter-flyout-button:before {
     width: 30px;
     height: 30px;
     background-color: white;
@@ -360,7 +360,7 @@ th.scrollbar-header {
     border-top: 1px solid black;
     border-right: 1px solid black;
 }
-.filter-flyout-ribbon #filter-flyout-button:after {
+.filter-flyout-ribbon:not(.page-dialog *) .filter-flyout-button:after {
     bottom: 0;
     box-shadow: 0 8px 4px -4px #979797;
     content: " ";
@@ -377,6 +377,12 @@ th.scrollbar-header {
     z-index: 0;
 } 
 /*Breadcrumb*/
+.page-dialog .ribbon-breadbox {
+    left: -16px;
+}
+.page-dialog .ribbon-breadbox:before {
+    border-top: none;
+}
 .ribbon-breadbox {
     position: relative;
     display: inline-block;
@@ -455,12 +461,12 @@ th.scrollbar-header {
     display: inline-block;
     z-index: 2;
 }
-.ribbon-breadbox #filter-flyout-button {
+.ribbon-breadbox .filter-flyout-button {
     border: none;
     padding: 0;
     margin-right: 0;
 }
-.ribbon-breadbox #filter-flyout-panel {
+.ribbon-breadbox .filter-flyout-panel {
     left: -9px;
 }
 
@@ -923,7 +929,7 @@ input.date-input {
 /*Print Reports*/
 .print header,
 .print #left-column,
-.print #filter-flyout-widget,
+.print .filter-flyout-widget,
 .print #report-page-actions,
 .print #editable-row-table-control-panel {
     display: none;
@@ -942,11 +948,11 @@ input.date-input {
     border: none;
     margin: 0;
 }
-.print #page-header-title{
+.print .page-header-title{
     display: block;
     text-align: center;
 }
-.print #page-header-title {
+.print .page-header-title {
     display: block;
     text-align: center;
     color: darkred;

@@ -11,7 +11,7 @@
     </jsp:attribute>        
     <jsp:body>
         <section>
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <p>This web application template is named &quot;Smoothness&quot;, and is designed to pair with the jQuery UI theme of the same name.</p>
 
         </section>

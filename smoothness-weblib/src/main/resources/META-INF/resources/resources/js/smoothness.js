@@ -1028,17 +1028,20 @@ jlab.initDatePickers = function() {
  * Common Event Handlers
  */
 // Filter flyout events
-$(document).on("click", "#filter-flyout-link", function () {
-    $("#filter-flyout-panel").slideToggle();
+$(document).on("click", ".filter-flyout-link", function () {
+    let $widget = $(this).closest(".filter-flyout-widget");
+    $widget.find(".filter-flyout-panel").slideToggle();
     return false;
 });
-$(document).on("click", "#filter-flyout-close-button", function () {
-    $("#filter-flyout-panel").slideUp();
+$(document).on("click", ".filter-flyout-close-button", function () {
+    let $widget = $(this).closest(".filter-flyout-widget");
+    $widget.find(".filter-flyout-panel").slideUp();
     return false;
 });
-$(document).keyup(function (e) {
+$(document).on("keyup", ".filter-flyout-widget", function (e) {
+    let $widget = $(this);
     if (e.keyCode === 27) {
-        $('#filter-flyout-panel').slideUp();
+        $widget.find('.filter-flyout-panel').slideUp();
     }
 });
 // Date Range selection events
@@ -1059,6 +1062,13 @@ $(document).on("change", "#date-range", function () {
 
 });
 // Dialog events
+$(document).on("click", ".page-dialog .dialog-friendly", function () {
+    var title = $(this).attr("data-dialog-title");
+
+    jlab.closePageDialogs();
+    jlab.openPageInDialog($(this).attr("href"), title);
+    return false;
+});
 $(document).on("click", ".dialog-ready", function () {
     var title = $(this).attr("data-dialog-title");
 
@@ -1082,9 +1092,10 @@ $(document).on("change", ".change-submit", function () {
     $(this).closest("form").submit();
 });
 // Pagination controls
-$(document).on("click", "#next-button, #previous-button", function () {
-    $("#offset-input").val($(this).attr("data-offset"));
-    $("#filter-form").submit();
+$(document).on("click", ".next-button, .previous-button", function () {
+    let $widget = $(this).closest("section").find(".filter-flyout-widget");
+    $widget.find(".offset-input").val($(this).attr("data-offset"));
+    $widget.find(".filter-form").submit();
 });
 // Report FullScreen/Export events
 $(document).on("mouseover", "#export-menu li", function () {

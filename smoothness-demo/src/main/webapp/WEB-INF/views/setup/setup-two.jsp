@@ -11,7 +11,7 @@
     </jsp:attribute>        
     <jsp:body>
         <section>
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <c:url value="/setup/user-authorization-cache" var="url">
             </c:url>
             <p>

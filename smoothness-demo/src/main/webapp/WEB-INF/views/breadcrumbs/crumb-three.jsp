@@ -23,11 +23,12 @@
                 <li><a href="crumb-two">Crumb Two</a></li>
                 <li>Crumb Three</li>
             </ul>
-        </div>            
-        <section>
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
-            <p><a href="crumb-two?max=100" class="dialog-ready" data-dialog-title="Hello World">Check this out</a></p>
-            <p><a href="crumb-four">Keep Going</a></p>
-        </section>
+        </div>
+        <div class="dialog-content">
+            <section>
+                <h2 class="page-header-title"><c:out value="${title}"/></h2>
+                <p><a href="crumb-four" data-dialog-title="Crumb Four" class="dialog-friendly">Keep Going</a></p>
+            </section>
+        </div>
     </jsp:body>         
 </t:page>

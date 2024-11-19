@@ -124,8 +124,8 @@
                 </div>
             </div>
             <s:filter-flyout-widget>
-                <form id="filter-form" method="get" action="multiselect-datatable">
-                    <div id="filter-form-panel">
+                <form class="filter-form" method="get" action="multiselect-datatable">
+                    <div class="filter-form-panel">
                         <fieldset>
                             <legend>Filter</legend>
                             <ul class="key-value-list">
@@ -140,10 +140,10 @@
                             </ul>
                         </fieldset>	
                     </div>
-                    <input id="filter-form-submit-button" type="submit" value="Apply"/>
+                    <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
             <c:if test="${fn:length(movieList) > 0}">
                 <s:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${true}" multiselect="${true}">
