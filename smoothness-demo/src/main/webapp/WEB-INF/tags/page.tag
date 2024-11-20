@@ -8,6 +8,15 @@
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
 <%@attribute name="secondaryNavigation" fragment="true"%>
+<c:choose>
+    <c:when test="${param.partial eq 'Y'}">
+        <div class="partial" data-title="${title}">
+            <jsp:invoke fragment="stylesheets"/>
+            <jsp:doBody/>
+            <jsp:invoke fragment="scripts"/>
+        </div>
+    </c:when>
+    <c:otherwise>
 <s:tabbed-page title="${title}" category="${category}" description="${description}">
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/demo.css"/>
@@ -56,3 +65,5 @@
         <jsp:doBody/>
     </jsp:body>
 </s:tabbed-page>
+    </c:otherwise>
+</c:choose>

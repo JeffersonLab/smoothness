@@ -98,7 +98,7 @@
                     </ul>
                 </div>
             </div>            
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box">June - July, 2015</div>
             <s:chart-widget>
                 <table class="chart-legend">

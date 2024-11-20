@@ -23,18 +23,18 @@
                 </div>
             </div>
             <s:filter-flyout-widget>
-                <form id="filter-form" method="get" action="report-one">
-                    <div id="filter-form-panel">
+                <form class="filter-form" method="get" action="report-one">
+                    <div class="filter-form-panel">
                         <fieldset>
                             <legend>Filter</legend>
                             <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
                         </fieldset>	
                     </div>
                     <input type="hidden" name="qualified" value=""/>
-                    <input id="filter-form-submit-button" type="submit" value="Apply"/>
+                    <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"><c:out value="${message}"/></div>
             <div id="chart-wrap" class="chart-wrap-backdrop">
                 <table class="data-table stripped-table constrained-table compact-table">
