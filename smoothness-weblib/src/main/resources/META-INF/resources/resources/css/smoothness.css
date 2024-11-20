@@ -379,6 +379,7 @@ th.scrollbar-header {
 /*Breadcrumb*/
 .page-dialog .ribbon-breadbox {
     left: -16px;
+    margin-left: 16px;
 }
 .page-dialog .ribbon-breadbox:before {
     border-top: none;
@@ -636,6 +637,10 @@ th.scrollbar-header {
     display: none;
 }
 /*Dialogs*/
+.ui-dialog .page-dialog.ui-dialog-content {
+    margin: 0;
+    padding: 0;
+}
 .page-dialog .hide-in-dialog,
 .dialog {
     display: none;

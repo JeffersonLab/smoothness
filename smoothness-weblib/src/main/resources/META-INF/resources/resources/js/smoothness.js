@@ -1083,9 +1083,14 @@ $(document).on("change", "#date-range", function () {
 
 });
 // Dialog events
-$(document).on("click", ".dialog-opener, .page-dialog .partial-support", function (e) {
+jlab.setPartial = function(href) {
     jlab.closePageDialogs();
-    jlab.openPageInDialog($(this).attr("href"));
+    jlab.openPageInDialog(href);
+};
+
+$(document).on("click", ".dialog-opener, .page-dialog .partial-support", function (e) {
+    jlab.partialUrl = $(this).attr("href");
+    jlab.setPartial(jlab.partialUrl);
     return false;
 });
 $(document).on("click", ".dialog-close-button", function () {
@@ -1102,6 +1107,17 @@ $(document).on("keypress", ".dialog input", function (e) {
 // Some form inputs can trigger submit on change
 $(document).on("change", ".change-submit", function () {
     $(this).closest("form").submit();
+});
+$(document).on("submit", ".partial .filter-form", function() {
+    let $form = $(this),
+        href = jlab.partialUrl;
+        url = new URL(href + '?' + $form.serialize(), window.location.href);
+
+    url.searchParams.set('partial', 'Y');
+
+    jlab.setPartial(url.href);
+
+    return false;
 });
 // Pagination controls
 $(document).on("click", ".next-button, .previous-button", function () {
