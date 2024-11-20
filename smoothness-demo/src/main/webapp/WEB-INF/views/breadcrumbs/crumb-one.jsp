@@ -57,10 +57,10 @@
                 <div class="float-breadbox right-only">
                     <ul>
                         <li class="hide-in-dialog">
-                            <div><a href="crumb-one" class="dialog-ready" data-dialog-title="Crumb One">🗗</a></div>
+                            <div><a href="crumb-one" class="dialog-opener">🗗</a></div>
                         </li>
                         <li>
-                            <div><a href="crumb-two" data-dialog-title="Crumb Two" class="dialog-friendly">Next</a></div>
+                            <div><a href="crumb-two" class="partial-support">Next</a></div>
                         </li>
                     </ul>
                 </div>

@@ -1083,14 +1083,7 @@ $(document).on("change", "#date-range", function () {
 
 });
 // Dialog events
-$(document).on("click", ".page-dialog .dialog-friendly", function () {
-    var title = $(this).attr("data-dialog-title");
-
-    jlab.closePageDialogs();
-    jlab.openPageInDialog($(this).attr("href"), title);
-    return false;
-});
-$(document).on("click", ".dialog-ready", function (e) {
+$(document).on("click", ".dialog-opener, .page-dialog .partial-support", function (e) {
     jlab.closePageDialogs();
     jlab.openPageInDialog($(this).attr("href"));
     return false;

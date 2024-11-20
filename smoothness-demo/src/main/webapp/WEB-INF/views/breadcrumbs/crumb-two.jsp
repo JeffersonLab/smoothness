@@ -13,7 +13,7 @@
     <jsp:body>
         <div class="banner-breadbox">
             <ul>
-                <li><a href="crumb-one">Crumb One</a></li>
+                <li><a href="crumb-one" class="partial-support">Crumb One</a></li>
                 <li>Crumb Two</li>
             </ul>
         </div>
@@ -44,12 +44,12 @@
                 <div class="float-breadbox">
                     <ul>
                         <li>
-                            <div><a href="crumb-one" data-dialog-title="Crumb One" class="dialog-friendly">Previous</a></div>
+                            <div><a href="crumb-one" class="partial-support">Previous</a></div>
                         </li>
                         <li class="hide-in-dialog">
-                            <div><a href="crumb-two" class="dialog-ready" data-dialog-title="Crumb One">🗗</a></div>
+                            <div><a href="crumb-two" class="dialog-opener">🗗</a></div>
                         </li>
-                        <li><a href="crumb-three" data-dialog-title="Crumb Three" class="dialog-friendly">Next</a></li>
+                        <li><a href="crumb-three" class="partial-support">Next</a></li>
                     </ul>
                 </div>
                 <h2 class="page-header-title"><c:out value="${title}"/></h2>

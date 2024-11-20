@@ -13,9 +13,9 @@
     <jsp:body>
         <div class="banner-breadbox">
             <ul>
-                <li><a href="crumb-one">Crumb One</a></li>
-                <li><a href="crumb-two">Crumb Two</a></li>
-                <li><a href="crumb-three">Crumb Three</a></li>
+                <li><a href="crumb-one" class="partial-support">Crumb One</a></li>
+                <li><a href="crumb-two" class="partial-support">Crumb Two</a></li>
+                <li><a href="crumb-three" class="partial-support">Crumb Three</a></li>
                 <li>Crumb Four</li>
             </ul>
         </div>
@@ -62,15 +62,15 @@
                 <div class="float-breadbox left-only">
                     <ul>
                         <li>
-                            <div><a href="crumb-three" data-dialog-title="Crumb Three" class="dialog-friendly">Previous</a></div>
+                            <div><a href="crumb-three" class="partial-support">Previous</a></div>
                         </li>
                         <li class="hide-in-dialog">
-                            <div><a href="crumb-four" class="dialog-ready" data-dialog-title="Crumb Four">🗗</a></div>
+                            <div><a href="crumb-four" class="dialog-opener">🗗</a></div>
                         </li>
                     </ul>
                 </div>
                 <h2 class="page-header-title"><c:out value="${title}"/></h2>
-                <p>Try this in a dialog: <a href="${pageContext.request.contextPath}/features/multiselect-datatable" class="dialog-ready" data-dialog-title="Multi-Select Datatable">Multi-select Datatable</a></p>
+                <p>Try this in a dialog: <a href="${pageContext.request.contextPath}/features/multiselect-datatable" class="dialog-opener">Multi-select Datatable</a></p>
             </section>
         </div>
     </jsp:body>
