@@ -78,7 +78,7 @@ $(document).on("click", "#rating-save-button", function () {
     var url = jlab.contextPath + "/ajax/edit-movie-rating",
         rating = $("#edit-rating").val(),
         data = {'id[]': idArray, rating: rating},
-        $dialog = $("#table-row-dialog");
+        $dialog = $("#rating-dialog");
 
     jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
 });

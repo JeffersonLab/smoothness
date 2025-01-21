@@ -103,6 +103,17 @@ jlab.doAjaxJsonGetRequest = function (url, data, quiet) {
     return promise;
 };
 jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
+    let inPartialPageDialog = $dialog.parents(".page-dialog").length > 0;
+
+    if(inPartialPageDialog) {
+        console.log('do partial');
+        //jlab.doAjaxJsonPostRequestFromPartial(url, data, $dialog);
+    } else {
+        console.log('do regular');
+        //jlab.doAjaxJsonPostRequestFromPage(url, data, $dialog, reload);
+    }
+};
+jlab.doAjaxJsonPostRequestFromPage = function (url, data, $dialog, reload) {
 
     if (jlab.isRequest()) {
         window.console && console.log("Ajax already in progress");
@@ -223,10 +234,10 @@ jlab.openPageInDialog = function (href) {
                 });
 
                 $('script', js).each(function () {
-                    console.log('script item: ', this);
                     let src = $(this).attr("src");
 
-                    if($('script[src="' + src + '"]').length === 0) {
+                    // We ignore script elements missing src attribute
+                    if(src && $('script[src="' + src + '"]').length === 0) {
                         const script = document.createElement('script');
                         script.src = src;
                         document.body.appendChild(script);
@@ -1126,6 +1137,34 @@ jlab.setPartial = function (href) {
     jlab.closePageDialogs();
     jlab.openPageInDialog(href);
 };
+
+// Options include page-reload, partial-reload, partial-close, none
+jlab.partialPostSuccessAction = 'partial-reload';
+
+jlab.doAjaxJsonPostRequestFromPartial = function (url, data, $dialog) {
+
+    console.log('do partial ajax');
+    return;
+
+    let xhr = jlab.doAjaxJsonPostRequest(url, data, $dialog, false);
+
+    xhr.done(function () {
+        if(jlab.partialPostSuccessAction === 'page-reload') {
+            window.location.reload();
+        } else if(jlab.partialPostSuccessAction === 'partial-reload') {
+            jlab.reloadPartial();
+        } else if(jlab.partialPostSuccessAction === 'partial-close') {
+            if($dialog) {
+                $dialog.dialog("close");
+            }
+            $(".page-dialog").dialog("close");
+        }
+    });
+}
+
+jlab.reloadPartial = function() {
+    jlab.setPartial(jlab.partialUrl);
+}
 
 $(document).on("click", ".dialog-opener, .page-dialog .partial-support", function (e) {
     jlab.partialUrl = $(this).attr("href");

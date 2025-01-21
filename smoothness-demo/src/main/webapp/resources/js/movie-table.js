@@ -24,8 +24,8 @@ $(document).on("table-row-add", function () {
     }
 
     var url = jlab.contextPath + "/ajax/add-movie",
-        data = jlab.getEditableMovieData();
-    $dialog = $("#table-row-dialog");
+        data = jlab.getEditableMovieData(),
+        $dialog = $("#table-row-dialog");
 
     jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
 });
