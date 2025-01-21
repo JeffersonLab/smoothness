@@ -10,10 +10,18 @@
 <%@attribute name="secondaryNavigation" fragment="true"%>
 <c:choose>
     <c:when test="${param.partial eq 'Y'}">
-        <div class="partial" data-title="${title}">
-            <jsp:invoke fragment="stylesheets"/>
-            <jsp:doBody/>
-            <jsp:invoke fragment="scripts"/>
+        <div id="partial" data-title="${title}">
+            <div id="partial-css">
+                <jsp:invoke fragment="stylesheets"/>
+            </div>
+            <div id="partial-html">
+                <div class="partial">
+                    <jsp:doBody/>
+                </div>
+            </div>
+            <div id="partial-js">
+                <jsp:invoke fragment="scripts"/>
+            </div>
         </div>
     </c:when>
     <c:otherwise>

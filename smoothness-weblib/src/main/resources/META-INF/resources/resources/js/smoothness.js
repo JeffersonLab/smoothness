@@ -182,39 +182,78 @@ jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
 
     return promise;
 };
-//Display a piece of another page in a dialog
+// Display a piece of another page in a dialog
+// - Expects three divs: #partial-js, #partial-css, #partial-html
+// - This separation allows avoiding loading js and css if already loaded
+// - We fail on redirect, which most often means authentication redirect
 jlab.openPageInDialog = function (href) {
     try {
         let url = new URL(href, window.location.href);
         url.searchParams.set('partial', 'Y');
 
-        let $dialog = $("<div class=\"page-dialog\"></div>")
-            .load(url.href, function(response, status, xhr) {
-                if(status === 'error') {
-                    console.log('Unable to load partial page', xhr.status, xhr.statusText);
-                    let loginHref = $("#login-link").attr("href");
-                    if(loginHref) {
-                        window.location.href = loginHref;
-                    } else {
-                        alert('Failed to load page, press F12 to view log');
-                    }
-                } else {
-                    $dialog.dialog({
-                        autoOpen: true,
-                        width: jlab.pageDialog.width,
-                        height: jlab.pageDialog.height,
-                        minWidth: jlab.pageDialog.minWidth,
-                        minHeight: jlab.pageDialog.minHeight,
-                        resizable: jlab.pageDialog.resizable,
-                        close: function () {
-                            $(this).dialog('destroy').remove();
-                        }
-                    });
+        let $dialog = $("<div class=\"page-dialog\"></div>");
 
-                    let title = $dialog.find(".partial").attr("data-title");
-                    $dialog.dialog({title: title});
+        fetch(url, {redirect: "error"})
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
                 }
-            });
+                return res.text();
+            })
+            .then(function (html) {
+                const parser = new DOMParser();
+                return parser.parseFromString(html, "text/html");
+            })
+            .then(data => {
+                let $data = $(data),
+                    html = $data.find("#partial-html"),
+                    css = $data.find("#partial-css"),
+                    js = $data.find("#partial-js");
+
+                $dialog.html(html);
+
+                let title = $data.find("#partial").attr("data-title");
+
+                $('link[rel="stylesheet"]', css).each(function () {
+                    let href = $(this).attr("href");
+
+                    if($('link[rel="stylesheet"][href="' + href + '"]').length === 0) {
+                        $(document).find("head").append(this);
+                    }
+                });
+
+                $('script', js).each(function () {
+                    console.log('script item: ', this);
+                    let src = $(this).attr("src");
+
+                    if($('script[src="' + src + '"]').length === 0) {
+                        const script = document.createElement('script');
+                        script.src = src;
+                        document.body.appendChild(script);
+                        //$(document).find("body").append(this); // jQuery will block load
+                    }
+                });
+
+                $dialog.dialog({
+                    title: title,
+                    autoOpen: true,
+                    width: jlab.pageDialog.width,
+                    height: jlab.pageDialog.height,
+                    minWidth: jlab.pageDialog.minWidth,
+                    minHeight: jlab.pageDialog.minHeight,
+                    resizable: jlab.pageDialog.resizable,
+                    close: function () {
+                        $(this).dialog('destroy').remove();
+                    }
+                });
+            }).catch(error => {
+            console.error('fetch error:', error);
+            // assume auth redirect
+            let loginHref = $("#login-link").attr("href");
+            if(loginHref) {
+                window.location.href = loginHref;
+            }
+        });
     } catch (e) {
         console.log('URL Error: ', href, e);
     }
@@ -1083,7 +1122,7 @@ $(document).on("change", "#date-range", function () {
 
 });
 // Dialog events
-jlab.setPartial = function(href) {
+jlab.setPartial = function (href) {
     jlab.closePageDialogs();
     jlab.openPageInDialog(href);
 };
@@ -1108,10 +1147,10 @@ $(document).on("keypress", ".dialog input", function (e) {
 $(document).on("change", ".change-submit", function () {
     $(this).closest("form").submit();
 });
-$(document).on("submit", ".partial .filter-form", function() {
+$(document).on("submit", ".partial .filter-form", function () {
     let $form = $(this),
         href = jlab.partialUrl;
-        url = new URL(href + '?' + $form.serialize(), window.location.href);
+    url = new URL(href + '?' + $form.serialize(), window.location.href);
 
     url.searchParams.set('partial', 'Y');
 
