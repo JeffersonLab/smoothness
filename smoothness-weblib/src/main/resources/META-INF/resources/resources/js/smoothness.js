@@ -28,7 +28,6 @@ if (!String.prototype.decodeXml) {
  * Common Namespace Declaration
  */
 var jlab = jlab || {};
-jlab.loaded = jlab.loaded || {};
 /**
  * Date constants
  */
@@ -102,16 +101,16 @@ jlab.doAjaxJsonGetRequest = function (url, data, quiet) {
 
     return promise;
 };
-jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
-    let inPartialPageDialog = $dialog.parents(".page-dialog").length > 0;
+jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload, inPartialPageDialog) {
+    let xhr;
 
     if(inPartialPageDialog) {
-        console.log('do partial');
-        //jlab.doAjaxJsonPostRequestFromPartial(url, data, $dialog);
+        xhr = jlab.doAjaxJsonPostRequestFromPartial(url, data, $dialog);
     } else {
-        console.log('do regular');
-        //jlab.doAjaxJsonPostRequestFromPage(url, data, $dialog, reload);
+        xhr = jlab.doAjaxJsonPostRequestFromPage(url, data, $dialog, reload);
     }
+
+    return xhr;
 };
 jlab.doAjaxJsonPostRequestFromPage = function (url, data, $dialog, reload) {
 
@@ -1143,10 +1142,7 @@ jlab.partialPostSuccessAction = 'partial-reload';
 
 jlab.doAjaxJsonPostRequestFromPartial = function (url, data, $dialog) {
 
-    console.log('do partial ajax');
-    return;
-
-    let xhr = jlab.doAjaxJsonPostRequest(url, data, $dialog, false);
+    let xhr = jlab.doAjaxJsonPostRequestFromPage(url, data, $dialog, false);
 
     xhr.done(function () {
         if(jlab.partialPostSuccessAction === 'page-reload') {
@@ -1160,6 +1156,8 @@ jlab.doAjaxJsonPostRequestFromPartial = function (url, data, $dialog) {
             $(".page-dialog").dialog("close");
         }
     });
+
+    return xhr;
 }
 
 jlab.reloadPartial = function() {

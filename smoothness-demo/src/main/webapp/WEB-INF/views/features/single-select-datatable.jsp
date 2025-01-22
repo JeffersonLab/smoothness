@@ -62,7 +62,7 @@
             <c:if test="${fn:length(movieList) > 0}">
                 <s:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${false}"/>
                 <div id="chart-wrap" class="chart-wrap-backdrop">
-                    <table class="data-table stripped-table uniselect-table editable-row-table">
+                    <table id="movie-table" class="data-table stripped-table uniselect-table editable-row-table">
                         <thead>
                             <tr>
                                 <th>Title</th>

@@ -25,9 +25,10 @@ $(document).on("table-row-add", function () {
 
     var url = jlab.contextPath + "/ajax/add-movie",
         data = jlab.getEditableMovieData(),
-        $dialog = $("#table-row-dialog");
+        $dialog = $("#table-row-dialog"),
+        inPartialPageDialog = $(document).find(".partial #movie-table").length > 0;
 
-    jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+    jlab.doAjaxJsonPostRequest(url, data, $dialog, true, inPartialPageDialog);
 });
 
 $(document).on("table-row-edit", function () {
@@ -41,7 +42,9 @@ $(document).on("table-row-edit", function () {
 
     data.id = $(".selected-row").attr("data-id");
 
-    jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+    let inPartialPageDialog = $(document).find(".partial #movie-table").length > 0;
+
+    jlab.doAjaxJsonPostRequest(url, data, $dialog, true, inPartialPageDialog);
 });
 
 $(document).on("click", "#remove-row-button", function () {
@@ -60,9 +63,10 @@ $(document).on("click", "#remove-row-button", function () {
 
     var url = jlab.contextPath + "/ajax/remove-movie",
         data = {'id[]': idArray},
-        $dialog = $("#table-row-dialog");
+        $dialog = $("#table-row-dialog"),
+        inPartialPageDialog = $(document).find(".partial #movie-table").length > 0;
 
-    jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+    jlab.doAjaxJsonPostRequest(url, data, $dialog, true, inPartialPageDialog);
 });
 
 /*Custom time picker*/
