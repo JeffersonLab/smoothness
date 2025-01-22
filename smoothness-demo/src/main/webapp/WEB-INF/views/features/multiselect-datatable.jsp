@@ -57,7 +57,7 @@
                             disabled="disabled">Edit Rating
                     </button>
                 </s:editable-row-table-controls>
-                <div id="chart-wrap" class="chart-wrap-backdrop">
+                <div class="chart-wrap chart-wrap-backdrop">
                     <table id="movie-table" class="data-table stripped-table multiselect-table editable-row-table">
                         <thead>
                         <tr>

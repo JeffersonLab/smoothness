@@ -61,7 +61,7 @@
             <div class="message-box"></div>
             <c:if test="${fn:length(movieList) > 0}">
                 <s:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${false}"/>
-                <div id="chart-wrap" class="chart-wrap-backdrop">
+                <div class="chart-wrap chart-wrap-backdrop">
                     <table id="movie-table" class="data-table stripped-table uniselect-table editable-row-table">
                         <thead>
                             <tr>

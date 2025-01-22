@@ -36,7 +36,7 @@
             </s:filter-flyout-widget>
             <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"><c:out value="${message}"/></div>
-            <div id="chart-wrap" class="chart-wrap-backdrop">
+            <div class="chart-wrap chart-wrap-backdrop">
                 <table class="data-table stripped-table constrained-table compact-table">
                     <thead>
                         <tr>

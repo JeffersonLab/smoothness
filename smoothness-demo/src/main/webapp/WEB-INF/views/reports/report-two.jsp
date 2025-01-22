@@ -27,7 +27,7 @@
             jlab.doChart = function() {
 
                 /*Wrap classes must be added before chart is generated*/
-                $("#chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
+                $(".chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
 
                 var placeholder = $("#chart-placeholder"),
                         datasource = [
