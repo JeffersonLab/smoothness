@@ -378,15 +378,15 @@ jlab.fromIsoDateString = function (x) {
         day = parseInt(x.substring(8, 10));
     return new Date(year, month, day);
 };
-jlab.updateDateRange = function (start, end, includeTime) {
-    $("#custom-date-range-list").hide();
+jlab.updateDateRange = function ($widget, start, end, includeTime) {
+    $widget.find(".custom-date-range-list").hide();
 
     if (includeTime) {
-        $("#start").val(jlab.toFriendlyDateTimeString(start));
-        $("#end").val(jlab.toFriendlyDateTimeString(end));
+        $widget.find(".start-input").val(jlab.toFriendlyDateTimeString(start));
+        $widget.find(".end-input").val(jlab.toFriendlyDateTimeString(end));
     } else {
-        $("#start").val(jlab.toFriendlyDateString(start));
-        $("#end").val(jlab.toFriendlyDateString(end));
+        $widget.find(".start-input").val(jlab.toFriendlyDateString(start));
+        $widget.find(".end-input").val(jlab.toFriendlyDateString(end));
     }
 };
 jlab.getCcShiftStart = function (dateInShift) {
@@ -1004,7 +1004,7 @@ jlab.initDateRange = function () {
             jlab.currentRun.start = jlab.fromIsoDateString(json.current.start);
             jlab.currentRun.end = jlab.fromIsoDateString(json.current.end);
 
-            $('#date-range option[value="0year"]').after('<option value="0run">Current Run</option>');
+            $('.date-range-select option[value="0year"]').after('<option value="0run">Current Run</option>');
         }
 
         if (json.previous) {
@@ -1012,7 +1012,7 @@ jlab.initDateRange = function () {
             jlab.previousRun.start = jlab.fromIsoDateString(json.previous.start);
             jlab.previousRun.end = jlab.fromIsoDateString(json.previous.end);
 
-            $('#date-range option[value="1year"]').after('<option value="1run">Previous Run</option>');
+            $('.date-range-select option[value="1year"]').after('<option value="1run">Previous Run</option>');
         }
 
         jlab.setupDateRange();
@@ -1026,27 +1026,30 @@ jlab.initDateRange = function () {
 };
 
 jlab.setupDateRange = function () {
-    var startInput = $("input#start"),
-        endInput = $("input#end"),
-        sevenAmOffset = $("#date-range").hasClass("seven-am-offset"),
-        includeTime = $("#date-range").hasClass("datetime-range");
+    $(".date-range-widget").each(function () {
+        var $widget = $(this),
+            startInput = $widget.find(".start-input"),
+            endInput = $widget.find(".end-input"),
+            sevenAmOffset = $widget.find(".date-range-select").hasClass("seven-am-offset"),
+            includeTime = $widget.find(".date-range-select").hasClass("datetime-range");
 
-    if (startInput.length > 0 && endInput.length > 0) {
-        var start = startInput.val();
-        var end = endInput.val();
+        if (startInput.length > 0 && endInput.length > 0) {
+            var start = startInput.val();
+            var end = endInput.val();
 
-        if (includeTime) {
-            start = jlab.fromFriendlyDateTimeString(start);
-            end = jlab.fromFriendlyDateTimeString(end);
-        } else {
-            start = jlab.fromFriendlyDateString(start);
-            end = jlab.fromFriendlyDateString(end);
+            if (includeTime) {
+                start = jlab.fromFriendlyDateTimeString(start);
+                end = jlab.fromFriendlyDateTimeString(end);
+            } else {
+                start = jlab.fromFriendlyDateString(start);
+                end = jlab.fromFriendlyDateString(end);
+            }
+
+            var range = jlab.encodeRange(start, end, sevenAmOffset);
+
+            $widget.find(".date-range-select").val(range).change();
         }
-
-        var range = jlab.encodeRange(start, end, sevenAmOffset);
-
-        $("#date-range").val(range).change();
-    }
+    });
 };
 jlab.initDateTimePickers = function () {
     var myControl = {
@@ -1115,18 +1118,19 @@ $(document).on("keyup", ".filter-flyout-widget", function (e) {
     }
 });
 // Date Range selection events
-$(document).on("change", "#date-range", function () {
-    var selected = $("#date-range option:selected").val(),
-        includeTime = $("#date-range").hasClass("datetime-range"),
-        sevenAmOffset = $("#date-range").hasClass("seven-am-offset");
+$(document).on("change", ".date-range-select", function () {
+    var selected = $(this).find("option:selected").val(),
+        includeTime = $(this).hasClass("datetime-range"),
+        sevenAmOffset = $(this).hasClass("seven-am-offset"),
+        $widget = $(this).closest(".date-range-widget");
 
     if (selected === 'custom') {
-        $("#custom-date-range-list").show();
+        $widget.find(".custom-date-range-list").show();
     } else {
         var range = jlab.decodeRange(selected, sevenAmOffset);
 
         if (range.start != null && range.end != null) {
-            jlab.updateDateRange(range.start, range.end, includeTime);
+            jlab.updateDateRange($widget, range.start, range.end, includeTime);
         }
     }
 
@@ -1352,7 +1356,7 @@ $(function () {
 
     var event = new Event('smoothnessready');
 
-    if ($("#date-range").length) {
+    if ($(".date-range-select").length) {
         if (jlab.runUrl.length > 0) {
             var runLookupPromise = jlab.initDateRange();
 

@@ -9,9 +9,18 @@
     <jsp:attribute name="stylesheets">
     </jsp:attribute>
     <jsp:attribute name="scripts">
+        <script type="text/javascript">
+            $("#report-one-body").on("click", ".default-clear-panel", function () {
+                $("#report1-start").val('');
+                $("#report1-end").val('');
+                $("#report1-date-range").val('custom').trigger('change');
+
+                return false;
+            });
+        </script>
     </jsp:attribute>        
     <jsp:body>
-        <section>
+        <section id="report-one-body">
             <div id="report-page-actions">
                 <button id="fullscreen-button">Full Screen</button>
                 <div id="export-widget">
@@ -22,13 +31,13 @@
                     </ul>
                 </div>
             </div>
-            <s:filter-flyout-widget>
+            <s:filter-flyout-widget clearButton="true">
                 <form class="filter-form" method="get" action="report-one">
                     <div class="filter-form-panel">
                         <fieldset>
-                            <legend>Filter</legend>
-                            <s:date-range datetime="${true}" sevenAmOffset="${true}"/>
-                        </fieldset>	
+                            <legend>First Filter</legend>
+                            <s:date-range prefix="report1" datetime="${true}" sevenAmOffset="${true}"/>
+                        </fieldset>
                     </div>
                     <input type="hidden" name="qualified" value=""/>
                     <input class="filter-form-submit-button" type="submit" value="Apply"/>
