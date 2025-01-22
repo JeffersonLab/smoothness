@@ -305,16 +305,16 @@ jlab.getExitFullscreenUrl = function () {
     return uri.toString();
 };
 /*Chart Axis Labels*/
-jlab.addYAxisLabel = function (label) {
+jlab.addYAxisLabel = function ($placeholder, label) {
     var yaxisLabel = $("<div class='axis-label y-axis-label'></div>")
         .text(label)
-        .appendTo($("#chart-placeholder"));
+        .appendTo($placeholder);
     yaxisLabel.css("margin-top", yaxisLabel.width() / 2);
 };
-jlab.addXAxisLabel = function (label) {
+jlab.addXAxisLabel = function ($placeholder, label) {
     $("<div class='axis-label x-axis-label'></div>")
         .text(label)
-        .appendTo($("#chart-placeholder"));
+        .appendTo($placeholder);
 };
 // Date/Time utilities
 jlab.toFriendlyDateTimeString = function (x) {

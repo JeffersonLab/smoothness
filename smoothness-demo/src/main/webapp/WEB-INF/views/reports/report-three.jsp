@@ -40,7 +40,7 @@
                 /*Wrap classes must be added before chart is generated*/
                 $(".chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
 
-                var placeholder = $("#chart-placeholder"),
+                var $placeholder = $("#report3"),
                         datasource = [
                             {label: 'Series 1', color: colors[0], data: [[0, 1]]},
                             {label: 'Series 2', color: colors[1], data: [[1, 2]]},
@@ -73,11 +73,11 @@
                             }
                         };
 
-                $.plot(placeholder, datasource, options);
+                $.plot($placeholder, datasource, options);
 
                 /*These must be added after chart is generated*/
-                jlab.addXAxisLabel('X Axis Label');
-                jlab.addYAxisLabel('Y Axis Label');
+                jlab.addXAxisLabel($placeholder, 'X Axis Label');
+                jlab.addYAxisLabel($placeholder, 'Y Axis Label');
             };
 
             $(function() {
@@ -100,7 +100,7 @@
             </div>            
             <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box">June - July, 2015</div>
-            <s:chart-widget>
+            <s:chart-widget placeholderId="report3">
                 <table class="chart-legend">
                     <tbody>
                         <c:forEach items="${legendDataList}" var="data">
