@@ -1,5 +1,7 @@
 <%@tag description="Chart Widget" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
-<%@attribute name="placeholderId"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@attribute name="placeholderId" required="false" type="java.lang.String"%>
+<c:set value="${empty placeholderId ? 'chart-placeholder' : placeholderId}" var="placeholderId"/>
 <div class="chart-legend-panel">
     <div class="chart-panel">
         <div class="chart-wrap">

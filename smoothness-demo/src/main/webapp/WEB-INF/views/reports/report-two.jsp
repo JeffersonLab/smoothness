@@ -67,8 +67,8 @@
                 $.plot($placeholder, datasource, options);
 
                 /*These must be added after chart is generated*/
-                jlab.addXAxisLabel($placeholder, 'X Axis Label');
-                jlab.addYAxisLabel($placeholder, 'Y Axis Label');
+                jlab.addXAxisLabel('X Axis Label', $placeholder);
+                jlab.addYAxisLabel('Y Axis Label', $placeholder);
             };
 
             $(function() {

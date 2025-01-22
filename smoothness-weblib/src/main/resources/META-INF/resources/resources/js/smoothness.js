@@ -305,13 +305,21 @@ jlab.getExitFullscreenUrl = function () {
     return uri.toString();
 };
 /*Chart Axis Labels*/
-jlab.addYAxisLabel = function ($placeholder, label) {
+jlab.addYAxisLabel = function (label, $placeholder) {
+    if($placeholder === undefined) {
+        $placeholder = $("#chart-placeholder");
+    }
+
     var yaxisLabel = $("<div class='axis-label y-axis-label'></div>")
         .text(label)
         .appendTo($placeholder);
     yaxisLabel.css("margin-top", yaxisLabel.width() / 2);
 };
-jlab.addXAxisLabel = function ($placeholder, label) {
+jlab.addXAxisLabel = function (label, $placeholder) {
+    if($placeholder === undefined) {
+        $placeholder = $("#chart-placeholder");
+    }
+
     $("<div class='axis-label x-axis-label'></div>")
         .text(label)
         .appendTo($placeholder);
