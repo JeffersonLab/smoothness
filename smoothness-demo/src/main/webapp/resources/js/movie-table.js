@@ -8,7 +8,7 @@ jlab.validateTableRowForm = function () {
     return true;
 };
 
-jlab.getEditableMovieData = function() {
+jlab.getEditableMovieData = function () {
     var title = $("#row-title").val(),
         description = $("#row-description").val(),
         rating = $("#row-rating").val(),
@@ -24,10 +24,11 @@ $(document).on("table-row-add", function () {
     }
 
     var url = jlab.contextPath + "/ajax/add-movie",
-        data = jlab.getEditableMovieData();
-        $dialog = $("#table-row-dialog");
+        data = jlab.getEditableMovieData(),
+        $dialog = $("#table-row-dialog"),
+        inPartialPageDialog = $(document).find(".partial #movie-table").length > 0;
 
-    jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+    jlab.doAjaxJsonPostRequest(url, data, $dialog, true, inPartialPageDialog);
 });
 
 $(document).on("table-row-edit", function () {
@@ -41,7 +42,9 @@ $(document).on("table-row-edit", function () {
 
     data.id = $(".selected-row").attr("data-id");
 
-    jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+    let inPartialPageDialog = $(document).find(".partial #movie-table").length > 0;
+
+    jlab.doAjaxJsonPostRequest(url, data, $dialog, true, inPartialPageDialog);
 });
 
 $(document).on("click", "#remove-row-button", function () {
@@ -60,9 +63,10 @@ $(document).on("click", "#remove-row-button", function () {
 
     var url = jlab.contextPath + "/ajax/remove-movie",
         data = {'id[]': idArray},
-        $dialog = $("#table-row-dialog");
+        $dialog = $("#table-row-dialog"),
+        inPartialPageDialog = $(document).find(".partial #movie-table").length > 0;
 
-    jlab.doAjaxJsonPostRequest(url, data, $dialog, true);
+    jlab.doAjaxJsonPostRequest(url, data, $dialog, true, inPartialPageDialog);
 });
 
 /*Custom time picker*/
@@ -110,10 +114,22 @@ $(".date-field").datepicker({
     dateFormat: "dd-M-yy"
 });
 
-$(document).on("click", "#excel-menu-item", function() {
+$(document).on("click", "#excel-menu-item", function () {
     $("#excel").click();
 });
 
 $("#mpaa-select").select2({
     width: 200
+});
+
+$(function () {
+    $("#table-row-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: jlab.editableRowTable.dialog.width,
+        minWidth: jlab.editableRowTable.dialog.minWidth,
+        height: jlab.editableRowTable.dialog.height,
+        minHeight: jlab.editableRowTable.dialog.minHeight,
+        resizable: jlab.editableRowTable.dialog.resizable
+    });
 });

@@ -19,15 +19,27 @@
     <jsp:body>
         <div class="banner-breadbox">
             <ul>
-                <li><a href="crumb-one">Crumb One</a></li>
-                <li><a href="crumb-two">Crumb Two</a></li>
+                <li><a href="crumb-one" class="partial-support">Crumb One</a></li>
+                <li><a href="crumb-two" class="partial-support">Crumb Two</a></li>
                 <li>Crumb Three</li>
             </ul>
-        </div>            
-        <section>
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
-            <p><a href="crumb-two?max=100" class="dialog-ready" data-dialog-title="Hello World">Check this out</a></p>
-            <p><a href="crumb-four">Keep Going</a></p>
-        </section>
+        </div>
+        <div class="dialog-content">
+            <section>
+                <div class="float-breadbox">
+                    <ul>
+                        <li>
+                            <div><a href="crumb-two" class="partial-support">Previous</a></div>
+                        </li>
+                        <li class="hide-in-dialog">
+                            <div><a href="crumb-three" class="dialog-opener">🗗</a></div>
+                        </li>
+                        <li><a href="crumb-four" class="partial-support">Next</a></li>
+                    </ul>
+                </div>
+                <h2 class="page-header-title"><c:out value="${title}"/></h2>
+                <p>Nothing to see here.</p>
+            </section>
+        </div>
     </jsp:body>         
 </t:page>

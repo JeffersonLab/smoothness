@@ -38,9 +38,9 @@
                 });
 
                 /*Wrap classes must be added before chart is generated*/
-                $("#chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
+                $(".chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
 
-                var placeholder = $("#chart-placeholder"),
+                var $placeholder = $("#chart-placeholder"),
                         datasource = [
                             {label: 'Series 1', color: colors[0], data: [[0, 1]]},
                             {label: 'Series 2', color: colors[1], data: [[1, 2]]},
@@ -73,7 +73,7 @@
                             }
                         };
 
-                $.plot(placeholder, datasource, options);
+                $.plot($placeholder, datasource, options);
 
                 /*These must be added after chart is generated*/
                 jlab.addXAxisLabel('X Axis Label');
@@ -98,7 +98,7 @@
                     </ul>
                 </div>
             </div>            
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box">June - July, 2015</div>
             <s:chart-widget>
                 <table class="chart-legend">

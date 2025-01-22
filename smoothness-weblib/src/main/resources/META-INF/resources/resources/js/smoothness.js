@@ -92,7 +92,7 @@ jlab.doAjaxJsonGetRequest = function (url, data, quiet) {
         }
 
         var message = json.error || 'Server did not handle request';
-        if(quiet) {
+        if (quiet) {
             window.console && console.log('Unable to perform request: ' + message);
         } else {
             alert('Unable to perform request: ' + message);
@@ -101,7 +101,18 @@ jlab.doAjaxJsonGetRequest = function (url, data, quiet) {
 
     return promise;
 };
-jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
+jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload, inPartialPageDialog) {
+    let xhr;
+
+    if(inPartialPageDialog) {
+        xhr = jlab.doAjaxJsonPostRequestFromPartial(url, data, $dialog);
+    } else {
+        xhr = jlab.doAjaxJsonPostRequestFromPage(url, data, $dialog, reload);
+    }
+
+    return xhr;
+};
+jlab.doAjaxJsonPostRequestFromPage = function (url, data, $dialog, reload) {
 
     if (jlab.isRequest()) {
         window.console && console.log("Ajax already in progress");
@@ -181,22 +192,81 @@ jlab.doAjaxJsonPostRequest = function (url, data, $dialog, reload) {
 
     return promise;
 };
-//Display a piece of another page in a dialog
-jlab.openPageInDialog = function (href, title) {
-    $("<div class=\"page-dialog\"></div>")
-        .load(href + ' .dialog-content')
-        .dialog({
-            autoOpen: true,
-            title: title,
-            width: jlab.pageDialog.width,
-            height: jlab.pageDialog.height,
-            minWidth: jlab.pageDialog.minWidth,
-            minHeight: jlab.pageDialog.minHeight,
-            resizable: jlab.pageDialog.resizable,
-            close: function () {
-                $(this).dialog('destroy').remove();
+// Display a piece of another page in a dialog
+// - Expects three divs: #partial-js, #partial-css, #partial-html
+// - This separation allows avoiding loading js and css if already loaded
+// - We fail on redirect, which most often means authentication redirect
+jlab.openPageInDialog = function (href) {
+    try {
+        let url = new URL(href, window.location.href);
+        url.searchParams.set('partial', 'Y');
+
+        let $dialog = $("<div class=\"page-dialog\"></div>");
+
+        fetch(url, {redirect: "error"})
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.text();
+            })
+            .then(function (html) {
+                const parser = new DOMParser();
+                return parser.parseFromString(html, "text/html");
+            })
+            .then(data => {
+                let $data = $(data),
+                    html = $data.find("#partial-html"),
+                    css = $data.find("#partial-css"),
+                    js = $data.find("#partial-js");
+
+                $dialog.html(html);
+
+                let title = $data.find("#partial").attr("data-title");
+
+                $('link[rel="stylesheet"]', css).each(function () {
+                    let href = $(this).attr("href");
+
+                    if($('link[rel="stylesheet"][href="' + href + '"]').length === 0) {
+                        $(document).find("head").append(this);
+                    }
+                });
+
+                $('script', js).each(function () {
+                    let src = $(this).attr("src");
+
+                    // We ignore script elements missing src attribute
+                    if(src && $('script[src="' + src + '"]').length === 0) {
+                        const script = document.createElement('script');
+                        script.src = src;
+                        document.body.appendChild(script);
+                        //$(document).find("body").append(this); // jQuery will block load
+                    }
+                });
+
+                $dialog.dialog({
+                    title: title,
+                    autoOpen: true,
+                    width: jlab.pageDialog.width,
+                    height: jlab.pageDialog.height,
+                    minWidth: jlab.pageDialog.minWidth,
+                    minHeight: jlab.pageDialog.minHeight,
+                    resizable: jlab.pageDialog.resizable,
+                    close: function () {
+                        $(this).dialog('destroy').remove();
+                    }
+                });
+            }).catch(error => {
+            console.error('fetch error:', error);
+            // assume auth redirect
+            let loginHref = $("#login-link").attr("href");
+            if(loginHref) {
+                window.location.href = loginHref;
             }
         });
+    } catch (e) {
+        console.log('URL Error: ', href, e);
+    }
 };
 jlab.closePageDialogs = function () {
     $(".page-dialog").dialog('destroy').remove();
@@ -235,16 +305,24 @@ jlab.getExitFullscreenUrl = function () {
     return uri.toString();
 };
 /*Chart Axis Labels*/
-jlab.addYAxisLabel = function (label) {
+jlab.addYAxisLabel = function (label, $placeholder) {
+    if($placeholder === undefined) {
+        $placeholder = $("#chart-placeholder");
+    }
+
     var yaxisLabel = $("<div class='axis-label y-axis-label'></div>")
         .text(label)
-        .appendTo($("#chart-placeholder"));
+        .appendTo($placeholder);
     yaxisLabel.css("margin-top", yaxisLabel.width() / 2);
 };
-jlab.addXAxisLabel = function (label) {
+jlab.addXAxisLabel = function (label, $placeholder) {
+    if($placeholder === undefined) {
+        $placeholder = $("#chart-placeholder");
+    }
+
     $("<div class='axis-label x-axis-label'></div>")
         .text(label)
-        .appendTo($("#chart-placeholder"));
+        .appendTo($placeholder);
 };
 // Date/Time utilities
 jlab.toFriendlyDateTimeString = function (x) {
@@ -263,7 +341,7 @@ jlab.toFriendlyDateString = function (x) {
 
     return jlab.pad(day, 2) + '-' + jlab.triCharMonthNames[month] + '-' + year;
 };
-jlab.fromFriendlyDateTimeString = function(x) {
+jlab.fromFriendlyDateTimeString = function (x) {
     var day = parseInt(x.substring(0, 2)),
         month = jlab.triCharMonthNames.indexOf(x.substring(3, 6)),
         year = parseInt(x.substring(7, 11)),
@@ -308,15 +386,15 @@ jlab.fromIsoDateString = function (x) {
         day = parseInt(x.substring(8, 10));
     return new Date(year, month, day);
 };
-jlab.updateDateRange = function (start, end, includeTime) {
-    $("#custom-date-range-list").hide();
+jlab.updateDateRange = function ($widget, start, end, includeTime) {
+    $widget.find(".custom-date-range-list").hide();
 
     if (includeTime) {
-        $("#start").val(jlab.toFriendlyDateTimeString(start));
-        $("#end").val(jlab.toFriendlyDateTimeString(end));
+        $widget.find(".start-input").val(jlab.toFriendlyDateTimeString(start));
+        $widget.find(".end-input").val(jlab.toFriendlyDateTimeString(end));
     } else {
-        $("#start").val(jlab.toFriendlyDateString(start));
-        $("#end").val(jlab.toFriendlyDateString(end));
+        $widget.find(".start-input").val(jlab.toFriendlyDateString(start));
+        $widget.find(".end-input").val(jlab.toFriendlyDateString(end));
     }
 };
 jlab.getCcShiftStart = function (dateInShift) {
@@ -363,7 +441,7 @@ jlab.getCcShiftEnd = function (dateInShift) {
 
     return end;
 };
-jlab.getStartOfWeek = function(dateInWeek, startDayOfWeekIndex) {
+jlab.getStartOfWeek = function (dateInWeek, startDayOfWeekIndex) {
     var startOfWeek = new Date(dateInWeek),
         dayOfWeekIndex = dateInWeek.getDay(),
         distance = startDayOfWeekIndex - dayOfWeekIndex;
@@ -376,13 +454,13 @@ jlab.getStartOfWeek = function(dateInWeek, startDayOfWeekIndex) {
 
     return startOfWeek;
 };
-jlab.getStartOfFiscalYear = function(dateInYear) {
+jlab.getStartOfFiscalYear = function (dateInYear) {
 
     const octIndex = 9; /* October */
 
     var start = new Date(dateInYear);
 
-    if(start.getMonth() < octIndex) {
+    if (start.getMonth() < octIndex) {
         start.setFullYear(start.getFullYear() - 1);
     }
 
@@ -570,7 +648,7 @@ jlab.encodeRange = function (start, end, sevenAmOffset) {
 
     return range;
 }
-jlab.decodeRange = function(range, sevenAmOffset) {
+jlab.decodeRange = function (range, sevenAmOffset) {
     const wedIndex = 3; /* Wednesday */
     const octIndex = 9; /* October */
 
@@ -922,63 +1000,66 @@ jlab.decodeRange = function(range, sevenAmOffset) {
 
     return {start: start, end: end};
 };
-jlab.initDateRange = function() {
+jlab.initDateRange = function () {
     var promise = jlab.doAjaxJsonGetRequest(jlab.runUrl, {}, true);
 
-    promise.done(function(json) {
+    promise.done(function (json) {
         jlab.currentRun = null;
         jlab.previousRun = null;
 
-        if(json.current) {
+        if (json.current) {
             jlab.currentRun = {};
             jlab.currentRun.start = jlab.fromIsoDateString(json.current.start);
             jlab.currentRun.end = jlab.fromIsoDateString(json.current.end);
 
-            $('#date-range option[value="0year"]').after('<option value="0run">Current Run</option>');
+            $('.date-range-select option[value="0year"]').after('<option value="0run">Current Run</option>');
         }
 
-        if(json.previous) {
+        if (json.previous) {
             jlab.previousRun = {};
             jlab.previousRun.start = jlab.fromIsoDateString(json.previous.start);
             jlab.previousRun.end = jlab.fromIsoDateString(json.previous.end);
 
-            $('#date-range option[value="1year"]').after('<option value="1run">Previous Run</option>');
+            $('.date-range-select option[value="1year"]').after('<option value="1run">Previous Run</option>');
         }
 
         jlab.setupDateRange();
     });
 
-    promise.fail(function(json) {
+    promise.fail(function (json) {
         jlab.setupDateRange();
     });
 
     return promise;
 };
 
-jlab.setupDateRange = function() {
-    var startInput = $("input#start"),
-        endInput = $("input#end"),
-        sevenAmOffset = $("#date-range").hasClass("seven-am-offset"),
-        includeTime = $("#date-range").hasClass("datetime-range");
+jlab.setupDateRange = function () {
+    $(".date-range-widget").each(function () {
+        var $widget = $(this),
+            startInput = $widget.find(".start-input"),
+            endInput = $widget.find(".end-input"),
+            sevenAmOffset = $widget.find(".date-range-select").hasClass("seven-am-offset"),
+            includeTime = $widget.find(".date-range-select").hasClass("datetime-range");
 
-    if(startInput.length > 0 && endInput.length > 0) {
-        var start = startInput.val();
-        var end = endInput.val();
+        if (startInput.length > 0 && endInput.length > 0) {
+            var start = startInput.val();
+            var end = endInput.val();
 
-        if(includeTime) {
-            start = jlab.fromFriendlyDateTimeString(start);
-            end = jlab.fromFriendlyDateTimeString(end);
-        } else {
-            start = jlab.fromFriendlyDateString(start);
-            end = jlab.fromFriendlyDateString(end);
+            if (includeTime) {
+                start = jlab.fromFriendlyDateTimeString(start);
+                end = jlab.fromFriendlyDateTimeString(end);
+            } else {
+                start = jlab.fromFriendlyDateString(start);
+                end = jlab.fromFriendlyDateString(end);
+            }
+
+            var range = jlab.encodeRange(start, end, sevenAmOffset);
+
+            $widget.find(".date-range-select").val(range).change();
         }
-
-        var range = jlab.encodeRange(start, end, sevenAmOffset);
-
-        $("#date-range").val(range).change();
-    }
+    });
 };
-jlab.initDateTimePickers = function() {
+jlab.initDateTimePickers = function () {
     var myControl = {
         create: function (tp_inst, obj, unit, val, min, max, step) {
             $('<input class="ui-timepicker-input" value="' + val + '" style="width:50%">')
@@ -1019,7 +1100,7 @@ jlab.initDateTimePickers = function() {
         timeFormat: 'HH:mm'
     }).mask("99-aaa-9999 99:99", {placeholder: " "});
 };
-jlab.initDatePickers = function() {
+jlab.initDatePickers = function () {
     $(".date-input").datepicker({
         dateFormat: 'dd-M-yy',
     }).mask("99-aaa-9999", {placeholder: " "});
@@ -1028,42 +1109,76 @@ jlab.initDatePickers = function() {
  * Common Event Handlers
  */
 // Filter flyout events
-$(document).on("click", "#filter-flyout-link", function () {
-    $("#filter-flyout-panel").slideToggle();
+$(document).on("click", ".filter-flyout-link", function () {
+    let $widget = $(this).closest(".filter-flyout-widget");
+    $widget.find(".filter-flyout-panel").slideToggle();
     return false;
 });
-$(document).on("click", "#filter-flyout-close-button", function () {
-    $("#filter-flyout-panel").slideUp();
+$(document).on("click", ".filter-flyout-close-button", function () {
+    let $widget = $(this).closest(".filter-flyout-widget");
+    $widget.find(".filter-flyout-panel").slideUp();
     return false;
 });
-$(document).keyup(function (e) {
+$(document).on("keyup", ".filter-flyout-widget", function (e) {
+    let $widget = $(this);
     if (e.keyCode === 27) {
-        $('#filter-flyout-panel').slideUp();
+        $widget.find('.filter-flyout-panel').slideUp();
     }
 });
 // Date Range selection events
-$(document).on("change", "#date-range", function () {
-    var selected = $("#date-range option:selected").val(),
-        includeTime = $("#date-range").hasClass("datetime-range"),
-        sevenAmOffset = $("#date-range").hasClass("seven-am-offset");
+$(document).on("change", ".date-range-select", function () {
+    var selected = $(this).find("option:selected").val(),
+        includeTime = $(this).hasClass("datetime-range"),
+        sevenAmOffset = $(this).hasClass("seven-am-offset"),
+        $widget = $(this).closest(".date-range-widget");
 
-    if(selected === 'custom') {
-        $("#custom-date-range-list").show();
+    if (selected === 'custom') {
+        $widget.find(".custom-date-range-list").show();
     } else {
         var range = jlab.decodeRange(selected, sevenAmOffset);
 
-        if(range.start != null && range.end != null) {
-            jlab.updateDateRange(range.start, range.end, includeTime);
+        if (range.start != null && range.end != null) {
+            jlab.updateDateRange($widget, range.start, range.end, includeTime);
         }
     }
 
 });
 // Dialog events
-$(document).on("click", ".dialog-ready", function () {
-    var title = $(this).attr("data-dialog-title");
-
+jlab.setPartial = function (href) {
     jlab.closePageDialogs();
-    jlab.openPageInDialog($(this).attr("href"), title);
+    jlab.openPageInDialog(href);
+};
+
+// Options include page-reload, partial-reload, partial-close, none
+jlab.partialPostSuccessAction = 'partial-reload';
+
+jlab.doAjaxJsonPostRequestFromPartial = function (url, data, $dialog) {
+
+    let xhr = jlab.doAjaxJsonPostRequestFromPage(url, data, $dialog, false);
+
+    xhr.done(function () {
+        if(jlab.partialPostSuccessAction === 'page-reload') {
+            window.location.reload();
+        } else if(jlab.partialPostSuccessAction === 'partial-reload') {
+            jlab.reloadPartial();
+        } else if(jlab.partialPostSuccessAction === 'partial-close') {
+            if($dialog) {
+                $dialog.dialog("close");
+            }
+            $(".page-dialog").dialog("close");
+        }
+    });
+
+    return xhr;
+}
+
+jlab.reloadPartial = function() {
+    jlab.setPartial(jlab.partialUrl);
+}
+
+$(document).on("click", ".dialog-opener, .page-dialog .partial-support", function (e) {
+    jlab.partialUrl = $(this).attr("href");
+    jlab.setPartial(jlab.partialUrl);
     return false;
 });
 $(document).on("click", ".dialog-close-button", function () {
@@ -1081,10 +1196,22 @@ $(document).on("keypress", ".dialog input", function (e) {
 $(document).on("change", ".change-submit", function () {
     $(this).closest("form").submit();
 });
+$(document).on("submit", ".partial .filter-form", function () {
+    let $form = $(this),
+        href = jlab.partialUrl;
+    url = new URL(href + '?' + $form.serialize(), window.location.href);
+
+    url.searchParams.set('partial', 'Y');
+
+    jlab.setPartial(url.href);
+
+    return false;
+});
 // Pagination controls
-$(document).on("click", "#next-button, #previous-button", function () {
-    $("#offset-input").val($(this).attr("data-offset"));
-    $("#filter-form").submit();
+$(document).on("click", ".next-button, .previous-button", function () {
+    let $widget = $(this).closest("section").find(".filter-flyout-widget");
+    $widget.find(".offset-input").val($(this).attr("data-offset"));
+    $widget.find(".filter-form").submit();
 });
 // Report FullScreen/Export events
 $(document).on("mouseover", "#export-menu li", function () {
@@ -1104,7 +1231,7 @@ $(document).on("click", "#print-menu-item", function () {
 });
 $(document).on("click", "#image-menu-item", function () {
     var printUrl = jlab.getPrintUrl(),
-    waitForSelector = $("#image-menu-item").attr("data-wait-for-selector") || "";
+        waitForSelector = $("#image-menu-item").attr("data-wait-for-selector") || "";
     window.location = jlab.contextPath + '/convert?filename=chart.png&waitForSelector=' + encodeURIComponent(waitForSelector) + '&url=' + encodeURIComponent(printUrl);
 });
 $(document).on("click", "#excel-menu-item", function () {
@@ -1228,20 +1355,20 @@ $(function () {
         resizable: jlab.editableRowTable.dialog.resizable
     });
 
-    if($(".datetime-input").length) {
+    if ($(".datetime-input").length) {
         jlab.initDateTimePickers();
     }
-    if($(".date-input").length) {
+    if ($(".date-input").length) {
         jlab.initDatePickers();
     }
 
     var event = new Event('smoothnessready');
 
-    if($("#date-range").length) {
-        if(jlab.runUrl.length > 0) {
+    if ($(".date-range-select").length) {
+        if (jlab.runUrl.length > 0) {
             var runLookupPromise = jlab.initDateRange();
 
-            runLookupPromise.always(function(){
+            runLookupPromise.always(function () {
                 document.dispatchEvent(event);
             });
         } else {
@@ -1277,7 +1404,7 @@ $(document).on("click", "#login-link", function () {
     var url = $(this).attr("href");
 
 
-    if(jlab.iframeLoginUrl !== '') {
+    if (jlab.iframeLoginUrl !== '') {
         jlab.iframeLogin(url);
 
         return false;
@@ -1341,14 +1468,14 @@ $(document).on("click", "#su-link", function () {
  *
  * @param defaultParams The expected keys with default values
  */
-jlab.initParams = function(defaultParams) {
+jlab.initParams = function (defaultParams) {
     let redirect = false,
         searchParams = new URLSearchParams(window.location.search);
 
-    if(searchParams.has("qualified")) {
+    if (searchParams.has("qualified")) {
         // We still need to update session "favorites"
-        Object.entries(defaultParams).forEach(function([key, defaultValue]){
-            if(searchParams.has(key)) {
+        Object.entries(defaultParams).forEach(function ([key, defaultValue]) {
+            if (searchParams.has(key)) {
                 sessionStorage.setItem(key, JSON.stringify(searchParams.getAll(key)));
             } else {
                 /* All this complexity is really for THIS case - client says no, really, I want an empty multi-valued
@@ -1360,12 +1487,12 @@ jlab.initParams = function(defaultParams) {
         });
     } else {
         // Check if params we expect are here, use the ones you find, otherwise resort to session/defaults + redirect
-        Object.entries(defaultParams).forEach(function([key, defaultValue]){
-            if(searchParams.has(key)) {
+        Object.entries(defaultParams).forEach(function ([key, defaultValue]) {
+            if (searchParams.has(key)) {
                 sessionStorage.setItem(key, JSON.stringify(searchParams.getAll(key)));
             } else {
                 let sessionValue = sessionStorage.getItem(key);
-                if(sessionValue && sessionValue.length > 0) {
+                if (sessionValue && sessionValue.length > 0) {
                     jlab.searchParamsAppendAll(searchParams, key, JSON.parse(sessionValue));
                 } else {
                     jlab.searchParamsAppendAll(searchParams, key, defaultValue);
@@ -1375,7 +1502,7 @@ jlab.initParams = function(defaultParams) {
         });
     }
 
-    if(redirect) {
+    if (redirect) {
         searchParams.set("qualified", "");
         window.location.search = searchParams.toString();
     }
@@ -1386,8 +1513,8 @@ jlab.initParams = function(defaultParams) {
 /**
  * Check if value is an array and if so append all string values to searchParams otherwise just append value
  */
-jlab.searchParamsAppendAll = function(searchParams, key, value) {
-    if(Array.isArray(value)) {
+jlab.searchParamsAppendAll = function (searchParams, key, value) {
+    if (Array.isArray(value)) {
         value.forEach(item => searchParams.append(key, item));
     } else {
         searchParams.append(key, value);

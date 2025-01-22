@@ -27,9 +27,9 @@
             jlab.doChart = function() {
 
                 /*Wrap classes must be added before chart is generated*/
-                $("#chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
+                $(".chart-wrap").addClass("has-x-axis-label").addClass("has-y-axis-label");
 
-                var placeholder = $("#chart-placeholder"),
+                var $placeholder = $("#report2"),
                         datasource = [
                             {label: 'Series 1', color: 'blue', data: [[0, 1], [1, 2], [2, 4], [3, 8], [4, 16]]},
                             {label: 'Series 2', color: 'red', data: [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]]}
@@ -64,11 +64,11 @@
                             }
                         };
 
-                $.plot(placeholder, datasource, options);
+                $.plot($placeholder, datasource, options);
 
                 /*These must be added after chart is generated*/
-                jlab.addXAxisLabel('X Axis Label');
-                jlab.addYAxisLabel('Y Axis Label');
+                jlab.addXAxisLabel('X Axis Label', $placeholder);
+                jlab.addYAxisLabel('Y Axis Label', $placeholder);
             };
 
             $(function() {
@@ -89,9 +89,9 @@
                     </ul>
                 </div>
             </div>            
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
-            <s:chart-widget>
+            <s:chart-widget placeholderId="report2">
             </s:chart-widget>
         </section>
         <div id="exit-fullscreen-panel">

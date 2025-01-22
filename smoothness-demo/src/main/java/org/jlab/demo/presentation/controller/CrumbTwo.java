@@ -80,15 +80,15 @@ public class CrumbTwo extends HttpServlet {
   /**
    * Format selection message.
    *
-   * @param lastname The lastname
+   * @param search The search string
    * @return Formatted selection message
    */
-  public static String getMessage(String lastname) {
+  public static String getMessage(String search) {
 
     List<String> filters = new ArrayList<>();
 
-    if (lastname != null && !lastname.isEmpty()) {
-      filters.add("Lastname \"" + lastname + "\"");
+    if (search != null && !search.isEmpty()) {
+      filters.add("Name like \"" + search + "\"");
     }
 
     String message = "";

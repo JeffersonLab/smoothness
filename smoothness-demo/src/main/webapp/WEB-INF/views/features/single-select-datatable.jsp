@@ -11,21 +11,7 @@
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/movie-table.js"></script>
-        <script>
-            $(document).on("click", "#open-edit-row-dialog-button", function () {
-                var $selectedRow = $(".editable-row-table tbody tr.selected-row");
-
-                if ($selectedRow.length < 1) {
-                    return;
-                }
-
-                $("#row-title").val($selectedRow.find("td:nth-child(1)").text());
-                $("#row-description").val($selectedRow.find("td:nth-child(2)").text());
-                $("#row-rating").val($selectedRow.find("td:nth-child(3)").text());
-                $("#row-duration").val($selectedRow.find("td:nth-child(4)").text());
-                $("#row-release").val($selectedRow.find("td:nth-child(5)").text());
-            });
-        </script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/movie-table-single.js"></script>
     </jsp:attribute>
     <jsp:body>
         <section>
@@ -41,8 +27,8 @@
                 </div>
             </div>
             <s:filter-flyout-widget>
-                <form id="filter-form" method="get" action="single-select-datatable">
-                    <div id="filter-form-panel">
+                <form class="filter-form" method="get" action="single-select-datatable">
+                    <div class="filter-form-panel">
                         <fieldset>
                             <legend>Filter</legend>
                             <ul class="key-value-list">
@@ -68,15 +54,15 @@
                             </ul>
                         </fieldset>	
                     </div>
-                    <input id="filter-form-submit-button" type="submit" value="Apply"/>
+                    <input class="filter-form-submit-button" type="submit" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
-            <h2 id="page-header-title"><c:out value="${title}"/></h2>
+            <h2 class="page-header-title"><c:out value="${title}"/></h2>
             <div class="message-box"></div>
             <c:if test="${fn:length(movieList) > 0}">
                 <s:editable-row-table-controls excludeAdd="${false}" excludeDelete="${false}" excludeEdit="${false}"/>
-                <div id="chart-wrap" class="chart-wrap-backdrop">
-                    <table class="data-table stripped-table uniselect-table editable-row-table">
+                <div class="chart-wrap chart-wrap-backdrop">
+                    <table id="movie-table" class="data-table stripped-table uniselect-table editable-row-table">
                         <thead>
                             <tr>
                                 <th>Title</th>
