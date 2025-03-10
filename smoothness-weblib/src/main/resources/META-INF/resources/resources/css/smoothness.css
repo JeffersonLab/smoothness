@@ -789,6 +789,9 @@ input.date-input {
     background-color:blue;
     color: white;
 }
+.editable-row-table tr.selected-row a {
+    color: red;
+}
 .editable-row-table {
     user-select: none;
     -moz-user-select: none;
