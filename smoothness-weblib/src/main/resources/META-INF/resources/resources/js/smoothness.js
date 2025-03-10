@@ -59,6 +59,7 @@ jlab.pageDialog.height = jlab.pageDialog.height || 590;
 jlab.pageDialog.minWidth = jlab.pageDialog.minWidth || 0;
 jlab.pageDialog.minHeight = jlab.pageDialog.minHeight || 0;
 jlab.pageDialog.resizable = jlab.pageDialog.resizable || true;
+jlab.pageDialog.modal = jlab.pageDialog.modal || false;
 /**
  * Common Namespaced Functions
  */
@@ -192,6 +193,22 @@ jlab.doAjaxJsonPostRequestFromPage = function (url, data, $dialog, reload) {
 
     return promise;
 };
+jlab.showPartialPageDialog = function($dialog, title) {
+    $dialog.dialog({
+        title: title,
+        autoOpen: true,
+        modal: jlab.pageDialog.modal,
+        width: jlab.pageDialog.width,
+        height: jlab.pageDialog.height,
+        minWidth: jlab.pageDialog.minWidth,
+        minHeight: jlab.pageDialog.minHeight,
+        resizable: jlab.pageDialog.resizable,
+        close: function () {
+            $(this).dialog('destroy').remove();
+        }
+    });
+    $(document).trigger('partial-page-init');
+};
 // Display a piece of another page in a dialog
 // - Expects three divs: #partial-js, #partial-css, #partial-html
 // - This separation allows avoiding loading js and css if already loaded
@@ -232,30 +249,39 @@ jlab.openPageInDialog = function (href) {
                     }
                 });
 
+                let waitingForLoadCount = 0;
+                let scripts = [];
+
                 $('script', js).each(function () {
                     let src = $(this).attr("src");
 
                     // We ignore script elements missing src attribute
                     if(src && $('script[src="' + src + '"]').length === 0) {
+                        waitingForLoadCount++;
+
                         const script = document.createElement('script');
+                        scripts.push(script);
+                        script.onload = function(){
+                            waitingForLoadCount--;
+
+                            if(waitingForLoadCount === 0) {
+                                jlab.showPartialPageDialog($dialog, title);
+                            }
+                        };
                         script.src = src;
-                        document.body.appendChild(script);
-                        //$(document).find("body").append(this); // jQuery will block load
                     }
                 });
 
-                $dialog.dialog({
-                    title: title,
-                    autoOpen: true,
-                    width: jlab.pageDialog.width,
-                    height: jlab.pageDialog.height,
-                    minWidth: jlab.pageDialog.minWidth,
-                    minHeight: jlab.pageDialog.minHeight,
-                    resizable: jlab.pageDialog.resizable,
-                    close: function () {
-                        $(this).dialog('destroy').remove();
+                if(waitingForLoadCount === 0) {
+                    jlab.showPartialPageDialog($dialog, title);
+                } else {
+                    // Start load
+                    for (let i = 0; i < scripts.length; i++) {
+                        let script = scripts[i];
+                        document.body.appendChild(script);
+                        //$(document).find("body").append(this); // jQuery will block load
                     }
-                });
+                }
             }).catch(error => {
             console.error('fetch error:', error);
             // assume auth redirect
