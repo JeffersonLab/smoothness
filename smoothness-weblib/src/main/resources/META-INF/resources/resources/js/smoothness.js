@@ -1224,8 +1224,9 @@ $(document).on("change", ".change-submit", function () {
 });
 $(document).on("submit", ".partial .filter-form", function () {
     let $form = $(this),
-        href = jlab.partialUrl;
-    url = new URL(href + '?' + $form.serialize(), window.location.href);
+        partialURL = new URL(jlab.partialUrl, window.location.href),
+        partialNoQueryStr = partialURL.origin + partialURL.pathname;
+    url = new URL(partialNoQueryStr + '?' + $form.serialize(), window.location.href);
 
     url.searchParams.set('partial', 'Y');
 
