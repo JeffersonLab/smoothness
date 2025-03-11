@@ -83,16 +83,18 @@ $(document).on("click", "#rating-save-button", function () {
 
     jlab.doAjaxJsonPostRequest(url, data, $dialog, true, inPartialPageDialog);
 });
-
-$(function () {
+var movieTableMulti = movieTableMulti || {};
+movieTableMulti.pageInit = function() {
     $("#rating-dialog").dialog({
         autoOpen: false,
         width: 500,
         height: 500,
         resizable: false
     });
-});
-
+}
 $(document).on("click", ".editable-row-table tr a", function () {
     alert("You clicked on: " + $(this).closest("tr").find("td:first-child").text());
+});
+$(document).on("partial-page-init", function() {
+    movieTableMulti.pageInit();
 });

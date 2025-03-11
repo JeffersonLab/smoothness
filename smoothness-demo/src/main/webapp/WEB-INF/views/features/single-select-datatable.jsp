@@ -12,6 +12,12 @@
     <jsp:attribute name="scripts">
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/movie-table.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/movie-table-single.js"></script>
+        <script>
+            // inline script tags are ignored by partial page loads
+            $(function () {
+                movieTable.pageInit();
+            });
+        </script>
     </jsp:attribute>
     <jsp:body>
         <section>

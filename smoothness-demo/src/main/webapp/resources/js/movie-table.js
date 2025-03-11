@@ -121,8 +121,8 @@ $(document).on("click", "#excel-menu-item", function () {
 $("#mpaa-select").select2({
     width: 200
 });
-
-$(function () {
+var movieTable = movieTable || {};
+movieTable.pageInit = function() {
     $("#table-row-dialog").dialog({
         autoOpen: false,
         modal: true,
@@ -132,4 +132,7 @@ $(function () {
         minHeight: jlab.editableRowTable.dialog.minHeight,
         resizable: jlab.editableRowTable.dialog.resizable
     });
+}
+$(document).on("partial-page-init", function() {
+    movieTable.pageInit();
 });
