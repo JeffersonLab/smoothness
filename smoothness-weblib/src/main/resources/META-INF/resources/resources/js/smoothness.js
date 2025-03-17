@@ -1236,7 +1236,7 @@ $(document).on("submit", ".partial .filter-form", function () {
 });
 // Pagination controls
 $(document).on("click", ".next-button, .previous-button", function () {
-    let $widget = $(this).closest("section").find(".filter-flyout-widget");
+    let $widget = $(this).closest("section");
     $widget.find(".offset-input").val($(this).attr("data-offset"));
     $widget.find(".filter-form").submit();
 });
