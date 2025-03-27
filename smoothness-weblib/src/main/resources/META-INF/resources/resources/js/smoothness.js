@@ -242,9 +242,25 @@ jlab.openPageInDialog = function (href) {
                 let title = $data.find("#partial").attr("data-title");
 
                 $('link[rel="stylesheet"]', css).each(function () {
+                    if($(this).hasClass('full-page-only')) {
+                        return true; // continue
+                    }
+
                     let href = $(this).attr("href");
 
                     if($('link[rel="stylesheet"][href="' + href + '"]').length === 0) {
+                        $(document).find("head").append(this);
+                    }
+                });
+
+                $('style[id]', css).each(function () {
+                    if($(this).hasClass('full-page-only')) {
+                        return true; // continue
+                    }
+
+                    let id = $(this).attr("id");
+
+                    if($('style[id="' + id + '"]').length === 0) {
                         $(document).find("head").append(this);
                     }
                 });
@@ -253,9 +269,15 @@ jlab.openPageInDialog = function (href) {
                 let scripts = [];
 
                 $('script', js).each(function () {
-                    let src = $(this).attr("src");
+                    if($(this).hasClass('full-page-only')) {
+                        return true; // continue
+                    }
 
-                    // We ignore script elements missing src attribute
+                    let src = $(this).attr("src"),
+                        id = $(this).attr("id"),
+                        text = $(this).text();
+
+                    // Script elements with src attribute not already in DOM
                     if(src && $('script[src="' + src + '"]').length === 0) {
                         waitingForLoadCount++;
 
@@ -269,6 +291,14 @@ jlab.openPageInDialog = function (href) {
                             }
                         };
                         script.src = src;
+                    } else if(id && $('script[id="' + id + '"]').length === 0) {
+                        // Inline scripts with an ID not already in DOM
+                        // There is no onload event with inline scripts though.
+
+                        const script = document.createElement('script');
+                        script.id = id;
+                        script.text = text;
+                        document.body.appendChild(script);
                     }
                 });
 
@@ -277,9 +307,8 @@ jlab.openPageInDialog = function (href) {
                 } else {
                     // Start load
                     for (let i = 0; i < scripts.length; i++) {
-                        let script = scripts[i];
+                        let script = scripts[i]; // scripts with src only
                         document.body.appendChild(script);
-                        //$(document).find("body").append(this); // jQuery will block load
                     }
                 }
             }).catch(error => {
