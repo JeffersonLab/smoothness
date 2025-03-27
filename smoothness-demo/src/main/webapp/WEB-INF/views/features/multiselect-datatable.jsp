@@ -9,14 +9,32 @@
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet" type="text/css"
               href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/movie-table.css"/>
+        <!-- This is just demonstrating that style tags with an ID are copied in partial dialogs -->
+        <style id="movie-table-inline-style">
+            .multiselect-instructions {
+                font-style: italic;
+            }
+        </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script type="text/javascript"
                 src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/movie-table.js"></script>
         <script type="text/javascript"
                 src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/movie-table-multi.js"></script>
+        <!-- This is just demonstrating that script tags with an ID are copied in partial dialogs -->
+        <script id="movie-table-inline-script">
+            $(document).on("click", ".multiselect-instructions", function() {
+                console.log("clicked on instructions");
+            });
+        </script>
+        <script id="ignore-me-because-of-class" class="full-page-only">
+            // scripts with class full-page-only are ignored in partial page loads
+            $(document).on("click", ".multiselect-instructions", function() {
+                console.log("full page only - clicked on instructions");
+            });
+        </script>
         <script>
-            // inline script tags are ignored by partial page loads
+            // inline script tags without an ID are ignored by partial page loads
             $(function () {
                 movieTable.pageInit();
                 movieTableMulti.pageInit();
