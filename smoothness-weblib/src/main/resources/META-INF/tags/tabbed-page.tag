@@ -124,7 +124,7 @@
             <c:when test="${'NONE' eq resourceLocation}">
             </c:when>
             <c:when test="${'CDN' eq resourceLocation}">
-                <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery/4.7.1.min.js"></script>
+                <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery/3.7.1.min.js"></script>
                 <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-ui/1.14.1/jquery-ui.min.js"></script>
                 <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/uri/uri-1.14.1.min.js"></script>
                 <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-plugins/select2/4.0.13/select2.min.js"></script>
@@ -133,7 +133,7 @@
                 <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jlab-theme/smoothness/${env[initParam.appSpecificEnvPrefix.concat('_SMOOTHNESS_VERSION')]}/js/smoothness.min.js"></script>
             </c:when>
             <c:otherwise><!-- LOCAL -->
-                <script src="${pageContext.request.contextPath}/resources/js/jquery-4.7.1.min.js"></script>
+                <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.min.js"></script>
                 <script src="${pageContext.request.contextPath}/resources/jquery-ui-1.14.1/jquery-ui.min.js"></script>
                 <script src="${pageContext.request.contextPath}/resources/js/uri-1.14.1.min.js"></script>
                 <script src="${pageContext.request.contextPath}/resources/jquery-plugins/select2/4.0.13/select2.min.js"></script>
