@@ -1,9 +1,9 @@
 <%@tag description="The Feature Page Template" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <%@attribute name="title"%>
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
-<t:page title="${title}" category="Features" description="Enumerates the features of the smoothness weblib.">
+<s:page title="${title}" category="Features" description="Enumerates the features of the smoothness weblib.">
     <jsp:attribute name="stylesheets">       
         <jsp:invoke fragment="stylesheets"/>
     </jsp:attribute>
@@ -26,4 +26,4 @@
     <jsp:body>
         <jsp:doBody/>
     </jsp:body>
-</t:page>
+</s:page>

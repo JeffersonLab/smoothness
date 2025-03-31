@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <c:set var="title" value="User Authorization Cache"/>
-<s:tabbed-page title="${title}">
+<s:setup-page title="${title}">
     <jsp:attribute name="stylesheets">
     </jsp:attribute>
     <jsp:attribute name="scripts">
@@ -74,4 +74,4 @@
             </form>
         </section>
     </jsp:body>
-</s:tabbed-page>
+</s:setup-page>

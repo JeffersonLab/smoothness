@@ -4,4 +4,4 @@ insert into SMOOTHNESS_OWNER.MOVIE (MOVIE_ID, TITLE, RELEASE_DATE, DESCRIPTION, 
 insert into SMOOTHNESS_OWNER.MOVIE (MOVIE_ID, TITLE, RELEASE_DATE, DESCRIPTION, MPAA_RATING, DURATION_MINUTES) values (SMOOTHNESS_OWNER.MOVIE_ID.nextval, 'Star Wars: Episode IV - A New Hope', TO_DATE('1977/05/25', 'yyyy/mm/dd'), 'Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire''s world-destroying battle station, while also attempting to rescue Princess Leia from the mysterious Darth Vader.', 'PG', 121);
 insert into SMOOTHNESS_OWNER.MOVIE (MOVIE_ID, TITLE, RELEASE_DATE, DESCRIPTION, MPAA_RATING, DURATION_MINUTES) values (SMOOTHNESS_OWNER.MOVIE_ID.nextval, 'Jaws', TO_DATE('1975/06/20', 'yyyy/mm/dd'), 'When a killer shark unleashes chaos on a beach community off Long Island, it''s up to a local sheriff, a marine biologist, and an old seafarer to hunt the beast down.', 'PG', 124);
 
-commit;
+insert into SMOOTHNESS_OWNER.SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('EMAIL_TESTING_ENABLED', 'Y', 'BOOLEAN', 'Send all emails to testlead user group', 'EMAIL', 1);
