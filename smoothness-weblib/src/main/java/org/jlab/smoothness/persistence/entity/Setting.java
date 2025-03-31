@@ -12,7 +12,7 @@ import org.jlab.smoothness.persistence.enumeration.SettingsType;
  * @author ryans
  */
 @Entity
-@Table(name = "SETTING", schema = "DTM_OWNER")
+@Table(name = "SETTING")
 public class Setting implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -53,6 +53,8 @@ public class Setting implements Serializable {
   /** Change Action JNDI Name */
   @Column(name = "CHANGE_ACTION_JNDI")
   private String changeActionJNDI;
+
+  public Setting() {}
 
   /**
    * Get the key.
