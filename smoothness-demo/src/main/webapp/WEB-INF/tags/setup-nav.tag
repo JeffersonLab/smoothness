@@ -7,8 +7,8 @@
     <li${'/setup/settings' eq currentPath ? ' class="current-secondary"' : ''}>
         <a href="${pageContext.request.contextPath}/setup/settings">Settings</a>
     </li>
-    <li${'/setup/user-authorization-cache' eq currentPath ? ' class="current-secondary"' : ''}>
-        <a href="${pageContext.request.contextPath}/setup/user-authorization-cache">Users & Groups</a>
+    <li${'/setup/directory-cache' eq currentPath ? ' class="current-secondary"' : ''}>
+        <a href="${pageContext.request.contextPath}/setup/directory-cache">Directory Cache</a>
     </li>
     <li${'/setup/setup-one' eq currentPath ? ' class="current-secondary"' : ''}>
         <a href="${pageContext.request.contextPath}/setup/setup-one">Setup One</a>
