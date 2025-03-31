@@ -185,4 +185,23 @@ public abstract class JPAService<T> {
     }
     return username;
   }
+
+  /**
+   * Check if request is being made by an admin.
+   *
+   * @throws EJBAccessException If not an admin
+   */
+  @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+  public void checkAdmin() {
+    String roleName = SettingsService.cachedSettings.get("ADMIN_ROLE_NAME");
+
+    if (roleName == null) {
+      throw new EJBAccessException(
+          "(ADMIN_ROLE_NAME undefined) - You must be an admin to perform the requested operation");
+    }
+
+    if (!context.isCallerInRole(roleName)) {
+      throw new EJBAccessException("You must be an admin to perform the requested operation");
+    }
+  }
 }

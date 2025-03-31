@@ -3,7 +3,6 @@ package org.jlab.smoothness.business.service;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -40,8 +39,13 @@ public class SettingsService extends JPAService<Setting> {
   // In order to perform any cleanup action needed by updating a setting such as disabling features
   // (such as stopping scheduled timers)
   // The registered SettingChangeAction is invoked, if any.
-  @RolesAllowed("dtm-admin")
+  //
+  // We can't use RolesAllowed annotation because each app has a custom admin.  Instead we
+  // programmatically perform check
+  @PermitAll
   public void editSetting(String key, String value) throws UserFriendlyException {
+    checkAdmin();
+
     Setting setting = find(key);
 
     if (setting == null) {

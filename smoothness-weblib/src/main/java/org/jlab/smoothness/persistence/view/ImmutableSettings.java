@@ -41,7 +41,13 @@ public final class ImmutableSettings {
    * @return The value
    */
   public String get(String key) {
-    return map.get(key).getValue();
+    Setting setting = map.get(key);
+
+    if (setting == null) {
+      return null;
+    }
+
+    return setting.getValue();
   }
 
   /**
