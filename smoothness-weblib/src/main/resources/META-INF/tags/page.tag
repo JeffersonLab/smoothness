@@ -32,6 +32,7 @@
         <jsp:invoke fragment="stylesheets"/>
     </jsp:attribute>
     <jsp:attribute name="scripts">
+        <t:app-script/>
         <jsp:invoke fragment="scripts"/>
     </jsp:attribute>
     <jsp:attribute name="userExtra">
