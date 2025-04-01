@@ -132,26 +132,28 @@
                 </tbody>
             </table>
             <s:editable-row-table-dialog>
-                <form id="row-form">
-                    <ul class="key-value-list">
-                        <li>
-                            <div class="li-key">
-                                Key:
-                            </div>
-                            <div class="li-value">
-                                <span id="row-key"></span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="li-key">
-                                <label for="row-value">Value</label>
-                            </div>
-                            <div class="li-value">
-                                <input type="text" id="row-value" autocomplete="off"/>
-                            </div>
-                        </li>
-                    </ul>
-                </form>
+                <section>
+                    <form id="row-form">
+                        <ul class="key-value-list">
+                            <li>
+                                <div class="li-key">
+                                    Key:
+                                </div>
+                                <div class="li-value">
+                                    <span id="row-key"></span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="li-key">
+                                    <label for="row-value">Value</label>
+                                </div>
+                                <div class="li-value">
+                                    <input type="text" id="row-value" autocomplete="off"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </form>
+                </section>
             </s:editable-row-table-dialog>
         </section>
     </jsp:body>
