@@ -116,37 +116,39 @@
         </section>
         <%@ include file="/WEB-INF/fragments/editable-movie-dialog.jspf" %>
         <div class="dialog" id="rating-dialog" title="Edit Rating">
-            <form>
-                <ul class="key-value-list">
-                    <li>
-                        <div class="li-key">
-                            <label for="movie-selected-row-list">Movie</label>
-                        </div>
-                        <div class="li-value">
-                            <ul id="movie-selected-row-list" class="selected-row-list"></ul>
-                            <span id="dialog-selected-count"></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="li-key">
-                            <label for="edit-rating">MPAA Rating</label>
-                        </div>
-                        <div class="li-value">
-                            <select id="edit-rating">
-                                <option value="">&nbsp;</option>
-                                <option>G</option>
-                                <option>PG</option>
-                                <option>PG-13</option>
-                                <option>R</option>
-                                <option>NC-17</option>
-                            </select>
-                        </div>
-                    </li>
-                </ul>
-                <div class="rows-differ-message">WARNING: One or more selected movies have an existing rating that
-                    differs
-                </div>
-            </form>
+            <section>
+                <form>
+                    <ul class="key-value-list">
+                        <li>
+                            <div class="li-key">
+                                <label for="movie-selected-row-list">Movie</label>
+                            </div>
+                            <div class="li-value">
+                                <ul id="movie-selected-row-list" class="selected-row-list"></ul>
+                                <span id="dialog-selected-count"></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="li-key">
+                                <label for="edit-rating">MPAA Rating</label>
+                            </div>
+                            <div class="li-value">
+                                <select id="edit-rating">
+                                    <option value="">&nbsp;</option>
+                                    <option>G</option>
+                                    <option>PG</option>
+                                    <option>PG-13</option>
+                                    <option>R</option>
+                                    <option>NC-17</option>
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="rows-differ-message">WARNING: One or more selected movies have an existing rating that
+                        differs
+                    </div>
+                </form>
+            </section>
             <div class="dialog-button-panel">
                 <button type="button" id="rating-save-button" class="dialog-submit-button">Save</button>
                 <button type="button" class="dialog-close-button">Cancel</button>

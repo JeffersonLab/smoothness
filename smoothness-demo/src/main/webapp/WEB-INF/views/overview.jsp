@@ -2,9 +2,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <c:set var="title" value="Overview"/>
-<t:page title="${title}" description="Overview of weblib">
+<s:page title="${title}" description="Overview of weblib">
     <jsp:attribute name="stylesheets">
     </jsp:attribute>
     <jsp:attribute name="scripts">              
@@ -16,4 +16,4 @@
 
         </section>
     </jsp:body>         
-</t:page>
+</s:page>

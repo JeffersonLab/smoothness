@@ -1,53 +1,55 @@
 <s:editable-row-table-dialog>
-    <form id="row-form">
-        <ul class="key-value-list">
-            <li>
-                <div class="li-key">
-                    <label for="row-title">Title</label>
-                </div>
-                <div class="li-value">
-                    <input type="text" maxlength="128" required="required" id="row-title"/>
-                </div>
-            </li>
-            <li>
-                <div class="li-key">
-                    <label for="row-description">Description</label>
-                </div>
-                <div class="li-value">
-                    <textarea maxlength="512" required="required" id="row-description"></textarea>
-                </div>
-            </li>
-            <li>
-                <div class="li-key">
-                    <label for="row-rating">MPAA Rating</label>
-                </div>
-                <div class="li-value">
-                    <select id="row-rating">
-                        <option value="">&nbsp;</option>
-                        <option>G</option>
-                        <option>PG</option>
-                        <option>PG-13</option>
-                        <option>R</option>
-                        <option>NC-17</option>
-                    </select>
-                </div>
-            </li>
-            <li>
-                <div class="li-key">
-                    <label for="row-duration">Duration (Minutes)</label>
-                </div>
-                <div class="li-value">
-                    <input type="number" min="0" id="row-duration"/>
-                </div>
-            </li>
-            <li>
-                <div class="li-key">
-                    <label for="row-release">Release Date</label>
-                </div>
-                <div class="li-value">
-                    <input type="text" id="row-release" class="date-field" placeholder="${s:getFriendlyDatePlaceholder()}" autocomplete="off"/>
-                </div>
-            </li>
-        </ul>
-    </form>
+    <section>
+        <form id="row-form">
+            <ul class="key-value-list">
+                <li>
+                    <div class="li-key">
+                        <label for="row-title">Title</label>
+                    </div>
+                    <div class="li-value">
+                        <input type="text" maxlength="128" required="required" id="row-title"/>
+                    </div>
+                </li>
+                <li>
+                    <div class="li-key">
+                        <label for="row-description">Description</label>
+                    </div>
+                    <div class="li-value">
+                        <textarea maxlength="512" required="required" id="row-description"></textarea>
+                    </div>
+                </li>
+                <li>
+                    <div class="li-key">
+                        <label for="row-rating">MPAA Rating</label>
+                    </div>
+                    <div class="li-value">
+                        <select id="row-rating">
+                            <option value="">&nbsp;</option>
+                            <option>G</option>
+                            <option>PG</option>
+                            <option>PG-13</option>
+                            <option>R</option>
+                            <option>NC-17</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="li-key">
+                        <label for="row-duration">Duration (Minutes)</label>
+                    </div>
+                    <div class="li-value">
+                        <input type="number" min="0" id="row-duration"/>
+                    </div>
+                </li>
+                <li>
+                    <div class="li-key">
+                        <label for="row-release">Release Date</label>
+                    </div>
+                    <div class="li-value">
+                        <input type="text" id="row-release" class="date-field" placeholder="${s:getFriendlyDatePlaceholder()}" autocomplete="off"/>
+                    </div>
+                </li>
+            </ul>
+        </form>
+    </section>
 </s:editable-row-table-dialog>

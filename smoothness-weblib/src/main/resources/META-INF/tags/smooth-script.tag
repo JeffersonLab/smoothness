@@ -1,17 +1,18 @@
 <%@tag description="Smoothness Style Links" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@attribute name="smoothnessCdn"%>
+<%@attribute name="smoothnessServer"%>
+<%@attribute name="smoothnessVersion"%>
 <c:choose>
-    <c:when test="${'NONE' eq resourceLocation}">
-    </c:when>
-    <c:when test="${'CDN' eq resourceLocation}">
-    <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery/3.7.1.min.js"></script>
-    <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-ui/1.14.1/jquery-ui.min.js"></script>
-    <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/uri/uri-1.14.1.min.js"></script>
-    <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-plugins/select2/4.0.13/select2.min.js"></script>
-    <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-plugins/maskedinput/jquery.maskedinput-1.3.1.min.js"></script>
-    <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jquery-plugins/timepicker/jquery-ui-timepicker-1.5.0.min.js"></script>
-    <script src="//${env[initParam.appSpecificEnvPrefix.concat('_CDN_SERVER')]}/jlab-theme/smoothness/${env[initParam.appSpecificEnvPrefix.concat('_SMOOTHNESS_VERSION')]}/js/smoothness.min.js"></script>
+    <c:when test="${smoothnessCdn}">
+    <script src="//${smoothnessServer}/jquery/3.7.1.min.js"></script>
+    <script src="//${smoothnessServer}/jquery-ui/1.14.1/jquery-ui.min.js"></script>
+    <script src="//${smoothnessServer}/uri/uri-1.14.1.min.js"></script>
+    <script src="//${smoothnessServer}/jquery-plugins/select2/4.0.13/select2.min.js"></script>
+    <script src="//${smoothnessServer}/jquery-plugins/maskedinput/jquery.maskedinput-1.3.1.min.js"></script>
+    <script src="//${smoothnessServer}/jquery-plugins/timepicker/jquery-ui-timepicker-1.5.0.min.js"></script>
+    <script src="//${smoothnessServer}/jlab-theme/smoothness/${smoothnessVersion}/js/smoothness.min.js"></script>
     </c:when>
     <c:otherwise>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.min.js"></script>

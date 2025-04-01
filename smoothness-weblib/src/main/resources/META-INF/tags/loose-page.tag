@@ -28,7 +28,9 @@
     <c:otherwise>
         <c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
         <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
-        <c:set var="resourceLocation" value="${env[initParam.appSpecificEnvPrefix.concat('_RESOURCE_LOCATION')]}"/>
+        <c:set var="smoothnessCdn" value="${settings.is('SMOOTHNESS_CDN')}"/>
+        <c:set var="smoothnessServer" value="${settings.get('SMOOTHNESS_SERVER')}"/>
+        <c:set var="smoothnessVersion" value="${settings.get('SMOOTHNESS_VERSION')}"/>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -37,14 +39,14 @@
         <title><c:out value="${initParam.appShortName}"/> - ${empty category ? '' : category.concat(' - ')}${title}</title>
         <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/img/favicon.ico"/>
         <c:if test="${not excludeSmoothResources}">
-            <s:smooth-style/>
+            <s:smooth-style smoothnessCdn="${smoothnessCdn}" smoothnessServer="${smoothnessServer}" smoothnessVersion="${smoothnessVersion}"/>
         </c:if>
         <jsp:invoke fragment="stylesheets"/>
     </head>
     <body class="${param.print eq 'Y' ? 'print ' : ''} ${param.fullscreen eq 'Y' ? 'fullscreen' : ''}">
         <jsp:doBody/>
     <c:if test="${not excludeSmoothResources}">
-        <s:smooth-script/>
+        <s:smooth-script smoothnessCdn="${smoothnessCdn}" smoothnessServer="${smoothnessServer}" smoothnessVersion="${smoothnessVersion}"/>
     </c:if>
     <jsp:invoke fragment="scripts"/>
     </body>

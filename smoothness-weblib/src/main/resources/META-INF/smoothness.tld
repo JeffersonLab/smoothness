@@ -45,6 +45,14 @@
         <name>tabbed-page</name>
         <path>/META-INF/tags/tabbed-page.tag</path>
     </tag-file>
+    <tag-file>
+        <name>page</name>
+        <path>/META-INF/tags/page.tag</path>
+    </tag-file>
+    <tag-file>
+        <name>setup-page</name>
+        <path>/META-INF/tags/setup-page.tag</path>
+    </tag-file>
     <function>
         <display-name>inArray</display-name>
         <name>inArray</name>

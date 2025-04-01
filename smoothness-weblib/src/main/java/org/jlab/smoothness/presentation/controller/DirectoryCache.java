@@ -17,9 +17,9 @@ import org.jlab.smoothness.persistence.view.User;
  * @author ryans
  */
 @WebServlet(
-    name = "UserAuthorizationCache",
-    urlPatterns = {"/setup/user-authorization-cache"})
-public class UserAuthorizationCache extends HttpServlet {
+    name = "DirectoryCache",
+    urlPatterns = {"/setup/directory-cache"})
+public class DirectoryCache extends HttpServlet {
 
   /**
    * Handles the HTTP <code>GET</code> method.
@@ -40,9 +40,7 @@ public class UserAuthorizationCache extends HttpServlet {
     request.setAttribute("userCache", userCache);
     request.setAttribute("roleCache", roleCache);
 
-    request
-        .getRequestDispatcher("/WEB-INF/views/user-authorization-cache.jsp")
-        .forward(request, response);
+    request.getRequestDispatcher("/WEB-INF/views/directory-cache.jsp").forward(request, response);
   }
 
   /**
@@ -77,6 +75,6 @@ public class UserAuthorizationCache extends HttpServlet {
         throw new IllegalArgumentException("Unexpected action: " + action);
     }
 
-    response.sendRedirect(request.getContextPath() + "/setup/user-authorization-cache");
+    response.sendRedirect(request.getContextPath() + "/setup/directory-cache");
   }
 }
