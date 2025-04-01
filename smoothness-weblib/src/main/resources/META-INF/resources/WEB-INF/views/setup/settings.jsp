@@ -106,7 +106,11 @@
                     <input type="submit" class="filter-form-submit-button" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
+            <form method="post" action="settings" style="float: right;">
+                <button type="submit">Refresh Cache</button>
+            </form>
             <h2 class="page-header-title"><c:out value="${title}"/></h2>
+            <div style="font-family: monospace; color: yellow; background-color: gray; padding: 1em; margin: 1em;">WARNING: Some setting changes may break app and Settings page itself such that you can only undo via external DB Console.  External changes won't take effect until the app is redeployed OR the Refresh Cache button in top right corner is pressed.  Proceed with caution.</div>
             <div class="message-box"><c:out value="${selectionMessage}"/></div>
             <s:editable-row-table-controls excludeAdd="true" excludeDelete="true"/>
             <table id="settings-table" class="data-table stripped-table uniselect-table editable-row-table">
