@@ -3,6 +3,7 @@ package org.jlab.smoothness.business.service;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJBAccessException;
 import javax.ejb.SessionContext;
 import javax.ejb.TransactionAttribute;
@@ -82,6 +83,7 @@ public abstract class JPAService<T> {
    * @param id The ID
    * @return The entity
    */
+  @PermitAll
   public T find(Object id) {
     return getEntityManager().find(entityClass, id);
   }
@@ -91,6 +93,7 @@ public abstract class JPAService<T> {
    *
    * @return The list of all entities
    */
+  @PermitAll
   public List<T> findAll() {
     CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
     cq.select(cq.from(entityClass));
@@ -103,6 +106,7 @@ public abstract class JPAService<T> {
    * @param directives The order directives
    * @return The list of all entities
    */
+  @PermitAll
   public List<T> findAll(OrderDirective... directives) {
     CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
     CriteriaQuery<T> cq = cb.createQuery(entityClass);
