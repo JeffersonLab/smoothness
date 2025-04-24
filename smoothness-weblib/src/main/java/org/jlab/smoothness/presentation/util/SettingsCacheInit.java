@@ -4,7 +4,6 @@ import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 import org.jlab.smoothness.business.service.SettingsService;
 import org.jlab.smoothness.persistence.view.ImmutableSettings;
 
@@ -12,8 +11,11 @@ import org.jlab.smoothness.persistence.view.ImmutableSettings;
  * A ServletContextListener that provide the settings to the ServletContext to allow easy
  * configuration. The settings are application-scoped (cached) so either require an app restart, or
  * manual refresh from Setup tab in order to requery from database.
+ *
+ * <p>This listener should be explicitly configured in web.xml as the first listener to ensure it
+ * runs before any other listener that may rely on the Settings Cache already being initialized. Do
+ * not use @WebListener!
  */
-@WebListener
 public class SettingsCacheInit implements ServletContextListener {
 
   @EJB SettingsService settingsService;

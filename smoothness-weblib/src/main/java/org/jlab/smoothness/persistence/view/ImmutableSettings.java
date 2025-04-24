@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.jlab.smoothness.persistence.entity.Setting;
+import org.jlab.smoothness.persistence.enumeration.SettingsType;
 
 /**
  * Read-only (immutable) application Settings.
@@ -35,7 +36,7 @@ public final class ImmutableSettings {
   }
 
   /**
-   * Get the raw String valued Setting by key.
+   * Get the raw String valued Setting by key or null if none exists.
    *
    * @param key The key
    * @return The value
@@ -51,26 +52,35 @@ public final class ImmutableSettings {
   }
 
   /**
-   * Get a boolean valued Setting by key.
+   * Get a boolean valued Setting by key or returns false if key does not exist.
    *
-   * <p>This accessor doesn't currently check if the value isn't actually of type boolean. If the
-   * value doesn't exist, false is returned.
+   * <p>When creating a new BOOLEAN Setting you should design it cognisant of the default value of
+   * false. That way, when if users do nothing (do not provide a value) then the default value of
+   * false provides the default behavior you want. For example, for a flag determining if emails
+   * should be sent, call it EMAIL_ENABLED if you want the default to be emails do not go out. If
+   * instead you want the default of emails to go out, then call it EMAIL_DISABLED.
+   *
+   * <p>If the type of the Setting is not BOOLEAN then a RuntimeException is thrown. Test your code.
    *
    * @param key The key
    * @return The boolean value
+   * @throws RuntimeException If the Setting requested is not of type BOOLEAN
    */
   public boolean is(String key) {
     Setting s = map.get(key);
 
-    if (s == null) return false;
+    if (SettingsType.BOOLEAN != s.getType()) {
+      throw new RuntimeException(
+          "Requesting Boolean Setting " + s.getKey() + " with actual type " + s.getType());
+    }
 
-    // assert s.getType() == SettingsType.BOOLEAN;
+    if (s == null) return false;
 
     return "Y".equals(s.getValue());
   }
 
   /**
-   * Get a CSV valued Setting by key.
+   * Get a CSV valued Setting by key or return null if key does not exist.
    *
    * @param key The key
    * @return A List
