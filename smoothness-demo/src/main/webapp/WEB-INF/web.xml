@@ -24,6 +24,11 @@
         <param-value>@RELEASE_DATE@</param-value>
     </context-param>
     <context-param>
+        <param-name>smoothnessVersion</param-name>
+        <param-value>@SMOOTHNESS_VERSION@</param-value>
+        <description>Needed if you enable CDN.  Set once in build.gradle.</description>
+    </context-param>
+    <context-param>
         <param-name>feedbackFromAddress</param-name>
         <param-value>smoothness@jlab.org</param-value>
     </context-param>

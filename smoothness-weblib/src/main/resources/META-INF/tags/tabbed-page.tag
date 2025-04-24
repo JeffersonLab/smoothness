@@ -16,7 +16,7 @@
 <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
 <c:set var="smoothnessCdn" value="${settings.is('SMOOTHNESS_CDN_ENABLED')}"/>
 <c:set var="smoothnessServer" value="${settings.get('SMOOTHNESS_SERVER')}"/>
-<c:set var="smoothnessVersion" value="${settings.get('SMOOTHNESS_VERSION')}"/>
+<c:set var="smoothnessVersion" value="${initParam.smoothnessVersion}"/>
 <!DOCTYPE html>
 <html lang="en">
     <head>        

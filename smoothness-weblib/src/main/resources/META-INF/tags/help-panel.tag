@@ -15,6 +15,10 @@
             <div class="li-key"><span>Release Date</span></div>
             <div class="li-value"><c:out value="${initParam.releaseDate}"/></div>
         </li>
+        <li>
+            <div class="li-key"><span>Web lib Version</span></div>
+            <div class="li-value"><c:out value="${initParam.smoothnessVersion}"/></div>
+        </li>
         <c:set var="contentContact" value="${env[initParam.appSpecificEnvPrefix.concat('_CONTENT_CONTACT')]}"/>
         <c:if test="${not empty contentContact}">
             <li>

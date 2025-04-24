@@ -5,6 +5,7 @@ plugins {
 description = 'Smoothness demo app'
 group 'org.jlab'
 version rootProject.version
+ext.smoothnessVersion = '4.11.0'
 ext.releaseDate = rootProject.ext.releaseDate
 
 tasks.withType(JavaCompile) {
@@ -31,7 +32,12 @@ dependencies {
                     'org.apache.poi:poi-ooxml:5.2.3'
 
     // weblib should be included in war: https://github.com/JeffersonLab/smoothness/issues/4
+
+    // For monorepo only use:
     implementation project(':smoothness-weblib')
+
+    // In separate external projects use:
+    //implementation "org.jlab:smoothness-weblib:${smoothnessVersion}"
 }
 
 
@@ -43,6 +49,9 @@ war {
         }
         filter {
             String line -> line.replaceAll("@RELEASE_DATE@", releaseDate)
+        }
+        filter {
+            String line -> line.replaceAll("@SMOOTHNESS_VERSION@", smoothnessVersion)
         }
     }
 }

@@ -10,7 +10,6 @@ insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('ADMIN_
 -- REQUIRED: CDN Config
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('SMOOTHNESS_CDN_ENABLED', 'N', 'BOOLEAN', 'Smoothness weblib resources from CDN.  Defaults to No = serve files locally. CDN is for minified/combined files on shared Content Delivery Network (CDN) server - Nice for when multiple apps use same resources to have warm cache.', 'CDN', 1);
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('SMOOTHNESS_SERVER', 'ace.jlab.org/cdn', 'STRING', 'Host name and port of content delivery network host for shared smoothness resources. Only used if SMOOTHNESS_CDN_ENABLED = Y', 'CDN', 2);
-insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('SMOOTHNESS_VERSION', '4.10.4', 'STRING', 'Version of smoothness lib on CDN.  Only used if SMOOTHNESS_CDN_ENABLED = Y', 'CDN', 3);
 
 -- OPTIONAL: IP READ FILTER (ACL)
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('IP_READ_FILTER_ENABLED', 'N', 'BOOLEAN', 'Whether to enable IP filtering of pages requiring auth to view.  You must redeploy the app for this setting change to take effect.', 'ACL', 1);
