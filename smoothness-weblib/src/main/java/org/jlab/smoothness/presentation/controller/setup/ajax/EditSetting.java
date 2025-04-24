@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.service.SettingsService;
-import org.jlab.smoothness.persistence.view.ImmutableSettings;
 
 /**
  * @author ryans
@@ -40,14 +39,7 @@ public class EditSetting extends HttpServlet {
       String key = request.getParameter("key");
       String value = request.getParameter("value");
 
-      settingService.editSetting(key, value);
-
-      // Refresh caches
-      ImmutableSettings immutable = settingService.getImmutableSettings();
-
-      SettingsService.cachedSettings = immutable;
-
-      request.getServletContext().setAttribute("settings", immutable);
+      settingService.editSetting(key, value, request.getServletContext());
     } catch (UserFriendlyException e) {
       stat = "fail";
       error = "Unable to edit Setting: " + e.getMessage();
