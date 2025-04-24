@@ -44,7 +44,7 @@ public class IpReadEnabledListener implements ServletContextListener {
 
       if (registration == null) {
         registration =
-            context.addFilter("IpReadFilter", "org.jlab.sim.presentation.util.IpReadFilter");
+            context.addFilter("IpReadFilter", "org.jlab.smoothness.presentation.filter.IpReadFilter");
 
         EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST);
 
