@@ -28,7 +28,7 @@
     <c:otherwise>
         <c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
         <c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
-        <c:set var="smoothnessCdn" value="${settings.is('SMOOTHNESS_CDN')}"/>
+        <c:set var="smoothnessCdn" value="${settings.is('SMOOTHNESS_CDN_ENABLED')}"/>
         <c:set var="smoothnessServer" value="${settings.get('SMOOTHNESS_SERVER')}"/>
         <c:set var="smoothnessVersion" value="${settings.get('SMOOTHNESS_VERSION')}"/>
 <!DOCTYPE html>

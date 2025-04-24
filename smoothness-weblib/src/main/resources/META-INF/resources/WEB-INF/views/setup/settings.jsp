@@ -8,7 +8,7 @@
         <style>
             td:nth-child(1),
             td:nth-child(2) {
-                width: 255px;
+                width: 265px;
                 word-break: break-word;
                 position: relative;
                 padding-bottom: 2.5em;

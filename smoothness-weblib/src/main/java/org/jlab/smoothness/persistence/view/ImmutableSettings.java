@@ -69,12 +69,12 @@ public final class ImmutableSettings {
   public boolean is(String key) {
     Setting s = map.get(key);
 
+    if (s == null) return false;
+
     if (SettingsType.BOOLEAN != s.getType()) {
       throw new RuntimeException(
           "Requesting Boolean Setting " + s.getKey() + " with actual type " + s.getType());
     }
-
-    if (s == null) return false;
 
     return "Y".equals(s.getValue());
   }
