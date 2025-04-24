@@ -5,6 +5,11 @@
 <c:set var="title" value="Settings"/>
 <s:setup-page title="${title}">
     <jsp:attribute name="stylesheets">
+        <style>
+            td:nth-child(3) {
+                word-break: break-word;
+            }
+        </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
         <script>
