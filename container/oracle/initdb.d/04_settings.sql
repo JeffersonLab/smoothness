@@ -15,3 +15,13 @@ insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('SMOOTH
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('IP_READ_FILTER_ENABLED', 'N', 'BOOLEAN', 'Whether to enable IP filtering of pages requiring auth to view.  You must redeploy the app for this setting change to take effect.', 'ACL', 1);
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT, CHANGE_ACTION_JNDI) values ('IP_READ_ALLOWLIST_PATTERN', '127\.0.*', 'STRING', 'Java REGEX Pattern of allowed IPs for unauthenticated access to view IpReadFilter pages', 'ACL', 2, 'java:global/sim/IpReadAllowlistReconfigureService');
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('IP_READ_URL_PATTERN', '/*', 'STRING', 'URL patterns to match when applying the IP Read Filter.  You must redeploy the app for this setting change to take effect.', 'ACL', 3);
+
+-- OPTIONAL: Notification Banner
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('NOTIFICATION_ENABLED', 'Y', 'BOOLEAN', 'Notification banner enabled', 'NOTIFICATION', 1);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('NOTIFICATION_MESSAGE', 'Development Environment', 'STRING', 'Notification message', 'NOTIFICATION', 2);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('NOTIFICATION_LINK_NAME', 'Home', 'STRING', 'Notification link name', 'NOTIFICATION', 3);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('NOTIFICATION_LINK_URL', 'https://github.com/JeffersonLab/smoothness', 'STRING', 'Notification link URL', 'NOTIFICATION', 4);
+
+-- OPTIONAL: Contacts
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('CONTENT_CONTACT', 'John Doe (jdoe)', 'STRING', 'Content Contact for help page', 'HELP', 1);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('TECHNICAL_CONTACT', 'John Doe (jdoe)', 'STRING', 'Technical Contact for help page', 'HELP', 2);

@@ -28,11 +28,11 @@
         <jsp:invoke fragment="stylesheets"/>
     </head>
     <body class="${param.print eq 'Y' ? 'print ' : ''} ${param.fullscreen eq 'Y' ? 'fullscreen' : ''}">
-        <c:if test="${env['SERVER_MESSAGE'] ne null}">
+        <c:if test="${settings.is('NOTIFICATION_ENABLED')}">
             <div id="notification-bar">
-                <c:out value="${env['SERVER_MESSAGE']}"/>
-                <c:if test="${not empty env['SERVER_MESSAGE_URL'] && not empty env['SERVER_MESSAGE_URL_TEXT']}">
-                    (<a href="${env['SERVER_MESSAGE_URL']}"><c:out value="${env['SERVER_MESSAGE_URL_TEXT']}"/></a>)
+                <c:out value="${settings.get('NOTIFICATION_MESSAGE')}"/>
+                <c:if test="${not empty settings.get('NOTIFICATION_LINK_URL') && not empty settings.get('NOTIFICATION_LINK_NAME')}">
+                    (<a href="${settings.get('NOTIFICATION_LINK_URL')}"><c:out value="${settings.get('NOTIFICATION_LINK_NAME')}"/></a>)
                 </c:if>
             </div>
         </c:if>        

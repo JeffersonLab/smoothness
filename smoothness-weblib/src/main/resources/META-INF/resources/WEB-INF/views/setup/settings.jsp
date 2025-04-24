@@ -81,7 +81,7 @@
             });
             $(document).on("click", "#open-edit-row-dialog-button", function() {
                 var $selectedRow = $(".editable-row-table tr.selected-row");
-                $("#row-key").text($selectedRow.find("td:first-child div:nth-child(2)").text());
+                $("#row-key").text($selectedRow.find("td:first-child div.top").text());
                 $("#row-value").val($selectedRow.find("td:nth-child(3)").text());
             });
             $(document).on("table-row-edit", function() {
