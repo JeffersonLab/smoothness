@@ -54,16 +54,13 @@ public final class ImmutableSettings {
   /**
    * Get a boolean valued Setting by key or returns false if key does not exist.
    *
-   * <p>
-   * When creating a new BOOLEAN Setting you should design it cognisant of the default value of false.
-   * That way, when if users do nothing (do not provide a value) then the default value
-   * of false provides the default behavior you want.
-   * For example, for a flag determining if emails should be sent, call it EMAIL_ENABLED
-   * if you want the default to be emails do not go out.  If instead you want the default of emails to go out, then
-   * call it EMAIL_DISABLED.
-   * </p>
+   * <p>When creating a new BOOLEAN Setting you should design it cognisant of the default value of
+   * false. That way, when if users do nothing (do not provide a value) then the default value of
+   * false provides the default behavior you want. For example, for a flag determining if emails
+   * should be sent, call it EMAIL_ENABLED if you want the default to be emails do not go out. If
+   * instead you want the default of emails to go out, then call it EMAIL_DISABLED.
    *
-   * <p>If the type of the Setting is not BOOLEAN then a RuntimeException is thrown.   Test your code.
+   * <p>If the type of the Setting is not BOOLEAN then a RuntimeException is thrown. Test your code.
    *
    * @param key The key
    * @return The boolean value
@@ -72,8 +69,9 @@ public final class ImmutableSettings {
   public boolean is(String key) {
     Setting s = map.get(key);
 
-    if(SettingsType.BOOLEAN != s.getType()) {
-      throw new RuntimeException("Requesting Boolean Setting " + s.getKey() + " with actual type " + s.getType());
+    if (SettingsType.BOOLEAN != s.getType()) {
+      throw new RuntimeException(
+          "Requesting Boolean Setting " + s.getKey() + " with actual type " + s.getType());
     }
 
     if (s == null) return false;
