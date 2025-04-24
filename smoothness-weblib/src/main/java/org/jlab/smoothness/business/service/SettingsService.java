@@ -21,12 +21,22 @@ import org.jlab.smoothness.persistence.view.SettingChangeAction;
 @Stateless
 public class SettingsService extends JPAService<Setting> {
 
+  /**
+   * The immutable cached settings. When asking for settings this cache should generally be the
+   * source.
+   */
   public static volatile ImmutableSettings cachedSettings;
 
+  /** Create a new SettingService */
   public SettingsService() {
     super(Setting.class);
   }
 
+  /**
+   * Query the Database for all the Settings. This method can be used to refresh the cache.
+   *
+   * @return The list of Settings.
+   */
   @PermitAll
   public ImmutableSettings getImmutableSettings() {
     List<Setting> settingList = findAll();
@@ -34,14 +44,23 @@ public class SettingsService extends JPAService<Setting> {
     return new ImmutableSettings(settingList);
   }
 
-  // Caller is responsible for passing ServletContext so web cache can be updated.
-  //
-  // In order to perform any cleanup action needed by updating a setting such as disabling features
-  // (such as stopping scheduled timers)
-  // The registered SettingChangeAction is invoked, if any.
-  //
-  // We can't use RolesAllowed annotation because each app has a custom admin.  Instead we
-  // programmatically perform check
+  /**
+   * Edit a Setting. Intended to be called via Setup/Settings page.
+   *
+   * <p>Caller is responsible for passing ServletContext so web cache can be updated.
+   *
+   * <p>In order to perform any cleanup action needed by updating a setting such as disabling
+   * features (such as stopping scheduled timers) The registered SettingChangeAction is invoked, if
+   * any.
+   *
+   * <p>We can't use RolesAllowed annotation because each app has a custom admin. Instead we
+   * programmatically perform check
+   *
+   * @param key The Setting key
+   * @param value The Setting value
+   * @param context The ServletContext
+   * @throws UserFriendlyException If unable to set the Setting
+   */
   @PermitAll
   public void editSetting(String key, String value, ServletContext context)
       throws UserFriendlyException {
@@ -101,6 +120,15 @@ public class SettingsService extends JPAService<Setting> {
     return filters;
   }
 
+  /**
+   * Filter the list of Settings by key and tag, paginated with offset and max per page.
+   *
+   * @param key The Setting key
+   * @param tag The Setting tag
+   * @param offset The page offset
+   * @param max The page max
+   * @return The list of Settings
+   */
   @PermitAll
   public List<Setting> filterList(String key, String tag, int offset, int max) {
     CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
@@ -132,6 +160,13 @@ public class SettingsService extends JPAService<Setting> {
         .getResultList();
   }
 
+  /**
+   * Return the count of Settings filter by key and tag.
+   *
+   * @param key The Setting key
+   * @param tag The Setting tag
+   * @return The count
+   */
   @PermitAll
   public long countList(String key, String tag) {
     CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
@@ -149,6 +184,11 @@ public class SettingsService extends JPAService<Setting> {
     return q.getSingleResult();
   }
 
+  /**
+   * Find the list of all tags.
+   *
+   * @return The list of tags
+   */
   @PermitAll
   public List<String> findTags() {
     TypedQuery<String> q =

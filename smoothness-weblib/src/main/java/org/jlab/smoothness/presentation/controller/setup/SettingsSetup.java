@@ -24,6 +24,7 @@ import org.jlab.smoothness.presentation.util.ParamUtil;
     urlPatterns = {"/setup/settings"})
 public class SettingsSetup extends HttpServlet {
 
+  /** The SettingService. */
   @EJB SettingsService settingsService;
 
   /**

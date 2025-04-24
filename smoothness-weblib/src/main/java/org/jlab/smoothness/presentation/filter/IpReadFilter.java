@@ -22,7 +22,7 @@ import org.jlab.smoothness.business.service.SettingsService;
  * <p>This filter is proxy-aware, meaning it checks for the client IP in X-Forwarded-For header, not
  * the immediate client IP, which is the proxy server.
  *
- * <p>This filter uses the DB Setting IP_READ_WHITELIST_PATTERN to set the Java REGEX pattern to
+ * <p>This filter uses the DB Setting IP_READ_ALLOWLIST_PATTERN to set the Java REGEX pattern to
  * match client IPs against. For example, to match any client IPs in 192.168.x you'd use pattern
  * "192\.168.*". Notice you must escape the first period literal. The second period means match any
  * character and the asterisk means any number of times. Also note, that if you were to specify this
@@ -30,27 +30,28 @@ import org.jlab.smoothness.business.service.SettingsService;
  *
  * <p>This filter uses the DB Setting IP_READ_URL_PATTERN to set which pages (URLs) this filter
  * applies to. The filter is enabled via the DB Setting IP_READ_FILTER_ENABLED. The
- * IP_READ_WHITELIST_PATTERN is runtime configurable, however changes to IP_READ_FILTER_ENABLED and
+ * IP_READ_ALLOWLIST_PATTERN is runtime configurable, however changes to IP_READ_FILTER_ENABLED and
  * IP_READ_URL_PATTERN both require app redeploy because Java app servers do not generally allow
  * reconfiguring filter url patterns nor removing existing filters at runtime.
  */
 public class IpReadFilter implements Filter {
 
-  static String WHITELIST_PATTERN;
+  static String ALLOWLIST_PATTERN;
   static Pattern PATTERN;
 
-  public static void reconfigureWhitelist() {
-    WHITELIST_PATTERN = SettingsService.cachedSettings.get("IP_READ_WHITELIST_PATTERN");
+  /** Reconfigure IpReadFilter allowlist. */
+  public static void reconfigureAllowlist() {
+    ALLOWLIST_PATTERN = SettingsService.cachedSettings.get("IP_READ_ALLOWLIST_PATTERN");
 
-    if (WHITELIST_PATTERN == null || WHITELIST_PATTERN.isBlank()) {
+    if (ALLOWLIST_PATTERN == null || ALLOWLIST_PATTERN.isBlank()) {
       PATTERN = null;
     } else {
-      PATTERN = Pattern.compile(WHITELIST_PATTERN);
+      PATTERN = Pattern.compile(ALLOWLIST_PATTERN);
     }
   }
 
   static {
-    reconfigureWhitelist();
+    reconfigureAllowlist();
   }
 
   @Override
@@ -73,12 +74,12 @@ public class IpReadFilter implements Filter {
 
     /*System.out.println("context path: " + httpRequest.getContextPath());
     System.out.println("request path: " + httpRequest.getRequestURI());
-    System.out.println("WHITELIST_PATTERN: " + WHITELIST_PATTERN);
+    System.out.println("ALLOWLIST_PATTERN: " + ALLOWLIST_PATTERN);
     System.out.println("Authenticated: " + authenticated);
     System.out.println("Client Username: " + username);
     System.out.println("Client IP Address: " + ipAddress);*/
 
-    if (authenticated || inWhitelist(ipAddress)) {
+    if (authenticated || inAllowlist(ipAddress)) {
       filterChain.doFilter(servletRequest, servletResponse);
     } else {
       HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
@@ -105,7 +106,7 @@ public class IpReadFilter implements Filter {
     return serverUrl + contextPath + "/sso?returnUrl=" + returnUrl;
   }
 
-  private boolean inWhitelist(String ipAddress) {
+  private boolean inAllowlist(String ipAddress) {
     return PATTERN != null && PATTERN.matcher(ipAddress).matches();
   }
 }

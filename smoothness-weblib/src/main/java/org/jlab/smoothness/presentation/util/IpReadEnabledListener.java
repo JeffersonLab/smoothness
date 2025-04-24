@@ -30,11 +30,11 @@ public class IpReadEnabledListener implements ServletContextListener {
 
     boolean enabled = settings.is("IP_READ_FILTER_ENABLED");
     String urlPattern = settings.get("IP_READ_URL_PATTERN");
-    String ipPattern = settings.get("IP_READ_WHITELIST_PATTERN");
+    String ipPattern = settings.get("IP_READ_ALLOWLIST_PATTERN");
 
     LOGGER.log(
         Level.INFO,
-        "IP READ FILTER ENABLED: {0}, URL PATTERN: {1}, IP WHITELIST: {2}",
+        "IP READ FILTER ENABLED: {0}, URL PATTERN: {1}, IP ALLOWLIST: {2}",
         new Object[] {enabled, urlPattern, ipPattern});
 
     if (enabled) {

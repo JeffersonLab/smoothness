@@ -54,6 +54,7 @@ public class Setting implements Serializable {
   @Column(name = "CHANGE_ACTION_JNDI")
   private String changeActionJNDI;
 
+  /** A Setting. */
   public Setting() {}
 
   /**

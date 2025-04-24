@@ -26,6 +26,7 @@ public class EditSetting extends HttpServlet {
 
   private static final Logger logger = Logger.getLogger(EditSetting.class.getName());
 
+  /** The SettingService. */
   @EJB SettingsService settingService;
 
   @Override
