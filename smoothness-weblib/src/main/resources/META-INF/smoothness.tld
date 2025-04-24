@@ -98,4 +98,9 @@
         <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
         <function-signature>java.lang.String formatUser(org.jlab.smoothness.persistence.view.User)</function-signature>
     </function>
+    <function>
+        <name>getMemberUsernameCsv</name>
+        <function-class>org.jlab.smoothness.presentation.util.Functions</function-class>
+        <function-signature>java.lang.String getMemberUsernameCsv(java.lang.String)</function-signature>
+    </function>
 </taglib>

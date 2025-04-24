@@ -1,6 +1,7 @@
 <%@tag description="Help Panel Widget" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
 <%@attribute name="title"%>
 <section>
     <h2><c:out value="${title}"/></h2>
@@ -26,6 +27,12 @@
             <li>
                 <div class="li-key"><span>Technical Contact</span></div>
                 <div class="li-value"><c:out value="${techContact}"/></div>
+            </li>
+        </c:if>
+        <c:if test="${pageContext.request.userPrincipal ne null}">
+            <li>
+                <div class="li-key"><span>Admins</span></div>
+                <div class="li-value"><c:out value="${s:getMemberUsernameCsv(settings.get('ADMIN_ROLE_NAME'))}"/></div>
             </li>
         </c:if>
     </ul>

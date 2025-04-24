@@ -1,5 +1,6 @@
 package org.jlab.smoothness.presentation.util;
 
+import java.util.List;
 import org.jlab.smoothness.business.service.UserAuthorizationService;
 import org.jlab.smoothness.business.util.TimeUtil;
 import org.jlab.smoothness.persistence.view.User;
@@ -99,6 +100,34 @@ public final class Functions {
     } else {
       return username;
     }
+  }
+
+  /**
+   * Return a CSV of all usernames that are members of a given role.
+   *
+   * @param role The role to query
+   * @return A String CSV formatted of usernames, empty if none
+   */
+  public static String getMemberUsernameCsv(String role) {
+    UserAuthorizationService auth = UserAuthorizationService.getInstance();
+
+    String usernameCsv = "";
+
+    if (role != null) {
+      List<User> userList = auth.getUsersInRole(role);
+
+      if (userList != null) {
+        for (int i = 0; i < userList.size(); i++) {
+          User user = userList.get(i);
+          usernameCsv = user.getUsername();
+          if (i < userList.size() - 1) {
+            usernameCsv += ",";
+          }
+        }
+      }
+    }
+
+    return usernameCsv;
   }
 
   /**
