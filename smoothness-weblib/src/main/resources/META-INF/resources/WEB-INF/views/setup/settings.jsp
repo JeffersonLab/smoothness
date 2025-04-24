@@ -121,6 +121,7 @@
                             </ul>
                         </fieldset>
                     </div>
+                    <input type="hidden" class="offset-input" name="offset" value="0"/>
                     <input type="submit" class="filter-form-submit-button" value="Apply"/>
                 </form>
             </s:filter-flyout-widget>
@@ -128,7 +129,7 @@
                 <button type="submit">Refresh Cache</button>
             </form>
             <h2 class="page-header-title"><c:out value="${title}"/></h2>
-            <div style="font-family: monospace; color: yellow; background-color: gray; padding: 1em; margin: 1em;">WARNING: Some setting changes may break app and Settings page itself such that you can only undo via external DB Console.  External changes won't take effect until the app is redeployed OR the Refresh Cache button in top right corner is pressed.  Proceed with caution.</div>
+            <div style="font-family: monospace; color: yellow; background-color: gray; padding: 1em; margin: 1em;">WARNING: Some setting changes may break app and Settings page itself such that you can only undo via external DB Console.  Changes made directly in the DB without using this interface won't take effect until the app is redeployed OR the Refresh Cache button in top right corner is pressed.  Proceed with caution.</div>
             <div class="message-box"><c:out value="${selectionMessage}"/></div>
             <s:editable-row-table-controls excludeAdd="true" excludeDelete="true"/>
             <table id="settings-table" class="data-table stripped-table uniselect-table editable-row-table">
@@ -183,6 +184,12 @@
                     </form>
                 </section>
             </s:editable-row-table-dialog>
+            <button class="previous-button" type="button" data-offset="${paginator.previousOffset}"
+                    value="Previous"${paginator.previous ? '' : ' disabled="disabled"'}>Previous
+            </button>
+            <button class="next-button" type="button" data-offset="${paginator.nextOffset}"
+                    value="Next"${paginator.next ? '' : ' disabled="disabled"'}>Next
+            </button>
         </section>
     </jsp:body>
 </s:setup-page>
