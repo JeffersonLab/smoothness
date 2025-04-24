@@ -6,8 +6,21 @@
 <s:setup-page title="${title}">
     <jsp:attribute name="stylesheets">
         <style>
+            td:nth-child(1),
+            td:nth-child(2) {
+                width: 255px;
+                word-break: break-word;
+                position: relative;
+                padding-bottom: 2.5em;
+            }
             td:nth-child(3) {
                 word-break: break-word;
+            }
+            div.bottom {
+                position: absolute;
+                bottom: 8px;
+                font-size: 0.8em;
+                color: #595959;
             }
         </style>
     </jsp:attribute>
@@ -121,16 +134,26 @@
             <table id="settings-table" class="data-table stripped-table uniselect-table editable-row-table">
                 <thead>
                 <tr>
-                    <th>Tag / Key</th>
-                    <th>Type / Description</th>
+                    <th>Key / Tag</th>
+                    <th>Description / Type</th>
                     <th>Value</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="setting" items="${settingList}">
                     <tr>
-                        <td><div><c:out value="${setting.tag}"/> /</div><div><c:out value="${setting.key}"/></div></td>
-                        <td><div><c:out value="${setting.type}"/> /</div><div><c:out value="${setting.description}"/></div></td>
+                        <td>
+                            <div class="container">
+                                <div class="top"><c:out value="${setting.key}"/></div>
+                                <div class="bottom"><c:out value="${setting.tag}"/></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="container">
+                                <div class="top"><c:out value="${setting.description}"/></div>
+                                <div class="bottom"><c:out value="${setting.type}"/></div>
+                            </div>
+                        </td>
                         <td><c:out value="${setting.value}"/></td>
                     </tr>
                 </c:forEach>
