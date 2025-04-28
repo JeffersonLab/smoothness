@@ -74,6 +74,40 @@ public class EmailService {
   }
 
   /**
+   * Send a multipart email.
+   *
+   * @param sender The sender address
+   * @param from The from address
+   * @param toAddresses The to Addresses
+   * @param ccAddresses The cc Addresses
+   * @param subject The subject
+   * @param multipart They parts
+   * @throws MessagingException If unable to send
+   */
+  private void doSendMultipart(
+      Address sender,
+      Address from,
+      Address[] toAddresses,
+      Address[] ccAddresses,
+      String subject,
+      Multipart multipart)
+      throws MessagingException {
+    MimeMessage message = new MimeMessage(this.mailSession);
+    message.setSender(sender);
+    message.setFrom(from);
+    message.setRecipients(Message.RecipientType.TO, toAddresses);
+    message.setRecipients(Message.RecipientType.CC, ccAddresses);
+    message.setSubject(subject);
+    message.setContent(multipart);
+
+    message.saveChanges();
+    Transport tr = this.mailSession.getTransport();
+    tr.connect();
+    tr.sendMessage(message, message.getAllRecipients());
+    tr.close();
+  }
+
+  /**
    * Convert a Comma Separated Values String to an array of Addresses.
    *
    * @param toCsv The CSV String
@@ -147,6 +181,54 @@ public class EmailService {
       Address[] ccAddresses = csvToAddressArray(ccCsv);
 
       doSend(senderAddress, fromAddress, toAddresses, ccAddresses, subject, body, html);
+    } catch (AddressException e) {
+      throw new IllegalArgumentException("Invalid address", e);
+    } catch (MessagingException e) {
+      throw new IllegalArgumentException("Unable to send email", e);
+    }
+  }
+
+  /**
+   * Send a multipart email.
+   *
+   * @param sender The sender address
+   * @param from The from address
+   * @param toCsv The to Addresses
+   * @param ccCsv The cc Addresses
+   * @param subject The subject
+   * @param multipart They parts
+   * @throws UserFriendlyException If unable to send
+   */
+  public void sendEmailMultipart(
+      String sender, String from, String toCsv, String ccCsv, String subject, Multipart multipart)
+      throws UserFriendlyException {
+    try {
+      Address senderAddress = new InternetAddress(sender);
+      Address fromAddress = new InternetAddress(from);
+      if (sender != null && !sender.isEmpty()) {
+        if (from != null && !from.isEmpty()) {
+          if (toCsv != null && !toCsv.isEmpty()) {
+            if (subject != null && !subject.isEmpty()) {
+              if (multipart != null && multipart.getCount() > 0) {
+                Address[] toAddresses = EmailService.csvToAddressArray(toCsv);
+                Address[] ccAddresses = EmailService.csvToAddressArray(ccCsv);
+                this.doSendMultipart(
+                    senderAddress, fromAddress, toAddresses, ccAddresses, subject, multipart);
+              } else {
+                throw new UserFriendlyException("multipart content must not be empty");
+              }
+            } else {
+              throw new UserFriendlyException("subject must not be empty");
+            }
+          } else {
+            throw new UserFriendlyException("to email address must not be empty");
+          }
+        } else {
+          throw new UserFriendlyException("from email address must not be empty");
+        }
+      } else {
+        throw new UserFriendlyException("sender email address must not be empty");
+      }
     } catch (AddressException e) {
       throw new IllegalArgumentException("Invalid address", e);
     } catch (MessagingException e) {
