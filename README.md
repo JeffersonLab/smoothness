@@ -115,8 +115,8 @@ At runtime smoothness apps use the following global environment variables:
 | PUPPET_SHOW_SERVER_URL       | Scheme, host name, and port of Puppet Show server used by the html-to-image and html-to-pdf app relative path Convert service                                                                                                                                                                                                      |
 | SERVER_MESSAGE               | Optional - Banner message at top of all pages - useful to tag test environment or provide global announcement                                                                                                                                                                                                                      |
 
-#### Per App Runtime Settings
-There are some [Settings](https://github.com/JeffersonLab/smoothness/blob/main/container/oracle/initdb.d/04_settings.sql) in the database that can be edited on the Setup tab by admins.                                                                                                                                                    |                                                                        
+### Per App Runtime Settings
+There are some [Settings](https://github.com/JeffersonLab/smoothness/blob/main/container/oracle/initdb.d/04_settings.sql) in the database that can be edited on the Setup tab by admins.                                                                           
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
