@@ -19,14 +19,14 @@
             <div class="li-key"><span>Web lib Version</span></div>
             <div class="li-value"><c:out value="${initParam.smoothnessVersion}"/></div>
         </li>
-        <c:set var="contentContact" value="${settings.get('CONTENT_CONTACT')}"/>
+        <c:set var="contentContact" value="${settings.get('HELP_CONTENT_CONTACT')}"/>
         <c:if test="${not empty contentContact}">
             <li>
                 <div class="li-key"><span>Content Contact</span></div>
                 <div class="li-value"><c:out value="${contentContact}"/></div>
             </li>
         </c:if>
-        <c:set var="techContact" value="${settings.get('TECHNICAL_CONTACT')}"/>
+        <c:set var="techContact" value="${settings.get('HELP_TECHNICAL_CONTACT')}"/>
         <c:if test="${not empty techContact}">
             <li>
                 <div class="li-key"><span>Technical Contact</span></div>
@@ -41,7 +41,7 @@
         </c:if>
     </ul>
     <jsp:doBody var="bodyText"/>
-    <c:set var="docCsv" value="${env[initParam.appSpecificEnvPrefix.concat('_DOC_CSV')]}"/>
+    <c:set var="docCsv" value="${settings.get('HELP_DOC_CSV')}"/>
     <c:if test="${not empty docCsv}">
     <c:set var="docArray" value="${docCsv.split(',')}"/>
     <h3>Documentation</h3>

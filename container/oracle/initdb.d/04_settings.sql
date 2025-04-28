@@ -8,7 +8,7 @@ ALTER SESSION SET CURRENT_SCHEMA = SMOOTHNESS_OWNER;
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('ADMIN_ROLE_NAME', 'smoothness-demo-admin', 'STRING', 'App-specific Admin Role Name', 'AUTH', 1);
 
 -- OPTIONAL: CDN Config
-insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('SMOOTHNESS_CDN_ENABLED', 'N', 'BOOLEAN', 'Smoothness weblib resources from CDN.  Defaults to No = serve files locally. CDN is for minified/combined files on shared Content Delivery Network (CDN) server - Nice for when multiple apps use same resources to have warm cache.', 'CDN', 1);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('SMOOTHNESS_CDN_ENABLED', 'N', 'BOOLEAN', 'Smoothness weblib resources from CDN.  Defaults to No = serve files locally. CDN is for minified files on shared Content Delivery Network (CDN) server - Nice for when multiple apps use same resources to have warm cache.', 'CDN', 1);
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('SMOOTHNESS_SERVER', 'ace.jlab.org/cdn', 'STRING', 'Host name and port of content delivery network host for shared smoothness resources. Only used if SMOOTHNESS_CDN_ENABLED = Y', 'CDN', 2);
 
 -- OPTIONAL: IP READ FILTER (ACL)
@@ -23,9 +23,9 @@ insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('NOTIFI
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('NOTIFICATION_LINK_URL', 'https://github.com/JeffersonLab/smoothness', 'STRING', 'Notification link URL', 'NOTIFICATION', 4);
 
 -- OPTIONAL: Help Page
-insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('CONTENT_CONTACT', 'John Doe (jdoe)', 'STRING', 'Content Contact for help page', 'HELP', 1);
-insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('TECHNICAL_CONTACT', 'John Doe (jdoe)', 'STRING', 'Technical Contact for help page', 'HELP', 2);
-insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('DOC_CSV', 'https://github.com/JeffersonLab/smoothness|Home', 'CSV', 'CSV of documentation items where each item is a URL and a Label separated with the pipe symbol', 'HELP', 3);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('HELP_CONTENT_CONTACT', 'John Doe (jdoe)', 'STRING', 'Content Contact for help page', 'HELP', 1);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('HELP_TECHNICAL_CONTACT', 'John Doe (jdoe)', 'STRING', 'Technical Contact for help page', 'HELP', 2);
+insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('HELP_DOC_CSV', 'https://github.com/JeffersonLab/smoothness|Home', 'CSV', 'CSV of documentation items where each item is a URL and a Label separated with the pipe symbol', 'HELP', 3);
 
 -- OPTIONAL: Email
 insert into SETTING (KEY, VALUE, TYPE, DESCRIPTION, TAG, WEIGHT) values ('EMAIL_ENABLED', 'Y', 'BOOLEAN', 'Emails (including Help/Feedback) enabled', 'EMAIL', 1);
