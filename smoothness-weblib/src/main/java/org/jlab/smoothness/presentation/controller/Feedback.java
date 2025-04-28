@@ -2,6 +2,7 @@ package org.jlab.smoothness.presentation.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.service.EmailService;
+import org.jlab.smoothness.business.service.SettingsService;
 import org.jlab.smoothness.business.service.UserAuthorizationService;
 import org.jlab.smoothness.persistence.view.User;
 
@@ -42,18 +44,30 @@ public class Feedback extends HttpServlet {
       String subject = request.getParameter("subject");
       String body = request.getParameter("body");
 
-      // Environment variable is used to override email address on test environments
+      UserAuthorizationService auth = UserAuthorizationService.getInstance();
 
-      String prefix = getServletContext().getInitParameter("appSpecificEnvPrefix");
+      String adminRole = SettingsService.cachedSettings.get("ADMIN_ROLE_NAME");
+      // String emailDomain = SettingsService.cachedSettings.get("EMAIL_DOMAIN_NAME");
+      String sender = SettingsService.cachedSettings.get("EMAIL_SENDER_ADDRESS");
+      boolean emailEnabled = SettingsService.cachedSettings.is("EMAIL_ENABLED");
+      boolean emailTestingEnabled = SettingsService.cachedSettings.is("EMAIL_TESTING_ENABLED");
 
-      String toCsv = System.getenv(prefix + "_FEEDBACK_TO_ADDRESS_CSV");
+      if (!emailEnabled) {
+        LOGGER.log(Level.WARNING, "Email is disabled, not sending.");
+        return;
+      }
 
-      // Set in your web.xml file
-      String sender = System.getenv(prefix + "_FEEDBACK_SENDER_ADDRESS");
+      String roleName = adminRole;
+
+      if (emailTestingEnabled) {
+        roleName = "testlead";
+      }
+
+      List<User> userList = auth.getUsersInRole(roleName);
+
+      String toCsv = EmailService.usersToAddressCsv(userList);
 
       String username = request.getRemoteUser();
-
-      UserAuthorizationService auth = UserAuthorizationService.getInstance();
 
       User user = auth.getUserFromUsername(username);
 

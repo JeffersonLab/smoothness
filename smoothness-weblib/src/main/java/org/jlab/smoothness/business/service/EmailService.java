@@ -9,6 +9,7 @@ import javax.mail.internet.MimeMessage;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
+import org.jlab.smoothness.persistence.view.User;
 
 /** Service for sending emails. */
 public class EmailService {
@@ -105,6 +106,32 @@ public class EmailService {
     tr.connect();
     tr.sendMessage(message, message.getAllRecipients());
     tr.close();
+  }
+
+  /**
+   * Convert a User list to a Comma Separated Values String of address strings.
+   *
+   * @param userList The User list
+   * @return The CSV of addresses
+   */
+  public static String usersToAddressCsv(List<User> userList) {
+    String csv = "";
+
+    if (userList != null && !userList.isEmpty()) {
+      if (userList.get(0) == null) {
+        throw new IllegalArgumentException("User must not be null");
+      }
+
+      csv = userList.get(0).getEmail();
+      for (int i = 1; i < userList.size(); i++) {
+        if (userList.get(i) == null) {
+          throw new IllegalArgumentException("User must not be null");
+        }
+        csv = csv + "," + userList.get(i).getEmail();
+      }
+    }
+
+    return csv;
   }
 
   /**
