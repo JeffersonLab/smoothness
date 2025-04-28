@@ -1,5 +1,7 @@
 package org.jlab.smoothness.presentation.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.jlab.smoothness.business.service.UserAuthorizationService;
 import org.jlab.smoothness.business.util.TimeUtil;
@@ -103,7 +105,7 @@ public final class Functions {
   }
 
   /**
-   * Return a CSV of all usernames that are members of a given role.
+   * Return a CSV of all usernames that are members of a given role, sorted by username asc.
    *
    * @param role The role to query
    * @return A String CSV formatted of usernames, empty if none
@@ -114,12 +116,14 @@ public final class Functions {
     String usernameCsv = "";
 
     if (role != null) {
-      List<User> userList = auth.getUsersInRole(role);
+      List<User> userList = new ArrayList<>(auth.getUsersInRole(role));
+
+      Collections.sort(userList);
 
       if (userList != null) {
         for (int i = 0; i < userList.size(); i++) {
           User user = userList.get(i);
-          usernameCsv = user.getUsername();
+          usernameCsv += user.getUsername();
           if (i < userList.size() - 1) {
             usernameCsv += ",";
           }

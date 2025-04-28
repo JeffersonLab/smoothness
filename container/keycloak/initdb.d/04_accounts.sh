@@ -29,6 +29,8 @@ KEYCLOAK_LASTNAME=Smith
 KEYCLOAK_EMAIL=jsmith@example.com
 create_user
 assign_role
+KEYCLOAK_ROLE_NAME=${KEYCLOAK_RESOURCE}-admin
+assign_role
 
 
 KEYCLOAK_USERNAME=tbrown

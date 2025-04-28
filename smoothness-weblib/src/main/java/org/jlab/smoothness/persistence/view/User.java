@@ -1,7 +1,7 @@
 package org.jlab.smoothness.persistence.view;
 
 /** A simple immutable view of a User entity. */
-public final class User {
+public final class User implements Comparable<User> {
   private final String username;
   private final String firstname;
   private final String lastname;
@@ -65,5 +65,16 @@ public final class User {
    */
   public String toString() {
     return firstname + " " + lastname + "(" + username + ") [" + email + "]";
+  }
+
+  /**
+   * Compare this User to another by username asc.
+   *
+   * @param other The other User
+   * @return 0 if equal, less than 0 if less than other, more than 0 if greater than other
+   */
+  @Override
+  public int compareTo(User other) {
+    return username.compareTo(other.username);
   }
 }
