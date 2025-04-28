@@ -5,7 +5,10 @@ plugins {
 description = 'Smoothness demo app'
 group 'org.jlab'
 version rootProject.version
-ext.smoothnessVersion = '4.11.0'
+// In this monorepo we use:
+ext.smoothnessVersion = rootProject.version
+// External projects should declare like so:
+//ext.smoothnessVersion = '4.12.1'
 ext.releaseDate = rootProject.ext.releaseDate
 
 tasks.withType(JavaCompile) {
