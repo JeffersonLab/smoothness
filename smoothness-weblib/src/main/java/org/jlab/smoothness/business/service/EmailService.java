@@ -34,7 +34,7 @@ public class EmailService {
    * @param sender The sender address
    * @param from The from address
    * @param toAddresses The to addresses
-   * @parma ccAddresses The cc addresses
+   * @param ccAddresses The cc addresses
    * @param subject The subject
    * @param body The body
    * @param html true if HTML body, false otherwise
