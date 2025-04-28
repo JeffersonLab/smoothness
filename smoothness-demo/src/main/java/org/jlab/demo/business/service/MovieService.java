@@ -3,6 +3,7 @@ package org.jlab.demo.business.service;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import org.jlab.demo.persistence.entity.Movie;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -26,6 +27,7 @@ public class MovieService extends JPAService<Movie> {
    *
    * @return A list of all movies
    */
+  @PermitAll
   public List<Movie> findAllDefaultOrder() {
     OrderDirective[] order = {
       new OrderDirective("releaseDate", false), new OrderDirective("movieId")
@@ -44,6 +46,7 @@ public class MovieService extends JPAService<Movie> {
    * @param release The release date
    * @throws UserFriendlyException If unable to add a new movie
    */
+  @PermitAll
   public void addMovie(
       String title, String description, String rating, Integer duration, Date release)
       throws UserFriendlyException {
@@ -60,6 +63,7 @@ public class MovieService extends JPAService<Movie> {
    * @param idArray The array of movie IDs
    * @throws UserFriendlyException If unable to remove the movies
    */
+  @PermitAll
   public void removeMovie(BigInteger[] idArray) throws UserFriendlyException {
     if (idArray == null || idArray.length == 0) {
       throw new UserFriendlyException("Please select at least one movie to remove");
@@ -83,6 +87,7 @@ public class MovieService extends JPAService<Movie> {
    * @param release The updated release date
    * @throws UserFriendlyException If unable to edit the movie
    */
+  @PermitAll
   public void editMovie(
       BigInteger id,
       String title,
@@ -128,6 +133,7 @@ public class MovieService extends JPAService<Movie> {
    * @param rating The updated rating
    * @throws UserFriendlyException If unable to edit the movies
    */
+  @PermitAll
   public void editMovieRating(BigInteger[] idArray, String rating) throws UserFriendlyException {
     if (idArray == null || idArray.length == 0) {
       throw new UserFriendlyException("Please select at least one movie to remove");
