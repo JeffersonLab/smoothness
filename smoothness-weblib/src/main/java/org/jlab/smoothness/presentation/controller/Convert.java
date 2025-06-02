@@ -7,7 +7,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,11 +58,13 @@ public class Convert extends HttpServlet {
     }
 
     if (urlString == null) {
-      throw new ServletException("url parameter must not be empty");
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "url parameter must not be empty");
+      return;
     }
 
     if (urlString.indexOf("://") > 0 || urlString.indexOf("//") == 0) {
-      throw new ServletException("url parameter must not be absolute");
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "url parameter must not be absolute");
+      return;
     }
 
     if (!urlString.startsWith("/")) {
@@ -102,7 +103,7 @@ public class Convert extends HttpServlet {
       response.setHeader("content-disposition", "attachment; filename=\"" + filename + "\"");
     }
 
-    LOGGER.log(Level.INFO, "Puppet URL Request: " + puppetServer);
+    // LOGGER.log(Level.INFO, "Puppet URL Request: " + puppetServer);
 
     URL url = new URL(puppetServer);
 
