@@ -50,13 +50,16 @@ public class EditMovieRating extends HttpServlet {
 
       movieService.editMovieRating(idArray, rating);
     } catch (EJBAccessException e) {
-      LOGGER.log(Level.WARNING, "Not authorized", e);
+      //LOGGER.log(Level.WARNING, "Not authorized", e);
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       errorReason = "Not authorized";
     } catch (UserFriendlyException e) {
-      LOGGER.log(Level.WARNING, "Unable to edit movie rating", e);
+      //LOGGER.log(Level.WARNING, "Unable to edit movie rating", e);
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       errorReason = e.getMessage();
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Unable to edit movie rating", e);
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       errorReason = "Something unexpected happened";
     }
 
@@ -73,7 +76,6 @@ public class EditMovieRating extends HttpServlet {
     try (JsonGenerator gen = Json.createGenerator(out)) {
       gen.writeStartObject().write("stat", stat); // This is unnecessary - if 200 OK then it worked
       if (errorReason != null) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         gen.write("error", errorReason);
       }
       gen.writeEnd();

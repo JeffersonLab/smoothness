@@ -36,8 +36,12 @@ public class Error extends HttpServlet {
 
     String message = "An unknown error has occurred.";
 
-    if (404 == statusCode) {
-      message = "404: Page not found";
+    if(400 == statusCode) {
+      message = "400: Bad Request";
+    } else if (401 == statusCode) {
+      message = "401: Unauthorized";
+    } else if (404 == statusCode) {
+      message = "404: Not Found";
     } else if (throwable != null) {
       System.err.println("Throwable Class: " + throwable.getClass());
 
@@ -47,10 +51,6 @@ public class Error extends HttpServlet {
         message = throwable.getMessage();
       }
     }
-
-    System.err.println("Status Code: " + statusCode);
-    System.err.println("Servlet Name: " + servletName);
-    System.err.println("Request URI: " + requestUri);
 
     request.setAttribute("message", message);
     request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);

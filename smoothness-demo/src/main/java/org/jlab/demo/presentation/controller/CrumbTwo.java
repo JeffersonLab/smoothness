@@ -34,10 +34,18 @@ public class CrumbTwo extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    String search = request.getParameter("search");
+    String search;
+    int offset;
+    int max;
 
-    int offset = ParamUtil.convertAndValidateNonNegativeInt(request, "offset", 0);
-    int max = ParamUtil.convertAndValidateNonNegativeInt(request, "max", 5);
+    try {
+      search = request.getParameter("search");
+      offset = ParamUtil.convertAndValidateNonNegativeInt(request, "offset", 0);
+      max = ParamUtil.convertAndValidateNonNegativeInt(request, "max", 5);
+    } catch(Exception e) {
+      response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+      return;
+    }
 
     UserAuthorizationService auth = UserAuthorizationService.getInstance();
 

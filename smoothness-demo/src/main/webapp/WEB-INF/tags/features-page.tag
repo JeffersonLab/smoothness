@@ -19,6 +19,9 @@
                 <a href="${pageContext.request.contextPath}/features/multiselect-datatable">Multiselect
                     Datatable</a></li>
             <li>
+                <a href="${pageContext.request.contextPath}/features/bad-request">400 Error Demo</a>
+            </li>
+            <li>
                 <a href="${pageContext.request.contextPath}/features/404Demo">404 Error Demo</a>
             </li>
         </ul>

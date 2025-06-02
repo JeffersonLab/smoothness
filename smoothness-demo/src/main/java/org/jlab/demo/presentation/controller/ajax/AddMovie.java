@@ -44,23 +44,39 @@ public class AddMovie extends HttpServlet {
       throws ServletException, IOException {
     String errorReason = null;
 
-    try {
-      String title = request.getParameter("title");
-      String description = request.getParameter("description");
-      String rating = request.getParameter("rating");
-      Integer duration = ParamConverter.convertInteger(request, "duration");
-      Date release = ParamConverter.convertFriendlyDate(request, "release");
+    String title = null;
+    String description = null;
+    String rating = null;
+    Integer duration = null;
+    Date release = null;
 
-      movieService.addMovie(title, description, rating, duration, release);
-    } catch (EJBAccessException e) {
-      LOGGER.log(Level.WARNING, "Not authorized", e);
-      errorReason = "Not authorized";
-    } catch (UserFriendlyException e) {
-      LOGGER.log(Level.WARNING, "Unable to add movie", e);
-      errorReason = e.getMessage();
-    } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, "Unable to add movie", e);
-      errorReason = "Something unexpected happened";
+    try {
+      title = request.getParameter("title");
+      description = request.getParameter("description");
+      rating = request.getParameter("rating");
+      duration = ParamConverter.convertInteger(request, "duration");
+      release = ParamConverter.convertFriendlyDate(request, "release");
+    } catch(Exception e) {
+      errorReason = "Bad Request";
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    if(errorReason == null) {
+      try {
+        movieService.addMovie(title, description, rating, duration, release);
+      } catch (EJBAccessException e) {
+        //LOGGER.log(Level.WARNING, "Not authorized", e);
+        errorReason = "Not authorized";
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      } catch (UserFriendlyException e) {
+        //LOGGER.log(Level.WARNING, "Unable to add movie", e);
+        errorReason = e.getMessage();
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, "Unable to add movie", e);
+        errorReason = "Something unexpected happened";
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      }
     }
 
     String stat = "ok";
@@ -76,7 +92,6 @@ public class AddMovie extends HttpServlet {
     try (JsonGenerator gen = Json.createGenerator(out)) {
       gen.writeStartObject().write("stat", stat); // This is unnecessary - if 200 OK then it worked
       if (errorReason != null) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         gen.write("error", errorReason);
       }
       gen.writeEnd();
