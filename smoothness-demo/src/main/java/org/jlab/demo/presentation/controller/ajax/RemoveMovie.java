@@ -49,11 +49,11 @@ public class RemoveMovie extends HttpServlet {
 
       movieService.removeMovie(idArray);
     } catch (EJBAccessException e) {
-      //LOGGER.log(Level.WARNING, "Not authorized", e);
+      // LOGGER.log(Level.WARNING, "Not authorized", e);
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       errorReason = "Not authorized";
     } catch (UserFriendlyException e) {
-      //LOGGER.log(Level.WARNING, "Unable to remove movie", e);
+      // LOGGER.log(Level.WARNING, "Unable to remove movie", e);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       errorReason = e.getMessage();
     } catch (Exception e) {

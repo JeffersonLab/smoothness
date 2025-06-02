@@ -42,7 +42,7 @@ public class CrumbTwo extends HttpServlet {
       search = request.getParameter("search");
       offset = ParamUtil.convertAndValidateNonNegativeInt(request, "offset", 0);
       max = ParamUtil.convertAndValidateNonNegativeInt(request, "max", 5);
-    } catch(Exception e) {
+    } catch (Exception e) {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST);
       return;
     }

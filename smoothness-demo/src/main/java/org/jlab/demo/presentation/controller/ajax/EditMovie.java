@@ -45,27 +45,41 @@ public class EditMovie extends HttpServlet {
       throws ServletException, IOException {
     String errorReason = null;
 
-    try {
-      BigInteger id = ParamConverter.convertBigInteger(request, "id");
-      String title = request.getParameter("title");
-      String description = request.getParameter("description");
-      String rating = request.getParameter("rating");
-      Integer duration = ParamConverter.convertInteger(request, "duration");
-      Date release = ParamConverter.convertFriendlyDate(request, "release");
+    BigInteger id = null;
+    String title = null;
+    String description = null;
+    String rating = null;
+    Integer duration = null;
+    Date release = null;
 
-      movieService.editMovie(id, title, description, rating, duration, release);
-    } catch (EJBAccessException e) {
-      //LOGGER.log(Level.WARNING, "Not authorized", e);
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      errorReason = "Not authorized";
-    } catch (UserFriendlyException e) {
-      //LOGGER.log(Level.WARNING, "Unable to edit movie", e);
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      errorReason = e.getMessage();
+    try {
+      id = ParamConverter.convertBigInteger(request, "id");
+      title = request.getParameter("title");
+      description = request.getParameter("description");
+      rating = request.getParameter("rating");
+      duration = ParamConverter.convertInteger(request, "duration");
+      release = ParamConverter.convertFriendlyDate(request, "release");
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, "Unable to edit movie", e);
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      errorReason = "Something unexpected happened";
+      errorReason = "Bad Request";
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    if (errorReason == null) {
+      try {
+        movieService.editMovie(id, title, description, rating, duration, release);
+      } catch (EJBAccessException e) {
+        // LOGGER.log(Level.WARNING, "Not authorized", e);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        errorReason = "Not authorized";
+      } catch (UserFriendlyException e) {
+        // LOGGER.log(Level.WARNING, "Unable to edit movie", e);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        errorReason = e.getMessage();
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, "Unable to edit movie", e);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        errorReason = "Something unexpected happened";
+      }
     }
 
     String stat = "ok";

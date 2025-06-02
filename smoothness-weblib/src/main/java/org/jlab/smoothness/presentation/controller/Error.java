@@ -36,7 +36,7 @@ public class Error extends HttpServlet {
 
     String message = "An unknown error has occurred.";
 
-    if(400 == statusCode) {
+    if (400 == statusCode) {
       message = "400: Bad Request";
     } else if (401 == statusCode) {
       message = "401: Unauthorized";

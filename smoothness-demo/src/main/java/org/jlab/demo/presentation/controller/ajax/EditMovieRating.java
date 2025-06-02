@@ -50,11 +50,11 @@ public class EditMovieRating extends HttpServlet {
 
       movieService.editMovieRating(idArray, rating);
     } catch (EJBAccessException e) {
-      //LOGGER.log(Level.WARNING, "Not authorized", e);
+      // LOGGER.log(Level.WARNING, "Not authorized", e);
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       errorReason = "Not authorized";
     } catch (UserFriendlyException e) {
-      //LOGGER.log(Level.WARNING, "Unable to edit movie rating", e);
+      // LOGGER.log(Level.WARNING, "Unable to edit movie rating", e);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       errorReason = e.getMessage();
     } catch (Exception e) {

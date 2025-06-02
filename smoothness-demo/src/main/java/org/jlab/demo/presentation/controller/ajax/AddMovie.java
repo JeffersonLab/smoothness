@@ -56,20 +56,20 @@ public class AddMovie extends HttpServlet {
       rating = request.getParameter("rating");
       duration = ParamConverter.convertInteger(request, "duration");
       release = ParamConverter.convertFriendlyDate(request, "release");
-    } catch(Exception e) {
+    } catch (Exception e) {
       errorReason = "Bad Request";
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
-    if(errorReason == null) {
+    if (errorReason == null) {
       try {
         movieService.addMovie(title, description, rating, duration, release);
       } catch (EJBAccessException e) {
-        //LOGGER.log(Level.WARNING, "Not authorized", e);
+        // LOGGER.log(Level.WARNING, "Not authorized", e);
         errorReason = "Not authorized";
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       } catch (UserFriendlyException e) {
-        //LOGGER.log(Level.WARNING, "Unable to add movie", e);
+        // LOGGER.log(Level.WARNING, "Unable to add movie", e);
         errorReason = e.getMessage();
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       } catch (Exception e) {
