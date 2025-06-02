@@ -44,22 +44,31 @@ public class RemoveMovie extends HttpServlet {
       throws ServletException, IOException {
     String errorReason = null;
 
-    try {
-      BigInteger[] idArray = ParamConverter.convertBigIntegerArray(request, "id[]");
+    BigInteger[] idArray = null;
 
-      movieService.removeMovie(idArray);
-    } catch (EJBAccessException e) {
-      // LOGGER.log(Level.WARNING, "Not authorized", e);
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      errorReason = "Not authorized";
-    } catch (UserFriendlyException e) {
-      // LOGGER.log(Level.WARNING, "Unable to remove movie", e);
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      errorReason = e.getMessage();
+    try {
+      idArray = ParamConverter.convertBigIntegerArray(request, "id[]");
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, "Unable to remove movie", e);
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      errorReason = "Something unexpected happened";
+      errorReason = "Bad Request";
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    if (errorReason == null) {
+      try {
+        movieService.removeMovie(idArray);
+      } catch (EJBAccessException e) {
+        // LOGGER.log(Level.WARNING, "Not authorized", e);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        errorReason = "Not authorized";
+      } catch (UserFriendlyException e) {
+        // LOGGER.log(Level.WARNING, "Unable to remove movie", e);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        errorReason = e.getMessage();
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, "Unable to remove movie", e);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        errorReason = "Something unexpected happened";
+      }
     }
 
     String stat = "ok";

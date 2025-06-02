@@ -44,23 +44,33 @@ public class EditMovieRating extends HttpServlet {
       throws ServletException, IOException {
     String errorReason = null;
 
-    try {
-      BigInteger[] idArray = ParamConverter.convertBigIntegerArray(request, "id[]");
-      String rating = request.getParameter("rating");
+    BigInteger[] idArray = null;
+    String rating = null;
 
-      movieService.editMovieRating(idArray, rating);
-    } catch (EJBAccessException e) {
-      // LOGGER.log(Level.WARNING, "Not authorized", e);
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      errorReason = "Not authorized";
-    } catch (UserFriendlyException e) {
-      // LOGGER.log(Level.WARNING, "Unable to edit movie rating", e);
-      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      errorReason = e.getMessage();
+    try {
+      idArray = ParamConverter.convertBigIntegerArray(request, "id[]");
+      rating = request.getParameter("rating");
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, "Unable to edit movie rating", e);
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      errorReason = "Something unexpected happened";
+      errorReason = "Bad Request";
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    if (errorReason == null) {
+      try {
+        movieService.editMovieRating(idArray, rating);
+      } catch (EJBAccessException e) {
+        // LOGGER.log(Level.WARNING, "Not authorized", e);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        errorReason = "Not authorized";
+      } catch (UserFriendlyException e) {
+        // LOGGER.log(Level.WARNING, "Unable to edit movie rating", e);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        errorReason = e.getMessage();
+      } catch (Exception e) {
+        LOGGER.log(Level.SEVERE, "Unable to edit movie rating", e);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        errorReason = "Something unexpected happened";
+      }
     }
 
     String stat = "ok";
