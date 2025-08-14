@@ -69,7 +69,7 @@ http://localhost:8080/smoothness-demo
 
 ## Install
 ### Web Lib Install
-This library requires a Java 11+ JVM and standard library at run time, plus a Java EE 8+ application server (developed with Wildfly). 
+This library requires a Java 17+ JVM and standard library at run time, plus a Java EE 8+ application server (developed with Wildfly). 
 
 You can obtain the library jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly (or [Intermediate Staging](https://s01.oss.sonatype.org/content/groups/staging/org/jlab/)) or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
@@ -119,7 +119,7 @@ At runtime smoothness apps use the following global environment variables:
 There are some [Settings](https://github.com/JeffersonLab/smoothness/blob/main/container/oracle/initdb.d/04_settings.sql) in the database that can be edited on the Setup tab by admins.                                                                           
 
 ## Build
-This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
+This project is built with [Java 21](https://adoptium.net/) (compiled to Java 17 bytecode), and uses the [Gradle 9](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
 ```
 git clone https://github.com/JeffersonLab/smoothness
