@@ -2,8 +2,8 @@ plugins {
     id 'java-gradle-plugin'
 }
 
-group 'org.jlab'
-version '1.0.0'
+group = 'org.jlab'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
