@@ -17,11 +17,9 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
-
 repositories {
     mavenCentral()
 }
-
 dependencies {
     // Wildfly 26.1.2.Final provides:
     providedCompile 'javax:javaee-api:8.0.1',
@@ -43,8 +41,9 @@ dependencies {
     // In separate external projects use:
     //implementation "org.jlab:smoothness-weblib:${smoothnessVersion}"
 }
-
-
+tasks.named('jar') {
+    enabled = false
+}
 war {
     archiveFileName = 'smoothness-demo.war'
     filesMatching('WEB-INF/web.xml') {
@@ -59,7 +58,6 @@ war {
         }
     }
 }
-
 spotless {
     java {
         googleJavaFormat()
