@@ -4,7 +4,7 @@ plugins {
     id 'signing'
     id 'org.gradlewebtools.minify' version '2.1.1'
     id 'org.jlab.tlddoc'
-    id "com.diffplug.spotless" version "6.25.0"
+    id "com.diffplug.spotless" version "7.2.1"
 }
 
 description = 'Smoothness web template and JSP tag library'
