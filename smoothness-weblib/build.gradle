@@ -1,10 +1,9 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
-    id 'signing'
     id 'org.gradlewebtools.minify' version '2.1.1'
     id 'org.jlab.tlddoc'
     id "com.diffplug.spotless" version "7.2.1"
+    id "com.vanniktech.maven.publish" version "0.34.0"
 }
 
 description = 'Smoothness web template and JSP tag library'
@@ -17,20 +16,9 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
 }
-
-tasks.withType(Jar).configureEach {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 repositories {
     mavenCentral()
 }
-
 dependencies {
     // Smoothness setup should install this into Wildfly
     compileOnly 'org.keycloak:keycloak-admin-client:20.0.5'
@@ -40,7 +28,6 @@ dependencies {
                 'javax.servlet:jstl:1.2'
                 //'org.apache.taglibs:taglibs-standard-compat:1.2.6-RC1'
 }
-
 javadoc {
     options.overview = 'src/main/java/overview.html'
     options.source = 17
@@ -48,9 +35,7 @@ javadoc {
         links 'https://docs.oracle.com/en/java/javase/17/docs/api/'
     }
 }
-
 javadoc.finalizedBy(tlddoc)
-
 tasks.register('cssMinifyIt', org.gradlewebtools.minify.CssMinifyTask) {
     srcDir = project.file('src/main/resources/META-INF/resources/resources/css')
     dstDir = project.file('build')
@@ -58,7 +43,6 @@ tasks.register('cssMinifyIt', org.gradlewebtools.minify.CssMinifyTask) {
         ignoreMinFiles = true
     }
 }
-
 tasks.register('jsMinifyIt', org.gradlewebtools.minify.JsMinifyTask) {
     srcDir = project.file('src/main/resources/META-INF/resources/resources/js')
     dstDir = project.file('build')
@@ -66,57 +50,35 @@ tasks.register('jsMinifyIt', org.gradlewebtools.minify.JsMinifyTask) {
         ignoreMinFiles = true
     }
 }
+mavenPublishing {
+    publishToMavenCentral(true)
+    signAllPublications()
+    coordinates("org.jlab", "smoothness", version)
 
-signing {
-    def signingKey = findProperty("signingKey")
-    def signingPassword = findProperty("signingPassword")
-    useInMemoryPgpKeys(signingKey, signingPassword)
-
-    sign publishing.publications
-}
-
-publishing {
-    repositories {
-        maven {
-            name = 'OSSRH'
-            url = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-            credentials {
-                username = project.findProperty('ossrh.user') ?: System.getenv('OSSRH_USER')
-                password = project.findProperty('ossrh.token') ?: System.getenv('OSSRH_TOKEN')
+    pom {
+        name = project.name
+        description = project.description
+        url = "https://github.com/JeffersonLab/smoothness/"
+        licenses {
+            license {
+                name = "The MIT License"
+                url = "https://github.com/JeffersonLab/smoothness/blob/master/LICENSE"
             }
         }
-    }
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-            pom {
-                name = project.name
-                description = project.description
-                url = 'https://github.com/JeffersonLab/smoothness'
-                licenses {
-                    license {
-                        name = 'The MIT License'
-                        url = 'https://github.com/JeffersonLab/smoothness/blob/master/LICENSE'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'slominskir'
-                        name = 'Ryan Slominski'
-                        email = 'ryans@jlab.org'
-                    }
-                }
-                scm {
-                    url = 'https://github.com/JeffersonLab/smoothness.git'
-                }
+        developers {
+            developer {
+                id = "slominskir"
+                name = "Ryan Slominski"
+                url = "https://github.com/slominskir/"
             }
         }
-    }
-    artifacts {
-        archives javadocJar, sourcesJar
+        scm {
+            url = "https://github.com/JeffersonLab/smoothness"
+            connection = "scm:git:git://github.com/JeffersonLab/smoothness.git"
+            developerConnection = "scm:git:ssh://git@github.com/JeffersonLab/smoothness.git"
+        }
     }
 }
-
 spotless {
     java {
         googleJavaFormat()
