@@ -53,7 +53,7 @@ tasks.register('jsMinifyIt', org.gradlewebtools.minify.JsMinifyTask) {
 mavenPublishing {
     publishToMavenCentral(true)
     signAllPublications()
-    coordinates("org.jlab", "smoothness", version)
+    coordinates("org.jlab", "smoothness-weblib", version)
 
     pom {
         name = project.name
