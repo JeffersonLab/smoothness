@@ -1,6 +1,6 @@
 package org.jlab.smoothness.presentation.util;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 
 /**

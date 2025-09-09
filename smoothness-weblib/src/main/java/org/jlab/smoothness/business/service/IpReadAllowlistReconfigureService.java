@@ -1,6 +1,6 @@
 package org.jlab.smoothness.business.service;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 import org.jlab.smoothness.persistence.view.SettingChangeAction;
 import org.jlab.smoothness.presentation.filter.IpReadFilter;
 

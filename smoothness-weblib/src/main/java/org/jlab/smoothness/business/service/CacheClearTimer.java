@@ -1,9 +1,9 @@
 package org.jlab.smoothness.business.service;
 
+import jakarta.ejb.Schedule;
+import jakarta.ejb.Singleton;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.Schedule;
-import javax.ejb.Singleton;
 
 /** Clear user authorization cache on a schedule. */
 @Singleton

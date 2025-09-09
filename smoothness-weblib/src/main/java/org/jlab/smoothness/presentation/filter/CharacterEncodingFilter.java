@@ -1,8 +1,8 @@
 package org.jlab.smoothness.presentation.filter;
 
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
 import java.io.IOException;
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 
 /**
  * WebFilter for setting both request and response character encoding to UTF-8.
