@@ -1,5 +1,5 @@
 # smoothness [![CI](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yaml/badge.svg)](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yaml) [![Docker (demo)](https://img.shields.io/docker/v/jeffersonlab/smoothness-demo?sort=semver&label=DockerHub+demo)](https://hub.docker.com/r/jeffersonlab/smoothness-demo) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/smoothness-weblib)](https://repo1.maven.org/maven2/org/jlab/smoothness-weblib/) 
-A [Java EE 10](https://en.wikipedia.org/wiki/Jakarta_EE) web application library consisting of both a Java class library and a [JSP tag library](https://docs.oracle.com/javaee/5/tutorial/doc/bnama.html) based on the [JQuery UI Smoothness](https://jqueryui.com/themeroller/) theme. A related project [smoothness-template](https://github.com/JeffersonLab/smoothness-template) provides a repo template that uses the library.  This repo includes a demo web application to showcase the library and template.
+A [Jakarta EE 10](https://en.wikipedia.org/wiki/Jakarta_EE) web application library consisting of both a Java class library and a [JSP tag library](https://docs.oracle.com/javaee/5/tutorial/doc/bnama.html) based on the [JQuery UI Smoothness](https://jqueryui.com/themeroller/) theme. A related project [smoothness-template](https://github.com/JeffersonLab/smoothness-template) provides a repo template that uses the library.  This repo includes a demo web application to showcase the library and template.
 
 ![Screenshot](https://github.com/JeffersonLab/smoothness/raw/main/smoothness-demo/Screenshot.png?raw=true "Screenshot")
 
@@ -69,7 +69,7 @@ http://localhost:8080/smoothness-demo
 
 ## Install
 ### Web Lib Install
-This library requires a Java 17+ JVM and standard library at run time, plus a Java EE 10 application server (developed with Wildfly). 
+This library requires a Java 17+ JVM and standard library at run time, plus a Jakarta EE 10 application server (developed with Wildfly). 
 
 You can obtain the library jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
@@ -78,7 +78,7 @@ implementation 'org.jlab:smoothness-weblib:<version>'
 Check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) to see what has changed in each version. 
 
 ### Demo Install
-This application requires a Java 17+ JVM and standard library to run, plus a Java EE 10 application server (developed with Wildfly).  Use the Docker Compose quickstart to automate the setup of the app, else manually:
+This application requires a Java 17+ JVM and standard library to run, plus a Jakarta EE 10 application server (developed with Wildfly).  Use the Docker Compose quickstart to automate the setup of the app, else manually:
 
 1. Install service [dependencies](https://github.com/JeffersonLab/smoothness/blob/main/deps.yaml)
 2. Download [Wildfly 37.0.1](https://www.wildfly.org/downloads/)
