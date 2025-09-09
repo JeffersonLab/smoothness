@@ -21,7 +21,7 @@ repositories {
 }
 dependencies {
     // Smoothness setup should install this into Wildfly
-    compileOnly 'org.keycloak:keycloak-admin-client:20.0.5'
+    compileOnly 'org.keycloak:keycloak-admin-client:26.0.6'
 
     // Wildfly 37.0.0.Final provides:
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:10.0.0',
