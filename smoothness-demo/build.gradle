@@ -28,7 +28,7 @@ dependencies {
 
     // Smoothness setup should install these into Wildfly
     providedCompile 'org.tuckey:urlrewritefilter:5.1.3',
-                    'org.jlab:jlog:5.0.0',
+                    'org.jlab:jlog:5.2.0',
                     'org.keycloak:keycloak-admin-client:20.0.5',
                     'org.apache.poi:poi:5.4.1',
                     'org.apache.poi:poi-ooxml:5.4.1'
