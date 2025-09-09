@@ -35,7 +35,22 @@ public final class IOUtil {
    * @return An escaped String
    */
   public static String escapeXml(String input) {
-    return org.apache.taglibs.standard.functions.Functions.escapeXml(input);
+    String output = input;
+
+    // Note: if input contains entities already this will break!
+    // TODO:
+    // Replace with similar:
+    // org.apache.taglibs.standard.functions.Functions.escapeXml(input);
+
+    if (input != null) {
+      output =
+          output.replace("&", "&#038;"); // Must do this one first as & within other replacements
+      output = output.replace("\"", "&#034;");
+      output = output.replace("'", "&#039;");
+      output = output.replace("<", "&#060;");
+      output = output.replace(">", "&#062;");
+    }
+    return output;
   }
 
   /**

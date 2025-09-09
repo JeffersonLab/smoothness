@@ -1,10 +1,10 @@
 package org.jlab.demo.business.service;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.ejb.Stateless;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.security.PermitAll;
-import javax.ejb.Stateless;
 import org.jlab.demo.persistence.entity.Movie;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.service.JPAService;

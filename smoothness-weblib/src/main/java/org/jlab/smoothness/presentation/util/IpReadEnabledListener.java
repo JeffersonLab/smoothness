@@ -1,10 +1,10 @@
 package org.jlab.smoothness.presentation.util;
 
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebListener;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.*;
-import javax.servlet.annotation.WebListener;
 import org.jlab.smoothness.business.service.SettingsService;
 import org.jlab.smoothness.persistence.view.ImmutableSettings;
 

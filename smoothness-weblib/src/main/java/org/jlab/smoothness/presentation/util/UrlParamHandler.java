@@ -1,7 +1,7 @@
 package org.jlab.smoothness.presentation.util;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles Parameters from a ServletRequest.
