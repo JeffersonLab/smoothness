@@ -176,7 +176,7 @@ At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org
 /opt/wildfly/cd/deploy.sh smoothness-demo v1.2.3
 ```
 
-**JLab Internal Docs**:  [InstallGuideWildflyRHEL9](https://accwiki.acc.jlab.org/do/view/SysAdmin/InstallGuideWildflyRHEL9)
+**JLab Internal Docs**:  [RHEL9 Wildfly](https://acgdocs.acc.jlab.org/en/ace/builds/rhel9-wildfly)
 
 ## See Also
 - [JLab ACE smoothness list](https://github.com/search?q=org%3Ajeffersonlab+topic%3Aace+topic%3Asmoothness&type=repositories)
