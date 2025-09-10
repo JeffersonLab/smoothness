@@ -170,10 +170,10 @@ docker compose -f build.yaml up
 5. Copy updated minified JS and CSS to any CDN as needed.
 
 ## Deploy
-At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
+At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly3.acc.jlab.org` and `wildflytest3.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
 
 ```
-/root/setup/deploy.sh smoothness-demo v1.2.3
+/opt/wildfly/cd/deploy.sh smoothness-demo v1.2.3
 ```
 
 **JLab Internal Docs**:  [InstallGuideWildflyRHEL9](https://accwiki.acc.jlab.org/do/view/SysAdmin/InstallGuideWildflyRHEL9)
