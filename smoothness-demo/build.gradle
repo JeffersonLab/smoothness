@@ -23,8 +23,9 @@ repositories {
 dependencies {
     // Wildfly 37.0.0.Final provides:
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:10.0.0',
-                'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.2'
-                'org.hibernate:hibernate-core:6.6.19.Final'
+                'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.2',
+                'org.hibernate:hibernate-core:6.6.19.Final',
+                'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0' // Impl may vary, declaration helps IntelliJ find taglib URI
 
     // Smoothness setup should install these into Wildfly
     providedCompile 'org.tuckey:urlrewritefilter:5.1.3',

@@ -25,7 +25,8 @@ dependencies {
 
     // Wildfly 37.0.0.Final provides:
     compileOnly 'jakarta.platform:jakarta.jakartaee-api:10.0.0',
-                'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.2'
+                'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.2',
+                'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.0' // Impl may vary, declaration helps IntelliJ find taglib URI
 }
 javadoc {
     options.overview = 'src/main/java/overview.html'
