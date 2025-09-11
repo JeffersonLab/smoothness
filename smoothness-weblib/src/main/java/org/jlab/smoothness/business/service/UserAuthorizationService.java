@@ -194,7 +194,7 @@ public class UserAuthorizationService {
     try {
       RoleResource roleResource = roles.get(role);
 
-      Set<UserRepresentation> members = roleResource.getRoleUserMembers();
+      List<UserRepresentation> members = roleResource.getUserMembers(0, Integer.MAX_VALUE);
 
       for (UserRepresentation rep : members) {
         User user =
