@@ -1,7 +1,7 @@
 <%@tag description="The Primary Page Template" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="jakarta.tags.core"%>
 <%@taglib prefix="fn" uri="jakarta.tags.functions"%>
-<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
+<%@taglib prefix="s" uri="jlab.tags.smoothness"%>
 <%@attribute name="title"%>
 <%@attribute name="description"%>
 <%@attribute name="category"%>

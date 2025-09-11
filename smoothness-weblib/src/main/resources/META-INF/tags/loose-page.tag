@@ -1,7 +1,7 @@
 <%@tag description="A Loose Page (no navigation) Template that supports partial pages and optionally smoothness resources" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="jakarta.tags.core"%>
 <%@taglib prefix="fn" uri="jakarta.tags.functions"%>
-<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
+<%@taglib prefix="s" uri="jlab.tags.smoothness"%>
 <%@attribute name="stylesheets" fragment="true"%>
 <%@attribute name="scripts" fragment="true"%>
 <%@attribute name="title"%>

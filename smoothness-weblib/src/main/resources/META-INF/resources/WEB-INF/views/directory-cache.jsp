@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@taglib prefix="c" uri="jakarta.tags.core"%>
-<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
+<%@taglib prefix="s" uri="jlab.tags.smoothness"%>
 <c:set var="title" value="User Authorization Cache"/>
 <s:setup-page title="${title}">
     <jsp:attribute name="stylesheets">

@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
 <%@taglib prefix="fn" uri="jakarta.tags.functions" %>
-<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness" %>
+<%@taglib prefix="s" uri="jlab.tags.smoothness" %>
 <c:set var="title" value="Settings"/>
 <s:setup-page title="${title}">
     <jsp:attribute name="stylesheets">

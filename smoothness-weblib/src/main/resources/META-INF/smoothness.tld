@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+<taglib version="3.1"
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-jsptagLibrary_3_1.xsd">
     <description>Smoothness Tag Library</description>
     <display-name>Smoothness Tag Library</display-name>
-    <tlib-version>1.0</tlib-version>
+    <tlib-version>5</tlib-version>
     <short-name>smoothness</short-name>
-    <uri>http://jlab.org/jsp/smoothness</uri>
+    <uri>jlab.tags.smoothness</uri>
     <tag-file>
         <name>chart-widget</name>
         <path>/META-INF/tags/chart-widget.tag</path>
