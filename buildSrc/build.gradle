@@ -10,7 +10,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'taglibrarydoc:tlddoc:1.3'
+    //implementation 'taglibrarydoc:tlddoc:1.3'
+    // https://github.com/jakartaee/tags/issues/275
+    // Workaround: cloned repo, ran build, and included manually here.
+    implementation files("libs/tagsdoc-1.0-SNAPSHOT.jar")
 }
 
 gradlePlugin {
