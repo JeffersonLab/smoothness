@@ -29,7 +29,7 @@ public class Test extends HttpServlet {
       throws ServletException, IOException {
 
     // Let's test forcibly caching response!
-    CacheFilter.CacheControlResponse cachableResponse= (CacheFilter.CacheControlResponse)response;
+    CacheFilter.CacheControlResponse cachableResponse = (CacheFilter.CacheControlResponse) response;
     cachableResponse.setContentType("application/json", CacheFilter.CachableResponse.MAX);
 
     response.getWriter().println("{\"name\":\"test\"}");
