@@ -1,5 +1,6 @@
 package org.jlab.smoothness.presentation.util;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +11,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.TimeUtil;
 

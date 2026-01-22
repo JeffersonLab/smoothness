@@ -1,10 +1,10 @@
 package org.jlab.smoothness.business.service;
 
+import jakarta.ws.rs.NotFoundException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.NotFoundException;
 import org.jlab.smoothness.persistence.view.User;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
@@ -194,7 +194,7 @@ public class UserAuthorizationService {
     try {
       RoleResource roleResource = roles.get(role);
 
-      Set<UserRepresentation> members = roleResource.getRoleUserMembers();
+      List<UserRepresentation> members = roleResource.getUserMembers(0, Integer.MAX_VALUE);
 
       for (UserRepresentation rep : members) {
         User user =

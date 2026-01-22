@@ -1,7 +1,7 @@
 <%@tag description="The Primary Page Template" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="s" uri="http://jlab.org/jsp/smoothness"%>
+<%@taglib prefix="c" uri="jakarta.tags.core"%>
+<%@taglib prefix="fn" uri="jakarta.tags.functions"%>
+<%@taglib prefix="s" uri="jlab.tags.smoothness"%>
 <%@attribute name="title"%>
 <%@attribute name="description"%>
 <%@attribute name="category"%>
@@ -12,8 +12,8 @@
 <%@attribute name="userExtra" fragment="true" description="Extra info about authenticated user. (Optional)" %>
 <%@attribute name="headerExtra" fragment="true" description="Extra section on header. (Optional)" %>
 <%@attribute name="footnote" fragment="true" description="Footnote. (Optional)" %>
-<c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['javax.servlet.forward.request_uri']}${requestScope['javax.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['javax.servlet.forward.query_string']) : ''}"/>
-<c:set var="currentPath" scope="request" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
+<c:url var="domainRelativeReturnUrl" scope="request" context="/" value="${requestScope['jakarta.servlet.forward.request_uri']}${requestScope['jakarta.servlet.forward.query_string'] ne null ? '?'.concat(requestScope['jakarta.servlet.forward.query_string']) : ''}"/>
+<c:set var="currentPath" scope="request" value="${requestScope['jakarta.servlet.forward.servlet_path']}"/>
 <c:set var="smoothnessCdn" value="${settings.is('SMOOTHNESS_CDN_ENABLED')}"/>
 <c:set var="smoothnessServer" value="${settings.get('SMOOTHNESS_SERVER')}"/>
 <c:set var="smoothnessVersion" value="${initParam.smoothnessVersion}"/>

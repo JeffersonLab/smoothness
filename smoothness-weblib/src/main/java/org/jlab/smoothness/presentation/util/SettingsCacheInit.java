@@ -1,9 +1,9 @@
 package org.jlab.smoothness.presentation.util;
 
-import javax.ejb.EJB;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.ejb.EJB;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 import org.jlab.smoothness.business.service.SettingsService;
 import org.jlab.smoothness.persistence.view.ImmutableSettings;
 

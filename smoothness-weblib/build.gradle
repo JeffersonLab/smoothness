@@ -21,12 +21,11 @@ repositories {
 }
 dependencies {
     // Smoothness setup should install this into Wildfly
-    compileOnly 'org.keycloak:keycloak-admin-client:20.0.5'
+    compileOnly 'org.keycloak:keycloak-admin-client:26.0.6'
 
-    // Wildfly 26.1.2.Final provides:
-    compileOnly 'javax:javaee-api:8.0.1',
-                'javax.servlet:jstl:1.2'
-                //'org.apache.taglibs:taglibs-standard-compat:1.2.6-RC1'
+    // Wildfly 37.0.1.Final provides:
+    compileOnly 'jakarta.platform:jakarta.jakartaee-api:10.0.0',
+                'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 }
 javadoc {
     options.overview = 'src/main/java/overview.html'
@@ -53,7 +52,7 @@ tasks.register('jsMinifyIt', org.gradlewebtools.minify.JsMinifyTask) {
 mavenPublishing {
     publishToMavenCentral(true)
     signAllPublications()
-    coordinates("org.jlab", "smoothness", version)
+    coordinates("org.jlab", "smoothness-weblib", version)
 
     pom {
         name = project.name

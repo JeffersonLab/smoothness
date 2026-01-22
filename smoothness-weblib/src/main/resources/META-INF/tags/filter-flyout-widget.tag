@@ -1,5 +1,5 @@
 <%@tag description="Filter Flyout Widget" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="jakarta.tags.core"%>
 <%@attribute name="ribbon" required="false" type="java.lang.Boolean"%>
 <%@attribute name="requiredMessage" required="false" type="java.lang.Boolean"%>
 <%@attribute name="clearButton" required="false" type="java.lang.Boolean"%>

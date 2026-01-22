@@ -9,7 +9,7 @@
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform"/>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/>
       <property name="hibernate.default_schema" value="smoothness_owner"/>
     </properties>
     <class>org.jlab.smoothness.persistence.entity.Setting</class>

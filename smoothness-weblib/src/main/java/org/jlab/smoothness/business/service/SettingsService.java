@@ -1,14 +1,14 @@
 package org.jlab.smoothness.business.service;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
+import jakarta.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.security.PermitAll;
-import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import javax.servlet.ServletContext;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.persistence.entity.Setting;
 import org.jlab.smoothness.persistence.enumeration.SettingsType;

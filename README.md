@@ -1,5 +1,5 @@
-# smoothness [![CI](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yaml/badge.svg)](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yaml) [![Docker (demo)](https://img.shields.io/docker/v/jeffersonlab/smoothness-demo?sort=semver&label=DockerHub+demo)](https://hub.docker.com/r/jeffersonlab/smoothness-demo) [![Maven Central](https://badgen.net/maven/v/maven-central/org.jlab/smoothness-weblib)](https://repo1.maven.org/maven2/org/jlab/smoothness-weblib/) 
-A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application library consisting of both a Java class library and a [JSP tag library](https://docs.oracle.com/javaee/5/tutorial/doc/bnama.html) based on the [JQuery UI Smoothness](https://jqueryui.com/themeroller/) theme. A related project [smoothness-template](https://github.com/JeffersonLab/smoothness-template) provides a repo template that uses the library.  This repo includes a demo web application to showcase the library and template.
+# smoothness [![CI](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yaml/badge.svg)](https://github.com/JeffersonLab/smoothness/actions/workflows/ci.yaml) [![Docker (demo)](https://img.shields.io/docker/v/jeffersonlab/smoothness-demo?sort=semver&label=DockerHub+demo)](https://hub.docker.com/r/jeffersonlab/smoothness-demo) [![Maven Central](https://img.shields.io/maven-central/v/org.jlab/smoothness-weblib)](https://repo1.maven.org/maven2/org/jlab/smoothness-weblib/) 
+A [Jakarta EE 10](https://en.wikipedia.org/wiki/Jakarta_EE) web application library consisting of both a Java class library and a [JSP tag library](https://docs.oracle.com/javaee/5/tutorial/doc/bnama.html) based on the [JQuery UI Smoothness](https://jqueryui.com/themeroller/) theme. A related project [smoothness-template](https://github.com/JeffersonLab/smoothness-template) provides a repo template that uses the library.  This repo includes a demo web application to showcase the library and template.
 
 ![Screenshot](https://github.com/JeffersonLab/smoothness/raw/main/smoothness-demo/Screenshot.png?raw=true "Screenshot")
 
@@ -39,7 +39,7 @@ Server-side librarires (Java):
  - [Hibernate](https://hibernate.org/) - Object-Relational Mapping (persistence).
  - [JLog](https://github.com/JeffersonLab/jlog) - JLab elog API
 
-[Version Info](https://github.com/JeffersonLab/smoothness/blob/485f9cee249a2e897e8d61081342023754312ddb/smoothness-demo/build.gradle#L21-L31)
+[Version Info](https://github.com/JeffersonLab/smoothness/blob/main/smoothness-demo/build.gradle)
 
 This git repo is actually comprised of two projects tied together in a [Gradle Multi-Project build](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html): 
 
@@ -69,19 +69,19 @@ http://localhost:8080/smoothness-demo
 
 ## Install
 ### Web Lib Install
-This library requires a Java 17+ JVM and standard library at run time, plus a Java EE 8+ application server (developed with Wildfly). 
+This library requires a Java 17+ JVM and standard library at run time, plus a Jakarta EE 10 application server (developed with Wildfly). 
 
-You can obtain the library jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly (or [Intermediate Staging](https://s01.oss.sonatype.org/content/groups/staging/org/jlab/)) or from a Maven friendly build tool with the following coordinates (Gradle example shown):
+You can obtain the library jar file from the [Maven Central repository](https://repo1.maven.org/maven2/org/jlab/) directly or from a Maven friendly build tool with the following coordinates (Gradle example shown):
 ```
 implementation 'org.jlab:smoothness-weblib:<version>'
 ```
 Check the [Release Notes](https://github.com/JeffersonLab/smoothness/releases) to see what has changed in each version. 
 
 ### Demo Install
-This application requires a Java 17+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).  Use the Docker Compose quickstart to automate the setup of the app, else manually:
+This application requires a Java 17+ JVM and standard library to run, plus a Jakarta EE 10 application server (developed with Wildfly).  Use the Docker Compose quickstart to automate the setup of the app, else manually:
 
 1. Install service [dependencies](https://github.com/JeffersonLab/smoothness/blob/main/deps.yaml)
-2. Download [Wildfly 26.1.3](https://www.wildfly.org/downloads/)
+2. Download [Wildfly 37.0.1](https://www.wildfly.org/downloads/)
 3. [Configure](https://github.com/JeffersonLab/smoothness#configure) Wildfly and start it
 4. Download [demo.war](https://github.com/JeffersonLab/smoothness-demo/releases) and deploy it to Wildfly
 5. Navigate your web browser to [localhost:8080/smoothness-demo](http://localhost:8080/smoothness-demo)
@@ -114,6 +114,9 @@ At runtime smoothness apps use the following global environment variables:
 | FRONTEND_SERVER_URL          | Scheme, host name, and port of outermost proxy host (for use in hyperlinks in generated emails and log entries)                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                                                           
 | PUPPET_SHOW_SERVER_URL       | Scheme, host name, and port of Puppet Show server used by the html-to-image and html-to-pdf app relative path Convert service                                                                                                                                                                                                      |
 | SERVER_MESSAGE               | Optional - Banner message at top of all pages - useful to tag test environment or provide global announcement                                                                                                                                                                                                                      |
+
+### Database
+This application requires an Oracle 19+ database with the following [schema](https://github.com/JeffersonLab/smoothness/tree/main/container/oracle/initdb.d) installed.   The application server hosting this app must also be configured with a JNDI datasource.
 
 ### Per App Runtime Settings
 There are some [Settings](https://github.com/JeffersonLab/smoothness/blob/main/container/oracle/initdb.d/04_settings.sql) in the database that can be edited on the Setup tab by admins.                                                                           
@@ -170,13 +173,13 @@ docker compose -f build.yaml up
 5. Copy updated minified JS and CSS to any CDN as needed.
 
 ## Deploy
-At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
+At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly3.acc.jlab.org` and `wildflytest3.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
 
 ```
-/root/setup/deploy.sh smoothness-demo v1.2.3
+/opt/wildfly/cd/deploy.sh smoothness-demo v1.2.3
 ```
 
-**JLab Internal Docs**:  [InstallGuideWildflyRHEL9](https://accwiki.acc.jlab.org/do/view/SysAdmin/InstallGuideWildflyRHEL9)
+**JLab Internal Docs**:  [RHEL9 Wildfly](https://acgdocs.acc.jlab.org/en/ace/builds/rhel9-wildfly)
 
 ## See Also
 - [JLab ACE smoothness list](https://github.com/search?q=org%3Ajeffersonlab+topic%3Aace+topic%3Asmoothness&type=repositories)

@@ -1,6 +1,6 @@
 package org.jlab.smoothness.business.exception;
 
-import javax.ejb.ApplicationException;
+import jakarta.ejb.ApplicationException;
 
 /**
  * A WebApplicationException is designed as a generic Exception, and it is an

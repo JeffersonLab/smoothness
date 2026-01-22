@@ -1,10 +1,10 @@
 package org.jlab.smoothness.presentation.filter;
 
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.Locale;
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.jsp.jstl.core.Config;
 
 /**
  * WebFilter to force English US locale.
