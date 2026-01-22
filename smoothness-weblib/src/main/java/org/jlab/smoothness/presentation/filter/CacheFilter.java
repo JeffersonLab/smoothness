@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
     asyncSupported = true)
 public class CacheFilter implements Filter {
 
-  private static final long EXPIRE_MILLIS = 31536000000L; // 365 days is max expires per spec
+  public static final long MAX_EXPIRE_MILLIS = 31536000000L; // 365 days is max expires per spec
 
   // Name of attribute to set on request processor to override default CachableResponse Auto
   // behavior.
@@ -110,7 +110,7 @@ public class CacheFilter implements Filter {
     }
 
     private void setMaxCache() {
-      super.setDateHeader("Expires", System.currentTimeMillis() + EXPIRE_MILLIS);
+      super.setDateHeader("Expires", System.currentTimeMillis() + MAX_EXPIRE_MILLIS);
       super.setHeader(
           "Cache-Control", null); // Remove header automatically added by SSL/TLS container module
       super.setHeader(
