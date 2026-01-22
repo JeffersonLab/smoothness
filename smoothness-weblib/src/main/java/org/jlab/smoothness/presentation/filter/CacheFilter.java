@@ -36,6 +36,12 @@ public class CacheFilter implements Filter {
     AUTO // Based on content type, will determine either OFF or MAX.  This is default.
   }
 
+  /**
+   * Only mime types of files that ALWAYS should be cached are included. Notably excluded are types
+   * text/html and application/json. These rarely should be cached, though sometimes they should and
+   * in those cases the Servlet needs to manually cast response to CacheControlResponse and use
+   * setContentType(type, cachable) with value CachableResponse.MAX.
+   */
   private static final String[] CACHEABLE_CONTENT_TYPES =
       new String[] {
         "text/css",
@@ -69,6 +75,14 @@ public class CacheFilter implements Filter {
   @Override
   public void destroy() {}
 
+  /**
+   * We use a Wrapper because some application servers don't allow you to set Headers in
+   * post-processing (filter chain), and in pre-processing the content type often isn't known yet.
+   * Wrapper allows us to run filter code during servlet processing at the specific moment we learn
+   * of content type.
+   *
+   * <p>https://stackoverflow.com/questions/2563344/how-to-add-response-headers-based-on-content-type-getting-content-type-before-t
+   */
   class CacheControlResponse extends HttpServletResponseWrapper {
 
     private CachableResponse cachable = CachableResponse.AUTO;
