@@ -83,7 +83,7 @@ public class CacheFilter implements Filter {
    *
    * <p>https://stackoverflow.com/questions/2563344/how-to-add-response-headers-based-on-content-type-getting-content-type-before-t
    */
-  class CacheControlResponse extends HttpServletResponseWrapper {
+  public static class CacheControlResponse extends HttpServletResponseWrapper {
 
     private CachableResponse cachable = CachableResponse.AUTO;
 
