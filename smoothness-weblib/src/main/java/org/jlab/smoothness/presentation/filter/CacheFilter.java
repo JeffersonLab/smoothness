@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 /**
  * WebFilter for setting response cache directives. By default, will set maximum cache (1 year) for
  * all responses with a mime type in the CACHEABLE_CONTENT_TYPES array. In a given servlet (request
- * handler) the CACHEABLE_RESPONSE attribute can be used to override the default behavior and either
+ * handler) cast response to CacheControlResponse to override the default behavior and either
  * forcibly set to OFF (no cache headers set) or MAX (set max cache headers of 1 year).
  *
  * @author ryans
@@ -29,11 +29,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 public class CacheFilter implements Filter {
 
   public static final long MAX_EXPIRE_MILLIS = 31536000000L; // 365 days is max expires per spec
-
-  // Name of attribute to set on request processor to override default CachableResponse Auto
-  // behavior.
-  // Value should be CachableResponse enum
-  public final String CACHEABLE_RESPONSE = "CACHEABLE_RESPONSE";
 
   public enum CachableResponse {
     MAX, // Cache for spec max of 1 year
@@ -65,9 +60,7 @@ public class CacheFilter implements Filter {
       throws IOException, ServletException {
     HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-    CachableResponse cachable = (CachableResponse) request.getAttribute(CACHEABLE_RESPONSE);
-
-    chain.doFilter(request, new CacheControlResponse(httpResponse, cachable));
+    chain.doFilter(request, new CacheControlResponse(httpResponse));
   }
 
   @Override
@@ -78,11 +71,15 @@ public class CacheFilter implements Filter {
 
   class CacheControlResponse extends HttpServletResponseWrapper {
 
-    private CachableResponse cachable;
+    private CachableResponse cachable = CachableResponse.AUTO;
 
-    CacheControlResponse(HttpServletResponse response, CachableResponse cachable) {
+    CacheControlResponse(HttpServletResponse response) {
       super(response);
+    }
+
+    public void setContentType(String type, CachableResponse cachable) {
       this.cachable = cachable;
+      this.setContentType(type);
     }
 
     @Override
