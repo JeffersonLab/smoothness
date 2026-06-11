@@ -12,7 +12,7 @@ services:
       - ./container/oracle/initdb.d:/container-entrypoint-initdb.d
 
   keycloak:
-    image: jeffersonlab/keycloak:2.2.0
+    image: jeffersonlab/keycloak:2.6.0
     hostname: keycloak
     container_name: keycloak
     ports:
@@ -24,8 +24,9 @@ services:
       KC_HTTP_RELATIVE_PATH: '/auth'
       KC_BOOTSTRAP_ADMIN_USERNAME: 'admin'
       KC_BOOTSTRAP_ADMIN_PASSWORD: 'admin'
-    volumes:
-      - ./container/keycloak/initdb.d:/container-entrypoint-initdb.d
+      KC_CLIENT_NAME: smoothness-demo
+      KC_RESOURCE: smoothness-demo
+      KC_REDIRECT_URIS: '["https://localhost:8443/smoothness-demo/*"]'
 
   puppet:
     image: slominskir/puppet-show:2.1.1
