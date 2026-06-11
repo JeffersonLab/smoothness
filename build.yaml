@@ -26,6 +26,3 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt
-    pull_policy: never
