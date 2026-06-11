@@ -4,23 +4,27 @@ services:
     extends:
       file: ../compose.yaml
       service: oracle
+    container_name: smoothness-demo-oracle-devc
 
   keycloak:
     extends:
       file: ../compose.yaml
       service: keycloak
+    container_name: smoothness-demo-keycloak-devc
 
   mailhog:
     extends:
       file: ../compose.yaml
       service: mailhog
+    container_name: smoothness-demo-mailhog-devc
 
   puppet:
     extends:
       file: ../compose.yaml
       service: puppet
+    container_name: smoothness-demo-puppet-devc
 
   dev:
     image: jeffersonlab/smoothness-demo:latest
     hostname: dev
-    container_name: smoothness-demo-dev
+    container_name: smoothness-demo-dev-devc
