@@ -3,25 +3,29 @@ services:
     extends:
       file: deps.yaml
       service: oracle
+    container_name: smoothness-demo-oracle
 
   keycloak:
     extends:
       file: deps.yaml
       service: keycloak
+    container_name: smoothness-demo-keycloak
 
   puppet:
     extends:
       file: deps.yaml
       service: puppet
+    container_name: smoothness-demo-puppet
 
   mailhog:
     extends:
       file: deps.yaml
       service: mailhog
+    container_name: smoothness-demo-mailhog
 
   demo:
     hostname: demo
-    container_name: demo
+    container_name: smoothness-demo-dev
     user: dev
     ports:
       - "8443:8443"

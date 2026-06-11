@@ -1,0 +1,26 @@
+name: smoothness-demo-devcontainers
+services:
+  oracle:
+    extends:
+      file: ../compose.yaml
+      service: oracle
+
+  keycloak:
+    extends:
+      file: ../compose.yaml
+      service: keycloak
+
+  mailhog:
+    extends:
+      file: ../compose.yaml
+      service: mailhog
+
+  puppet:
+    extends:
+      file: ../compose.yaml
+      service: puppet
+
+  dev:
+    image: jeffersonlab/smoothness-demo:latest
+    hostname: dev
+    container_name: smoothness-demo-dev
