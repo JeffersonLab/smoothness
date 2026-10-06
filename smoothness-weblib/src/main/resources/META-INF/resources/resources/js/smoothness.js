@@ -1524,7 +1524,7 @@ jlab.initParams = function (defaultParams) {
                  * key (nothing selected in HTML select element with multiple attribute).  Single valued keys can
                  * be empty here too, but they could also be empty via key = empty string approach.
                  * */
-                sessionStorage.setItem(key, JSON.stringify("[]")); /* Empty array */
+                sessionStorage.setItem(key, JSON.stringify([])); /* Empty array */
             }
         });
     } else {
