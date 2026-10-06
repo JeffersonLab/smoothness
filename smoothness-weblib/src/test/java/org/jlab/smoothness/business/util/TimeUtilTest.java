@@ -79,10 +79,13 @@ class TimeUtilTest {
   }
 
   @Test
-  void getCrewChiefStartDayAndHourKeepsTheMinutes() {
+  void getCrewChiefDayAndHourIsAWholeHour() {
+    Date dayWithMinutes = date("2026-03-10 00:45");
+
     assertEquals(
-        date("2026-03-10 07:45"),
-        TimeUtil.getCrewChiefStartDayAndHour(date("2026-03-10 00:45"), Shift.DAY));
+        date("2026-03-10 07:00"), TimeUtil.getCrewChiefStartDayAndHour(dayWithMinutes, Shift.DAY));
+    assertEquals(
+        date("2026-03-10 14:00"), TimeUtil.getCrewChiefEndDayAndHour(dayWithMinutes, Shift.DAY));
   }
 
   @Test
@@ -230,12 +233,15 @@ class TimeUtilTest {
   }
 
   @Test
-  void startOfPeriodsSetTheCalendarPassedIn() {
-    Calendar tz = Calendar.getInstance();
+  void startOfPeriodsLeaveTheCalendarPassedInAlone() {
+    Calendar tz = TimeUtil.getUtcCalendar();
+    Date before = tz.getTime();
 
-    Date result = TimeUtil.startOfMonth(date("2026-03-10 13:45"), tz);
+    TimeUtil.startOfMonth(date("2026-03-10 13:45"), tz);
+    TimeUtil.startOfYear(date("2026-03-10 13:45"), tz);
+    TimeUtil.endOfMonth(date("2026-03-10 13:45"), tz);
 
-    assertEquals(result, tz.getTime());
+    assertEquals(before, tz.getTime());
   }
 
   @Test
@@ -257,10 +263,12 @@ class TimeUtilTest {
   }
 
   @Test
-  void startOfWeekOnTheStartDayGoesBackAWeek() {
+  void startOfWeekOnTheStartDayIsThatDay() {
     assertEquals(
-        date("2026-09-30 10:00"),
+        date("2026-10-07 10:00"),
         TimeUtil.startOfWeek(date("2026-10-07 10:00"), Calendar.WEDNESDAY));
+    assertEquals(
+        date("2026-10-04 00:00"), TimeUtil.startOfWeek(date("2026-10-04 00:00"), Calendar.SUNDAY));
   }
 
   @Test
@@ -283,10 +291,10 @@ class TimeUtilTest {
   }
 
   @Test
-  void isSameMonthIgnoresTheYear() {
+  void isSameMonth() {
     assertTrue(TimeUtil.isSameMonth(date("2026-03-01 00:00"), date("2026-03-31 23:59")));
     assertFalse(TimeUtil.isSameMonth(date("2026-03-31 23:59"), date("2026-04-01 00:00")));
-    assertTrue(TimeUtil.isSameMonth(date("2025-03-10 00:00"), date("2026-03-10 00:00")));
+    assertFalse(TimeUtil.isSameMonth(date("2025-03-10 00:00"), date("2026-03-10 00:00")));
   }
 
   @Test
@@ -413,6 +421,19 @@ class TimeUtilTest {
         TimeUtil.encodeRange(TimeUtil.addYears(yearStart, -1), yearStart, false, null, null));
     assertEquals(
         "past7days", TimeUtil.encodeRange(TimeUtil.addDays(today, -7), today, false, null, null));
+  }
+
+  @Test
+  void encodeRangeMatchesTheWeeksFromWednesday() {
+    Date today = TimeUtil.startOfDay(new Date(), Calendar.getInstance());
+    Date weekStart = TimeUtil.startOfWeek(today, Calendar.WEDNESDAY);
+
+    assertEquals(
+        "0week",
+        TimeUtil.encodeRange(weekStart, TimeUtil.addDays(weekStart, 7), false, null, null));
+    assertEquals(
+        "1week",
+        TimeUtil.encodeRange(TimeUtil.addDays(weekStart, -7), weekStart, false, null, null));
   }
 
   @Test

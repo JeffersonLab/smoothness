@@ -153,6 +153,9 @@ public final class TimeUtil {
     Calendar cal = Calendar.getInstance();
     cal.setTime(day);
     cal.set(Calendar.HOUR_OF_DAY, hour);
+    cal.set(Calendar.MINUTE, 0);
+    cal.set(Calendar.SECOND, 0);
+    cal.set(Calendar.MILLISECOND, 0);
 
     return cal.getTime();
   }
@@ -180,6 +183,9 @@ public final class TimeUtil {
     Calendar cal = Calendar.getInstance();
     cal.setTime(day);
     cal.set(Calendar.HOUR_OF_DAY, hour);
+    cal.set(Calendar.MINUTE, 0);
+    cal.set(Calendar.SECOND, 0);
+    cal.set(Calendar.MILLISECOND, 0);
 
     return cal.getTime();
   }
@@ -467,7 +473,7 @@ public final class TimeUtil {
    * @return A Date representing the start of the year
    */
   public static Date startOfYear(Date date, Calendar tz) {
-    Calendar cal = tz;
+    Calendar cal = (Calendar) tz.clone();
 
     cal.setTime(date);
     cal.set(Calendar.MONTH, Calendar.JANUARY);
@@ -490,7 +496,7 @@ public final class TimeUtil {
    * @return The Date adjusted to the start of the next fiscal year
    */
   public static Date startOfFiscalYear(Date date, Calendar tz) {
-    Calendar cal = tz;
+    Calendar cal = (Calendar) tz.clone();
 
     cal.setTime(date);
 
@@ -543,7 +549,7 @@ public final class TimeUtil {
    * @return The Date representing the start of the month
    */
   public static Date startOfMonth(Date date, Calendar tz) {
-    Calendar cal = tz;
+    Calendar cal = (Calendar) tz.clone();
 
     cal.setTime(date);
     cal.set(Calendar.DAY_OF_MONTH, 1);
@@ -592,7 +598,7 @@ public final class TimeUtil {
    * @return A date shifted to end of month with other fields zeroed
    */
   public static Date endOfMonth(Date date, Calendar tz) {
-    Calendar cal = tz;
+    Calendar cal = (Calendar) tz.clone();
 
     cal.setTime(date);
 
@@ -696,7 +702,7 @@ public final class TimeUtil {
 
   /**
    * Return the start of the week given a Date in the week and the day of the week which represents
-   * the start of the week.
+   * the start of the week: the latest such day on or before the Date, keeping its time of day.
    *
    * @param today The day in the week
    * @param dayOfWeek The day representing the start of the week
@@ -706,11 +712,8 @@ public final class TimeUtil {
     Calendar c = Calendar.getInstance();
     c.setTime(today);
     int currentDayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-    int distance = dayOfWeek - currentDayOfWeek;
-    if (distance < 0) {
-      distance = 7 + distance;
-    }
-    c.set(Calendar.DATE, c.get(Calendar.DATE) + distance - 7);
+    int daysSinceStart = (currentDayOfWeek - dayOfWeek + 7) % 7;
+    c.add(Calendar.DATE, -daysSinceStart);
 
     return c.getTime();
   }
@@ -723,7 +726,7 @@ public final class TimeUtil {
    * @return The Date adjusted to the start of the day
    */
   public static Date startOfDay(Date day, Calendar tz) {
-    Calendar cal = tz;
+    Calendar cal = (Calendar) tz.clone();
 
     cal.setTime(day);
     cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -753,7 +756,7 @@ public final class TimeUtil {
    * @return The Date adjusted to the start of the hour
    */
   public static Date startOfHour(Date date, Calendar tz) {
-    Calendar cal = tz;
+    Calendar cal = (Calendar) tz.clone();
 
     cal.setTime(date);
     cal.set(Calendar.MINUTE, 0);
@@ -1135,7 +1138,7 @@ public final class TimeUtil {
   }
 
   /**
-   * Check if the first Date is in the same month as the second.
+   * Check if the first Date is in the same month of the same year as the second.
    *
    * @param first The first Date
    * @param second The second Date
@@ -1144,10 +1147,10 @@ public final class TimeUtil {
   public static boolean isSameMonth(Date first, Date second) {
     Calendar cal = Calendar.getInstance();
     cal.setTime(first);
+    int firstYear = cal.get(Calendar.YEAR);
     int firstMonth = cal.get(Calendar.MONTH);
     cal.setTime(second);
-    int secondMonth = cal.get(Calendar.MONTH);
-    return firstMonth == secondMonth;
+    return firstYear == cal.get(Calendar.YEAR) && firstMonth == cal.get(Calendar.MONTH);
   }
 
   /**

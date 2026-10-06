@@ -9,6 +9,7 @@ import com.microsoft.playwright.options.KeyboardModifier;
 import com.microsoft.playwright.options.LoadState;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +76,38 @@ class TagsBrowserIT {
     assertThat(page.locator("#datetimes-start")).hasValue(todayText + " 07:00");
     assertThat(page.locator("#datetimes-end")).hasValue(tomorrowText + " 07:00");
 
+    assertEquals(List.of(), browser.errors);
+  }
+
+  @Test
+  void weekRangesOnAWednesdayStartThatDay() {
+    Page page = browser.loggedIn(Demo.USER);
+    // The browser's clock at 10:00 on Wednesday 2026-10-07, the first day of a week
+    page.clock()
+        .setFixedTime(
+            ZonedDateTime.of(2026, 10, 7, 10, 0, 0, 0, ZoneId.of("America/New_York"))
+                .toInstant()
+                .toEpochMilli());
+    page.navigate(Demo.URL + "/features/tags");
+    page.waitForLoadState(LoadState.NETWORKIDLE);
+    page.locator("#date-flyout .filter-flyout-link").click();
+
+    page.locator("#dates-date-range").selectOption("0week");
+    assertThat(page.locator("#dates-start")).hasValue("07-Oct-2026");
+    assertThat(page.locator("#dates-end")).hasValue("14-Oct-2026");
+
+    page.locator("#dates-date-range").selectOption("1week");
+    assertThat(page.locator("#dates-start")).hasValue("30-Sep-2026");
+    assertThat(page.locator("#dates-end")).hasValue("07-Oct-2026");
+
+    page.locator("#datetimes-date-range").selectOption("0week");
+    assertThat(page.locator("#datetimes-start")).hasValue("07-Oct-2026 07:00");
+    assertThat(page.locator("#datetimes-end")).hasValue("14-Oct-2026 07:00");
+
+    // A page with this week's dates names the range again, on the same day
+    page.navigate(Demo.URL + "/features/tags?start=07-Oct-2026&end=14-Oct-2026");
+    page.waitForLoadState(LoadState.NETWORKIDLE);
+    assertThat(page.locator("#dates-date-range")).hasValue("0week");
     assertEquals(List.of(), browser.errors);
   }
 
