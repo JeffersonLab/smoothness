@@ -701,7 +701,7 @@ jlab.encodeRange = function (start, end, sevenAmOffset) {
 }
 jlab.decodeRange = function (range, sevenAmOffset) {
     const wedIndex = 3; /* Wednesday */
-    const octIndex = 9; /* October */
+    const octIndex = 9; /* October; the fiscal cases set the day to the 1st first, so the 31st can't roll April into May */
 
     var start = new Date(),
         end = new Date();
@@ -714,8 +714,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex);
             end.setDate(1);
+            end.setMonth(octIndex);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -731,8 +731,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex);
             end.setDate(1);
+            end.setMonth(octIndex);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -748,8 +748,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex + 3);
             end.setDate(1);
+            end.setMonth(octIndex + 3);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -765,8 +765,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex + 6);
             end.setDate(1);
+            end.setMonth(octIndex + 6);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -782,8 +782,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex + 9);
             end.setDate(1);
+            end.setMonth(octIndex + 9);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -797,8 +797,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex);
             end.setDate(1);
+            end.setMonth(octIndex);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -812,8 +812,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex);
             end.setDate(1);
+            end.setMonth(octIndex);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -827,8 +827,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex + 3);
             end.setDate(1);
+            end.setMonth(octIndex + 3);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -842,8 +842,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex + 6);
             end.setDate(1);
+            end.setMonth(octIndex + 6);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
@@ -857,8 +857,8 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setFullYear(end.getFullYear() - 1);
             }
 
-            end.setMonth(octIndex + 9);
             end.setDate(1);
+            end.setMonth(octIndex + 9);
             end.setMilliseconds(0);
             end.setSeconds(0);
             end.setMinutes(0);
