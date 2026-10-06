@@ -41,6 +41,9 @@ class SmoothnessJsIT {
   /** /hello with the browser's clock at TUESDAY_10AM, which the function tests share */
   static Page tuesday;
 
+  /** /hello with the browser's clock on October 31, made by onOctober31() */
+  static Page october31;
+
   @BeforeAll
   static void start() throws Exception {
     Demo.awaitReady();
@@ -70,6 +73,21 @@ class SmoothnessJsIT {
   /** A page that loads smoothness.js, with the browser's clock at TUESDAY_10AM; don't change it */
   static Page onTuesday() {
     return tuesday;
+  }
+
+  /** /hello with the browser's clock at Saturday 2026-10-31 10:00, the 31st of a month */
+  static Page onOctober31() {
+    if (october31 == null) {
+      october31 = browser.newPage();
+      october31
+          .clock()
+          .setFixedTime(
+              ZonedDateTime.of(2026, 10, 31, 10, 0, 0, 0, ZoneId.of("America/New_York"))
+                  .toInstant()
+                  .toEpochMilli());
+      open(october31, "/hello");
+    }
+    return october31;
   }
 
   /** Runs JavaScript on the page and returns its result as a string. */
@@ -179,6 +197,28 @@ class SmoothnessJsIT {
   })
   void decodeRange(String range, String start, String end) {
     Page page = onTuesday();
+    String decoded = "jlab.decodeRange('" + range + "', false)";
+
+    assertEquals(start, js(page, "jlab.toFriendlyDateTimeString(" + decoded + ".start)"));
+    assertEquals(end, js(page, "jlab.toFriendlyDateTimeString(" + decoded + ".end)"));
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    // On Saturday 2026-10-31 10:00: setting April, the 30-day month, on the 31st rolls into May
+    "0fiscalyear, 01-Oct-2026 00:00, 01-Oct-2027 00:00",
+    "0fiscalyearq1, 01-Oct-2026 00:00, 01-Jan-2027 00:00",
+    "0fiscalyearq2, 01-Jan-2027 00:00, 01-Apr-2027 00:00",
+    "0fiscalyearq3, 01-Apr-2027 00:00, 01-Jul-2027 00:00",
+    "0fiscalyearq4, 01-Jul-2027 00:00, 01-Oct-2027 00:00",
+    "1fiscalyear, 01-Oct-2025 00:00, 01-Oct-2026 00:00",
+    "1fiscalyearq1, 01-Oct-2025 00:00, 01-Jan-2026 00:00",
+    "1fiscalyearq2, 01-Jan-2026 00:00, 01-Apr-2026 00:00",
+    "1fiscalyearq3, 01-Apr-2026 00:00, 01-Jul-2026 00:00",
+    "1fiscalyearq4, 01-Jul-2026 00:00, 01-Oct-2026 00:00"
+  })
+  void decodeRangeOnTheThirtyFirst(String range, String start, String end) {
+    Page page = onOctober31();
     String decoded = "jlab.decodeRange('" + range + "', false)";
 
     assertEquals(start, js(page, "jlab.toFriendlyDateTimeString(" + decoded + ".start)"));
