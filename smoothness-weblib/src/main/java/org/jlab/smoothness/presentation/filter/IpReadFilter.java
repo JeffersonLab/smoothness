@@ -97,9 +97,11 @@ public class IpReadFilter implements Filter {
 
     String requestUri = httpRequest.getRequestURI();
 
+    String queryString = httpRequest.getQueryString();
+
     String serverUrl = System.getenv("FRONTEND_SERVER_URL");
 
-    String returnUrl = serverUrl + requestUri;
+    String returnUrl = serverUrl + requestUri + (queryString == null ? "" : "?" + queryString);
 
     returnUrl = URLEncoder.encode(returnUrl, StandardCharsets.UTF_8);
 

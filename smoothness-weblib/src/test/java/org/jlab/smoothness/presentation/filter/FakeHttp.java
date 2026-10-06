@@ -25,6 +25,7 @@ final class FakeHttp {
     String remoteUser = null;
     String contextPath = "/app";
     String requestUri = "/app/page";
+    String queryString = null;
     String characterEncoding = null;
     final Map<String, String> headers = new HashMap<>();
     final Map<String, Object> attributes = new HashMap<>();
@@ -44,6 +45,8 @@ final class FakeHttp {
                     return contextPath;
                   case "getRequestURI":
                     return requestUri;
+                  case "getQueryString":
+                    return queryString;
                   case "getHeader":
                     return headers.get((String) args[0]);
                   case "getAttribute":

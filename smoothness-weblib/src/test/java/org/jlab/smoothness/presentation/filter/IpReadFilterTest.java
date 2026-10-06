@@ -156,13 +156,19 @@ class IpReadFilterTest {
   }
 
   @Test
-  void redirectLeavesOutTheQueryString() throws Exception {
-    // getRequestURI has no query string, so the user returns to the page without its parameters
+  void redirectKeepsTheQueryString() throws Exception {
     request.remoteAddr = "203.0.113.9";
     request.requestUri = "/app/reports/one";
+    request.queryString = "start=2026-03-10&end=2026-03-11";
 
     filter();
 
-    assertTrue(response.redirect.endsWith("%2Fapp%2Freports%2Fone"), response.redirect);
+    assertFalse(chain.called());
+    assertEquals(
+        "https://frontend.example/app/sso?returnUrl="
+            + URLEncoder.encode(
+                "https://frontend.example/app/reports/one?start=2026-03-10&end=2026-03-11",
+                StandardCharsets.UTF_8),
+        response.redirect);
   }
 }
