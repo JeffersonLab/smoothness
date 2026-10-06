@@ -18,9 +18,16 @@ fix what fails, and report what you ran and what it returned.
   all are healthy). Ports are in the README's Ports section, each with a `SMOOTHNESS_*_PORT`
   setting; check what's already listening (`ss -ltnp`) first.
 - On every change, run `./gradlew build` (about 30 s cold, seconds warm). It compiles both
-  subprojects and runs `spotlessCheck` (google-java-format for Java); `./gradlew spotlessApply`
-  formats. There are no automated tests yet: add them with each change, and never skip or
-  weaken a test to make it pass.
+  subprojects, runs `spotlessCheck` (google-java-format for Java; `./gradlew spotlessApply`
+  formats), and runs the weblib's unit tests in `smoothness-weblib/src/test`. To run one class:
+  `./gradlew :smoothness-weblib:test --tests '*TimeUtilTest'`. The tests run in
+  America/New_York and US English (set in `build.gradle`), since `TimeUtil` and the parameter
+  converters use the JVM's default time zone and locale.
+- The unit tests are characterization tests: they record what the code does now, quirks
+  included (such as `isSameMonth` ignoring the year). When you change behavior on purpose, change
+  the test that records it and say so in the pull request. Add or update tests with each change,
+  check that a new test fails without your fix, and never skip or weaken a test to make it pass.
+  Test servlet code with `FakeRequest` (parameters and paths only) rather than a mocking library.
 - Before opening a pull request, rebuild and restart the demo, since the container runs the
   image and not your working tree: `docker compose -f build.yaml up -d --build --wait demo`
   (about 1 minute). Then check the pages you changed at `http://localhost:8080/smoothness-demo`:
