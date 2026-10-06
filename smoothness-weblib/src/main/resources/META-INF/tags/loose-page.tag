@@ -8,7 +8,7 @@
 <%@attribute name="description"%>
 <%@attribute name="category"%>
 <%@attribute name="excludeSmoothResources" required="false" type="java.lang.Boolean" description="Defaults to false" %>
-<c:set var="excludeSmoothResources" value="${(empty excludeSmoothResources) ? false : true}" />
+<c:set var="excludeSmoothResources" value="${excludeSmoothResources eq true}" />
 <c:choose>
     <c:when test="${param.partial eq 'Y'}">
         <div id="partial" data-title="${title}">
