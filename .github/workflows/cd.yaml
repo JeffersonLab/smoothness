@@ -3,6 +3,7 @@ name: CD
 on:
   push:
     paths:
+        branches: [ main ]
       - 'VERSION'
 
 jobs:
