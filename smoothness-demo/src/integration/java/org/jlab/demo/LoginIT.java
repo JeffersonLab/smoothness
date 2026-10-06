@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.http.HttpResponse;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.jlab.demo.Demo.Session;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -59,6 +61,30 @@ class LoginIT {
 
     assertEquals(200, page.statusCode());
     assertTrue(page.body().contains("movie-table"), Demo.title(page));
+  }
+
+  /** Report one with a week's dates: encoded characters and several parameters */
+  static final String REPORT_WITH_DATES =
+      "/reports/report-one?start=29-Sep-2026+07%3A00&end=06-Oct-2026+07%3A00&qualified=";
+
+  @Test
+  void loginLinkReturnsToThePageWithItsParameters() throws Exception {
+    // Wildfly's OIDC client failed this with "Incorrect redirect_uri", or dropped all parameters
+    // but the first, until the jeffersonlab/wildfly image's Elytron patch (3.1.1)
+    Session session = Session.anonymous();
+    HttpResponse<String> report = session.get(REPORT_WITH_DATES);
+    Matcher link = Pattern.compile("<a id=\"login-link\" href=\"([^\"]+)\"").matcher(report.body());
+    assertTrue(link.find(), "no login link on " + REPORT_WITH_DATES);
+
+    HttpResponse<String> page =
+        session.submitLoginForm(
+            session.get(link.group(1).replace("&amp;", "&")), Demo.USER, Demo.PASSWORD);
+
+    assertEquals(200, page.statusCode(), Demo.title(page));
+    assertEquals(Demo.URL + REPORT_WITH_DATES, page.uri().toString());
+    assertTrue(page.body().contains(Demo.USER), "not logged in");
+    assertTrue(page.body().contains("value=\"29-Sep-2026 07:00\""), "start date lost");
+    assertTrue(page.body().contains("value=\"06-Oct-2026 07:00\""), "end date lost");
   }
 
   @Test

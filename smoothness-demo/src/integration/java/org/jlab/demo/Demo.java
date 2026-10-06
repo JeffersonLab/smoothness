@@ -140,7 +140,18 @@ final class Demo {
      */
     HttpResponse<String> login(String username, String password)
         throws IOException, InterruptedException {
-      HttpResponse<String> form = get("/sso?returnUrl=" + URI.create(URL).getPath() + "/overview");
+      return submitLoginForm(
+          get("/sso?returnUrl=" + URI.create(URL).getPath() + "/overview"), username, password);
+    }
+
+    /**
+     * Fills in and submits Keycloak's login form, on a page a redirect to log in led to.
+     *
+     * @return the page the login ends at: the app's, or Keycloak's form if the login failed
+     */
+    HttpResponse<String> submitLoginForm(
+        HttpResponse<String> form, String username, String password)
+        throws IOException, InterruptedException {
       Matcher action =
           Pattern.compile("action=\"([^\"]*/login-actions/authenticate[^\"]*)\"")
               .matcher(form.body());
@@ -169,8 +180,15 @@ final class Demo {
           HttpResponse.BodyHandlers.ofString());
     }
 
+    /** A path in the app, an absolute URL, or a path from the server's root, as links have. */
     private static URI uri(String path) {
-      return URI.create(path.startsWith("http") ? path : URL + path);
+      if (path.startsWith("http")) {
+        return URI.create(path);
+      }
+      String contextPath = URI.create(URL).getPath();
+      return path.startsWith(contextPath + "/")
+          ? URI.create(URL).resolve(path)
+          : URI.create(URL + path);
     }
   }
 

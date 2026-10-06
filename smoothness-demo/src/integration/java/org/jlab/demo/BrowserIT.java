@@ -70,6 +70,23 @@ class BrowserIT {
   }
 
   @Test
+  void loginLinkReturnsToThePageWithItsParameters() {
+    Page page = browser.newPage();
+    open(page, LoginIT.REPORT_WITH_DATES);
+
+    page.locator("#login-link").click();
+    page.locator("#username").fill(Demo.USER);
+    page.locator("#password").fill(Demo.PASSWORD);
+    page.locator("#kc-login").click();
+    page.waitForURL(Demo.URL + LoginIT.REPORT_WITH_DATES);
+
+    assertThat(page.locator("#report1-start")).hasValue("29-Sep-2026 07:00");
+    assertThat(page.locator("#report1-end")).hasValue("06-Oct-2026 07:00");
+    assertThat(page.locator("body")).containsText("Welcome " + Demo.USER);
+    assertEquals(List.of(), browser.errors);
+  }
+
+  @Test
   void filterFlyoutOpensAndCloses() {
     Page page = browser.newPage();
     open(page, "/reports/report-one");
