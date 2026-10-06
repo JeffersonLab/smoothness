@@ -18,6 +18,8 @@
             <li${'/features/multiselect-datatable' eq currentPath ? ' class="current-secondary"' : ''}>
                 <a href="${pageContext.request.contextPath}/features/multiselect-datatable">Multiselect
                     Datatable</a></li>
+            <li${'/features/tags' eq currentPath ? ' class="current-secondary"' : ''}>
+                <a href="${pageContext.request.contextPath}/features/tags">Tags</a></li>
             <li>
                 <a href="${pageContext.request.contextPath}/features/bad-request">400 Error Demo</a>
             </li>
