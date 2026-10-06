@@ -30,15 +30,21 @@ fix what fails, and report what you ran and what it returned.
   Test servlet code with `FakeRequest` (parameters and paths only) rather than a mocking library.
 - Before opening a pull request, rebuild and restart the demo, since the container runs the
   image and not your working tree: `docker compose -f build.yaml up -d --build --wait demo`
-  (about 1 minute). Then run the integration tests, `./gradlew integrationTest` (a few seconds;
-  `--tests '*MoviesIT'` runs one class). They drive the running demo over HTTPS as a browser
-  would, logging in through Keycloak's form, and read MailHog's API; they use the ports in `.env`.
-  They add a movie and change a setting, and put both back. Check the pages you changed, and
-  `docker compose -f build.yaml logs demo` for errors. For changes to tags, also run
-  `./gradlew javadoc`, which builds the tag library docs too.
-- Integration tests are in `smoothness-demo/src/integration`; `Demo.Session` is a browser with its
-  own cookies (`Session.loggedIn("jdoe")`). Give data a test creates a unique name, and remove or
-  restore it, even when the test fails.
+  (about 1 minute). Then run the integration tests, `./gradlew integrationTest` (about 15
+  seconds; `--tests '*MoviesIT'` runs one class). Most drive the demo over HTTPS as a browser
+  would; `BrowserIT` runs the pages in headless Chromium, through Playwright, and fails on any
+  JavaScript error. They use the ports in `.env`. They add movies and change a setting, and put
+  them back. Check `docker compose -f build.yaml logs demo` for errors. For changes to tags,
+  also run `./gradlew javadoc`, which builds the tag library docs too.
+- UI changes: look at them. `./gradlew :smoothness-demo:screenshot -Ppage=/overview` saves a
+  full-page screenshot of the running demo in `smoothness-demo/build/screenshots` and prints its
+  path and any JavaScript errors; add `-Puser=jdoe` to log in first. Read the image, and for a
+  change to behavior, add a `BrowserIT` test that clicks through it.
+- Integration tests are in `smoothness-demo/src/integration`. `Demo.Session` is an HTTP client
+  with its own cookies (`Session.loggedIn("jdoe")`); `DemoBrowser` gives Chromium pages
+  (`browser.loggedIn("jdoe")`). Give data a test creates a unique name, and remove or restore it
+  in a `finally`. The first run downloads Chromium to `~/.cache/ms-playwright`
+  (`installChromium`).
 - Test data: `container/oracle/initdb.d` builds the database when the Oracle container is
   created (the demo's movies and the settings). `docker compose -f build.yaml down -v` deletes it;
   the next `up` rebuilds it. Each clone or worktree gets its own containers, named after its
