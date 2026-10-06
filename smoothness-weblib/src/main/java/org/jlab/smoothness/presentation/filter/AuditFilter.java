@@ -40,8 +40,12 @@ public class AuditFilter implements Filter {
 
     String username = httpRequest.getRemoteUser();
 
-    if (username != null && username.contains(":")) {
-      username = username.split(":")[2];
+    // Keycloak's IDs for federated users, such as from LDAP, are f:<provider id>:<username>
+    if (username != null) {
+      String[] parts = username.split(":");
+      if (parts.length >= 3) {
+        username = parts[2];
+      }
     }
 
     context.setIp(ip);

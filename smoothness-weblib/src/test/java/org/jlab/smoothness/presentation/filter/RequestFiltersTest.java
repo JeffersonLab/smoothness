@@ -54,16 +54,16 @@ class RequestFiltersTest {
 
   @Test
   void auditUsernameWithColonsIsItsThirdPart() throws Exception {
-    request.remoteUser = "realm:id:jdoe";
+    request.remoteUser = "f:2fa8c3a1-ldap:jdoe";
 
     assertEquals("jdoe", audit().getUsername());
   }
 
   @Test
-  void auditUsernameWithOneColonThrows() {
+  void auditUsernameWithFewerThanThreePartsIsKept() throws Exception {
     request.remoteUser = "realm:jdoe";
 
-    assertThrows(ArrayIndexOutOfBoundsException.class, this::audit);
+    assertEquals("realm:jdoe", audit().getUsername());
     assertNull(AuditContext.getCurrentInstance());
   }
 
