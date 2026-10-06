@@ -86,7 +86,7 @@ public class Convert extends HttpServlet {
       puppetServer = puppetServer + "/puppet-show/pdf";
 
     } else {
-      response.setHeader("content-type", "application/png");
+      response.setHeader("content-type", "image/png");
       puppetServer = puppetServer + "/puppet-show/screenshot";
     }
 
