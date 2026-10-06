@@ -88,11 +88,21 @@ class CacheFilterTest {
     assertNoCache();
   }
 
+  @ParameterizedTest
+  @ValueSource(
+      strings = {"text/css;charset=UTF-8", "text/css; charset=UTF-8", "Text/CSS", " image/png "})
+  void typeIsMatchedWithoutParametersOrCase(String contentType) throws Exception {
+    long before = System.currentTimeMillis();
+
+    filter(contentType);
+
+    assertEquals(contentType, response.contentType, "content type passed on as set");
+    assertMaxCache(before);
+  }
+
   @Test
-  void typeWithParametersIsNotCached() throws Exception {
-    // The types must match exactly, so a servlet that sets a charset in the type isn't cached;
-    // setting the character encoding separately, as Wildfly's default servlet does, is fine
-    filter("text/css;charset=UTF-8");
+  void otherTypeWithParametersIsNotCached() throws Exception {
+    filter("text/html;charset=UTF-8");
 
     assertNoCache();
   }

@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * WebFilter for setting response cache directives. By default, will set maximum cache (1 year) for
@@ -102,7 +103,7 @@ public class CacheFilter implements Filter {
 
       if (cachable == null || cachable == CachableResponse.AUTO) {
 
-        if (type != null && Arrays.binarySearch(CACHEABLE_CONTENT_TYPES, type) > -1) {
+        if (type != null && Arrays.binarySearch(CACHEABLE_CONTENT_TYPES, mediaType(type)) > -1) {
           setMaxCache();
         } else {
           setNoCache();
@@ -112,6 +113,13 @@ public class CacheFilter implements Filter {
       } else { // OFF
         setNoCache();
       }
+    }
+
+    /**
+     * The media type without its parameters, in lowercase: text/css for "Text/CSS; charset=UTF-8".
+     */
+    private static String mediaType(String contentType) {
+      return contentType.split(";", 2)[0].trim().toLowerCase(Locale.ROOT);
     }
 
     private void setNoCache() {
