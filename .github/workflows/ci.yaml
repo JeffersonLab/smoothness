@@ -1,19 +1,27 @@
-name: CI
-
-on:
-  push:
-    branches: [ main ]
-    paths-ignore:
-      - 'VERSION'
-    tags-ignore:
-      - "v*.*.*"
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
 jobs:
   build:
     uses: jeffersonlab/java-workflows/.github/workflows/unit-ci.yaml@v2
+
+  integration:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: wrapper
+      - name: Start containers
+        run: docker compose -f build.yaml up -d --build --wait
+      - name: Run integration tests
+        run: ./gradlew integrationTest
+      - name: Dump container logs
+        if: failure()
+        run: docker compose -f build.yaml logs
+      - name: Stop containers
+        if: always()
+        run: docker compose -f build.yaml down    
