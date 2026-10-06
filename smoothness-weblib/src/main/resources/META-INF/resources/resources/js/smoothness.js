@@ -496,16 +496,12 @@ jlab.getCcShiftEnd = function (dateInShift) {
 
     return end;
 };
+/* The latest startDayOfWeekIndex day on or before dateInWeek, keeping its time of day */
 jlab.getStartOfWeek = function (dateInWeek, startDayOfWeekIndex) {
     var startOfWeek = new Date(dateInWeek),
-        dayOfWeekIndex = dateInWeek.getDay(),
-        distance = startDayOfWeekIndex - dayOfWeekIndex;
+        daysSinceStart = (dateInWeek.getDay() - startDayOfWeekIndex + 7) % 7;
 
-    if (distance < 0) {
-        distance = 7 + distance;
-    }
-
-    startOfWeek.setDate(startOfWeek.getDate() + distance - 7);
+    startOfWeek.setDate(startOfWeek.getDate() - daysSinceStart);
 
     return startOfWeek;
 };
@@ -932,12 +928,7 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setHours(0);
             }
 
-            var dayOfWeekIndex = end.getDay(),
-                distance = wedIndex - dayOfWeekIndex;
-            if (distance < 0) {
-                distance = 7 + distance;
-            }
-            end.setDate(end.getDate() + distance - 7);
+            end = jlab.getStartOfWeek(end, wedIndex);
 
             start.setTime(end.getTime());
             start.setDate(start.getDate() - 7);
@@ -953,15 +944,10 @@ jlab.decodeRange = function (range, sevenAmOffset) {
                 end.setHours(0);
             }
 
-            var dayOfWeekIndex = end.getDay(),
-                distance = wedIndex - dayOfWeekIndex;
-            if (distance < 0) {
-                distance = 7 + distance;
-            }
-            end.setDate(end.getDate() + distance);
+            start = jlab.getStartOfWeek(end, wedIndex);
 
-            start.setTime(end.getTime());
-            start.setDate(start.getDate() - 7);
+            end.setTime(start.getTime());
+            end.setDate(end.getDate() + 7);
             break;
         case 'past10days':
             end.setMilliseconds(0);
