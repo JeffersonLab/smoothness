@@ -144,6 +144,9 @@ public class ReportOneParamHandler implements UrlParamHandler<ReportOneParams> {
     builder.add("start", IOUtil.nullOrFormat(params.getStart(), dateFormat));
     builder.add("end", IOUtil.nullOrFormat(params.getEnd(), dateFormat));
     builder.add("qualified", "");
+    // Keep the print version and full screen, which the export menu and Full Screen button ask for
+    builder.add("print", request.getParameterValues("print"));
+    builder.add("fullscreen", request.getParameterValues("fullscreen"));
 
     String url = ServletUtil.getCurrentUrlAdvanced(request, builder.getParams());
 
