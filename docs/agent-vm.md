@@ -39,7 +39,7 @@ seconds from nothing, with the images already pulled: building the demo image ta
 seconds, Oracle and Keycloak are healthy about a minute after they start, and the demo starts
 once both are. Rebuilding the demo after a change
 (`docker compose -f build.yaml up -d --build --wait demo`) took 53 seconds, and
-`./gradlew integrationTest` 15 seconds (53 tests, 17 of them in Chromium). The first run downloads
+`./gradlew integrationTest` 30 seconds (102 tests, 66 of them in Chromium). The first run downloads
 Playwright's Chromium (about 300 MB, in `~/.cache/ms-playwright`), unless another project, such as
 Sync Board, already did. The stack used about
 3.6 GB of memory, 2.3 GB of it Oracle's.
@@ -92,7 +92,8 @@ Where smoothness stands on the
       Integration tests cover the demo's pages and login, the roles' access, its movie table,
       editing settings, the feedback email, the Help page's admin list from Keycloak, the
       cache headers, and the tags' options on the Features > Tags page, including the CDN
-      setting. Not yet: PDF export, and most of `smoothness.js`.
+      setting; and `smoothness.js`'s date, shift, range, URL, and parameter functions and its
+      tables, dialogs, export menu, and pagination. Not yet: PDF and image export.
 - [x] **Instructions.** [AGENTS.md](../AGENTS.md).
 
 ## Troubleshooting
