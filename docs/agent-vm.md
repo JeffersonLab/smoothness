@@ -32,7 +32,8 @@ docker compose -f build.yaml up -d --build --wait
 base script already installed Docker and git.
 
 On the first VM (6 CPUs, 11 GB of memory), `./gradlew build` took 30 seconds cold, with the
-Gradle download, and under a second when nothing changed. `up --build --wait` took about 100
+Gradle download, and 3 seconds after `./gradlew clean` with the unit tests (114 of them, under a
+second). `up --build --wait` took about 100
 seconds from nothing, with the images already pulled: building the demo image takes about 45
 seconds, Oracle and Keycloak are healthy about a minute after they start, and the demo starts
 once both are. Rebuilding the demo after a change
@@ -69,8 +70,8 @@ Where smoothness stands on the
 [readiness checklist](https://code.jlab.org/acc/iac/docs/coding-agents/-/blob/main/docs/project-readiness.md#readiness-checklist):
 
 - [x] **Setup.** The commands above, from a fresh clone.
-- [ ] **Checks.** `./gradlew build` compiles and checks formatting, and CI runs it, but there are
-      no tests.
+- [x] **Checks.** `./gradlew build` compiles, checks formatting, and runs the unit tests in
+      seconds, and CI runs it.
 - [x] **Readable failures.** Gradle and `docker compose` report in the terminal.
 - [x] **Data.** `container/oracle/initdb.d` builds the database; no production data.
 - [x] **Stand-ins.** Keycloak, Oracle, Puppet Show, and MailHog run as containers, and the demo
@@ -78,7 +79,9 @@ Where smoothness stands on the
 - [ ] **UI.** An agent can fetch pages with `curl`, but has no browser tests or screenshot
       script, and pages behind a login need a scripted Keycloak login. Puppet Show can't take
       screenshots in the VM (see Troubleshooting).
-- [ ] **Tests.** None yet; characterization tests for the weblib come first.
+- [ ] **Tests.** Characterization tests cover the weblib's helpers (`TimeUtil`, the parameter
+      converters and validators, `Paginator`, `ServletUtil`, and others). Not yet: the filters,
+      services, servlets, tags, `smoothness.js`, and the demo.
 - [x] **Instructions.** [AGENTS.md](../AGENTS.md).
 
 ## Troubleshooting
