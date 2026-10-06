@@ -204,7 +204,12 @@ final class Demo {
 
   /** The page's title, with the whitespace the JSP leaves around it collapsed. */
   static String title(HttpResponse<String> page) {
-    Matcher m = Pattern.compile("<title>(.*?)</title>", Pattern.DOTALL).matcher(page.body());
+    return title(page.body());
+  }
+
+  /** The title in a page's HTML, with the whitespace the JSP leaves around it collapsed. */
+  static String title(String html) {
+    Matcher m = Pattern.compile("<title>(.*?)</title>", Pattern.DOTALL).matcher(html);
     return m.find() ? m.group(1).trim().replaceAll("\\s+", " ") : null;
   }
 

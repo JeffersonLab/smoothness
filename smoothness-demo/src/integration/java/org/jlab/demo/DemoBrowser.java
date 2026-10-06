@@ -38,7 +38,14 @@ final class DemoBrowser implements AutoCloseable {
   /** A new page with its own cookies, recording its errors. */
   Page newPage() {
     Page page =
-        browser.newContext(new Browser.NewContextOptions().setViewportSize(1280, 800)).newPage();
+        browser
+            .newContext(
+                new Browser.NewContextOptions()
+                    .setViewportSize(1280, 800)
+                    // As JLab's users: smoothness.js computes date ranges in the browser's zone
+                    .setTimezoneId("America/New_York")
+                    .setLocale("en-US"))
+            .newPage();
 
     page.onPageError(error -> errors.add(page.url() + ": " + error));
     page.onConsoleMessage(

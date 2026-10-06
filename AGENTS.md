@@ -67,7 +67,9 @@ fix what fails, and report what you ran and what it returned.
   (`compileOnly` and `providedCompile`); don't bundle them in the war. Only the weblib itself is
   packaged in apps' wars.
 - New tag files go in `smoothness-weblib/src/main/resources/META-INF/tags` and must be declared
-  in `META-INF/smoothness.tld`. Third-party libraries under `META-INF/resources/resources` (jQuery,
+  in `META-INF/smoothness.tld`. Show a new tag or option on the demo's Features > Tags page
+  (`/features/tags`) if no other page uses it, and test it there: markup in `TagsIT`, behavior
+  in `TagsBrowserIT`. Third-party libraries under `META-INF/resources/resources` (jQuery,
   jQuery UI, select2, Flot) are vendored, minified releases: don't edit them; upgrade by adding the
   new version's files.
 - Schema and settings changes go in `container/oracle/initdb.d`; there are no migrations, so
