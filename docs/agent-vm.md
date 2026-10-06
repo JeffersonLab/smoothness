@@ -26,6 +26,7 @@ sudo apt-get install -y openjdk-21-jdk-headless
 cd ~/smoothness
 ./gradlew build
 docker compose -f build.yaml up -d --build --wait
+./gradlew integrationTest
 ```
 
 `github-app-clone` sets the clone's commit name and email to the App's bot. The setup guide's
@@ -37,7 +38,8 @@ second). `up --build --wait` took about 100
 seconds from nothing, with the images already pulled: building the demo image takes about 45
 seconds, Oracle and Keycloak are healthy about a minute after they start, and the demo starts
 once both are. Rebuilding the demo after a change
-(`docker compose -f build.yaml up -d --build --wait demo`) took 53 seconds. The stack used about
+(`docker compose -f build.yaml up -d --build --wait demo`) took 53 seconds, and
+`./gradlew integrationTest` 3 seconds (23 tests). The stack used about
 3.6 GB of memory, 2.3 GB of it Oracle's.
 
 ## Ports and sister agents
@@ -71,17 +73,20 @@ Where smoothness stands on the
 
 - [x] **Setup.** The commands above, from a fresh clone.
 - [x] **Checks.** `./gradlew build` compiles, checks formatting, and runs the unit tests in
-      seconds, and CI runs it.
+      seconds, and CI runs it. `./gradlew integrationTest` runs the integration tests against
+      the running demo in seconds.
 - [x] **Readable failures.** Gradle and `docker compose` report in the terminal.
 - [x] **Data.** `container/oracle/initdb.d` builds the database; no production data.
 - [x] **Stand-ins.** Keycloak, Oracle, Puppet Show, and MailHog run as containers, and the demo
       leaves the logbook and run-dates services unset.
-- [ ] **UI.** An agent can fetch pages with `curl`, but has no browser tests or screenshot
-      script, and pages behind a login need a scripted Keycloak login. Puppet Show can't take
-      screenshots in the VM (see Troubleshooting).
-- [ ] **Tests.** Characterization tests cover the weblib's helpers (`TimeUtil`, the parameter
-      converters and validators, `Paginator`, `ServletUtil`, and others). Not yet: the filters,
-      services, servlets, tags, `smoothness.js`, and the demo.
+- [ ] **UI.** The integration tests fetch pages, logged in or not, and check their HTML, but
+      nothing runs the JavaScript or takes a screenshot: Puppet Show can't take screenshots in
+      the VM (see Troubleshooting).
+- [ ] **Tests.** Unit tests cover the weblib's helpers (`TimeUtil`, the parameter converters
+      and validators, `Paginator`, `ServletUtil`, and others). Integration tests cover the
+      demo's pages and login, the roles' access, its movie table, editing settings, the
+      feedback email, and the Help page's admin list from Keycloak. Not yet: the filters (such
+      as `CacheFilter` and `IpReadFilter`), PDF export, the tags' options, and `smoothness.js`.
 - [x] **Instructions.** [AGENTS.md](../AGENTS.md).
 
 ## Troubleshooting

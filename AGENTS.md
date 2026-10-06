@@ -30,10 +30,15 @@ fix what fails, and report what you ran and what it returned.
   Test servlet code with `FakeRequest` (parameters and paths only) rather than a mocking library.
 - Before opening a pull request, rebuild and restart the demo, since the container runs the
   image and not your working tree: `docker compose -f build.yaml up -d --build --wait demo`
-  (about 1 minute). Then check the pages you changed at `http://localhost:8080/smoothness-demo`:
-  `curl` fetches public pages such as `/overview`; `/setup/*` and `/features/*` need a Keycloak
-  login (HTTPS on 8443). Check `docker compose -f build.yaml logs demo` for errors. For changes
-  to tags, also run `./gradlew javadoc`, which builds the tag library docs too.
+  (about 1 minute). Then run the integration tests, `./gradlew integrationTest` (a few seconds;
+  `--tests '*MoviesIT'` runs one class). They drive the running demo over HTTPS as a browser
+  would, logging in through Keycloak's form, and read MailHog's API; they use the ports in `.env`.
+  They add a movie and change a setting, and put both back. Check the pages you changed, and
+  `docker compose -f build.yaml logs demo` for errors. For changes to tags, also run
+  `./gradlew javadoc`, which builds the tag library docs too.
+- Integration tests are in `smoothness-demo/src/integration`; `Demo.Session` is a browser with its
+  own cookies (`Session.loggedIn("jdoe")`). Give data a test creates a unique name, and remove or
+  restore it, even when the test fails.
 - Test data: `container/oracle/initdb.d` builds the database when the Oracle container is
   created (the demo's movies and the settings). `docker compose -f build.yaml down -v` deletes it;
   the next `up` rebuilds it. Each clone or worktree gets its own containers, named after its
