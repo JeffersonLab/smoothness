@@ -8,6 +8,7 @@ import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
+import java.nio.file.Files;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -419,6 +420,19 @@ class SmoothnessJsIT {
 
     assertTrue(download.suggestedFilename().endsWith(".xlsx"), download.suggestedFilename());
     assertEquals(null, download.failure());
+  }
+
+  @Test
+  void imageMenuItemDownloadsAnImageOfThePage() throws Exception {
+    Page page = browser.newPage();
+    open(page, "/reports/report-one");
+
+    page.locator("#export-menu-button").click();
+    Download download = page.waitForDownload(() -> page.locator("#image-menu-item").click());
+
+    assertEquals("chart.png", download.suggestedFilename());
+    assertEquals(null, download.failure());
+    ConvertIT.assertRendersAPage(Files.readAllBytes(download.path()));
   }
 
   @Test

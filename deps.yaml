@@ -39,7 +39,11 @@ services:
     hostname: puppet
     ports:
       - "127.0.0.1:${SMOOTHNESS_PUPPET_PORT:-3000}:3000"
-    privileged: true
+    # Lets Chromium create its sandbox's namespaces under Docker's default seccomp filter.
+    # privileged: true would run the container AppArmor-unconfined, where Ubuntu 24.04+ blocks
+    # user namespaces (kernel.apparmor_restrict_unprivileged_userns), so its sandbox fails.
+    cap_add:
+      - SYS_ADMIN
 
   mailhog:
     image: mailhog/mailhog:v1.0.1
