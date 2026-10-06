@@ -4,6 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jlab.demo.Demo.Session;
@@ -71,6 +77,35 @@ class PagesIT {
       found++;
     }
     assertEquals(2, found, "links to smoothness.css and smoothness.js");
+  }
+
+  @Test
+  void cacheFilterCachesStaticFilesForAYearAndPagesNot() throws Exception {
+    Session session = Session.anonymous();
+    String overview = session.get("/overview").body();
+    Matcher css = Pattern.compile("/smoothness-demo(/resources/v[^/\"]+/)css/").matcher(overview);
+    assertTrue(css.find(), "no versioned resources on /overview");
+    String resources = css.group(1);
+
+    for (String path :
+        List.of("css/smoothness.css", "js/smoothness.js", "img/indicator16x16.gif")) {
+      HttpResponse<String> file = session.get(resources + path);
+      Instant expires =
+          ZonedDateTime.parse(
+                  file.headers().firstValue("Expires").orElseThrow(),
+                  DateTimeFormatter.RFC_1123_DATE_TIME)
+              .toInstant();
+
+      assertTrue(
+          expires.isAfter(Instant.now().plus(Duration.ofDays(364))), path + " expires " + expires);
+      assertEquals(Optional.empty(), file.headers().firstValue("Cache-Control"), path);
+    }
+
+    HttpResponse<String> page = session.get("/overview");
+    assertEquals(
+        "no-store, no-cache, must-revalidate",
+        page.headers().firstValue("Cache-Control").orElse(null));
+    assertEquals("no-cache", page.headers().firstValue("Pragma").orElse(null));
   }
 
   @Test
