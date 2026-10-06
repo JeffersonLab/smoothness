@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.time.Duration;
 import java.time.Instant;
@@ -227,13 +228,10 @@ final class Demo {
   private static SSLContext sslContext() {
     Path cacerts = Path.of(System.getProperty("java.home"), "lib", "security", "cacerts");
 
-    try (InputStream defaults = Files.newInputStream(cacerts);
-        InputStream wildfly = Demo.class.getResourceAsStream("/wildfly-localhost.crt")) {
+    try (InputStream defaults = Files.newInputStream(cacerts)) {
       KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
       trustStore.load(defaults, null);
-      trustStore.setCertificateEntry(
-          "wildfly-localhost",
-          CertificateFactory.getInstance("X.509").generateCertificate(wildfly));
+      trustStore.setCertificateEntry("wildfly-localhost", certificate());
 
       TrustManagerFactory trustManagers =
           TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -244,6 +242,13 @@ final class Demo {
       return context;
     } catch (IOException | GeneralSecurityException e) {
       throw new IllegalStateException(e);
+    }
+  }
+
+  /** The demo's self-signed certificate, saved in src/integration/resources (see sslContext). */
+  static Certificate certificate() throws IOException, GeneralSecurityException {
+    try (InputStream in = Demo.class.getResourceAsStream("/wildfly-localhost.crt")) {
+      return CertificateFactory.getInstance("X.509").generateCertificate(in);
     }
   }
 

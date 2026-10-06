@@ -39,7 +39,9 @@ seconds from nothing, with the images already pulled: building the demo image ta
 seconds, Oracle and Keycloak are healthy about a minute after they start, and the demo starts
 once both are. Rebuilding the demo after a change
 (`docker compose -f build.yaml up -d --build --wait demo`) took 53 seconds, and
-`./gradlew integrationTest` 3 seconds (23 tests). The stack used about
+`./gradlew integrationTest` 15 seconds (33 tests, 10 of them in Chromium). The first run downloads
+Playwright's Chromium (about 300 MB, in `~/.cache/ms-playwright`), unless another project, such as
+Sync Board, already did. The stack used about
 3.6 GB of memory, 2.3 GB of it Oracle's.
 
 ## Ports and sister agents
@@ -79,9 +81,11 @@ Where smoothness stands on the
 - [x] **Data.** `container/oracle/initdb.d` builds the database; no production data.
 - [x] **Stand-ins.** Keycloak, Oracle, Puppet Show, and MailHog run as containers, and the demo
       leaves the logbook and run-dates services unset.
-- [ ] **UI.** The integration tests fetch pages, logged in or not, and check their HTML, but
-      nothing runs the JavaScript or takes a screenshot: Puppet Show can't take screenshots in
-      the VM (see Troubleshooting).
+- [x] **UI.** `./gradlew :smoothness-demo:screenshot -Ppage=<path> [-Puser=jdoe]` saves a
+      screenshot an agent can read, and `BrowserIT` runs pages in headless Chromium through
+      Playwright, failing on JavaScript errors and clicking through the movie table and the
+      filter flyout. The demo's own PDF and image export still fails in the VM (see
+      Troubleshooting).
 - [ ] **Tests.** Unit tests cover the weblib's helpers (`TimeUtil`, the parameter converters
       and validators, `Paginator`, `ServletUtil`, and others). Integration tests cover the
       demo's pages and login, the roles' access, its movie table, editing settings, the
