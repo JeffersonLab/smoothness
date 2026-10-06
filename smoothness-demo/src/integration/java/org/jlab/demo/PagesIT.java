@@ -62,6 +62,18 @@ class PagesIT {
   }
 
   @Test
+  void reportKeepsPrintAndFullscreenThroughItsRedirect() throws Exception {
+    HttpResponse<String> page = Session.anonymous().get("/reports/report-one?print=Y&fullscreen=Y");
+
+    assertTrue(
+        page.uri().getQuery().matches("start=.+&end=.+&qualified=&print=Y&fullscreen=Y"),
+        page.uri().toString());
+    assertTrue(
+        Pattern.compile("<body class=\"print +fullscreen\">").matcher(page.body()).find(),
+        "body not in print and fullscreen");
+  }
+
+  @Test
   void versionedResourcesAreServed() throws Exception {
     String overview = Session.anonymous().get("/overview").body();
     Matcher links =
