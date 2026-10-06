@@ -104,7 +104,8 @@ email. Name the agent and model in a trailer: keep the one your tool adds (such 
   not run. Add a short Decisions part when the person questioned or changed something, or when
   alternatives were dropped.
 - After pushing, wait for the pull request's checks to finish before reporting it ready (`build`
-  from CI, and CodeQL); `gh pr checks <number> --watch` waits. Read failed jobs' logs and fix the
+  and `integration` from CI, and CodeQL; `integration` takes about 5 minutes);
+  `gh pr checks <number> --watch` waits. Read failed jobs' logs and fix the
   cause; never skip or weaken a check to pass it. Report how they ended, and say if one failed
   for a reason outside your change.
 - Name the issue a change is for in the commit body: `Fixes #<issue>`, or `Part of #<issue>` if

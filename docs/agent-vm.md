@@ -74,7 +74,7 @@ Where smoothness stands on the
 - [x] **Setup.** The commands above, from a fresh clone.
 - [x] **Checks.** `./gradlew build` compiles, checks formatting, and runs the unit tests in
       seconds, and CI runs it. `./gradlew integrationTest` runs the integration tests against
-      the running demo in seconds.
+      the running demo in seconds; CI's `integration` job starts the stack and runs them.
 - [x] **Readable failures.** Gradle and `docker compose` report in the terminal.
 - [x] **Data.** `container/oracle/initdb.d` builds the database; no production data.
 - [x] **Stand-ins.** Keycloak, Oracle, Puppet Show, and MailHog run as containers, and the demo
