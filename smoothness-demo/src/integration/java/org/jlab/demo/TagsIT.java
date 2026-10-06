@@ -134,16 +134,15 @@ class TagsIT {
   }
 
   @Test
-  void loosePageExcludesResourcesEvenWhenExcludeIsFalse() throws Exception {
-    // loose-page excludes them for any value of excludeSmoothResources; only leaving it out keeps
-    // them, as /hello does
-    String excluded =
+  void loosePageKeepsResourcesWhenExcludeIsFalse() throws Exception {
+    String kept =
         Session.loggedIn(Demo.USER)
             .get("/features/loose-page-without-smoothness?exclude=false")
             .body();
     String hello = Session.anonymous().get("/hello").body();
 
-    assertFalse(excluded.contains("smoothness.js"), "excludeSmoothResources=false included them");
+    assertTrue(kept.contains("smoothness.js"), "excludeSmoothResources=false excluded them");
+    assertTrue(kept.contains("smoothness.css"), "excludeSmoothResources=false excluded them");
     assertTrue(hello.contains("smoothness.js"), "/hello without the attribute excluded them");
   }
 
