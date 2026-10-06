@@ -4,6 +4,7 @@ import static org.jlab.smoothness.presentation.util.FakeRequest.withParams;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,6 +16,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 /**
  * Characterization tests. ParamConverter returns null for a missing or empty parameter; the
@@ -66,16 +68,39 @@ class ParamConverterTest {
   }
 
   @Test
-  void convertNumbersThrowNumberFormatExceptionNotUserFriendly() {
-    assertThrows(
-        NumberFormatException.class,
-        () -> ParamConverter.convertInteger(withParams("p", "x"), "p"));
-    assertThrows(
-        NumberFormatException.class,
+  void numbersThatArentNumbersNameTheParameter() {
+    assertNotANumber(
+        "p must be a whole number", () -> ParamConverter.convertInteger(withParams("p", "x"), "p"));
+    assertNotANumber(
+        "p must be a whole number",
         () -> ParamConverter.convertInteger(withParams("p", " 1"), "p"));
-    assertThrows(
-        NumberFormatException.class,
+    assertNotANumber(
+        "p must be a whole number",
+        () -> ParamConverter.convertInteger(withParams("p", "1.5"), "p"));
+    assertNotANumber(
+        "p must be a number", () -> ParamConverter.convertFloat(withParams("p", "x"), "p"));
+    assertNotANumber(
+        "p must be a whole number",
         () -> ParamConverter.convertBigInteger(withParams("p", "1.0"), "p"));
+    assertNotANumber(
+        "id[] must be a whole number",
+        () -> ParamConverter.convertLongArray(withParams("id[]", "1", "id[]", "x"), "id[]"));
+    assertNotANumber(
+        "id[] must be a whole number",
+        () -> ParamConverter.convertShortArray(withParams("id[]", "70000"), "id[]", (short) 0));
+    assertNotANumber(
+        "id[] must be a number",
+        () -> ParamConverter.convertFloatArray(withParams("id[]", "x"), "id[]"));
+    assertNotANumber(
+        "id[] must be a whole number",
+        () -> ParamConverter.convertBigIntegerArray(withParams("id[]", "x"), "id[]"));
+  }
+
+  /** Still a NumberFormatException, so callers' catch blocks work, with the parser's as cause. */
+  static void assertNotANumber(String message, Executable executable) {
+    NumberFormatException e = assertThrows(NumberFormatException.class, executable);
+    assertEquals(message, e.getMessage());
+    assertInstanceOf(NumberFormatException.class, e.getCause());
   }
 
   @Test
@@ -104,14 +129,19 @@ class ParamConverterTest {
   }
 
   @Test
-  void convertIso8601DateMovesAnInvalidDayToTheEndOfTheMonth() throws UserFriendlyException {
-    // DateTimeFormatter's default SMART resolver
+  void convertIso8601DatesAreStrict() throws UserFriendlyException {
     assertEquals(
-        newYork("2026-02-28 00:00"),
-        ParamConverter.convertISO8601Date(withParams("p", "2026-02-30"), "p"));
+        newYork("2028-02-29 00:00"),
+        ParamConverter.convertISO8601Date(withParams("p", "2028-02-29"), "p"));
+    for (String date : new String[] {"2026-02-30", "2026-02-29", "2026-04-31", "2026-13-01"}) {
+      assertThrows(
+          UserFriendlyException.class,
+          () -> ParamConverter.convertISO8601Date(withParams("p", date), "p"),
+          date);
+    }
     assertThrows(
         UserFriendlyException.class,
-        () -> ParamConverter.convertISO8601Date(withParams("p", "2026-02-32"), "p"));
+        () -> ParamConverter.convertISO8601DateTime(withParams("p", "2026-03-10 24:00"), "p"));
   }
 
   @Test
@@ -138,13 +168,39 @@ class ParamConverterTest {
   }
 
   @Test
-  void convertFriendlyDateIsLenient() throws UserFriendlyException {
-    assertEquals(
-        newYork("2026-02-01 00:00"),
-        ParamConverter.convertFriendlyDate(withParams("p", "32-Jan-2026"), "p"));
+  void convertFriendlyDatesAreStrict() throws UserFriendlyException {
+    for (String date :
+        new String[] {"32-Jan-2026", "29-Feb-2026", "10-Mar-2026 07:30", "10-Mar-2026x"}) {
+      assertThrows(
+          UserFriendlyException.class,
+          () -> ParamConverter.convertFriendlyDate(withParams("p", date), "p"),
+          date);
+    }
+    for (String dateTime :
+        new String[] {
+          "10-Mar-2026 25:00", "10-Mar-2026 07:60", "10-Mar-2026 07:30x", "10-Mar-2026"
+        }) {
+      assertThrows(
+          UserFriendlyException.class,
+          () -> ParamConverter.convertFriendlyDateTime(withParams("p", dateTime), "p"),
+          dateTime);
+    }
+  }
+
+  @Test
+  void convertFriendlyDateAcceptsOtherFormsOfTheDayAndMonth() throws UserFriendlyException {
     assertEquals(
         newYork("2026-03-10 00:00"),
-        ParamConverter.convertFriendlyDate(withParams("p", "10-Mar-2026 07:30"), "p"));
+        ParamConverter.convertFriendlyDate(withParams("p", "10-mar-2026"), "p"));
+    assertEquals(
+        newYork("2028-02-29 00:00"),
+        ParamConverter.convertFriendlyDate(withParams("p", "29-Feb-2028"), "p"));
+    assertEquals(
+        newYork("2026-03-01 00:00"),
+        ParamConverter.convertFriendlyDate(withParams("p", "1-Mar-2026"), "p"));
+    assertEquals(
+        newYork("2026-03-10 07:30"),
+        ParamConverter.convertFriendlyDateTime(withParams("p", "10-March-2026 07:30"), "p"));
   }
 
   @Test
