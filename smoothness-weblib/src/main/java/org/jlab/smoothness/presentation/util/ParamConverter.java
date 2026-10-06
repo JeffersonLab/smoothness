@@ -375,9 +375,10 @@ public final class ParamConverter {
 
   /**
    * Parse a date strictly with a SimpleDateFormat pattern, in the JVM's default time zone: no day
-   * 32 or month 13, and nothing after the date.
+   * 32 or month 13, and nothing after the date but whitespace, which a pasted date may have.
    */
   private static Date parseFriendly(String value, String pattern) throws UserFriendlyException {
+    value = value.strip();
     SimpleDateFormat format = new SimpleDateFormat(pattern);
     format.setLenient(false);
     ParsePosition position = new ParsePosition(0);
