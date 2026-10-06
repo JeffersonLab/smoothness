@@ -274,21 +274,21 @@ class SmoothnessJsIT {
   }
 
   @Test
-  void initParamsRemembersAnEmptyKeyAsTheTextOfAnEmptyArray() {
-    // On a qualified page, a missing key is remembered as JSON.stringify("[]"), the string
-    // "[]", rather than an empty array, so the next unqualified page gets size=[]
+  void initParamsRemembersAnEmptyKeyAsEmpty() {
+    // On a qualified page, a missing key means the user chose nothing, such as an empty multiple
+    // select; it is remembered as an empty array, so the next unqualified page gets no value
     Page page = browser.newPage();
     open(page, "/hello?color=red&qualified=");
 
     assertEquals("false", js(page, "jlab.initParams({color: 'blue', size: ['s']})"));
-    assertEquals("\"[]\"", js(page, "sessionStorage.getItem('size')"));
+    assertEquals("[]", js(page, "sessionStorage.getItem('size')"));
     assertEquals("[\"red\"]", js(page, "sessionStorage.getItem('color')"));
 
     open(page, "/hello");
     page.evaluate("setTimeout(() => jlab.initParams({color: 'blue', size: ['s']}))");
     page.waitForURL(url -> url.contains("qualified="));
 
-    assertEquals(Demo.URL + "/hello?color=red&size=%5B%5D&qualified=", page.url().toString());
+    assertEquals(Demo.URL + "/hello?color=red&qualified=", page.url().toString());
   }
 
   // Page behavior
