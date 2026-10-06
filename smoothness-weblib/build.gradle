@@ -39,6 +39,8 @@ tasks.named('test') {
     systemProperty 'user.timezone', 'America/New_York'
     systemProperty 'user.language', 'en'
     systemProperty 'user.country', 'US'
+    // IpReadFilter builds its redirects from it
+    environment 'FRONTEND_SERVER_URL', 'https://frontend.example'
     testLogging {
         events "skipped", "failed"
         exceptionFormat = "full"

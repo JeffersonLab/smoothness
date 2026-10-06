@@ -33,13 +33,13 @@ docker compose -f build.yaml up -d --build --wait
 base script already installed Docker and git.
 
 On the first VM (6 CPUs, 11 GB of memory), `./gradlew build` took 30 seconds cold, with the
-Gradle download, and 3 seconds after `./gradlew clean` with the unit tests (114 of them, under a
+Gradle download, and 3 seconds after `./gradlew clean` with the unit tests (157 of them, under a
 second). `up --build --wait` took about 100
 seconds from nothing, with the images already pulled: building the demo image takes about 45
 seconds, Oracle and Keycloak are healthy about a minute after they start, and the demo starts
 once both are. Rebuilding the demo after a change
 (`docker compose -f build.yaml up -d --build --wait demo`) took 53 seconds, and
-`./gradlew integrationTest` 15 seconds (33 tests, 10 of them in Chromium). The first run downloads
+`./gradlew integrationTest` 15 seconds (34 tests, 10 of them in Chromium). The first run downloads
 Playwright's Chromium (about 300 MB, in `~/.cache/ms-playwright`), unless another project, such as
 Sync Board, already did. The stack used about
 3.6 GB of memory, 2.3 GB of it Oracle's.
@@ -87,10 +87,11 @@ Where smoothness stands on the
       filter flyout. The demo's own PDF and image export still fails in the VM (see
       Troubleshooting).
 - [ ] **Tests.** Unit tests cover the weblib's helpers (`TimeUtil`, the parameter converters
-      and validators, `Paginator`, `ServletUtil`, and others). Integration tests cover the
-      demo's pages and login, the roles' access, its movie table, editing settings, the
-      feedback email, and the Help page's admin list from Keycloak. Not yet: the filters (such
-      as `CacheFilter` and `IpReadFilter`), PDF export, the tags' options, and `smoothness.js`.
+      and validators, `Paginator`, `ServletUtil`, and others) and its filters (`CacheFilter`,
+      `IpReadFilter` and its listener, `AuditFilter`, and the encoding and locale filters).
+      Integration tests cover the demo's pages and login, the roles' access, its movie table,
+      editing settings, the feedback email, the Help page's admin list from Keycloak, and the
+      cache headers. Not yet: PDF export, the tags' options, and most of `smoothness.js`.
 - [x] **Instructions.** [AGENTS.md](../AGENTS.md).
 
 ## Troubleshooting

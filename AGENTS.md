@@ -27,7 +27,9 @@ fix what fails, and report what you ran and what it returned.
   included (such as `isSameMonth` ignoring the year). When you change behavior on purpose, change
   the test that records it and say so in the pull request. Add or update tests with each change,
   check that a new test fails without your fix, and never skip or weaken a test to make it pass.
-  Test servlet code with `FakeRequest` (parameters and paths only) rather than a mocking library.
+  Test servlet code with `FakeRequest` (parameters and paths only), filters with `FakeHttp`
+  (request, response, and chain), and settings with `TestSettings.cache`, rather than a mocking
+  library.
 - Before opening a pull request, rebuild and restart the demo, since the container runs the
   image and not your working tree: `docker compose -f build.yaml up -d --build --wait demo`
   (about 1 minute). Then run the integration tests, `./gradlew integrationTest` (about 15
