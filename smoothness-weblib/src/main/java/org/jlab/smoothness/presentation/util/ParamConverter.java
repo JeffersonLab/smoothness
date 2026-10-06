@@ -3,6 +3,7 @@ package org.jlab.smoothness.presentation.util;
 import jakarta.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,7 +11,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Date;
+import java.util.function.Function;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
 import org.jlab.smoothness.business.util.TimeUtil;
 
@@ -67,7 +70,7 @@ public final class ParamConverter {
     Float value = null;
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      value = Float.valueOf(valueStr);
+      value = parseNumber(name, valueStr, Float::valueOf, "a number");
     }
 
     return value;
@@ -85,7 +88,7 @@ public final class ParamConverter {
     Integer value = null;
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      value = Integer.valueOf(valueStr);
+      value = parseNumber(name, valueStr, Integer::valueOf, "a whole number");
     }
 
     return value;
@@ -127,7 +130,8 @@ public final class ParamConverter {
    */
   public static Date convertISO8601Date(HttpServletRequest request, String name)
       throws UserFriendlyException {
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    final DateTimeFormatter formatter =
+        DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT);
 
     Date value = null;
 
@@ -157,7 +161,8 @@ public final class ParamConverter {
    */
   public static Date convertISO8601DateTime(HttpServletRequest request, String name)
       throws UserFriendlyException {
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    final DateTimeFormatter formatter =
+        DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm").withResolverStyle(ResolverStyle.STRICT);
 
     Date value = null;
 
@@ -188,7 +193,7 @@ public final class ParamConverter {
     BigInteger value = null;
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      value = new BigInteger(valueStr);
+      value = parseNumber(name, valueStr, BigInteger::new, "a whole number");
     }
 
     return value;
@@ -214,7 +219,7 @@ public final class ParamConverter {
         Short value;
 
         if (valueStrArray[i] != null && !valueStrArray[i].isEmpty()) {
-          value = Short.valueOf(valueStrArray[i]);
+          value = parseNumber(name, valueStrArray[i], Short::valueOf, "a whole number");
         } else {
           value = defaultValue;
         }
@@ -244,7 +249,7 @@ public final class ParamConverter {
         Long value = null;
 
         if (valueStrArray[i] != null && !valueStrArray[i].isEmpty()) {
-          value = Long.valueOf(valueStrArray[i]);
+          value = parseNumber(name, valueStrArray[i], Long::valueOf, "a whole number");
         }
 
         valueArray[i] = value;
@@ -272,7 +277,7 @@ public final class ParamConverter {
         Float value = null;
 
         if (valueStrArray[i] != null && !valueStrArray[i].isEmpty()) {
-          value = Float.valueOf(valueStrArray[i]);
+          value = parseNumber(name, valueStrArray[i], Float::valueOf, "a number");
         }
 
         valueArray[i] = value;
@@ -300,7 +305,7 @@ public final class ParamConverter {
         BigInteger value = null;
 
         if (valueStrArray[i] != null && !valueStrArray[i].isEmpty()) {
-          value = new BigInteger(valueStrArray[i]);
+          value = parseNumber(name, valueStrArray[i], BigInteger::new, "a whole number");
         }
 
         valueArray[i] = value;
@@ -321,18 +326,12 @@ public final class ParamConverter {
    */
   public static Date convertFriendlyDateTime(HttpServletRequest request, String name)
       throws UserFriendlyException {
-    SimpleDateFormat format = new SimpleDateFormat(TimeUtil.getFriendlyDateTimePattern());
-
     Date value = null;
 
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      try {
-        value = format.parse(valueStr);
-      } catch (ParseException e) {
-        throw new UserFriendlyException("format error", e);
-      }
+      value = parseFriendly(valueStr, TimeUtil.getFriendlyDateTimePattern());
     }
 
     return value;
@@ -348,20 +347,49 @@ public final class ParamConverter {
    */
   public static Date convertFriendlyDate(HttpServletRequest request, String name)
       throws UserFriendlyException {
-    SimpleDateFormat format = new SimpleDateFormat(TimeUtil.getFriendlyDatePattern());
-
     Date value = null;
 
     String valueStr = request.getParameter(name);
 
     if (valueStr != null && !valueStr.isEmpty()) {
-      try {
-        value = format.parse(valueStr);
-      } catch (ParseException e) {
-        throw new UserFriendlyException("format error", e);
-      }
+      value = parseFriendly(valueStr, TimeUtil.getFriendlyDatePattern());
     }
 
     return value;
+  }
+
+  /**
+   * Parse a number, or throw a NumberFormatException with a message for users that names the
+   * parameter, such as "duration must be a whole number", and has the parser's as its cause.
+   */
+  private static <T> T parseNumber(
+      String name, String value, Function<String, T> parser, String description) {
+    try {
+      return parser.apply(value);
+    } catch (NumberFormatException e) {
+      NumberFormatException friendly = new NumberFormatException(name + " must be " + description);
+      friendly.initCause(e);
+      throw friendly;
+    }
+  }
+
+  /**
+   * Parse a date strictly with a SimpleDateFormat pattern, in the JVM's default time zone: no day
+   * 32 or month 13, and nothing after the date.
+   */
+  private static Date parseFriendly(String value, String pattern) throws UserFriendlyException {
+    SimpleDateFormat format = new SimpleDateFormat(pattern);
+    format.setLenient(false);
+    ParsePosition position = new ParsePosition(0);
+
+    Date date = format.parse(value, position);
+
+    if (date == null || position.getIndex() != value.length()) {
+      throw new UserFriendlyException(
+          "format error",
+          new ParseException("Unparseable date: \"" + value + "\"", position.getErrorIndex()));
+    }
+
+    return date;
   }
 }
