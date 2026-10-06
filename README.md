@@ -65,6 +65,26 @@ http://localhost:8080/smoothness-demo
 
 **Note**: Login with demo username "jdoe" and password "password". 
 
+**Note**: The demo container starts once Oracle has loaded the demo schema and Keycloak has created the test realm and users, about a minute after `docker compose up`.
+
+### Ports
+The containers publish these ports on the host, listening only on its local address (127.0.0.1), so other computers can't reach the demo database, accounts, and management consoles.  To use them from another computer, forward them over SSH, such as `ssh -N -L 8443:localhost:8443 -L 8081:localhost:8081 <host>` for the app and Keycloak.  If another project already uses some of them, or you run a second copy of the demo, set other ports in a `.env` file next to `compose.yaml`, which Compose reads, or in the environment:
+
+| Variable                           | Default | Port of                   |
+|------------------------------------|---------|---------------------------|
+| SMOOTHNESS_HTTPS_PORT              | 8443    | demo app (HTTPS)          |
+| SMOOTHNESS_HTTP_PORT               | 8080    | demo app (HTTP)           |
+| SMOOTHNESS_MANAGEMENT_PORT         | 9990    | Wildfly management        |
+| SMOOTHNESS_KEYCLOAK_PORT           | 8081    | Keycloak                  |
+| SMOOTHNESS_KEYCLOAK_MANAGEMENT_PORT | 9991   | Keycloak management       |
+| SMOOTHNESS_ORACLE_PORT             | 1521    | Oracle                    |
+| SMOOTHNESS_ORACLE_EM_PORT          | 5500    | Oracle Enterprise Manager |
+| SMOOTHNESS_PUPPET_PORT             | 3000    | Puppet Show               |
+| SMOOTHNESS_SMTP_PORT               | 1025    | MailHog SMTP              |
+| SMOOTHNESS_MAILHOG_PORT            | 8025    | MailHog web UI            |
+
+Compose names the containers, network, and images after the project's directory, such as `smoothness-oracle-1`, so a copy in another directory, such as a git worktree, gets its own.  The stack uses about 4 GB of memory.
+
 **See**: [Docker Compose Strategy](https://gist.github.com/slominskir/a7da801e8259f5974c978f9c3091d52c)
 
 ## Install
