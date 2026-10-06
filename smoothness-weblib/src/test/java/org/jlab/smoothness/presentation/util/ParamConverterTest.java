@@ -188,6 +188,22 @@ class ParamConverterTest {
   }
 
   @Test
+  void convertFriendlyDatesIgnoreSurroundingWhitespace() throws UserFriendlyException {
+    assertEquals(
+        newYork("2026-03-10 00:00"),
+        ParamConverter.convertFriendlyDate(withParams("p", " 10-Mar-2026 "), "p"));
+    assertEquals(
+        newYork("2026-03-10 07:30"),
+        ParamConverter.convertFriendlyDateTime(withParams("p", "10-Mar-2026 07:30 "), "p"));
+    assertEquals(
+        newYork("2026-03-10 07:30"),
+        ParamConverter.convertFriendlyDateTime(withParams("p", "\t10-Mar-2026 07:30\n"), "p"));
+    assertThrows(
+        UserFriendlyException.class,
+        () -> ParamConverter.convertFriendlyDateTime(withParams("p", "  "), "p"));
+  }
+
+  @Test
   void convertFriendlyDateAcceptsOtherFormsOfTheDayAndMonth() throws UserFriendlyException {
     assertEquals(
         newYork("2026-03-10 00:00"),
