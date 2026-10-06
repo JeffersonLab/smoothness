@@ -169,6 +169,12 @@ final class Demo {
           HttpRequest.newBuilder(uri(path)).GET().build(), HttpResponse.BodyHandlers.ofString());
     }
 
+    /** GET a path in the app, or an absolute URL, as bytes, for files such as PDFs and images. */
+    HttpResponse<byte[]> getBytes(String path) throws IOException, InterruptedException {
+      return http.send(
+          HttpRequest.newBuilder(uri(path)).GET().build(), HttpResponse.BodyHandlers.ofByteArray());
+    }
+
     /** POST a form to a path in the app, or an absolute URL. */
     HttpResponse<String> post(String path, Map<String, String> form)
         throws IOException, InterruptedException {

@@ -84,16 +84,16 @@ Where smoothness stands on the
 - [x] **UI.** `./gradlew :smoothness-demo:screenshot -Ppage=<path> [-Puser=jdoe]` saves a
       screenshot an agent can read, and `BrowserIT` runs pages in headless Chromium through
       Playwright, failing on JavaScript errors and clicking through the movie table and the
-      filter flyout. The demo's own PDF and image export still fails in the VM (see
-      Troubleshooting).
-- [ ] **Tests.** Unit tests cover the weblib's helpers (`TimeUtil`, the parameter converters
+      filter flyout.
+- [x] **Tests.** Unit tests cover the weblib's helpers (`TimeUtil`, the parameter converters
       and validators, `Paginator`, `ServletUtil`, and others) and its filters (`CacheFilter`,
       `IpReadFilter` and its listener, `AuditFilter`, and the encoding and locale filters).
       Integration tests cover the demo's pages and login, the roles' access, its movie table,
       editing settings, the feedback email, the Help page's admin list from Keycloak, the
       cache headers, and the tags' options on the Features > Tags page, including the CDN
       setting; and `smoothness.js`'s date, shift, range, URL, and parameter functions and its
-      tables, dialogs, export menu, and pagination. Not yet: PDF and image export.
+      tables, dialogs, export menu, and pagination; and the PDF and image export through
+      Puppet Show.
 - [x] **Instructions.** [AGENTS.md](../AGENTS.md).
 
 ## Troubleshooting
@@ -102,5 +102,5 @@ Where smoothness stands on the
 | --- | --- |
 | `up` says a port is already allocated | Another project (adm uses the same defaults) or another copy of smoothness holds it; stop it, or set other ports in `.env` |
 | A logged-in user gets 403 on `/setup` though they're an admin | They logged in before Keycloak had finished creating the test realm; log out and in again. `up --wait` avoids it |
-| PDF and image export fail with HTTP 500; Puppet Show's log or page says `No usable sandbox!` | Chromium in the Puppet Show container can't create its sandbox: Ubuntu 26.04 sets `kernel.apparmor_restrict_unprivileged_userns=1`, which applies even to the privileged container. Not fixed in the VM; the rest of the demo works |
+| PDF and image export fail with HTTP 500; Puppet Show's log or page says `No usable sandbox!` | Chromium in the Puppet Show container can't create its sandbox's namespaces. Ubuntu 24.04+ (`kernel.apparmor_restrict_unprivileged_userns=1`) blocks them in an AppArmor-unconfined container, such as a privileged one, so `deps.yaml` gives the container `SYS_ADMIN` instead, under Docker's `docker-default` profile. A container made before that change keeps `privileged`: recreate it with `docker compose -f build.yaml up -d --wait puppet`. If it still fails (an older Docker whose profile blocks user namespaces), add `CHROME_DEVEL_SANDBOX: /opt/google/chrome/chrome-sandbox` to its environment, Chrome's setuid sandbox helper in the image |
 | `docker compose up` (without `-f build.yaml`) runs an older demo | The default files run the published `jeffersonlab/smoothness-demo:latest` image, not your working tree; use `-f build.yaml` |
