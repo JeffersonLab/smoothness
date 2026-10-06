@@ -63,9 +63,8 @@ class ConvertIT {
         Session.anonymous().getBytes(convert("image", "help.png", "/help?print=Y"));
 
     assertEquals(200, response.statusCode());
-    // Convert sends application/png, not the standard image/png
     assertTrue(
-        response.headers().firstValue("Content-Type").orElse("").startsWith("application/png"),
+        response.headers().firstValue("Content-Type").orElse("").startsWith("image/png"),
         response.headers().toString());
     assertRendersAPage(response.body());
   }
