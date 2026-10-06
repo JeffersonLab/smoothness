@@ -32,11 +32,14 @@ fix what fails, and report what you ran and what it returned.
   library.
 - Before opening a pull request, rebuild and restart the demo, since the container runs the
   image and not your working tree: `docker compose -f build.yaml up -d --build --wait demo`
-  (about 1 minute). Then run the integration tests, `./gradlew integrationTest` (about 15
+  (about 1 minute). Then run the integration tests, `./gradlew integrationTest` (about 30
   seconds; `--tests '*MoviesIT'` runs one class). Most drive the demo over HTTPS as a browser
   would; `BrowserIT` runs the pages in headless Chromium, through Playwright, and fails on any
-  JavaScript error. They use the ports in `.env`. They add movies and change a setting, and put
-  them back. Check `docker compose -f build.yaml logs demo` for errors. For changes to tags,
+  JavaScript error. `SmoothnessJsIT` calls `smoothness.js`'s functions on `/hello`, with
+  Playwright's clock fixed (`page.clock().setFixedTime`) for anything that depends on today, and
+  checks its page behavior: test changes to `smoothness.js` there. They use the ports in `.env`.
+  They add movies and change a setting, and put them back. Check
+  `docker compose -f build.yaml logs demo` for errors. For changes to tags,
   also run `./gradlew javadoc`, which builds the tag library docs too.
 - UI changes: look at them. `./gradlew :smoothness-demo:screenshot -Ppage=/overview` saves a
   full-page screenshot of the running demo in `smoothness-demo/build/screenshots` and prints its
