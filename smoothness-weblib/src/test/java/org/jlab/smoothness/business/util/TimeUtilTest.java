@@ -420,7 +420,20 @@ class TimeUtilTest {
         "1year",
         TimeUtil.encodeRange(TimeUtil.addYears(yearStart, -1), yearStart, false, null, null));
     assertEquals(
-        "past7days", TimeUtil.encodeRange(TimeUtil.addDays(today, -7), today, false, null, null));
+        "past3days", TimeUtil.encodeRange(TimeUtil.addDays(today, -3), today, false, null, null));
+    assertEquals(
+        "past10days", TimeUtil.encodeRange(TimeUtil.addDays(today, -10), today, false, null, null));
+  }
+
+  @Test
+  void encodeRangeOfThePastSevenDaysIsLastWeekOnWednesdays() {
+    Date today = TimeUtil.startOfDay(new Date(), Calendar.getInstance());
+    boolean wednesday = TimeUtil.startOfWeek(today, Calendar.WEDNESDAY).equals(today);
+
+    // Weeks start on Wednesday, and last week is checked before the past seven days.
+    assertEquals(
+        wednesday ? "1week" : "past7days",
+        TimeUtil.encodeRange(TimeUtil.addDays(today, -7), today, false, null, null));
   }
 
   @Test
