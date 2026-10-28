@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * An iterator over a date range.
+ * An iterator over an inclusive date range.
  *
  * @author ryans
  */
@@ -32,6 +32,13 @@ public class DateIterator implements Iterator<Date>, Iterable<Date> {
    * resolution.
    *
    * <p>The iteration resolution is specified using calendar field as defined in {@link Calendar}.
+   * The first element is the supplied start date, unless it is after the end date. Each subsequent
+   * element is computed by adding one field to the previous element using {@link Calendar#add(int,
+   * int)} in the default time zone; only elements at or before the supplied end date are returned.
+   * Month and year steps may clip the day to fit the target month, and later steps use that clipped
+   * day. For example, monthly iteration from March 31 yields April 30, then May 30; yearly
+   * iteration from February 29 yields February 28 in subsequent years, including the next leap
+   * year.
    *
    * @param start the start date.
    * @param end the end date.
@@ -40,9 +47,7 @@ public class DateIterator implements Iterator<Date>, Iterable<Date> {
   public DateIterator(Date start, Date end, int field) {
     this.field = field;
     this.end.setTime(end);
-    this.end.add(field, -1);
     this.current.setTime(start);
-    this.current.add(field, -1);
   }
 
   /**
@@ -76,8 +81,9 @@ public class DateIterator implements Iterator<Date>, Iterable<Date> {
       throw new NoSuchElementException();
     }
 
+    Date result = current.getTime();
     current.add(field, 1);
-    return current.getTime();
+    return result;
   }
 
   /**
