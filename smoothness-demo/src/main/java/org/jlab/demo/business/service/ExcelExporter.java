@@ -41,7 +41,10 @@ public class ExcelExporter {
       row.createCell(2).setCellValue(movie.getMpaaRating());
       row.createCell(3).setCellValue(movie.getTitle());
       row.createCell(4).setCellValue(movie.getDescription());
-      row.createCell(5).setCellValue(movie.getDurationMinutes());
+      Cell durationCell = row.createCell(5);
+      if (movie.getDurationMinutes() != null) {
+        durationCell.setCellValue(movie.getDurationMinutes());
+      }
     }
 
     sheet1.autoSizeColumn(0);
