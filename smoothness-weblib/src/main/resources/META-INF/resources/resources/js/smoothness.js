@@ -58,7 +58,9 @@ jlab.pageDialog.width = jlab.pageDialog.width || 840;
 jlab.pageDialog.height = jlab.pageDialog.height || 590;
 jlab.pageDialog.minWidth = jlab.pageDialog.minWidth || 0;
 jlab.pageDialog.minHeight = jlab.pageDialog.minHeight || 0;
-jlab.pageDialog.resizable = jlab.pageDialog.resizable || true;
+if (jlab.pageDialog.resizable === undefined) {
+    jlab.pageDialog.resizable = true;
+}
 jlab.pageDialog.modal = jlab.pageDialog.modal || false;
 /**
  * Common Namespaced Functions

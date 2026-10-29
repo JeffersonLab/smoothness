@@ -496,6 +496,21 @@ class SmoothnessJsIT {
     assertEquals(List.of(), browser.errors);
   }
 
+  /** An app configures jlab.pageDialog before loading smoothness.js; resizable defaults to true */
+  @ParameterizedTest
+  @CsvSource({"'', true", "'resizable: false', false", "'resizable: true', true"})
+  void pageDialogKeepsTheConfiguredResizable(String config, boolean resizable) {
+    Page page = browser.newPage();
+    page.addInitScript("window.jlab = {pageDialog: {" + config + "}};");
+    open(page, "/breadcrumbs/crumb-one");
+
+    assertEquals(String.valueOf(resizable), js(page, "jlab.pageDialog.resizable"));
+    page.locator(".dialog-opener").click();
+    assertThat(page.locator(".page-dialog")).isVisible();
+    assertThat(page.locator(".ui-dialog.ui-resizable")).hasCount(resizable ? 1 : 0);
+    assertEquals(List.of(), browser.errors);
+  }
+
   @Test
   void paginationButtonsSubmitTheOffset() {
     Page page = browser.loggedIn(Demo.USER);
