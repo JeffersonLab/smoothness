@@ -171,6 +171,22 @@ Further, the local DataSource must also leverage localhost port forwarding so th
 
 The [server](https://github.com/JeffersonLab/wildfly/blob/main/scripts/server-setup.sh) and [app](https://github.com/JeffersonLab/wildfly/blob/main/scripts/app-setup.sh) setup scripts can be used to setup a local instance of Wildfly. 
 
+## CDN archive
+`./gradlew build` also generates `smoothness-weblib/build/distributions/smoothness-cdn.tar.gz`.
+Gradle downloads a pinned Node.js version and installs the locked esbuild dependency automatically.
+To generate only this archive, run `./gradlew :smoothness-weblib:cdnArchive`.
+It contains the minified Smoothness assets at these relative paths:
+
+```
+css/smoothness.min.css
+js/smoothness.min.js
+```
+
+The archive is intended for extraction into the CDN's `jlab-theme/smoothness/<version>/`
+directory, where `<version>` is the value in `VERSION` without a `v` prefix. Third-party
+libraries are not included. The build creates the archive locally; attaching it to a GitHub
+release and deploying it through ADM remain separate steps.
+
 ## Release
 Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Further, both projects have a Java distributable (demo war and weblib jar), plus there is a demo Docker image.
 

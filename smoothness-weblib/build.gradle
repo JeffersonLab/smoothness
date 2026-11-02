@@ -1,6 +1,6 @@
 plugins {
     id 'java-library'
-    id 'org.gradlewebtools.minify' version '2.1.1'
+    id 'com.github.node-gradle.node' version '7.1.0'
     id 'org.jlab.tlddoc'
     id "com.diffplug.spotless" version "7.2.1"
     id "com.vanniktech.maven.publish" version "0.34.0"
@@ -54,19 +54,45 @@ javadoc {
     }
 }
 javadoc.finalizedBy(tlddoc)
-tasks.register('cssMinifyIt', org.gradlewebtools.minify.CssMinifyTask) {
-    srcDir = project.file('src/main/resources/META-INF/resources/resources/css')
-    dstDir = project.file('build')
-    options {
-        ignoreMinFiles = true
+// Gradle installs the pinned tools; developers and CI do not need a separate Node setup.
+node {
+    download = true
+    version = '22.23.4'
+    npmInstallCommand = 'ci'
+}
+['css', 'js'].each { extension ->
+    tasks.register("${extension}MinifyIt", com.github.gradle.node.npm.task.NpmTask) {
+        dependsOn tasks.named('npmInstall')
+        def source = layout.projectDirectory.file("src/main/resources/META-INF/resources/resources/${extension}/smoothness.${extension}")
+        def output = layout.buildDirectory.file("minified/${extension}/smoothness.min.${extension}")
+        inputs.file(source)
+        inputs.files('package.json', 'package-lock.json')
+        outputs.file(output)
+        def target = extension == 'js' ? 'es2015' : 'chrome88,firefox78,safari14'
+        npmCommand = ['exec', '--no', '--', 'esbuild', source.asFile.absolutePath,
+                      '--minify', "--target=${target}",
+                      "--outfile=${output.get().asFile.absolutePath}"]
     }
 }
-tasks.register('jsMinifyIt', org.gradlewebtools.minify.JsMinifyTask) {
-    srcDir = project.file('src/main/resources/META-INF/resources/resources/js')
-    dstDir = project.file('build')
-    options {
-        ignoreMinFiles = true
+tasks.register('cdnArchive', Tar) {
+    group = 'build'
+    description = 'Packages the minified Smoothness CSS and JavaScript for CDN deployment.'
+    archiveFileName = 'smoothness-cdn.tar.gz'
+    destinationDirectory = layout.buildDirectory.dir('distributions')
+    compression = Compression.GZIP
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+    from(tasks.named('cssMinifyIt')) {
+        include 'smoothness.min.css'
+        into 'css'
     }
+    from(tasks.named('jsMinifyIt')) {
+        include 'smoothness.min.js'
+        into 'js'
+    }
+}
+tasks.named('assemble') {
+    dependsOn tasks.named('cdnArchive')
 }
 mavenPublishing {
     publishToMavenCentral(true)
