@@ -1141,6 +1141,13 @@ jlab.initDateTimePickers = function () {
         dateFormat: 'dd-M-yy',
         controlType: myControl,
         timeFormat: 'HH:mm'
+    }).on("focus", function (e) {
+        // Once the date part parses, the datepicker triggers focus on the field after each key,
+        // though it already has focus, and the mask's focus handler would clear the incomplete
+        // value. Stop those so typing works; real focus still reaches the mask.
+        if (e.isTrigger && document.activeElement === this) {
+            e.stopImmediatePropagation();
+        }
     }).mask("99-aaa-9999 99:99", {placeholder: " "});
 };
 jlab.initDatePickers = function () {

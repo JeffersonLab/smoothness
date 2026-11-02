@@ -111,6 +111,113 @@ class TagsBrowserIT {
     assertEquals(List.of(), browser.errors);
   }
 
+  /** The tags page with the date flyout open and its date-time inputs showing. */
+  static Locator dateTimeStart() {
+    Page page = tagsPage();
+    page.locator("#date-flyout .filter-flyout-link").click();
+    Locator start = page.locator("#datetimes-start");
+    assertThat(start).isVisible();
+    return start;
+  }
+
+  /**
+   * Sets the value without focusing the input, as a page with a value does, so the picker reads it
+   * when it opens. Playwright's fill focuses first, opening the picker on an empty value.
+   */
+  static void setValue(Locator input, String value) {
+    input.evaluate("(input, value) => input.value = value", value);
+  }
+
+  /**
+   * Clicks a date-time input and waits for its 17-character mask: 10 ms after focus, the mask
+   * writes its placeholders and moves the caret to the start, or selects a complete value. Keys
+   * typed sooner land in the wrong place.
+   */
+  static void clickAndWaitForMask(Locator input) {
+    input.click();
+    input
+        .page()
+        .waitForFunction(
+            "input => input.value.length === 17 && input.selectionStart === 0",
+            input.elementHandle());
+  }
+
+  /** Types at about a person's speed, so the datepicker reacts between keys. */
+  static void typeSlowly(Locator input, String text) {
+    input.pressSequentially(text, new Locator.PressSequentiallyOptions().setDelay(150));
+  }
+
+  @Test
+  void typingADateTimeKeepsTheValue() {
+    Locator start = dateTimeStart();
+
+    clickAndWaitForMask(start);
+    typeSlowly(start, "02Nov20261430");
+    assertThat(start).hasValue("02-Nov-2026 14:30");
+
+    start.blur();
+    assertThat(start).hasValue("02-Nov-2026 14:30");
+    assertEquals(List.of(), browser.errors);
+  }
+
+  @Test
+  void typingOverTheMinutesChangesOnlyTheMinutes() {
+    Locator start = dateTimeStart();
+    setValue(start, "02-Nov-2026 14:30");
+
+    clickAndWaitForMask(start);
+    start.press("End");
+    start.press("Backspace");
+    start.press("Backspace");
+    typeSlowly(start, "05");
+    assertThat(start).hasValue("02-Nov-2026 14:05");
+
+    start.blur();
+    assertThat(start).hasValue("02-Nov-2026 14:05");
+    assertEquals(List.of(), browser.errors);
+  }
+
+  @Test
+  void anIncompleteDateTimeIsClearedOnBlur() {
+    Locator start = dateTimeStart();
+
+    clickAndWaitForMask(start);
+    typeSlowly(start, "02Nov2026");
+    start.blur();
+
+    assertThat(start).hasValue("");
+    assertEquals(List.of(), browser.errors);
+  }
+
+  @Test
+  void choosingADayFromTheCalendarFillsTheDateTime() {
+    Locator start = dateTimeStart();
+    Page page = start.page();
+    setValue(start, "02-Nov-2026 14:30");
+
+    start.click();
+    page.locator(
+            "#ui-datepicker-div a.ui-state-default", new Page.LocatorOptions().setHasText("17"))
+        .first()
+        .click();
+
+    assertThat(start).hasValue("17-Nov-2026 14:30");
+    assertEquals(List.of(), browser.errors);
+  }
+
+  @Test
+  void theHourSpinnerChangesTheHour() {
+    Locator start = dateTimeStart();
+    Page page = start.page();
+    setValue(start, "02-Nov-2026 14:30");
+
+    start.click();
+    page.locator("#ui-datepicker-div .ui_tpicker_hour .ui-spinner-up").click();
+
+    assertThat(start).hasValue("02-Nov-2026 15:30");
+    assertEquals(List.of(), browser.errors);
+  }
+
   @Test
   void dateRangeWithoutDatesStartsAsCustom() {
     Page page = tagsPage();
