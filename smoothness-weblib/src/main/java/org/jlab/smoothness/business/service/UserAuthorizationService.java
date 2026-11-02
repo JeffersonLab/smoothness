@@ -23,12 +23,30 @@ public class UserAuthorizationService {
   private static final Logger LOGGER = Logger.getLogger(UserAuthorizationService.class.getName());
 
   private static UserAuthorizationService instance = null;
+
+  /**
+   * Orders users by last name, then by username. Keycloak profiles need not have a last name, so
+   * users without one (null or empty) come last, and the username breaks ties so the order is
+   * deterministic.
+   */
+  static final Comparator<User> BY_LASTNAME_THEN_USERNAME =
+      Comparator.comparing(
+              UserAuthorizationService::lastnameOrNull,
+              Comparator.nullsLast(Comparator.naturalOrder()))
+          .thenComparing(User::getUsername, Comparator.nullsLast(Comparator.naturalOrder()));
+
   private final ConcurrentHashMap<String, List<User>> usersInRole = new ConcurrentHashMap<>();
   private final ConcurrentHashMap<String, User> userFromUsername = new ConcurrentHashMap<>();
   private final Keycloak keycloak;
   private final String realm;
   private final String resource;
   private final String secret;
+
+  private static String lastnameOrNull(User user) {
+    String lastname = user.getLastname();
+
+    return lastname == null || lastname.isEmpty() ? null : lastname;
+  }
 
   private UserAuthorizationService() {
     // Private constructor; must use factory method
@@ -111,7 +129,7 @@ public class UserAuthorizationService {
       users.add(user);
     }
 
-    users.sort(Comparator.comparing(User::getLastname));
+    users.sort(BY_LASTNAME_THEN_USERNAME);
 
     return Collections.unmodifiableList(users);
   }
@@ -203,7 +221,7 @@ public class UserAuthorizationService {
         users.add(user);
       }
 
-      users.sort(Comparator.comparing(User::getLastname));
+      users.sort(BY_LASTNAME_THEN_USERNAME);
     } catch (NotFoundException e) {
       LOGGER.log(Level.INFO, "Role not found in Keycloak: " + role);
     }
