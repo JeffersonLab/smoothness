@@ -44,6 +44,18 @@ Playwright's Chromium (about 300 MB, in `~/.cache/ms-playwright`), unless anothe
 Sync Board, already did. The stack used about
 3.6 GB of memory, 2.3 GB of it Oracle's.
 
+On a network that inspects HTTPS and re-signs it with its own certificate authority, such as
+JLab's, the demo image's build fails in its Gradle stage with `PKIX path building failed` while
+it downloads Node for the CSS and JavaScript minifier: the VM trusts the authority, but the
+`gradle:9-jdk21` build container doesn't. The `Dockerfile`'s `CUSTOM_CRT_URL` build argument
+imports a certificate authority into the container's system and JDK trust stores, but
+`build.yaml` passes none, so build the demo image with the JLab one first, then start the stack:
+
+```bash
+docker compose -f build.yaml build --build-arg CUSTOM_CRT_URL=http://pki.jlab.org/JLabCA.crt demo
+docker compose -f build.yaml up -d --wait
+```
+
 ## Ports and sister agents
 
 The containers publish the ports in the README's Ports section on 127.0.0.1, each with a
