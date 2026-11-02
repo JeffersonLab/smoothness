@@ -451,7 +451,12 @@ class TimeUtilTest {
 
   @Test
   void encodeRangeWithSevenAmDaysStartsDaysAt7() {
-    Date today = TimeUtil.addHours(TimeUtil.startOfDay(new Date(), Calendar.getInstance()), 7);
+    // Set the hour rather than adding seven: addHours adds elapsed hours, so on the days daylight
+    // saving time changes it lands on 06:00 or 08:00, while encodeRange starts its days at 07:00.
+    Calendar c = Calendar.getInstance();
+    c.setTime(TimeUtil.startOfDay(new Date(), Calendar.getInstance()));
+    c.set(Calendar.HOUR_OF_DAY, 7);
+    Date today = c.getTime();
 
     assertEquals("0day", TimeUtil.encodeRange(today, TimeUtil.addDays(today, 1), true, null, null));
     assertEquals(
