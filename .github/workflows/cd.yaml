@@ -12,7 +12,9 @@ jobs:
       contents: write
     uses: jeffersonlab/java-workflows/.github/workflows/gh-release.yaml@v2
     with:
-      files: smoothness-demo/build/libs/smoothness-demo.war
+      files: |
+        smoothness-demo/build/libs/smoothness-demo.war
+        smoothness-weblib/build/distributions/smoothness-cdn.tar.gz
     secrets: inherit
 
   artifact_publish:

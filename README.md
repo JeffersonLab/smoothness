@@ -185,8 +185,8 @@ js/smoothness.min.js
 
 The archive is intended for extraction into the CDN's `jlab-theme/smoothness/<version>/`
 directory, where `<version>` is the value in `VERSION` without a `v` prefix. Third-party
-libraries are not included. The build creates the archive locally; attaching it to a GitHub
-release and deploying it through ADM remain separate steps.
+libraries are not included. The release workflow attaches `smoothness-cdn.tar.gz` to the GitHub
+release alongside `smoothness-demo.war`. Deploying the archive to a CDN remains a separate step.
 
 ## Release
 Since this is a monorepo there are actually two projects: the weblib and the demo of the weblib.  Further, both projects have a Java distributable (demo war and weblib jar), plus there is a demo Docker image.
@@ -202,12 +202,12 @@ docker compose -f build.yaml up
 ```
 3. Bump the version number in the VERSION file and commit and push to GitHub (using [Semantic Versioning](https://semver.org/)).
 4. The [CD](https://github.com/JeffersonLab/smoothness/blob/main/.github/workflows/cd.yaml) GitHub Action should run automatically invoking:
-    - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-release.yaml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.  A war file artifact is attached to the release.
+    - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-release.yaml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.  The demo WAR and `smoothness-cdn.tar.gz` are attached to the release.
     - The [Publish artifact](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/maven-publish.yaml) GitHub Action to create a deployment artifact on maven central.
     - The [Publish docs](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-pages-publish.yaml) GitHub Action to create javadocs.
     - The [Publish docker image](https://github.com/JeffersonLab/container-workflows/blob/main/.github/workflows/docker-publish.yaml) GitHub Action to create a new demo Docker image.
     - The [Deploy to JLab](https://github.com/JeffersonLab/general-workflows/blob/main/.github/workflows/jlab-deploy-app.yaml) GitHub Action to deploy to the JLab test environment.
-5. Copy updated minified JS and CSS to any CDN as needed.
+5. Download `smoothness-cdn.tar.gz` from the matching GitHub release and deploy its contents to the CDN's `jlab-theme/smoothness/<version>/` directory as needed.
 
 ## Deploy
 At JLab this app is found at [ace.jlab.org/smoothness-demo](https://ace.jlab.org/smoothness-demo) and internally at [acctest.acc.jlab.org/smoothness-demo](https://acctest.acc.jlab.org/smoothness-demo).  However, those servers are proxies for `wildfly3.acc.jlab.org` and `wildflytest3.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
