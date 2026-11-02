@@ -496,6 +496,30 @@ class SmoothnessJsIT {
     assertEquals(List.of(), browser.errors);
   }
 
+  /** Reloading a partial, as a successful edit does, keeps the dialog's filter (issue 95) */
+  @Test
+  void reloadPartialKeepsTheFilterSubmittedInTheDialog() {
+    Page page = browser.loggedIn(Demo.USER);
+    open(page, "/breadcrumbs/crumb-one");
+    page.locator(".dialog-opener").click();
+    page.locator(".page-dialog a.partial-support", new Page.LocatorOptions().setHasText("Next"))
+        .click();
+    assertThat(page.locator(".ui-dialog-title")).hasText("Crumb Two");
+
+    page.locator(".page-dialog .filter-flyout-link").click();
+    page.locator(".page-dialog #search").fill(Demo.USER);
+    page.locator(".page-dialog .filter-form-submit-button").click();
+    assertThat(page.locator(".page-dialog #search")).hasValue(Demo.USER);
+    assertThat(page.locator(".page-dialog tbody tr")).hasCount(1);
+
+    page.evaluate("$('.page-dialog').addClass('before-reload'); jlab.reloadPartial();");
+    Locator reloaded = page.locator(".page-dialog:not(.before-reload)");
+    assertThat(reloaded.locator("#search")).hasValue(Demo.USER);
+    assertThat(reloaded.locator("tbody tr")).hasCount(1);
+    assertThat(page.locator(".page-dialog")).hasCount(1);
+    assertEquals(List.of(), browser.errors);
+  }
+
   /** An app configures jlab.pageDialog before loading smoothness.js; resizable defaults to true */
   @ParameterizedTest
   @CsvSource({"'', true", "'resizable: false', false", "'resizable: true', true"})
