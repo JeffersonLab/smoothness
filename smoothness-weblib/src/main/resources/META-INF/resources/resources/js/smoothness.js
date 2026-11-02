@@ -1187,7 +1187,9 @@ $(document).on("change", ".date-range-select", function () {
 
 });
 // Dialog events
+// Opens href in the page dialog and remembers it as the URL reloadPartial opens
 jlab.setPartial = function (href) {
+    jlab.partialUrl = href;
     jlab.closePageDialogs();
     jlab.openPageInDialog(href);
 };
@@ -1220,8 +1222,7 @@ jlab.reloadPartial = function() {
 }
 
 $(document).on("click", ".dialog-opener, .page-dialog .partial-support", function (e) {
-    jlab.partialUrl = $(this).attr("href");
-    jlab.setPartial(jlab.partialUrl);
+    jlab.setPartial($(this).attr("href"));
     return false;
 });
 $(document).on("click", ".dialog-close-button", function () {
