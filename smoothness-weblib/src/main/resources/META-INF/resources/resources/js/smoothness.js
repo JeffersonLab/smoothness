@@ -267,52 +267,42 @@ jlab.openPageInDialog = function (href) {
                     }
                 });
 
-                let waitingForLoadCount = 0;
-                let scripts = [];
+                // Run the scripts in document order, as a full page would: each external script
+                // finishes loading before the next script runs, so an initializer can use the
+                // libraries above it.  Then show the dialog.
+                let scripts = $('script', js).not('.full-page-only').get();
 
-                $('script', js).each(function () {
-                    if($(this).hasClass('full-page-only')) {
-                        return true; // continue
-                    }
+                scripts.reduce(function (previous, element) {
+                    return previous.then(function () {
+                        let src = $(element).attr("src"),
+                            id = $(element).attr("id"),
+                            text = $(element).text();
 
-                    let src = $(this).attr("src"),
-                        id = $(this).attr("id"),
-                        text = $(this).text();
-
-                    // Script elements with src attribute not already in DOM
-                    if(src && $('script[src="' + src + '"]').length === 0) {
-                        waitingForLoadCount++;
-
-                        const script = document.createElement('script');
-                        scripts.push(script);
-                        script.onload = function(){
-                            waitingForLoadCount--;
-
-                            if(waitingForLoadCount === 0) {
-                                jlab.showPartialPageDialog($dialog, title);
-                            }
-                        };
-                        script.src = src;
-                    } else if(id && $('script[id="' + id + '"]').length === 0) {
-                        // Inline scripts with an ID not already in DOM
-                        // There is no onload event with inline scripts though.
-
-                        const script = document.createElement('script');
-                        script.id = id;
-                        script.text = text;
-                        document.body.appendChild(script);
-                    }
-                });
-
-                if(waitingForLoadCount === 0) {
+                        // Script elements with src attribute not already in DOM
+                        if(src && $('script[src="' + src + '"]').length === 0) {
+                            return new Promise(function (resolve, reject) {
+                                const script = document.createElement('script');
+                                script.onload = resolve;
+                                script.onerror = function () {
+                                    reject(new Error('Unable to load script: ' + src));
+                                };
+                                script.src = src;
+                                document.body.appendChild(script);
+                            });
+                        } else if(id && $('script[id="' + id + '"]').length === 0) {
+                            // Inline scripts with an ID not already in DOM run when appended
+                            const script = document.createElement('script');
+                            script.id = id;
+                            script.text = text;
+                            document.body.appendChild(script);
+                        }
+                    });
+                }, Promise.resolve()).then(function () {
                     jlab.showPartialPageDialog($dialog, title);
-                } else {
-                    // Start load
-                    for (let i = 0; i < scripts.length; i++) {
-                        let script = scripts[i]; // scripts with src only
-                        document.body.appendChild(script);
-                    }
-                }
+                }).catch(function (error) {
+                    // Not a login redirect: the page loaded, but one of its scripts did not
+                    console.error('partial page script error:', error);
+                });
             }).catch(error => {
             console.error('fetch error:', error);
             // assume auth redirect

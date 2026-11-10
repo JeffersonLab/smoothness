@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Route;
 import com.microsoft.playwright.options.LoadState;
 import java.nio.file.Files;
 import java.time.ZoneId;
@@ -518,6 +519,77 @@ class SmoothnessJsIT {
     assertThat(reloaded.locator("tbody tr")).hasCount(1);
     assertThat(page.locator(".page-dialog")).hasCount(1);
     assertEquals(List.of(), browser.errors);
+  }
+
+  /**
+   * A partial's scripts run in document order, each external one loaded before the next script, and
+   * the dialog opens after them; reopening doesn't run them again (issue 94).
+   */
+  @Test
+  void dialogRunsThePartialsScriptsInOrder() {
+    Page page = browser.newPage();
+    String base = Demo.URL + "/script-order/";
+    String partial =
+        """
+        <div id="partial" data-title="Script Order">
+          <div id="partial-css"></div>
+          <div id="partial-js">
+            <script src="%1$sslow.js"></script>
+            <script src="%1$sfast.js"></script>
+            <script id="script-order-init">
+              order.push('init:' + typeof slowValue + ',' + typeof fastValue);
+              $(document).on('click', '#script-order-button', function () { clicks++; });
+            </script>
+          </div>
+          <div id="partial-html"><button id="script-order-button">Click</button></div>
+        </div>
+        """
+            .formatted(base);
+    List<Route> heldSlow = new ArrayList<>();
+    List<String> requested = new ArrayList<>();
+    page.route(
+        url -> url.startsWith(base),
+        route -> {
+          String url = route.request().url();
+          requested.add(url.substring(base.length()));
+          if (url.startsWith(base + "slow.js")) {
+            heldSlow.add(route); // Loads after fast.js would, if they weren't in order
+          } else if (url.startsWith(base + "fast.js")) {
+            fulfillScript(route, "order.push('fast:' + typeof slowValue); fastValue = 2;");
+          } else {
+            route.fulfill(new Route.FulfillOptions().setContentType("text/html").setBody(partial));
+          }
+        });
+    open(page, "/hello");
+    page.evaluate(
+        "window.order = []; window.clicks = 0;"
+            + " $(document).on('partial-page-init', function () { order.push('shown'); });"
+            + " jlab.openPageInDialog('"
+            + base
+            + "page');");
+
+    page.waitForCondition(() -> !heldSlow.isEmpty());
+    page.waitForTimeout(500);
+    assertEquals("", js(page, "order.join()"));
+    assertThat(page.locator(".page-dialog")).hasCount(0);
+    fulfillScript(heldSlow.get(0), "order.push('slow'); slowValue = 1;");
+
+    assertThat(page.locator(".page-dialog")).isVisible();
+    assertEquals("slow,fast:number,init:number,number,shown", js(page, "order.join()"));
+
+    page.locator(".ui-dialog-titlebar-close").click();
+    page.evaluate("jlab.openPageInDialog('" + base + "page')");
+    assertThat(page.locator(".page-dialog")).isVisible();
+    page.locator("#script-order-button").click();
+
+    assertEquals("slow,fast:number,init:number,number,shown,shown", js(page, "order.join()"));
+    assertEquals("1", js(page, "clicks"));
+    assertEquals(List.of("page?partial=Y", "slow.js", "fast.js", "page?partial=Y"), requested);
+    assertEquals(List.of(), browser.errors);
+  }
+
+  static void fulfillScript(Route route, String script) {
+    route.fulfill(new Route.FulfillOptions().setContentType("text/javascript").setBody(script));
   }
 
   /** An app configures jlab.pageDialog before loading smoothness.js; resizable defaults to true */
