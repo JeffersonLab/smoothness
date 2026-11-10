@@ -419,12 +419,15 @@ jlab.toIsoDateString = function (x) {
     return year + '-' + jlab.pad(month, 2) + '-' + jlab.pad(day, 2);
 };
 jlab.fromIsoDateTimeString = function (x) {
+    /* Seconds are optional, since toIsoDateTimeString leaves them out: a string that ends after
+       the minutes has zero seconds. Anything else after the minutes must be seconds, or the
+       result is an Invalid Date. */
     var year = parseInt(x.substring(0, 4)),
         month = parseInt(x.substring(5, 7)) - 1,
         day = parseInt(x.substring(8, 10)),
         hour = parseInt(x.substring(11, 13)),
         minute = parseInt(x.substring(14, 16)),
-        second = parseInt(x.substring(17, 19));
+        second = x.length === 16 ? 0 : parseInt(x.substring(17, 19));
     return new Date(year, month, day, hour, minute, second);
 };
 jlab.fromIsoDateString = function (x) {
