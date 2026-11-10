@@ -135,6 +135,28 @@ class SmoothnessJsIT {
         "08-Mar-2026", js(page, "jlab.toFriendlyDateString(jlab.fromIsoDateString('2026-03-08'))"));
   }
 
+  @Test
+  void isoDateTimeParsesWithOrWithoutSeconds() {
+    Page page = onTuesday();
+
+    // toIsoDateTimeString leaves out the seconds, and fromIsoDateTimeString reads its output
+    assertEquals(
+        "true",
+        js(
+            page,
+            "jlab.fromIsoDateTimeString(jlab.toIsoDateTimeString(new Date(2026, 2, 8, 7, 5)))"
+                + ".getTime() === new Date(2026, 2, 8, 7, 5).getTime()"));
+    assertEquals(
+        "08-Mar-2026 07:05",
+        js(page, "jlab.toFriendlyDateTimeString(jlab.fromIsoDateTimeString('2026-03-08T07:05'))"));
+    assertEquals("0", js(page, "jlab.fromIsoDateTimeString('2026-03-08T07:05').getSeconds()"));
+    assertEquals("42", js(page, "jlab.fromIsoDateTimeString('2026-03-08T07:05:42').getSeconds()"));
+    // Anything else after the minutes is malformed: an Invalid Date
+    assertEquals("true", js(page, "isNaN(jlab.fromIsoDateTimeString('2026-03-08T07:05Z'))"));
+    assertEquals("true", js(page, "isNaN(jlab.fromIsoDateTimeString('2026-03-08T07:05:'))"));
+    assertEquals("true", js(page, "isNaN(jlab.fromIsoDateTimeString('2026-03-08T07'))"));
+  }
+
   @ParameterizedTest
   @CsvSource({
     // hour, shift start, shift end: as TimeUtil.getCcShiftStart and getCcShiftEnd
