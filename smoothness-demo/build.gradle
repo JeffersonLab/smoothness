@@ -72,8 +72,10 @@ def installChromium = tasks.register('installChromium', JavaExec) {
     group = 'verification'
     classpath = sourceSets.integration.runtimeClasspath
     mainClass = 'com.microsoft.playwright.CLI'
-    // CI (GitHub Actions sets CI) also installs the system libraries it needs, with sudo
-    args = ['install'] + (System.getenv('CI') ? ['--with-deps'] : []) + ['chromium']
+    // No --with-deps, even in CI: GitHub's Ubuntu runner already has the libraries Chromium needs,
+    // and --with-deps only added CJK, Thai and Cyrillic fonts with apt, which failed the job when
+    // the Ubuntu mirrors were unreachable. CI caches ~/.cache/ms-playwright (.github/workflows).
+    args = ['install', 'chromium']
 }
 // Not part of build, as it needs the demo and its services running: see AGENTS.md
 tasks.register('integrationTest', Test) {
