@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import org.jlab.smoothness.persistence.enumeration.Shift;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -240,6 +242,9 @@ class TimeUtilTest {
     TimeUtil.startOfMonth(date("2026-03-10 13:45"), tz);
     TimeUtil.startOfYear(date("2026-03-10 13:45"), tz);
     TimeUtil.endOfMonth(date("2026-03-10 13:45"), tz);
+    TimeUtil.startOfNextDay(date("2026-03-10 13:45"), tz);
+    TimeUtil.startOfNextMonth(date("2026-03-10 13:45"), tz);
+    TimeUtil.startOfNextYear(date("2026-03-10 13:45"), tz);
 
     assertEquals(before, tz.getTime());
   }
@@ -249,6 +254,93 @@ class TimeUtilTest {
     assertEquals(
         date("2026-02-28 19:00"),
         TimeUtil.startOfMonth(date("2026-03-10 13:45"), TimeUtil.getUtcCalendar()));
+  }
+
+  /** An instant, such as "2026-03-08T12:00:00Z". */
+  static Date instant(String instant) {
+    return Date.from(Instant.parse(instant));
+  }
+
+  static Calendar calendar(String zone) {
+    return Calendar.getInstance(TimeZone.getTimeZone(zone));
+  }
+
+  // The next-boundary helpers add the day, month, or year in the calendar's time zone, not the
+  // JVM's (#92).
+
+  @Test
+  void startOfNextDayUsesTheCalendarsTimeZone() {
+    Calendar utc = TimeUtil.getUtcCalendar();
+
+    assertEquals(
+        instant("2026-03-11T00:00:00Z"),
+        TimeUtil.startOfNextDay(instant("2026-03-10T13:45:00Z"), utc));
+    // New York springs forward on 2026-03-08 and falls back on 2026-11-01.
+    assertEquals(
+        instant("2026-03-09T00:00:00Z"),
+        TimeUtil.startOfNextDay(instant("2026-03-08T12:00:00Z"), utc));
+    assertEquals(
+        instant("2026-11-02T00:00:00Z"),
+        TimeUtil.startOfNextDay(instant("2026-11-01T12:00:00Z"), utc));
+    assertEquals(
+        instant("2027-01-01T00:00:00Z"),
+        TimeUtil.startOfNextDay(instant("2026-12-31T23:30:00Z"), utc));
+    // London springs forward on 2026-03-29 and falls back on 2026-10-25.
+    assertEquals(
+        instant("2026-03-29T23:00:00Z"),
+        TimeUtil.startOfNextDay(instant("2026-03-29T12:00:00Z"), calendar("Europe/London")));
+    assertEquals(
+        instant("2026-10-26T00:00:00Z"),
+        TimeUtil.startOfNextDay(instant("2026-10-25T12:00:00Z"), calendar("Europe/London")));
+  }
+
+  @Test
+  void startOfNextDayAcrossTheDefaultTimeZonesDstChanges() {
+    assertEquals(
+        date("2026-03-09 00:00"),
+        TimeUtil.startOfNextDay(date("2026-03-08 12:00"), Calendar.getInstance()));
+    assertEquals(
+        date("2026-11-02 00:00"),
+        TimeUtil.startOfNextDay(date("2026-11-01 12:00"), Calendar.getInstance()));
+  }
+
+  @Test
+  void startOfNextMonthUsesTheCalendarsTimeZone() {
+    Calendar utc = TimeUtil.getUtcCalendar();
+
+    assertEquals(
+        instant("2026-04-01T00:00:00Z"),
+        TimeUtil.startOfNextMonth(instant("2026-03-08T12:00:00Z"), utc));
+    assertEquals(
+        instant("2026-12-01T00:00:00Z"),
+        TimeUtil.startOfNextMonth(instant("2026-11-01T12:00:00Z"), utc));
+    assertEquals(
+        instant("2026-03-01T00:00:00Z"),
+        TimeUtil.startOfNextMonth(instant("2026-02-28T23:30:00Z"), utc));
+    assertEquals(
+        instant("2027-01-01T00:00:00Z"),
+        TimeUtil.startOfNextMonth(instant("2026-12-15T12:00:00Z"), utc));
+    // London is on summer time on 2026-10-01 and not on 2026-11-01.
+    assertEquals(
+        instant("2026-11-01T00:00:00Z"),
+        TimeUtil.startOfNextMonth(instant("2026-10-15T12:00:00Z"), calendar("Europe/London")));
+    assertEquals(
+        instant("2026-03-31T23:00:00Z"),
+        TimeUtil.startOfNextMonth(instant("2026-03-15T12:00:00Z"), calendar("Europe/London")));
+  }
+
+  @Test
+  void startOfNextYearUsesTheCalendarsTimeZone() {
+    assertEquals(
+        instant("2027-01-01T00:00:00Z"),
+        TimeUtil.startOfNextYear(instant("2026-06-15T12:00:00Z"), TimeUtil.getUtcCalendar()));
+    assertEquals(
+        instant("2027-01-01T00:00:00Z"),
+        TimeUtil.startOfNextYear(instant("2026-12-31T23:30:00Z"), TimeUtil.getUtcCalendar()));
+    // Moscow moved from UTC+4 to UTC+3 on 2014-10-26.
+    assertEquals(
+        instant("2014-12-31T21:00:00Z"),
+        TimeUtil.startOfNextYear(instant("2014-06-15T12:00:00Z"), calendar("Europe/Moscow")));
   }
 
   @Test

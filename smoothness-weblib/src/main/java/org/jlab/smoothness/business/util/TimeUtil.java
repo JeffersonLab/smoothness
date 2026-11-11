@@ -522,7 +522,26 @@ public final class TimeUtil {
    * @return The Date adjusted to start of the next year
    */
   public static Date startOfNextYear(Date date, Calendar tz) {
-    return addYears(startOfYear(date, tz), 1);
+    return add(startOfYear(date, tz), tz, Calendar.YEAR, 1);
+  }
+
+  /**
+   * Add an amount to a calendar field of a Date in the time zone of a Calendar, leaving the
+   * Calendar alone.
+   *
+   * @param date The Date to add to
+   * @param tz The timezone (Calendar)
+   * @param field The Calendar field, such as Calendar.DATE
+   * @param amount The amount to add (negative allowed)
+   * @return The new Date result from the addition
+   */
+  private static Date add(Date date, Calendar tz, int field, int amount) {
+    Calendar cal = (Calendar) tz.clone();
+
+    cal.setTime(date);
+    cal.add(field, amount);
+
+    return cal.getTime();
   }
 
   /**
@@ -569,7 +588,7 @@ public final class TimeUtil {
    * @return The Date representing the start of the next month
    */
   public static Date startOfNextMonth(Date date, Calendar tz) {
-    return addMonths(startOfMonth(date, tz), 1);
+    return add(startOfMonth(date, tz), tz, Calendar.MONTH, 1);
   }
 
   /**
@@ -745,7 +764,7 @@ public final class TimeUtil {
    * @return The Date adjusted to the start of the next day
    */
   public static Date startOfNextDay(Date date, Calendar tz) {
-    return addDays(startOfDay(date, tz), 1);
+    return add(startOfDay(date, tz), tz, Calendar.DATE, 1);
   }
 
   /**
