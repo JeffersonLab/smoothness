@@ -88,6 +88,45 @@ class LoginIT {
   }
 
   @Test
+  void sessionStatusSaysWhoIsLoggedIn() throws Exception {
+    HttpResponse<String> anonymous = Session.anonymous().get("/session-status");
+    HttpResponse<String> user = Session.loggedIn(Demo.USER).get("/session-status");
+
+    assertEquals(200, anonymous.statusCode());
+    assertEquals("{\"user\":null}", anonymous.body());
+    assertEquals("no-store", anonymous.headers().firstValue("Cache-Control").orElse(""));
+    assertEquals("{\"user\":\"" + Demo.USER + "\"}", user.body());
+  }
+
+  /** A page's login URL for logging in again from a new tab ends on /logged-in */
+  @Test
+  void loginAgainUrlEndsOnTheLoggedInPage() throws Exception {
+    Session session = Session.loggedIn(Demo.USER);
+    HttpResponse<String> overview = session.get("/overview");
+    Matcher url = Pattern.compile("data-login-url=\"([^\"]+)\"").matcher(overview.body());
+    assertTrue(url.find(), "no login URL on /overview");
+
+    Session anonymous = Session.anonymous();
+    HttpResponse<String> page =
+        anonymous.submitLoginForm(
+            anonymous.get(url.group(1).replace("&amp;", "&")), Demo.USER, Demo.PASSWORD);
+
+    assertEquals(Demo.URL + "/logged-in", page.uri().toString());
+    assertEquals("Demo - Logged In", Demo.title(page));
+    assertTrue(page.body().contains("You're logged in to Smoothness Demo as"), page.body());
+    assertTrue(page.body().contains("<b>" + Demo.USER + "</b>"), page.body());
+  }
+
+  @Test
+  void loggedInPageSaysWhenNoOneIsLoggedIn() throws Exception {
+    HttpResponse<String> page = Session.anonymous().get("/logged-in");
+
+    assertEquals(200, page.statusCode());
+    assertEquals("Demo - Not Logged In", Demo.title(page));
+    assertTrue(page.body().contains("You're not logged in"), page.body());
+  }
+
+  @Test
   void wrongPasswordStaysOnKeycloaksForm() throws Exception {
     HttpResponse<String> page = Session.anonymous().login(Demo.USER, "wrong");
 

@@ -63,12 +63,26 @@ final class DemoBrowser implements AutoCloseable {
     Page page = newPage();
 
     page.navigate(Demo.URL + "/sso?returnUrl=" + URI.create(Demo.URL).getPath() + "/overview");
-    page.locator("#username").fill(username);
-    page.locator("#password").fill(Demo.PASSWORD);
-    page.locator("#kc-login").click();
+    submitLoginForm(page, username);
     page.waitForURL(Demo.URL + "/overview");
 
     return page;
+  }
+
+  /** Logs in on Keycloak's login form, which the page shows. */
+  static void submitLoginForm(Page page, String username) {
+    page.locator("#username").fill(username);
+    page.locator("#password").fill(Demo.PASSWORD);
+    page.locator("#kc-login").click();
+  }
+
+  /** Logs in again, in a new page with the same cookies as the given one, and closes it. */
+  static void logInAgain(Page page, String username) {
+    Page other = page.context().newPage();
+    other.navigate(Demo.URL + "/sso?returnUrl=" + URI.create(Demo.URL).getPath() + "/overview");
+    submitLoginForm(other, username);
+    other.waitForURL(Demo.URL + "/overview");
+    other.close();
   }
 
   @Override

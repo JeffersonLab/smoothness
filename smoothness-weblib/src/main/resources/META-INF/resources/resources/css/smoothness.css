@@ -775,6 +775,26 @@ input.date-input {
     box-shadow: 0 8px 8px #979797;
     z-index: 1000;    
 }
+/*Logged out: a bar at the top of the page, above the notification bar*/
+#session-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+    padding: 8px 16px;
+    background-color: #b00020;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    box-shadow: 0 4px 8px #979797;
+}
+#session-bar button {
+    margin-left: 8px;
+    font-size: 16px;
+}
+.message-dialog p {
+    margin: 0.5em 0;
+    line-height: 1.4;
+}
 /*Editable Row Table*/
 .editable-row-table tbody tr:hover {
     background-color: lightskyblue;
