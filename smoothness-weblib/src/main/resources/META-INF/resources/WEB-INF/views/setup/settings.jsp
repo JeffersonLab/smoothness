@@ -57,13 +57,13 @@
                         reloading = true;
                         window.location.reload();
                     } else {
-                        alert(json.error);
+                        jlab.showErrorDialog('Unable to Save', json.error);
                     }
                 });
 
                 request.fail(function(xhr, textStatus) {
                     window.console && console.log('Unable to edit setting; Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
-                    alert('Unable to Save: Server unavailable or unresponsive');
+                    jlab.showRequestFailure(xhr, 'Unable to Save');
                 });
 
                 request.always(function() {

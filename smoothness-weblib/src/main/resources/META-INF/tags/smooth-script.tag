@@ -33,8 +33,16 @@
 <c:url var="suLogoutUrl" value="${env['KEYCLOAK_FRONTEND_SERVER_URL']}/auth/realms/${env['KEYCLOAK_REALM']}/protocol/openid-connect/logout">
     <c:param name="redirect_uri" value="${env['KEYCLOAK_FRONTEND_SERVER_URL']}/auth/realms/${env['KEYCLOAK_REALM']}/account/"/>
 </c:url>
-<script type="text/javascript">
+<%-- The user the page is for, which smoothness.js checks is still logged in; none behind the public proxy --%>
+<c:set var="sessionUser" value="${publicProxy ? '' : pageContext.request.remoteUser}"/>
+<c:url var="sessionLoginUrl" value="/sso">
+    <c:param name="returnUrl" value="${env['FRONTEND_SERVER_URL']}${pageContext.request.contextPath}/logged-in"/>
+</c:url>
+<script type="text/javascript" data-user="${fn:escapeXml(sessionUser)}" data-login-url="${fn:escapeXml(sessionLoginUrl)}">
     var jlab = jlab || {};
+    jlab.user = document.currentScript.getAttribute('data-user');
+    jlab.session = jlab.session || {};
+    jlab.session.loginUrl = document.currentScript.getAttribute('data-login-url');
     jlab.contextPath = '${pageContext.request.contextPath}';
     jlab.logbookServerUrl = '${env["LOGBOOK_SERVER_URL"]}';
     jlab.keycloakServerUrl = '${env["KEYCLOAK_FRONTEND_SERVER_URL"]}';

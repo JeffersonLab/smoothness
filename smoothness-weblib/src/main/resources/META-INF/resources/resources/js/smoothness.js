@@ -75,6 +75,255 @@ jlab.requestStart = function () {
 jlab.requestEnd = function () {
     jlab.ajaxInProgress = false;
 };
+/**
+ * Message dialogs, in place of alert(): they don't block the page, and can offer actions.
+ * Pages without jQuery UI get an alert.
+ */
+jlab.showMessageDialog = function (title, message, buttons, dialogClass) {
+    if (!$.fn.dialog) {
+        alert(title + ': ' + message);
+        return $();
+    }
+
+    let $dialog = $('<div class="message-dialog"></div>').addClass(dialogClass || '');
+
+    $('<p></p>').text(message).appendTo($dialog);
+
+    $dialog.dialog({
+        title: title,
+        modal: true,
+        width: 420,
+        resizable: false,
+        buttons: buttons || [jlab.closeDialogButton('OK')],
+        close: function () {
+            $(this).dialog('destroy').remove();
+        }
+    });
+
+    return $dialog;
+};
+jlab.closeDialogButton = function (text) {
+    return {
+        text: text || 'Close',
+        click: function () {
+            $(this).dialog('close');
+        }
+    };
+};
+jlab.showErrorDialog = function (title, message) {
+    return jlab.showMessageDialog(title, message, null, 'error-dialog');
+};
+jlab.unreachableMessage = 'The server could not be reached. Check your network connection, then try again.';
+// The server's JSON error for a failed jQuery request, or a message for its status
+jlab.requestErrorMessage = function (xhr) {
+    let json = {};
+
+    try {
+        json = JSON.parse(xhr.responseText) || {};
+    } catch (err) {
+        window.console && console.log('Response is not JSON: ' + xhr.responseText);
+    }
+
+    if (json.error) {
+        return json.error;
+    } else if (xhr.status === 0) {
+        return jlab.unreachableMessage;
+    } else {
+        return 'Server did not handle request';
+    }
+};
+/**
+ * Explain a failed request in a dialog: the page's user has been logged out, the server can't be
+ * reached, or the server's own error.  Pass the jQuery request (jqXHR), or a message and whether the
+ * server may be unreachable.  Returns a promise that resolves once the explanation is shown.
+ */
+jlab.showRequestFailure = function (xhrOrMessage, title, possiblyUnreachable) {
+    let message = xhrOrMessage;
+
+    title = title || 'Unable to perform request';
+
+    if (typeof xhrOrMessage !== 'string') {
+        message = jlab.requestErrorMessage(xhrOrMessage);
+        possiblyUnreachable = xhrOrMessage.status === 0 || xhrOrMessage.status >= 502;
+    }
+
+    if (jlab.contextPath === undefined) { /*Page without the smooth-script tag*/
+        jlab.showErrorDialog(title, message);
+        return Promise.resolve();
+    }
+
+    return jlab.session.currentUser().then(function (user) {
+        if (jlab.session.ended(user)) {
+            jlab.session.showEnded(user, true);
+        } else {
+            jlab.showErrorDialog(title, message);
+        }
+    }, function () {
+        jlab.showErrorDialog(title, possiblyUnreachable ? jlab.unreachableMessage : message);
+    });
+};
+/**
+ * Login session: notices when the user a page was loaded for has been logged out (their session
+ * expired, or they logged out of another app that uses the same single sign-on), and lets them log
+ * in again in a new tab without losing what they entered.
+ *
+ * smooth-script.tag sets jlab.user (empty when no one is logged in) and jlab.session.loginUrl.  The
+ * page asks the server who is logged in when a request fails, and when the user returns to the page
+ * after jlab.session.checkAfterMinutes, which an app can change (0 to not check on returning).  Never on a timer: each check counts as activity, so the session would never expire.
+ */
+jlab.session = jlab.session || {};
+if (jlab.session.checkAfterMinutes === undefined) {
+    jlab.session.checkAfterMinutes = 10;
+}
+jlab.session.channelName = 'smoothness-session';
+jlab.session.lastChecked = Date.now();
+jlab.session.loggedOut = false;
+jlab.session.checking = null;
+// Who the server says is logged in: resolves to the username, or null; rejects if unreachable
+jlab.session.currentUser = function () {
+    jlab.session.lastChecked = Date.now();
+
+    return fetch(jlab.contextPath + '/session-status', {
+        cache: 'no-store',
+        credentials: 'same-origin',
+        redirect: 'error',
+        headers: {'Accept': 'application/json'}
+    }).then(function (res) {
+        if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
+    }).then(function (json) {
+        return json.user || null;
+    });
+};
+// Whether the page was loaded for a user the server no longer has logged in
+jlab.session.ended = function (currentUser) {
+    return !!jlab.user && currentUser !== jlab.user;
+};
+jlab.session.logIn = function () {
+    window.open(jlab.session.loginUrl, '_blank');
+};
+jlab.session.endedMessage = function (currentUser) {
+    if (currentUser) {
+        return 'This page was opened as ' + jlab.user + ', but you\'re now logged in as ' + currentUser + '.';
+    } else {
+        return 'You\'ve been logged out: your session expired, or you logged out of another app.';
+    }
+};
+// Show that the page's user has been logged out: a bar at the top of the page, and, when a request
+// failed, a dialog saying how to try again
+jlab.session.showEnded = function (currentUser, withDialog) {
+    let message = jlab.session.endedMessage(currentUser),
+        $bar = $("#session-bar"),
+        $dialog = $("#session-dialog");
+
+    jlab.session.loggedOut = true;
+
+    if ($bar.length === 0) {
+        $bar = $('<div id="session-bar" role="alert"><span class="session-bar-message"></span> '
+            + '<button type="button" class="session-login-button">Log in</button> '
+            + '<button type="button" class="session-reload-button">Reload</button></div>')
+            .prependTo('body');
+    }
+
+    $bar.find(".session-bar-message").text(message);
+    $bar.find(".session-login-button").toggle(!currentUser);
+
+    if (withDialog && $dialog.length === 0) {
+        if (!$.fn.dialog) {
+            alert(message);
+            return;
+        }
+        $dialog = jlab.showMessageDialog('Logged out', '', [], 'session-dialog-content')
+            .attr("id", "session-dialog");
+    }
+
+    if ($dialog.length > 0) {
+        let buttons = [jlab.closeDialogButton()];
+
+        if (currentUser) {
+            $dialog.find("p").text(message + ' Reload the page to continue as ' + currentUser
+                + '; what you entered on this page will be lost.');
+            buttons.unshift({text: 'Reload', click: function () {
+                window.location.reload();
+            }});
+        } else {
+            $dialog.find("p").text(message + ' What you entered is still here: click Log in to log in '
+                + 'again in a new tab, then return here and try again.');
+            buttons.unshift({text: 'Log in', click: jlab.session.logIn});
+        }
+
+        $dialog.dialog('option', 'title', currentUser ? 'Logged in as someone else' : 'Logged out')
+            .dialog('option', 'buttons', buttons);
+    }
+};
+// The page's user is logged in again
+jlab.session.restored = function () {
+    jlab.session.loggedOut = false;
+    $("#session-bar").remove();
+    $("#session-dialog").dialog('option', 'title', 'Logged in')
+        .dialog('option', 'buttons', [jlab.closeDialogButton()])
+        .find("p").text('You\'re logged in again as ' + jlab.user + '. Close this message and try again.');
+};
+// Check who is logged in on returning to the page, if a check is due
+jlab.session.checkOnReturn = function () {
+    let minutes = jlab.session.checkAfterMinutes,
+        due = jlab.session.loggedOut
+            || (minutes > 0 && Date.now() - jlab.session.lastChecked >= minutes * 60000);
+
+    if (!jlab.user || !due || jlab.session.checking || document.visibilityState === 'hidden') {
+        return jlab.session.checking || Promise.resolve();
+    }
+
+    jlab.session.checking = jlab.session.currentUser().then(function (user) {
+        if (jlab.session.ended(user)) {
+            jlab.session.showEnded(user, false);
+        } else if (jlab.session.loggedOut) {
+            jlab.session.restored();
+        }
+    }, function (error) {
+        /*Say nothing until the user tries something: the network may be back by then*/
+        window.console && console.log('Unable to check login session: ' + error);
+    }).finally(function () {
+        jlab.session.checking = null;
+    });
+
+    return jlab.session.checking;
+};
+// On the page that ends logging in from a new tab: tell this app's other pages, and close the tab
+jlab.session.announceLogin = function () {
+    if (!jlab.user) {
+        return;
+    }
+
+    if (window.BroadcastChannel) {
+        let channel = new BroadcastChannel(jlab.session.channelName);
+        channel.postMessage({type: 'logged-in', contextPath: jlab.contextPath, user: jlab.user});
+        channel.close();
+    }
+
+    window.close(); /*Only closes a tab a script opened; the page says to close it otherwise*/
+};
+if (window.BroadcastChannel) {
+    new BroadcastChannel(jlab.session.channelName).onmessage = function (event) {
+        let data = event.data || {};
+
+        if (data.type === 'logged-in' && data.contextPath === jlab.contextPath && jlab.session.loggedOut) {
+            if (data.user === jlab.user) {
+                jlab.session.restored();
+            } else {
+                jlab.session.showEnded(data.user, false);
+            }
+        }
+    };
+}
+$(document).on("visibilitychange", jlab.session.checkOnReturn);
+$(window).on("focus", jlab.session.checkOnReturn);
+$(document).on("click", "#session-bar .session-login-button", jlab.session.logIn);
+$(document).on("click", "#session-bar .session-reload-button", function () {
+    window.location.reload();
+});
 jlab.doAjaxJsonGetRequest = function (url, data, quiet) {
 
     var promise = jQuery.ajax({
@@ -85,20 +334,10 @@ jlab.doAjaxJsonGetRequest = function (url, data, quiet) {
     });
 
     promise.fail(function (xhr, textStatus) {
-        var json;
-
-        try {
-            json = $.parseJSON(xhr.responseText);
-        } catch (err) {
-            window.console && console.log('Response is not JSON: ' + xhr.responseText);
-            json = {};
-        }
-
-        var message = json.error || 'Server did not handle request';
         if (quiet) {
-            window.console && console.log('Unable to perform request: ' + message);
+            window.console && console.log('Unable to perform request: ' + jlab.requestErrorMessage(xhr));
         } else {
-            alert('Unable to perform request: ' + message);
+            jlab.showRequestFailure(xhr);
         }
     });
 
@@ -159,34 +398,12 @@ jlab.doAjaxJsonPostRequestFromPage = function (url, data, $dialog, reload) {
     });
 
     promise.fail(function (xhr, textStatus) {
-        var json, html;
-
-        try {
-            json = $.parseJSON(xhr.responseText);
-        } catch (err) {
-            window.console && console.log('Response is not JSON: ' + xhr.responseText);
-            json = {};
-
-            try {
-                html = $.parseHTML(xhr.responseText);
-
-                /*Let's see if we just got back Java Servlet Login Page*/
-                var $requesterInput = $(html).find("input[name=requester]");
-
-                if ($requesterInput.length > 0 && $requesterInput.val() === 'login') {
-                    json.error = 'Your session has expired: You can try to re-login from a separate tab and then return here to resubmit';
-                }
-            } catch (err2) {
-                window.console && console.log('Response is not HTML either: ' + err2);
-            }
-        }
-
-        var message = json.error || 'Server did not handle request';
-        alert('Unable to perform request: ' + message);
-
+        /*The dialog stays open with what the user entered, for them to fix or try again*/
         $submitButton.empty().text("Save");
         $cancelButton.prop("disabled", false);
         $titleBarButton.prop("disabled", false);
+
+        jlab.showRequestFailure(xhr);
     });
 
     promise.always(function () {
@@ -305,10 +522,14 @@ jlab.openPageInDialog = function (href) {
                 });
             }).catch(error => {
             console.error('fetch error:', error);
-            // assume auth redirect
+            // Not logged in: a redirect is most likely to the login page
             let loginHref = $("#login-link").attr("href");
-            if(loginHref) {
+            if(!jlab.user && loginHref) {
                 window.location.href = loginHref;
+            } else {
+                // A redirect or network error is a TypeError; the user may have been logged out
+                jlab.showRequestFailure('The page could not be loaded: ' + error.message,
+                    'Unable to open dialog', error instanceof TypeError);
             }
         });
     } catch (e) {

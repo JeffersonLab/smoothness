@@ -429,21 +429,206 @@ class SmoothnessJsIT {
   void failedAjaxRequestShowsTheServersError() {
     Page page = browser.loggedIn(Demo.USER);
     open(page, "/features/single-select-datatable");
-    List<String> alerts = new ArrayList<>();
-    page.onDialog(
-        dialog -> {
-          alerts.add(dialog.message());
-          dialog.dismiss();
-        });
 
     page.locator("#open-add-row-dialog-button").click();
     page.locator("#table-row-save-button").click();
 
-    page.waitForCondition(() -> !alerts.isEmpty());
-    assertEquals(List.of("Unable to perform request: title must not be empty"), alerts);
+    Locator error = page.locator(".error-dialog");
+    assertThat(error).hasText("title must not be empty");
+    assertThat(dialogTitle(page, error)).hasText("Unable to perform request");
     // The dialog stays open with its buttons back, for the user to fix the form
     assertThat(page.locator("#table-row-dialog")).isVisible();
     assertThat(page.locator("#table-row-save-button")).hasText("Save");
+    assertThat(page.locator("#session-bar")).hasCount(0);
+
+    dialogButton(page, error, "OK").click();
+    assertThat(error).hasCount(0);
+    assertThat(page.locator("#table-row-dialog")).isVisible();
+  }
+
+  @Test
+  void failedAjaxRequestSaysWhenTheServerIsUnreachable() {
+    Page page = browser.loggedIn(Demo.USER);
+    open(page, "/features/single-select-datatable");
+    page.route("**/ajax/add-movie", Route::abort);
+    page.route("**/session-status", Route::abort);
+
+    page.locator("#open-add-row-dialog-button").click();
+    page.locator("#row-title").fill("Unsaved");
+    page.locator("#table-row-save-button").click();
+
+    assertThat(page.locator(".error-dialog"))
+        .hasText("The server could not be reached. Check your network connection, then try again.");
+    assertThat(page.locator("#row-title")).hasValue("Unsaved");
+    assertThat(page.locator("#session-bar")).hasCount(0);
+  }
+
+  /**
+   * After the user's session ends, a save that fails (here as one to a protected URL does: the
+   * redirect to Keycloak fails) says they were logged out, keeps what they entered, and logs them
+   * in again in a new tab, after which the save works (issue 60).
+   */
+  @Test
+  void failedSaveAfterLogoutLogsInAgainInANewTab() throws Exception {
+    String title = "IT logged out movie " + UUID.randomUUID();
+    Page page = browser.loggedIn(Demo.USER);
+    open(page, "/features/single-select-datatable");
+
+    try {
+      page.context().clearCookies();
+      page.route("**/ajax/add-movie", Route::abort);
+      page.locator("#open-add-row-dialog-button").click();
+      page.locator("#row-title").fill(title);
+      page.locator("#row-description").fill("Added after logging in again");
+      page.locator("#row-rating").selectOption("PG");
+      page.locator("#row-duration").fill("90");
+      page.locator("#table-row-save-button").click();
+
+      Locator session = page.locator("#session-dialog");
+      assertThat(session)
+          .containsText("You've been logged out: your session expired, or you logged out of");
+      assertThat(dialogTitle(page, session)).hasText("Logged out");
+      assertThat(page.locator("#session-bar")).isVisible();
+      assertThat(page.locator("#row-title")).hasValue(title);
+
+      Page tab = page.waitForPopup(() -> dialogButton(page, session, "Log in").click());
+      DemoBrowser.submitLoginForm(tab, Demo.USER);
+      tab.waitForClose(() -> {}); // The logged-in page closes the tab it ends on
+
+      assertThat(session)
+          .hasText(
+              "You're logged in again as " + Demo.USER + ". Close this message and try again.");
+      assertThat(dialogTitle(page, session)).hasText("Logged in");
+      assertThat(page.locator("#session-bar")).hasCount(0);
+
+      dialogButton(page, session, "Close").click();
+      page.unroute("**/ajax/add-movie");
+      page.locator("#table-row-save-button").click();
+      assertThat(page.locator("#movie-table tbody tr", new Page.LocatorOptions().setHasText(title)))
+          .isVisible();
+      assertThat(page.locator("#username-container")).hasText(Demo.USER);
+    } finally {
+      Session http = Session.loggedIn(Demo.USER);
+      var row = MoviesIT.row(http, title);
+      if (row != null) {
+        http.post("/ajax/remove-movie", Map.of("id[]", row.group(1)));
+      }
+    }
+  }
+
+  /**
+   * The settings page's save, to a protected URL, after the session ends: the browser's request
+   * follows the redirect to Keycloak and fails, and the page says the user was logged out.
+   */
+  @Test
+  void settingsSaveAfterLogoutSaysTheUserWasLoggedOut() {
+    Page page = browser.loggedIn(Demo.ADMIN);
+    open(page, "/setup/settings");
+    page.locator(".editable-row-table tbody tr").first().click();
+    page.locator("#open-edit-row-dialog-button").click();
+    page.context().clearCookies();
+
+    page.locator("#table-row-save-button").click();
+
+    assertThat(page.locator("#session-dialog")).containsText("You've been logged out");
+    assertThat(page.locator("#table-row-dialog")).isVisible();
+    assertThat(page.locator("#table-row-save-button")).hasText("Save");
+  }
+
+  /** Returning to a page after a while checks the user is still logged in (issue 60) */
+  @Test
+  void returningToThePageShowsTheUserWasLoggedOut() {
+    Page page = browser.loggedIn(Demo.USER);
+    page.context().clearCookies();
+
+    // Not due yet: the page loaded less than checkAfterMinutes ago
+    returnToPage(page);
+    assertThat(page.locator("#session-bar")).hasCount(0);
+
+    page.evaluate("jlab.session.lastChecked = Date.now() - 10 * 60 * 1000");
+    returnToPage(page);
+    assertThat(page.locator("#session-bar .session-bar-message"))
+        .hasText("You've been logged out: your session expired, or you logged out of another app.");
+    assertThat(page.locator("#session-bar .session-login-button")).isVisible();
+    assertThat(page.locator("#session-dialog")).hasCount(0);
+
+    // Logged out, it checks on every return, and the bar goes once the user is back
+    DemoBrowser.logInAgain(page, Demo.USER);
+    returnToPage(page);
+    assertThat(page.locator("#session-bar")).hasCount(0);
+    assertEquals(List.of(), browser.errors);
+  }
+
+  @Test
+  void returningToThePageShowsAnotherUserLoggedIn() {
+    Page page = browser.loggedIn(Demo.USER);
+    page.context().clearCookies();
+    DemoBrowser.logInAgain(page, Demo.ADMIN);
+
+    page.evaluate("jlab.session.lastChecked = 0");
+    returnToPage(page);
+
+    assertThat(page.locator("#session-bar .session-bar-message"))
+        .hasText(
+            "This page was opened as "
+                + Demo.USER
+                + ", but you're now logged in as "
+                + Demo.ADMIN
+                + ".");
+    assertThat(page.locator("#session-bar .session-login-button")).isHidden();
+    assertThat(page.locator("#session-bar .session-reload-button")).isVisible();
+  }
+
+  @Test
+  void returningToAnAnonymousPageDoesNotCheck() {
+    Page page = browser.newPage();
+    open(page, "/overview");
+    List<String> checks = new ArrayList<>();
+    page.onRequest(
+        request -> {
+          if (request.url().contains("/session-status")) {
+            checks.add(request.url());
+          }
+        });
+
+    page.evaluate("jlab.session.lastChecked = 0");
+    returnToPage(page);
+
+    assertEquals("", js(page, "jlab.user"));
+    assertEquals(List.of(), checks);
+    assertThat(page.locator("#session-bar")).hasCount(0);
+  }
+
+  /** A dialog that fails to load because the user was logged out says so (issue 60) */
+  @Test
+  void dialogOpenedAfterLogoutSaysTheUserWasLoggedOut() {
+    Page page = browser.loggedIn(Demo.USER);
+    open(page, "/breadcrumbs/crumb-one");
+    page.context().clearCookies();
+
+    page.evaluate("jlab.openPageInDialog(jlab.contextPath + '/features/tags')");
+
+    assertThat(page.locator("#session-dialog")).containsText("You've been logged out");
+    assertThat(page.locator(".page-dialog")).hasCount(0);
+    assertEquals(Demo.URL + "/breadcrumbs/crumb-one", page.url());
+  }
+
+  /** Fires the events a browser fires when the user returns to the tab, and waits for the check */
+  static void returnToPage(Page page) {
+    page.evaluate(
+        "() => { document.dispatchEvent(new Event('visibilitychange'));"
+            + " return jlab.session.checking || Promise.resolve(); }");
+  }
+
+  /** The jQuery UI dialog's title, for a dialog's content */
+  static Locator dialogTitle(Page page, Locator content) {
+    return page.locator(".ui-dialog", new Page.LocatorOptions().setHas(content))
+        .locator(".ui-dialog-title");
+  }
+
+  static Locator dialogButton(Page page, Locator content, String text) {
+    return page.locator(".ui-dialog", new Page.LocatorOptions().setHas(content))
+        .locator(".ui-dialog-buttonpane button", new Locator.LocatorOptions().setHasText(text));
   }
 
   @Test
