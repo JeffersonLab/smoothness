@@ -31,6 +31,18 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: wrapper
+      - name: Read the Playwright version
+        id: playwright
+        run: |
+          version=$(grep -oP "com\.microsoft\.playwright:playwright:\K[^'\"]+" smoothness-demo/build.gradle)
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      # The installChromium task skips the download when the browser is already here
+      - name: Cache Playwright's Chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ env.ImageOS }}-${{ steps.playwright.outputs.version }}
       - name: Start containers
         run: docker compose -f build.yaml up -d --build --wait
       - name: Run integration tests
