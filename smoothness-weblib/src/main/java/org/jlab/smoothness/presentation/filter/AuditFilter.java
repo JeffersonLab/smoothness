@@ -4,6 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import org.jlab.smoothness.presentation.util.ClientAddress;
 
 /**
  * WebFilter for setting up an AuditContext.
@@ -11,6 +12,9 @@ import java.io.IOException;
  * <p>Obtain the AuditContext from anywhere using: <code>
  * AuditContext context = AuditContext.getCurrentInstance();
  * </code>
+ *
+ * <p>The context's IP address is the client's as {@link ClientAddress} works it out, which behind a
+ * proxy depends on the TRUSTED_PROXY_COUNT environment variable.
  *
  * @author ryans
  */
@@ -29,14 +33,7 @@ public class AuditFilter implements Filter {
 
     AuditContext context = new AuditContext();
 
-    String ip = request.getRemoteAddr();
-
-    String xForwardedFor = httpRequest.getHeader("X-Forwarded-For");
-
-    if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
-      String[] ipArray = xForwardedFor.split(",");
-      ip = ipArray[0].trim(); // first one, if more than one
-    }
+    String ip = ClientAddress.of(httpRequest);
 
     String username = httpRequest.getRemoteUser();
 

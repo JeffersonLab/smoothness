@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 import org.jlab.smoothness.business.service.SettingsService;
+import org.jlab.smoothness.presentation.util.ClientAddress;
 
 /**
  * This filter restricts who can view (read) pages (URL paths) to a whitelist of IP addresses but
@@ -20,7 +21,10 @@ import org.jlab.smoothness.business.service.SettingsService;
  * not authenticated doesn't appear to be supported.
  *
  * <p>This filter is proxy-aware, meaning it checks for the client IP in X-Forwarded-For header, not
- * the immediate client IP, which is the proxy server.
+ * the immediate client IP, which is the proxy server. A client can send that header too, so only
+ * the entries the installation's own proxies added count: {@link ClientAddress} takes the entry
+ * that the TRUSTED_PROXY_COUNT environment variable points at (the last one by default). Set it to
+ * 0 if clients reach the app without a proxy, or anyone can claim an allowlisted address.
  *
  * <p>This filter uses the DB Setting IP_READ_ALLOWLIST_PATTERN to set the Java REGEX pattern to
  * match client IPs against. For example, to match any client IPs in 192.168.x you'd use pattern
@@ -59,14 +63,7 @@ public class IpReadFilter implements Filter {
       ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
       throws IOException, ServletException {
     HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
-    String ipAddress = httpRequest.getHeader("X-Forwarded-For");
-
-    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
-      ipAddress = httpRequest.getRemoteAddr();
-    } else {
-      String[] ipAddresses = ipAddress.split(",");
-      ipAddress = ipAddresses[0].trim();
-    }
+    String ipAddress = ClientAddress.of(httpRequest);
 
     String username = httpRequest.getRemoteUser();
 

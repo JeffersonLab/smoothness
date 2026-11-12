@@ -41,8 +41,15 @@ class RequestFiltersTest {
   }
 
   @Test
-  void auditContextUsesTheFirstForwardedAddress() throws Exception {
-    request.headers.put("X-Forwarded-For", "203.0.113.9, 10.0.0.2");
+  void auditContextUsesTheLastForwardedAddressWhichTheProxyAdded() throws Exception {
+    request.headers.put("X-Forwarded-For", "192.168.1.5, 203.0.113.9");
+
+    assertEquals("203.0.113.9", audit().getIp());
+  }
+
+  @Test
+  void auditContextIgnoresTheClientsOwnForwardedHeaderLine() throws Exception {
+    request.headerLines.put("X-Forwarded-For", List.of("192.168.1.5", "203.0.113.9"));
 
     assertEquals("203.0.113.9", audit().getIp());
   }
