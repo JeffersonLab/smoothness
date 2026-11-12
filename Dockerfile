@@ -51,3 +51,6 @@ ENV ORACLE_SERVICE='xepdb1'
 ENV PUPPET_SHOW_SERVER_URL='http://puppet:3000'
 ENV BACKEND_SERVER_URL='http://demo:8080'
 ENV FRONTEND_SERVER_URL='https://localhost:8443'
+
+# Clients reach the demo directly, so no X-Forwarded-For entry is a proxy's
+ENV TRUSTED_PROXY_COUNT='0'

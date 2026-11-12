@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import org.jlab.smoothness.persistence.view.TestSettings;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +16,8 @@ import org.junit.jupiter.api.Test;
 /**
  * IpReadFilter lets anyone logged in read, and others only from an IP address the
  * IP_READ_ALLOWLIST_PATTERN setting matches; the rest it sends to log in. The build sets
- * FRONTEND_SERVER_URL for the redirects.
+ * FRONTEND_SERVER_URL for the redirects, and leaves TRUSTED_PROXY_COUNT unset, so one proxy is
+ * trusted.
  */
 class IpReadFilterTest {
 
@@ -98,13 +100,34 @@ class IpReadFilterTest {
   }
 
   @Test
-  void usesTheFirstForwardedAddress() throws Exception {
+  void usesTheLastForwardedAddressWhichTheProxyAdded() throws Exception {
     request.remoteAddr = "10.0.0.1"; // the proxy
-    request.headers.put("X-Forwarded-For", "192.168.1.5, 10.0.0.2");
+    request.headers.put("X-Forwarded-For", "203.0.113.9, 192.168.1.5");
 
     filter();
 
     assertTrue(chain.called());
+  }
+
+  @Test
+  void allowlistedAddressTheClientPutFirstDoesNotCount() throws Exception {
+    request.remoteAddr = "10.0.0.1";
+    request.headers.put("X-Forwarded-For", "192.168.1.5, 203.0.113.9");
+
+    filter();
+
+    assertSentToLogin();
+  }
+
+  @Test
+  void allowlistedAddressInTheClientsOwnHeaderLineDoesNotCount() throws Exception {
+    request.remoteAddr = "10.0.0.1";
+    // a proxy may add its entry as a second line instead of extending the client's
+    request.headerLines.put("X-Forwarded-For", List.of("192.168.1.5", "203.0.113.9"));
+
+    filter();
+
+    assertSentToLogin();
   }
 
   @Test

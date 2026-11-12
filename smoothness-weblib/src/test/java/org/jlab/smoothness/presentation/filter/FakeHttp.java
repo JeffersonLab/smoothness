@@ -6,8 +6,10 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.lang.reflect.Proxy;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -28,7 +30,19 @@ final class FakeHttp {
     String queryString = null;
     String characterEncoding = null;
     final Map<String, String> headers = new HashMap<>();
+
+    /** Headers sent as several lines of the same name, which win over {@link #headers}. */
+    final Map<String, List<String>> headerLines = new HashMap<>();
+
     final Map<String, Object> attributes = new HashMap<>();
+
+    private List<String> headerLines(Object name) {
+      if (headerLines.containsKey(name)) {
+        return headerLines.get(name);
+      }
+      String value = headers.get(name);
+      return value == null ? List.of() : List.of(value);
+    }
 
     HttpServletRequest proxy() {
       return (HttpServletRequest)
@@ -48,7 +62,9 @@ final class FakeHttp {
                   case "getQueryString":
                     return queryString;
                   case "getHeader":
-                    return headers.get((String) args[0]);
+                    return headerLines(args[0]).stream().findFirst().orElse(null);
+                  case "getHeaders":
+                    return Collections.enumeration(headerLines(args[0]));
                   case "getAttribute":
                     return attributes.get((String) args[0]);
                   case "setAttribute":
