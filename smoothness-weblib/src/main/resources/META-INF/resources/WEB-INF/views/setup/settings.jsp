@@ -22,6 +22,24 @@
                 font-size: 0.8em;
                 color: #595959;
             }
+            ul.csv-items {
+                margin: 0;
+                padding-left: 1.5em;
+            }
+            #row-form .csv-field,
+            #row-form.csv-form .text-field {
+                display: none;
+            }
+            #row-form.csv-form .csv-field {
+                display: table-row;
+            }
+            #row-csv-value {
+                width: 600px;
+                max-width: 100%;
+                box-sizing: border-box;
+                white-space: pre;
+                overflow-wrap: normal;
+            }
         </style>
     </jsp:attribute>
     <jsp:attribute name="scripts">
@@ -30,10 +48,47 @@
             jlab.editableRowTable.entity = 'Setting';
             jlab.editableRowTable.dialog.width = 400;
             jlab.editableRowTable.dialog.height = 300;
+            /* A CSV setting is edited one item per line: trim each line, drop blank ones, and
+               refuse a line with a comma, which csv() would split into two items. */
+            jlab.csvLinesToValue = function(text) {
+                var lines = text.split(/\r?\n/),
+                    items = [];
+
+                for (var i = 0; i < lines.length; i++) {
+                    var item = lines[i].trim();
+
+                    if (item === '') {
+                        continue;
+                    }
+
+                    if (item.indexOf(',') !== -1) {
+                        return {error: 'Line ' + (i + 1) + ' contains a comma, which would split it into two items: ' + item};
+                    }
+
+                    items.push(item);
+                }
+
+                if (items.length === 0) {
+                    return {error: 'Enter at least one item'};
+                }
+
+                return {value: items.join(',')};
+            };
             jlab.editRow = function() {
                 var key = $("#row-key").text(),
                     value = $("#row-value").val(),
                     reloading = false;
+
+                if ($("#row-form").hasClass("csv-form")) {
+                    var csv = jlab.csvLinesToValue($("#row-csv-value").val());
+
+                    if (csv.error) {
+                        jlab.showErrorDialog('Unable to Save', csv.error);
+                        return;
+                    }
+
+                    value = csv.value;
+                }
 
                 $(".dialog-submit-button")
                     .height($(".dialog-submit-button").height())
@@ -80,9 +135,20 @@
                 return false;
             });
             $(document).on("click", "#open-edit-row-dialog-button", function() {
-                var $selectedRow = $(".editable-row-table tr.selected-row");
+                var $selectedRow = $(".editable-row-table tr.selected-row"),
+                    value = $selectedRow.attr("data-value"),
+                    csv = $selectedRow.attr("data-type") === 'CSV';
                 $("#row-key").text($selectedRow.find("td:first-child div.top").text());
-                $("#row-value").val($selectedRow.find("td:nth-child(3)").text());
+                $("#row-form").toggleClass("csv-form", csv);
+                $("#row-value").val(csv ? '' : value);
+                $("#row-csv-value").val(csv ? value.split(",").join("\n") : '');
+                $("#table-row-dialog").dialog("option", csv ? {
+                    width: 800,
+                    height: Math.min(720, $(window).height() - 40)
+                } : {
+                    width: jlab.editableRowTable.dialog.width,
+                    height: jlab.editableRowTable.dialog.height
+                });
             });
             $(document).on("table-row-edit", function() {
                 jlab.editRow();
@@ -142,7 +208,7 @@
                 </thead>
                 <tbody>
                 <c:forEach var="setting" items="${settingList}">
-                    <tr>
+                    <tr data-type="${setting.type}" data-value="${fn:escapeXml(setting.value)}">
                         <td>
                             <div class="container">
                                 <div class="top"><c:out value="${setting.key}"/></div>
@@ -155,7 +221,18 @@
                                 <div class="bottom"><c:out value="${setting.type}"/></div>
                             </div>
                         </td>
-                        <td><c:out value="${setting.value}"/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${setting.type eq 'CSV'}">
+                                    <ul class="csv-items">
+                                        <c:forTokens items="${setting.value}" delims="," var="item">
+                                            <li><c:out value="${item}"/></li>
+                                        </c:forTokens>
+                                    </ul>
+                                </c:when>
+                                <c:otherwise><c:out value="${setting.value}"/></c:otherwise>
+                            </c:choose>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -172,12 +249,21 @@
                                     <span id="row-key"></span>
                                 </div>
                             </li>
-                            <li>
+                            <li class="text-field">
                                 <div class="li-key">
                                     <label for="row-value">Value</label>
                                 </div>
                                 <div class="li-value">
                                     <input type="text" id="row-value" autocomplete="off"/>
+                                </div>
+                            </li>
+                            <li class="csv-field">
+                                <div class="li-key">
+                                    <label for="row-csv-value">Items</label>
+                                </div>
+                                <div class="li-value">
+                                    <textarea id="row-csv-value" rows="30" autocomplete="off" spellcheck="false"></textarea>
+                                    <div>One item per line; an item can't contain a comma.</div>
                                 </div>
                             </li>
                         </ul>

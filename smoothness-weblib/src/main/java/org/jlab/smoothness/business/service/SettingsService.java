@@ -7,6 +7,8 @@ import jakarta.persistence.criteria.*;
 import jakarta.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.jlab.smoothness.business.exception.UserFriendlyException;
@@ -56,6 +58,8 @@ public class SettingsService extends JPAService<Setting> {
    * <p>We can't use RolesAllowed annotation because each app has a custom admin. Instead we
    * programmatically perform check
    *
+   * <p>A CSV value is cleaned with {@link #cleanCsv(String)} before it is saved.
+   *
    * @param key The Setting key
    * @param value The Setting value
    * @param context The ServletContext
@@ -78,6 +82,10 @@ public class SettingsService extends JPAService<Setting> {
       }
     }
 
+    if (SettingsType.CSV.equals(setting.getType())) {
+      value = cleanCsv(value);
+    }
+
     setting.setValue(value);
 
     // Refresh caches
@@ -94,6 +102,24 @@ public class SettingsService extends JPAService<Setting> {
         action.handleChange(key, value);
       }
     }
+  }
+
+  /**
+   * Clean a CSV Setting value: trim each comma-separated item and drop empty ones, so that {@link
+   * ImmutableSettings#csv(String)} returns exactly the items.
+   *
+   * @param value The CSV value, such as " a, b,,c "
+   * @return The cleaned value, such as "a,b,c", or null if value is null
+   */
+  static String cleanCsv(String value) {
+    if (value == null) {
+      return null;
+    }
+
+    return Stream.of(value.split(","))
+        .map(String::trim)
+        .filter(item -> !item.isEmpty())
+        .collect(Collectors.joining(","));
   }
 
   private SettingChangeAction lookupChangeActionViaJNDI(String name) {

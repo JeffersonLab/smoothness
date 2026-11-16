@@ -149,4 +149,62 @@ class BrowserIT {
       }
     }
   }
+
+  @Test
+  void editACsvSettingOneItemPerLine() throws Exception {
+    Session http = Session.loggedIn(Demo.ADMIN);
+    String label = "IT doc " + UUID.randomUUID();
+
+    try {
+      Page page = browser.loggedIn(Demo.ADMIN);
+      open(page, "/setup/settings?key=" + SettingsIT.HELP_DOC_CSV);
+      Locator row = page.locator("#settings-table tbody tr");
+      Locator dialog = page.locator("#table-row-dialog");
+      Locator items = dialog.locator("#row-csv-value");
+
+      row.locator("td").first().click();
+      page.locator("#open-edit-row-dialog-button").click();
+      assertThat(items).isVisible();
+      assertThat(dialog.locator("#row-value")).isHidden();
+      assertThat(items).hasValue(SettingsIT.DEFAULT_HELP_DOC);
+
+      // A line with a comma is refused, not split into two items
+      items.fill("https://example.com/one|One\nhttps://example.com/two|Two, Three");
+      page.locator("#table-row-save-button").click();
+      assertThat(page.locator(".error-dialog"))
+          .containsText("Line 2 contains a comma, which would split it into two items");
+      page.locator(".error-dialog")
+          .locator("..")
+          .locator("button", new Locator.LocatorOptions().setHasText("OK"))
+          .click();
+
+      items.fill("  https://example.com/one|" + label + "  \n\n https://example.com/two|Two\n\n");
+      // Saving reloads the page; the assertions below wait for it
+      page.locator("#table-row-save-button").click();
+
+      assertThat(row.locator("td").nth(2).locator("li"))
+          .hasText(
+              new String[] {"https://example.com/one|" + label, "https://example.com/two|Two"});
+      assertThat(row)
+          .hasAttribute(
+              "data-value", "https://example.com/one|" + label + ",https://example.com/two|Two");
+      assertEquals(List.of(), browser.errors);
+    } finally {
+      SettingsIT.edit(http, SettingsIT.HELP_DOC_CSV, SettingsIT.DEFAULT_HELP_DOC);
+    }
+  }
+
+  @Test
+  void editAStringSettingInOneLine() {
+    Page page = browser.loggedIn(Demo.ADMIN);
+    open(page, "/setup/settings?key=NOTIFICATION_MESSAGE");
+
+    page.locator("#settings-table tbody tr td").first().click();
+    page.locator("#open-edit-row-dialog-button").click();
+
+    Locator dialog = page.locator("#table-row-dialog");
+    assertThat(dialog.locator("#row-value")).hasValue(SettingsIT.DEFAULT_MESSAGE);
+    assertThat(dialog.locator("#row-csv-value")).isHidden();
+    assertEquals(List.of(), browser.errors);
+  }
 }

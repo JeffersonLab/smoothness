@@ -16,6 +16,11 @@ class SettingsIT {
   /** As in container/oracle/initdb.d/04_settings.sql */
   static final String DEFAULT_MESSAGE = "Development Environment";
 
+  /** A CSV setting, as in container/oracle/initdb.d/04_settings.sql */
+  static final String HELP_DOC_CSV = "HELP_DOC_CSV";
+
+  static final String DEFAULT_HELP_DOC = "https://github.com/JeffersonLab/smoothness|Home";
+
   @BeforeAll
   static void awaitReady() throws Exception {
     Demo.awaitReady();
@@ -40,6 +45,36 @@ class SettingsIT {
     }
 
     assertTrue(Session.anonymous().get("/overview").body().contains(DEFAULT_MESSAGE));
+  }
+
+  @Test
+  void csvSettingIsSavedWithItemsTrimmedAndBlankItemsDropped() throws Exception {
+    Session admin = Session.loggedIn(Demo.ADMIN);
+    String label = "IT doc " + UUID.randomUUID();
+
+    try {
+      assertEquals(
+          "{\"stat\":\"ok\"}",
+          edit(
+                  admin,
+                  HELP_DOC_CSV,
+                  " https://example.com/one|" + label + " ,\n, https://example.com/two|Two \n")
+              .body());
+
+      String settings = admin.get("/setup/settings?key=" + HELP_DOC_CSV).body();
+      assertTrue(
+          settings.contains(
+              "data-value=\"https://example.com/one|" + label + ",https://example.com/two|Two\""),
+          "stored value isn't cleaned");
+      assertTrue(settings.contains("<li>https://example.com/two|Two</li>"), "items aren't listed");
+
+      // The help panel splits the value on commas, as ImmutableSettings.csv() does
+      String help = Session.anonymous().get("/help").body();
+      assertTrue(help.contains("<li><a href=\"https://example.com/one\">" + label + "</a></li>"));
+      assertTrue(help.contains("<li><a href=\"https://example.com/two\">Two</a></li>"));
+    } finally {
+      edit(admin, HELP_DOC_CSV, DEFAULT_HELP_DOC);
+    }
   }
 
   @Test
